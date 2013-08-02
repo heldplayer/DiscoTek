@@ -13,6 +13,7 @@ public class ModelLight1 extends ModelBase {
 
     public ModelLight1() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(256, 256);
+        this.base.addBox(0.0F, 0.0F, 0.0F, 16, 16, 16, 0.0F);
     }
 
     public void renderAll() {
