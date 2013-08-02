@@ -52,7 +52,7 @@ public class ModjamMod {
         Objects.creativeTab = new CreativeTabIcon("modjam2013");
 
         Objects.blockLight = new BlockLight(Config.blockLightId);
-        Objects.blockLight.setCreativeTab(Objects.creativeTab).setUnlocalizedName("light");
+        Objects.blockLight.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("light");
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "ModJam2013.blockLight");
 
         Objects.blockTruss = new BlockTruss(Config.blockTrussId);
@@ -66,6 +66,8 @@ public class ModjamMod {
         Objects.itemLens = new ItemLens(Config.itemLensId);
         Objects.itemLens.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:lens").setUnlocalizedName("lens");
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemLens");
+
+        Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockLight));
 
         TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
 

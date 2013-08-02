@@ -2,7 +2,6 @@
 package net.specialattack.modjam.client.render.tileentity;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.specialattack.modjam.Assets;
@@ -46,7 +45,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
 
         int color = light.color;
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
@@ -57,11 +56,11 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         this.modelLightParCan.renderLens();
         GL11.glDisable(GL11.GL_BLEND);
 
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawing(GL11.GL_LINES);
-        tess.addVertex(0.0F, 0.0F, 0.0F);
-        tess.addVertex(0.0F, -1.0F, 0.0F);
-        tess.draw();
+        if (disableLight) {
+            GL11.glBegin(GL11.GL_QUADS);
+
+            GL11.glEnd();
+        }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         if (disableLight)
