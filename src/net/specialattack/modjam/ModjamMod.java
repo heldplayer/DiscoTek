@@ -12,6 +12,7 @@ import net.specialattack.modjam.item.ItemDebug;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -23,12 +24,17 @@ public class ModjamMod {
     @Instance(Constants.MOD_ID)
     public ModjamMod instance;
 
+    @SidedProxy(serverSide = Constants.COMMON_PROXY, clientSide = Constants.CLIENT_PROXY)
+    public static CommonProxy proxy;
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         File configFile = event.getSuggestedConfigurationFile();
 
         Configuration config = new Configuration(configFile);
         Config.loadConfig(config);
+
+        proxy.preInit(event);
     }
 
     @EventHandler
@@ -44,11 +50,13 @@ public class ModjamMod {
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
 
         TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
+
+        proxy.init(event);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-
+        proxy.postInit(event);
     }
 
 }

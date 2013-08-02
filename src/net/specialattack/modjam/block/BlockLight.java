@@ -27,4 +27,9 @@ public class BlockLight extends Block {
         return new TileEntityLight();
     }
 
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
+
 }
