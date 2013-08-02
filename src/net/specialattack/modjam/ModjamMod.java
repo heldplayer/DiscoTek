@@ -4,8 +4,10 @@ package net.specialattack.modjam;
 import java.io.File;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
-import net.specialattack.modjam.block.BlockMulti1;
+import net.specialattack.modjam.block.BlockLight;
+import net.specialattack.modjam.block.TileEntityLight;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -30,9 +32,11 @@ public class ModjamMod {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        Objects.blockMulti1 = new BlockMulti1(Config.blockMulti1Id);
-        Objects.blockMulti1.setCreativeTab(CreativeTabs.tabRedstone);
-        GameRegistry.registerBlock(Objects.blockMulti1, "ModJam2013.blockMulti1");
+        Objects.blockLight = new BlockLight(Config.blockLightId);
+        Objects.blockLight.setCreativeTab(CreativeTabs.tabRedstone);
+        GameRegistry.registerBlock(Objects.blockLight, "ModJam2013.blockMulti1");
+
+        TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
     }
 
     @EventHandler

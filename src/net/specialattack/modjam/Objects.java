@@ -1,10 +1,10 @@
 
 package net.specialattack.modjam;
 
-import net.specialattack.modjam.block.BlockMulti1;
+import net.specialattack.modjam.block.BlockLight;
 
 public class Objects {
 
-    public static BlockMulti1 blockMulti1;
+    public static BlockLight blockLight;
 
 }
