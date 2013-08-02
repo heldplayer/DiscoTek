@@ -8,9 +8,9 @@ import net.minecraftforge.common.ForgeDirection;
 public class TileEntityLight extends TileEntity {
 
     public int color = 0xFFFFFFFF;
-    public float pitch;
-    public float yaw;
-    public ForgeDirection direction;
+    public float pitch = 0.0F;
+    public float yaw = 0.0F;
+    public ForgeDirection direction = ForgeDirection.UNKNOWN;
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
