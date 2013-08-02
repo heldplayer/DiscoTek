@@ -14,8 +14,8 @@ public class TileEntityLight extends TileEntity {
     public float yaw = 0.0F;
     public float prevYaw = 0.0F;
 
-    public float motionPitch;
-    public float motionYaw;
+    public float motionPitch = 0.0F;
+    public float motionYaw = 0.0F;
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {

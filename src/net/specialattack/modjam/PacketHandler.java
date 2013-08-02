@@ -7,7 +7,14 @@ import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerInstance;
+import net.minecraft.server.management.PlayerManager;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.specialattack.modjam.block.TileEntityLight;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -64,6 +71,49 @@ public class PacketHandler implements IPacketHandler {
         packet.data = bos.toByteArray();
         packet.length = packet.data.length;
         return packet;
+    }
+
+    public static void sendPacketToPlayersWatchingBlock(Packet packet, World world, int x, int z) {
+        if (packet == null) {
+            return;
+        }
+
+        MinecraftServer server = MinecraftServer.getServer();
+
+        if (server != null) {
+            for (WorldServer worldServer : server.worldServers) {
+                if (worldServer.provider.dimensionId == world.getWorldInfo().getVanillaDimension()) {
+                    Chunk chunk = world.getChunkFromBlockCoords(x, z);
+                    PlayerManager manager = worldServer.getPlayerManager();
+                    PlayerInstance instance = manager.getOrCreateChunkWatcher(chunk.xPosition, chunk.zPosition, false);
+
+                    if (instance != null) {
+                        instance.sendToAllPlayersWatchingChunk(packet);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void sendPacketToPlayersWatchingChunk(Packet packet, int dimensionId, int chunkX, int chunkZ) {
+        if (packet == null) {
+            return;
+        }
+
+        MinecraftServer server = MinecraftServer.getServer();
+
+        if (server != null) {
+            for (WorldServer world : server.worldServers) {
+                if (world.provider.dimensionId == dimensionId) {
+                    PlayerManager manager = world.getPlayerManager();
+                    PlayerInstance instance = manager.getOrCreateChunkWatcher(chunkX, chunkZ, false);
+
+                    if (instance != null) {
+                        instance.sendToAllPlayersWatchingChunk(packet);
+                    }
+                }
+            }
+        }
     }
 
 }
