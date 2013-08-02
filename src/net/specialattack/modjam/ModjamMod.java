@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
+import net.specialattack.modjam.block.BlockController;
 import net.specialattack.modjam.block.BlockDecoration;
 import net.specialattack.modjam.block.BlockLight;
 import net.specialattack.modjam.block.BlockTruss;
@@ -60,9 +61,14 @@ public class ModjamMod {
         Objects.blockTruss.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("truss");
         GameRegistry.registerBlock(Objects.blockTruss, "ModJam2013.blockTruss");
 
+        // FIXME: decoration block needs a good dark texture
         Objects.blockDecoration = new BlockDecoration(Config.blockDecorationId);
         Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setUnlocalizedName("decoration");
         GameRegistry.registerBlock(Objects.blockDecoration, "ModJam2013.blockDecoration");
+
+        Objects.blockController = new BlockController(Config.blockControllerId);
+        Objects.blockController.setCreativeTab(Objects.creativeTab).setUnlocalizedName("controller");
+        GameRegistry.registerBlock(Objects.blockController, "ModJam2013.blockController");
 
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug").setFull3D();
