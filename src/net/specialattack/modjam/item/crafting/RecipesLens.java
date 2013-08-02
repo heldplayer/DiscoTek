@@ -74,7 +74,7 @@ public class RecipesLens implements IRecipe {
                         dyeCount++;
                     }
                 }
-                else if (stack.itemID != Item.dyePowder.itemID) {
+                else if (stack.itemID == Item.dyePowder.itemID) {
                     float[] dyeColors = EntitySheep.fleeceColorTable[BlockColored.getBlockFromDye(stack.getItemDamage())];
                     int red = (int) (dyeColors[0] * 255.0F);
                     int green = (int) (dyeColors[1] * 255.0F);
@@ -108,6 +108,7 @@ public class RecipesLens implements IRecipe {
             NBTTagCompound compound = lens.stackTagCompound;
             if (compound == null) {
                 compound = new NBTTagCompound();
+                lens.stackTagCompound = compound;
             }
             compound.setInteger("color", color);
 

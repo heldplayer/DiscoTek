@@ -22,7 +22,7 @@ public class BlockTruss extends Block {
         //Set rotation data
         return super.onBlockPlaced(par1World, par2, par3, par4, par5, par6, par7, par8, par9);
     }
-    
+
     @Override
     public boolean isOpaqueCube() {
         return false;

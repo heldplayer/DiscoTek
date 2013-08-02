@@ -13,9 +13,9 @@ public class ModelLightParCan extends ModelBase {
 
     public ModelLightParCan() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(256, 256);
-        
+
         //Four sides. + Back
-        
+
         //Left
         this.base.addBox(4.0f, 5.0f, 0.0f, 1, 6, 14, 0.0f);
         //Right
@@ -24,11 +24,11 @@ public class ModelLightParCan extends ModelBase {
         this.base.addBox(5.0f, 4.0f, 0.0f, 6, 1, 14, 0.0f);
         //Bottom
         this.base.addBox(5.0f, 11.0f, 0.0f, 6, 1, 14, 0.0f);
-        
+
         //Back
         this.base.addBox(5.0f, 5.0f, 14.0f, 6, 6, 1);
         this.base.addBox(6.0f, 6.0f, 15.0f, 4, 4, 1);
-        
+
     }
 
     public void renderAll() {
