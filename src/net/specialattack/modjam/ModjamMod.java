@@ -6,6 +6,7 @@ import java.io.File;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
 import net.specialattack.modjam.block.BlockLight;
+import net.specialattack.modjam.block.BlockTruss;
 import net.specialattack.modjam.block.TileEntityLight;
 import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.item.ItemDebug;
@@ -47,8 +48,8 @@ public class ModjamMod {
         Objects.blockLight.setCreativeTab(Objects.creativeTab).setUnlocalizedName("light");
         GameRegistry.registerBlock(Objects.blockLight, "ModJam2013.blockLight");
 
-        Objects.blockTruss = new BlockLight(Config.blockTrussId);
-        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setUnlocalizedName("truss");
+        Objects.blockTruss = new BlockTruss(Config.blockTrussId);
+        Objects.blockTruss.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("truss");
         GameRegistry.registerBlock(Objects.blockTruss, "ModJam2013.blockTruss");
 
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);

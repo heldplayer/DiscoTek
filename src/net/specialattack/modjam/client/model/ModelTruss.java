@@ -13,7 +13,15 @@ public class ModelTruss extends ModelBase {
 
     public ModelTruss() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(256, 256);
-        this.base.addBox(06.0F, 0.0F, 0.0F, 16, 16, 16, 0.0F);
+        //Four main bars
+        //TL
+        this.base.addBox(0.0F, 0.0F, 0.0F, 3, 3, 16, 0.0F);
+        //TR
+        this.base.addBox(13.0F, 0.0F, 0.0F, 3, 3, 16, 0.0F);
+        //BL
+        this.base.addBox(0.0F, 13.0F, 0.0F, 3, 3, 16, 0.0F);
+        //BR
+        this.base.addBox(13.0F, 13.0F, 0.0F, 3, 3, 16, 0.0F);
     }
 
     public void renderAll() {
