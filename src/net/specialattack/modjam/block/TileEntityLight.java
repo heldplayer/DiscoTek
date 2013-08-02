@@ -7,7 +7,7 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityLight extends TileEntity {
 
-    public int color = 0xFFFFFFFF;
+    public int color = 0xFFFFFF;
     public float pitch = 0.0F;
     public float prevPitch = 0.0F;
     public float yaw = 0.0F;
