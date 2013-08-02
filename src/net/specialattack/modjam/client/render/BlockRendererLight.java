@@ -18,7 +18,7 @@ public class BlockRendererLight implements ISimpleBlockRenderingHandler {
 
     public BlockRendererLight(int renderId) {
         this.renderId = renderId;
-        renderTile = new TileEntityLight();
+        this.renderTile = new TileEntityLight();
     }
 
     @Override

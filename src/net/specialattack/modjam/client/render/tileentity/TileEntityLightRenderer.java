@@ -21,7 +21,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         this.func_110628_a(Assets.LIGHT1_TEXTURE);
         GL11.glTranslatef((float) x, (float) y, (float) z);
-        modelLight1.renderAll();
+        this.modelLight1.renderAll();
         GL11.glPopMatrix();
     }
 
