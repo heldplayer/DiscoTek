@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Forge Editing" default="setup-forge" basedir=".">
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+
+    <target name="setup-forge">
+        <exec dir="${base.dir}/forge" executable="${base.dir}/forge/install.cmd" />
+        <delete includeemptydirs="true">
+            <fileset dir="${mcp.dir}/src-base" includes="**/*" />
+        </delete>
+        <copy todir="${mcp.dir}/src-base">
+            <fileset dir="${mcp.dir}/src" />
+        </copy>
+        <antcall target="updatemd5" />
+    </target>
+
+    <property name="base.dir" value="D:/DesktopJunk/Forge Editing" />
+    <property name="mcp.dir" value="${base.dir}/forge/mcp" />
+    <property name="projects.dir" value="${base.dir}/projects" />
+
+    <target name="clean">
+        <delete dir="${mcp.dir}/src" />
+    </target>
+
+    <target name="insert">
+        <property file="build.properties" />
+        <copy todir="${mcp.dir}/src">
+            <fileset dir="${mcp.dir}/src-base" />
+        </copy>
+        <foreach list="${source.depencies}" param="depency" target="copy-depency" />
+        <copy todir="${mcp.dir}/src/minecraft">
+            <filterset>
+                <filter token="VERSION" value="${super.number}.${major.number}.${minor.number}.${build.number}" />
+            </filterset>
+            <fileset dir="${projects.dir}/${source.assets}" />
+        </copy>
+        <antcall target="recompile" />
+        <antcall target="updatemd5" />
+        <copy todir="${mcp.dir}/src/minecraft" overwrite="true">
+            <filterset>
+                <filter token="VERSION" value="${super.number}.${major.number}.${minor.number}.${build.number}" />
+            </filterset>
+            <fileset dir="${projects.dir}/${source.sources}" />
+        </copy>
+    </target>
+
+    <target name="copy-depency">
+        <copy todir="${mcp.dir}/src" overwrite="true">
+            <fileset dir="${projects.dir}/${depency}" />
+        </copy>
+    </target>
+
+    <target name="updatemd5">
+        <exec dir="${mcp.dir}" executable="${mcp.dir}/updatemd5.bat">
+            <arg value="--client" />
+            <arg value="--force" />
+        </exec>
+    </target>
+
+    <target name="recompile">
+        <exec dir="${mcp.dir}" executable="${mcp.dir}/recompile.bat">
+            <arg value="--client" />
+        </exec>
+    </target>
+
+    <target name="reobfuscate">
+        <exec dir="${mcp.dir}" executable="${mcp.dir}/reobfuscate_srg.bat">
+            <arg value="--client" />
+        </exec>
+    </target>
+
+    <target name="copy-assets">
+        <property file="build.properties" />
+        <copy todir="${mcp.dir}/reobf/minecraft">
+            <fileset dir="${projects.dir}/${source.assets}" />
+        </copy>
+    </target>
+
+    <target name="filter-source">
+    </target>
+
+    <target name="create-jar">
+        <property file="build.properties" />
+        <echo message="Packaging for version ${super.number}.${major.number}.${minor.number}.${build.number}" />
+        <jar destfile="${base.dir}/releases/${source.name}/${source.name}-${mc.version}-${super.number}.${major.number}.${minor.number}.${build.number}.zip" basedir="${base.dir}/forge/mcp/reobf/minecraft" />
+    </target>
+
+    <target name="increment-build">
+        <propertyfile file="build.properties">
+            <entry key="mc.version" type="string" default="???" />
+            <entry key="super.number" type="int" default="0" pattern="00" />
+            <entry key="major.number" type="int" default="0" pattern="00" />
+            <entry key="minor.number" type="int" default="0" pattern="00" />
+            <entry key="build.number" type="int" default="-1" pattern="00" operation="+" />
+        </propertyfile>
+    </target>
+    <target name="increment-minor">
+        <propertyfile file="build.properties">
+            <entry key="mc.version" type="string" default="???" />
+            <entry key="super.number" type="int" default="0" pattern="00" />
+            <entry key="major.number" type="int" default="0" pattern="00" />
+            <entry key="minor.number" type="int" default="0" operation="+" />
+            <entry key="build.number" type="int" default="0" pattern="00" operation="=" value="0" />
+        </propertyfile>
+    </target>
+    <target name="increment-major">
+        <propertyfile file="build.properties">
+            <entry key="mc.version" type="string" default="???" />
+            <entry key="super.number" type="int" default="0" pattern="00" />
+            <entry key="major.number" type="int" default="0" operation="+" />
+            <entry key="minor.number" type="int" default="0" pattern="0" operation="=" value="0" />
+            <entry key="build.number" type="int" default="0" pattern="00" operation="=" value="0" />
+        </propertyfile>
+    </target>
+
+    <target name="build">
+        <antcall target="clean" />
+        <antcall target="increment-build" />
+        <antcall target="insert" />
+        <antcall target="recompile" />
+        <antcall target="reobfuscate" />
+        <antcall target="copy-assets" />
+        <antcall target="filter-source" />
+        <antcall target="create-jar" />
+    </target>
+
+    <target name="build-minor">
+        <antcall target="clean" />
+        <antcall target="increment-minor" />
+        <antcall target="insert" />
+        <antcall target="recompile" />
+        <antcall target="reobfuscate" />
+        <antcall target="copy-assets" />
+        <antcall target="filter-source" />
+        <antcall target="create-jar" />
+    </target>
+
+    <target name="build-major">
+        <antcall target="clean" />
+        <antcall target="increment-major" />
+        <antcall target="insert" />
+        <antcall target="recompile" />
+        <antcall target="reobfuscate" />
+        <antcall target="copy-assets" />
+        <antcall target="filter-source" />
+        <antcall target="create-jar" />
+    </target>
+</project>

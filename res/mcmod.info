@@ -1,10 +1,13 @@
 [
-{
-"modid" : "BleighMod",
-"name" : "Bleigh Mod",
-"description" : "A mod created by Team Bleigh for ModJam 2013",
-"version" : "Pre-Release",
-"authors" : ["heldplayer", "mbl111"],
-"url" : "http://www.specialattack.net/"
-}
+	{
+		"modid" : "ModjamMod2013",
+		"name" : "Modjam Mod 2013 Unnamed",
+		"description" : "A mod created by Team Bleigh for ModJam 2013",
+		"version" : "@VERSION@",
+		"authors" : [
+			"heldplayer",
+			"mbl111"
+		],
+		"url" : "http://www.specialattack.net/"
+	}
 ]

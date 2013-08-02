@@ -12,10 +12,10 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
-public class BleighMod {
+public class ModjamMod {
 
-    @Instance("BleighMod")
-    public BleighMod instance;
+    @Instance(Constants.MOD_ID)
+    public ModjamMod instance;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
