@@ -29,8 +29,12 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
-        GL11.glTranslatef((float) x, (float) y, (float) z);
+        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        float pitch = light.pitch + (light.pitch - light.prevPitch) * partialTicks;
+        float yaw = light.yaw + (light.yaw - light.prevYaw) * partialTicks;
+        this.modelLightYoke.setRotations(pitch, yaw);
         this.modelLightYoke.renderAll();
+        this.modelLightParCan.setRotations(pitch, yaw);
         this.modelLightParCan.renderAll();
 
         GL11.glPopMatrix();
