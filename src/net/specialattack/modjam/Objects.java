@@ -9,6 +9,7 @@ import net.specialattack.modjam.item.ItemLens;
 public class Objects {
 
     public static BlockLight blockLight;
+    public static BlockLight blockTruss;
     public static ItemDebug itemDebug;
     public static ItemLens itemLens;
 

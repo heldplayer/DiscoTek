@@ -46,7 +46,7 @@ public class ItemRendererLens implements IItemRenderer {
         double green = (float) ((color >> 8) & 0xFF) / 255.0F;
         double blue = (float) (color & 0xFF) / 255.0F;
         GL11.glColor3d(red, green, blue);
-        renderIcon(item, item.getItem().getIcon(item, 0), type);
+        this.renderIcon(item, item.getItem().getIcon(item, 0), type);
         GL11.glDisable(GL11.GL_BLEND);
 
         color = item.getItem().getColorFromItemStack(item, 1);
@@ -54,7 +54,7 @@ public class ItemRendererLens implements IItemRenderer {
         green = (float) ((color >> 8) & 0xFF) / 255.0F;
         blue = (float) (color & 0xFF) / 255.0F;
         GL11.glColor3d(red, green, blue);
-        renderIcon(item, item.getItem().getIcon(item, 1), type);
+        this.renderIcon(item, item.getItem().getIcon(item, 1), type);
 
         GL11.glPopMatrix();
     }
@@ -83,7 +83,7 @@ public class ItemRendererLens implements IItemRenderer {
                 GL11.glTranslatef(-0.5F, -0.3F, 0.0F);
             }
 
-            renderItemIn3D(tess, maxU, minV, minU, maxV, icon.getOriginX(), icon.getOriginY(), 0.0625F);
+            this.renderItemIn3D(tess, maxU, minV, minU, maxV, icon.getOriginX(), icon.getOriginY(), 0.0625F);
 
             GL11.glPopMatrix();
         }

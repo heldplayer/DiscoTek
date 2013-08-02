@@ -29,4 +29,8 @@ public class TileEntityLight extends TileEntity {
         compound.setInteger("direction", this.direction.ordinal());
     }
 
+    public boolean hasGel() {
+        return !(this.color == 0xFFFFFFFF);
+    }
+
 }
