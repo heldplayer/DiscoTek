@@ -40,7 +40,8 @@ public class ItemRendererLens implements IItemRenderer {
         GL11.glPushMatrix();
 
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
+        GL11.glBlendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_SRC_ALPHA);
+        //GL11.glBlendFunc(GL11.GL_ONE_MINUS_SRC_COLOR, GL11.GL_DST_COLOR);
         int color = item.getItem().getColorFromItemStack(item, 0);
         double red = (float) ((color >> 16) & 0xFF) / 255.0F;
         double green = (float) ((color >> 8) & 0xFF) / 255.0F;
