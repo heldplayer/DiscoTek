@@ -1,6 +1,7 @@
 
 package net.specialattack.modjam.client.render.tileentity;
 
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.specialattack.modjam.Assets;
@@ -36,6 +37,18 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         this.modelLightYoke.renderAll();
         this.modelLightParCan.setRotations(pitch, yaw);
         this.modelLightParCan.renderAll();
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+        Tessellator tess = Tessellator.instance;
+
+        tess.setColorOpaque_I(light.color);
+        tess.startDrawing(GL11.GL_LINES);
+        tess.addVertex(0.0F, 0.0F, 0.0F);
+        tess.addVertex(0.0F, 1.0F, 0.0F);
+        tess.draw();
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         GL11.glPopMatrix();
     }

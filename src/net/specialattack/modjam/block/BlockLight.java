@@ -16,8 +16,6 @@ public class BlockLight extends Block {
         super(blockId, Material.piston);
         this.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererLight(this.renderId));
-        this.setLightOpacity(100);
-        this.setLightValue(0.2f);
     }
 
     @Override
