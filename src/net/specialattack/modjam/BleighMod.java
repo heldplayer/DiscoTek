@@ -30,7 +30,7 @@ public class BleighMod {
     }
 
     @EventHandler
-    public void load(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
 
     }
 
