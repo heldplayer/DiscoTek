@@ -1,6 +1,7 @@
 
 package net.specialattack.modjam.client.render.tileentity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +21,8 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     private ModelLightParCan modelLightParCan = new ModelLightParCan();
     private ModelLightYoke modelLightYoke = new ModelLightYoke();
 
+    public static boolean disableLight = true;
+
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
         if (!(tile instanceof TileEntityLight)) {
@@ -36,21 +39,35 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         this.modelLightYoke.setRotations(pitch, yaw);
         this.modelLightYoke.renderAll();
         this.modelLightParCan.setRotations(pitch, yaw);
-        this.modelLightParCan.renderAll();
+        this.modelLightParCan.render();
+
+        if (disableLight)
+            Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        int color = light.color;
+        float red = (float) ((color >> 16) & 0xFF) / 255.0F;
+        float green = (float) ((color >> 8) & 0xFF) / 255.0F;
+        float blue = (float) (color & 0xFF) / 255.0F;
+        GL11.glColor4f(red, green, blue, 0.5F);
+
+        this.modelLightParCan.renderLens();
+
+        GL11.glDisable(GL11.GL_BLEND);
 
         Tessellator tess = Tessellator.instance;
-
-        tess.setColorOpaque_I(light.color);
         tess.startDrawing(GL11.GL_LINES);
         tess.addVertex(0.0F, 0.0F, 0.0F);
-        tess.addVertex(0.0F, 1.0F, 0.0F);
+        tess.addVertex(0.0F, -1.0F, 0.0F);
         tess.draw();
-
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        if (disableLight)
+            Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
 
         GL11.glPopMatrix();
     }
-
 }

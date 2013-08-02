@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.world.IBlockAccess;
 import net.specialattack.modjam.block.TileEntityLight;
+import net.specialattack.modjam.client.render.tileentity.TileEntityLightRenderer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -25,7 +26,9 @@ public class BlockRendererLight implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
         GL11.glPushMatrix();
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        TileEntityLightRenderer.disableLight = false;
         TileEntityRenderer.instance.renderTileEntityAt(this.renderTile, 0.0D, 0.0D, 0.0D, 0.0F);
+        TileEntityLightRenderer.disableLight = true;
         GL11.glPopMatrix();
     }
 

@@ -12,6 +12,7 @@ import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
 import net.specialattack.modjam.item.crafting.RecipesLens;
+import net.specialattack.modjam.item.crafting.RecipesLight;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -70,6 +71,7 @@ public class ModjamMod {
         proxy.postInit(event);
 
         GameRegistry.addRecipe(new RecipesLens());
+        GameRegistry.addRecipe(new RecipesLight(5));
     }
 
 }

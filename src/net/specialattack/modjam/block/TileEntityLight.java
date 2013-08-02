@@ -42,13 +42,13 @@ public class TileEntityLight extends TileEntity {
         this.prevPitch = this.pitch;
         this.prevYaw = this.yaw;
 
-        this.yaw += 0.05F;
+        //this.yaw += 0.05F;
 
         if (this.debug) {
-            this.pitch -= 0.1F;
+            //this.pitch -= 0.1F;
         }
         else {
-            this.pitch += 0.05F;
+            //this.pitch += 0.05F;
         }
 
         if (this.pitch > 0.6F) {
