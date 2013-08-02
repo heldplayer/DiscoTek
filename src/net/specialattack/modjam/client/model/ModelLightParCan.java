@@ -13,26 +13,29 @@ public class ModelLightParCan extends ModelBase {
 
     public ModelLightParCan() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(256, 256);
-
         //Four sides. + Back
 
         //Left
-        this.base.addBox(4.0f, 5.0f, 0.0f, 1, 6, 14, 0.0f);
+        this.base.addBox(-4.0F, -3.0F, -8.0F, 1, 6, 14, 0.0F);
         //Right
-        this.base.addBox(11.0f, 5.0f, 0.0f, 1, 6, 14, 0.0f);
+        this.base.addBox(3.0F, -3.0F, -8.0F, 1, 6, 14, 0.0F);
         //Top
-        this.base.addBox(5.0f, 4.0f, 0.0f, 6, 1, 14, 0.0f);
+        this.base.addBox(-3.0F, -4.0F, -8.0F, 6, 1, 14, 0.0F);
         //Bottom
-        this.base.addBox(5.0f, 11.0f, 0.0f, 6, 1, 14, 0.0f);
+        this.base.addBox(-3.0F, 3.0F, -8.0F, 6, 1, 14, 0.0F);
 
         //Back
-        this.base.addBox(5.0f, 5.0f, 14.0f, 6, 6, 1);
-        this.base.addBox(6.0f, 6.0f, 15.0f, 4, 4, 1);
-
+        this.base.addBox(-3.0F, -3.0F, 6.0F, 6, 6, 1);
+        this.base.addBox(-2.0F, -2.0F, 7.0F, 4, 4, 1);
     }
 
     public void renderAll() {
-        this.base.render(0.0625F);
+        this.base.renderWithRotation(0.0625F);
+    }
+
+    public void setRotations(float pitch, float yaw) {
+        this.base.rotateAngleY = yaw;
+        this.base.rotateAngleX = pitch;
     }
 
 }

@@ -9,8 +9,12 @@ public class TileEntityLight extends TileEntity {
 
     public int color = 0xFFFFFFFF;
     public float pitch = 0.0F;
+    public float prevPitch = 0.0F;
     public float yaw = 0.0F;
+    public float prevYaw = 0.0F;
     public ForgeDirection direction = ForgeDirection.UNKNOWN;
+
+    private boolean debug = false;
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -31,6 +35,28 @@ public class TileEntityLight extends TileEntity {
 
     public boolean hasGel() {
         return !(this.color == 0xFFFFFFFF);
+    }
+
+    @Override
+    public void updateEntity() {
+        this.prevPitch = this.pitch;
+        this.prevYaw = this.yaw;
+
+        this.yaw += 0.05F;
+
+        if (this.debug) {
+            this.pitch -= 0.1F;
+        }
+        else {
+            this.pitch += 0.05F;
+        }
+
+        if (this.pitch > 0.6F) {
+            this.debug = true;
+        }
+        else if (this.pitch < -0.6F) {
+            this.debug = false;
+        }
     }
 
 }
