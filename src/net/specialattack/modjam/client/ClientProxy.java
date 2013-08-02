@@ -5,6 +5,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.specialattack.modjam.CommonProxy;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.block.TileEntityLight;
+import net.specialattack.modjam.client.render.ItemRendererBlockLight;
 import net.specialattack.modjam.client.render.ItemRendererLens;
 import net.specialattack.modjam.client.render.tileentity.TileEntityLightRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -28,6 +29,7 @@ public class ClientProxy extends CommonProxy {
         super.postInit(event);
 
         MinecraftForgeClient.registerItemRenderer(Objects.itemLens.itemID, new ItemRendererLens());
+        MinecraftForgeClient.registerItemRenderer(Objects.blockLight.blockID, new ItemRendererBlockLight());
     }
 
 }

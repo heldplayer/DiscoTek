@@ -3,12 +3,16 @@ package net.specialattack.modjam;
 
 import java.io.File;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 import net.specialattack.modjam.block.BlockLight;
 import net.specialattack.modjam.block.BlockTruss;
 import net.specialattack.modjam.block.TileEntityLight;
 import net.specialattack.modjam.creativetabs.CreativeTabIcon;
+import net.specialattack.modjam.item.ItemBlockLight;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
 import net.specialattack.modjam.item.crafting.RecipesLens;
@@ -20,9 +24,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = { Constants.MOD_CHANNEL }, packetHandler = PacketHandler.class)
 public class ModjamMod {
 
     @Instance(Constants.MOD_ID)
@@ -47,7 +53,7 @@ public class ModjamMod {
 
         Objects.blockLight = new BlockLight(Config.blockLightId);
         Objects.blockLight.setCreativeTab(Objects.creativeTab).setUnlocalizedName("light");
-        GameRegistry.registerBlock(Objects.blockLight, "ModJam2013.blockLight");
+        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "ModJam2013.blockLight");
 
         Objects.blockTruss = new BlockTruss(Config.blockTrussId);
         Objects.blockTruss.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("truss");
@@ -71,7 +77,9 @@ public class ModjamMod {
         proxy.postInit(event);
 
         GameRegistry.addRecipe(new RecipesLens());
-        GameRegistry.addRecipe(new RecipesLight(5));
+        ItemStack iron = new ItemStack(Item.ingotIron.itemID, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack lens = new ItemStack(Objects.itemLens);
+        GameRegistry.addRecipe(new RecipesLight(new ItemStack(Objects.blockLight), 4, new ItemStack[] { iron, iron, iron, iron, lens, iron, null, iron, null }));
     }
 
 }

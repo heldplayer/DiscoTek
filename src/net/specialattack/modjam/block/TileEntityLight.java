@@ -2,8 +2,9 @@
 package net.specialattack.modjam.block;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.specialattack.modjam.PacketHandler;
 
 public class TileEntityLight extends TileEntity {
 
@@ -12,9 +13,9 @@ public class TileEntityLight extends TileEntity {
     public float prevPitch = 0.0F;
     public float yaw = 0.0F;
     public float prevYaw = 0.0F;
-    public ForgeDirection direction = ForgeDirection.UNKNOWN;
 
-    private boolean debug = false;
+    public float motionPitch;
+    public float motionYaw;
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -22,7 +23,6 @@ public class TileEntityLight extends TileEntity {
         this.color = compound.getInteger("color");
         this.pitch = compound.getFloat("pitch");
         this.yaw = compound.getFloat("yaw");
-        this.direction = ForgeDirection.getOrientation(compound.getInteger("direction"));
     }
 
     @Override
@@ -30,7 +30,12 @@ public class TileEntityLight extends TileEntity {
         super.writeToNBT(compound);
         compound.setInteger("color", this.color);
         compound.setFloat("pitch", this.pitch);
-        compound.setInteger("direction", this.direction.ordinal());
+        compound.setFloat("yaw", this.yaw);
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        return PacketHandler.createPacket(1, this);
     }
 
     public boolean hasGel() {
@@ -42,20 +47,11 @@ public class TileEntityLight extends TileEntity {
         this.prevPitch = this.pitch;
         this.prevYaw = this.yaw;
 
-        //this.yaw += 0.05F;
-
-        if (this.debug) {
-            //this.pitch -= 0.1F;
+        if (this.pitch > 0.8F) {
+            this.prevPitch = this.pitch = 0.8F;
         }
-        else {
-            //this.pitch += 0.05F;
-        }
-
-        if (this.pitch > 0.6F) {
-            this.debug = true;
-        }
-        else if (this.pitch < -0.6F) {
-            this.debug = false;
+        else if (this.pitch < -0.8F) {
+            this.prevPitch = this.pitch = -0.8F;
         }
     }
 

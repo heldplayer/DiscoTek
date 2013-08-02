@@ -55,7 +55,6 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glColor4f(red, green, blue, 0.5F);
 
         this.modelLightParCan.renderLens();
-
         GL11.glDisable(GL11.GL_BLEND);
 
         Tessellator tess = Tessellator.instance;
