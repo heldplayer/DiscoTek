@@ -4,8 +4,8 @@ package net.specialattack.modjam.client.render;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-import net.specialattack.modjam.block.TileEntityLight;
 import net.specialattack.modjam.client.render.tileentity.TileEntityLightRenderer;
+import net.specialattack.modjam.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
 

@@ -8,15 +8,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
+import net.specialattack.modjam.block.BlockDecoration;
 import net.specialattack.modjam.block.BlockLight;
 import net.specialattack.modjam.block.BlockTruss;
-import net.specialattack.modjam.block.TileEntityLight;
 import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.item.ItemBlockLight;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
 import net.specialattack.modjam.item.crafting.RecipesLens;
 import net.specialattack.modjam.item.crafting.RecipesLight;
+import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -58,6 +59,10 @@ public class ModjamMod {
         Objects.blockTruss = new BlockTruss(Config.blockTrussId);
         Objects.blockTruss.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("truss");
         GameRegistry.registerBlock(Objects.blockTruss, "ModJam2013.blockTruss");
+
+        Objects.blockDecoration = new BlockDecoration(Config.blockDecorationId);
+        Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setUnlocalizedName("decoration");
+        GameRegistry.registerBlock(Objects.blockDecoration, "ModJam2013.blockDecoration");
 
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug").setFull3D();

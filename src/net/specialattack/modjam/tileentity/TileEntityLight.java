@@ -1,5 +1,5 @@
 
-package net.specialattack.modjam.block;
+package net.specialattack.modjam.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
@@ -38,14 +38,13 @@ public class TileEntityLight extends TileEntity {
         return PacketHandler.createPacket(1, this);
     }
 
-    public boolean hasGel() {
-        return !(this.color == 0xFFFFFFFF);
-    }
-
     @Override
     public void updateEntity() {
         this.prevPitch = this.pitch;
         this.prevYaw = this.yaw;
+
+        this.pitch += this.motionPitch;
+        this.yaw += this.motionYaw;
 
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;

@@ -5,9 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.specialattack.modjam.Assets;
-import net.specialattack.modjam.block.TileEntityLight;
 import net.specialattack.modjam.client.model.ModelLightParCan;
 import net.specialattack.modjam.client.model.ModelLightYoke;
+import net.specialattack.modjam.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
 

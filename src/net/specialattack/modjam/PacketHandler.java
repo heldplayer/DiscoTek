@@ -15,7 +15,7 @@ import net.minecraft.server.management.PlayerManager;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
-import net.specialattack.modjam.block.TileEntityLight;
+import net.specialattack.modjam.tileentity.TileEntityLight;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;

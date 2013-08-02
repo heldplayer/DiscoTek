@@ -22,6 +22,11 @@ public class BlockTruss extends Block {
     }
 
     @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
     public int getRenderType() {
         return this.renderId;
     }

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.modjam.client.render.BlockRendererLight;
+import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class BlockLight extends Block {
