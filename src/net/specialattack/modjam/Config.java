@@ -20,7 +20,7 @@ public class Config {
         modified = modified || property.hasChanged();
         
         property = config.getBlock("BlockTruss", blockTrussId);
-        blockLightId = property.getInt();
+        blockTrussId = property.getInt();
         modified = modified || property.hasChanged();
 
         property = config.getItem("ItemDebug", itemDebugId);
