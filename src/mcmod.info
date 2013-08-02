@@ -4,6 +4,7 @@
 "name" : "Bleigh Mod",
 "description" : "A mod created by Team Bleigh for ModJam 2013",
 "version" : "Pre-Release",
-"authors" : ["heldplayer", "mbl111"]
+"authors" : ["heldplayer", "mbl111"],
+"url" : "http://www.specialattack.net/"
 }
 ]
