@@ -1,0 +1,9 @@
+[
+{
+"modid" : "BleighMod",
+"name" : "Bleigh Mod",
+"description" : "A mod created by Team Bleigh for ModJam 2013",
+"version" : "Pre-Release",
+"authors" : ["heldplayer", "mbl111"]
+}
+]
