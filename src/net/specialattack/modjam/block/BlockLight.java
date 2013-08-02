@@ -5,11 +5,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.specialattack.modjam.client.render.BlockRendererLight;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class BlockLight extends Block {
 
+    private final int renderId;
+
     public BlockLight(int blockId) {
         super(blockId, Material.piston);
+        this.renderId = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererLight(this.renderId));
     }
 
     @Override
@@ -29,7 +35,7 @@ public class BlockLight extends Block {
 
     @Override
     public int getRenderType() {
-        return -1;
+        return this.renderId;
     }
 
 }
