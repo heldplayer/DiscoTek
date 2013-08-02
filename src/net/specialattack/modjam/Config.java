@@ -7,6 +7,7 @@ import net.minecraftforge.common.Property;
 public class Config {
 
     public static int blockLightId = 2070;
+    public static int blockTrussId = 2071;
     public static int itemDebugId = 0;
 
     public static void loadConfig(Configuration config) {
@@ -15,6 +16,10 @@ public class Config {
         boolean modified = false;
 
         Property property = config.getBlock("Blocklight", blockLightId);
+        blockLightId = property.getInt();
+        modified = modified || property.hasChanged();
+        
+        property = config.getBlock("BlockTruss", blockTrussId);
         blockLightId = property.getInt();
         modified = modified || property.hasChanged();
 

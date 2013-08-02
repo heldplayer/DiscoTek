@@ -45,6 +45,10 @@ public class ModjamMod {
         Objects.blockLight.setCreativeTab(Objects.creativeTab).setUnlocalizedName("light");
         GameRegistry.registerBlock(Objects.blockLight, "ModJam2013.blockLight");
 
+        Objects.blockTruss = new BlockLight(Config.blockTrussId);
+        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setUnlocalizedName("truss");
+        GameRegistry.registerBlock(Objects.blockTruss, "ModJam2013.blockTruss");
+        
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug").setFull3D();
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
