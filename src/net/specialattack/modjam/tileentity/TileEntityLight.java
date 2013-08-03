@@ -199,14 +199,15 @@ public class TileEntityLight extends TileEntity {
             this.debug = true;
         }
 
-        //        if (this.brightness > 1.0F) {
-        //            this.brightness = 1.0F;
-        //            this.motionBrightness = 0.0F;
-        //        }
-        //        else if (this.brightness < 0.0F) {
-        //            this.brightness = 0.0F;
-        //            this.motionBrightness = 0.0F;
-        //        }
+        if (this.brightness > 1.0F) {
+            this.brightness = 1.0F;
+            this.motionBrightness = 0.0F;
+        }
+        else if (this.brightness < 0.0F) {
+            this.brightness = 0.0F;
+            this.motionBrightness = 0.0F;
+        }
+
         if (this.focus > 20.0F) {
             this.focus = 20.0F;
             this.motionFocus = 0.0F;
