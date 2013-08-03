@@ -37,8 +37,8 @@ public class ItemDebug extends Item {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if (tile != null) {
             player.addChatMessage(tile.toString());
-            if (tile instanceof TileEntityLight){
-                player.addChatMessage("Level: " + ((TileEntityLight)tile).brightness);
+            if (tile instanceof TileEntityLight) {
+                player.addChatMessage("Level: " + ((TileEntityLight) tile).getBrightness(0.0F));
             }
         }
 

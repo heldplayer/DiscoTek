@@ -12,21 +12,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityLight extends TileEntity {
 
-    public int color = 0xFFFFFF;
-    public boolean hasLens = true; // Relax, don't do it
-    public float pitch = 0.0F;
-    public float prevPitch = 0.0F;
-    public float yaw = 0.0F;
-    public float prevYaw = 0.0F;
-    public float brightness = 1.0F;
-    public float prevBrightness = 1.0F;
-    public float focus = 1.0F;
-    public float prevFocus = 1.0F;
+    private int color = 0xFFFFFF;
+    private boolean hasLens = true; // Relax, don't do it
+    private float pitch = 0.0F;
+    private float prevPitch = 0.0F;
+    private float yaw = 0.0F;
+    private float prevYaw = 0.0F;
+    private float brightness = 1.0F;
+    private float prevBrightness = 1.0F;
+    private float focus = 1.0F;
+    private float prevFocus = 1.0F;
 
-    public float motionPitch = 0.0F;
-    public float motionYaw = 0.0F;
-    public float motionBrightness = 0.0F;
-    public float motionFocus = 0.0F;
+    private float motionPitch = 0.0F;
+    private float motionYaw = 0.0F;
+    private float motionBrightness = 0.0F;
+    private float motionFocus = 0.0F;
     //Channels 1 - 512 (0 - 511)
     public int channel = 0;
     public static final int numChannels = 1;
@@ -34,6 +34,54 @@ public class TileEntityLight extends TileEntity {
     private int ticksRemaining = 100;
 
     private boolean debug = false;
+
+    public int getColor() {
+        return this.color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public boolean hasLens() {
+        return this.hasLens;
+    }
+
+    public void setHasLens(boolean hasLens) {
+        this.hasLens = hasLens;
+    }
+
+    public float getPitch(float partialTicks) {
+        return this.pitch + (this.pitch - this.prevPitch) * partialTicks;
+    }
+
+    public void setPitch(float pitch) {
+        this.prevPitch = this.pitch = pitch;
+    }
+
+    public float getYaw(float partialTicks) {
+        return this.yaw + (this.yaw - this.prevYaw) * partialTicks;
+    }
+
+    public void setYaw(float yaw) {
+        this.prevYaw = this.yaw = yaw;
+    }
+
+    public float getBrightness(float partialTicks) {
+        return this.brightness + (this.brightness - this.prevBrightness) * partialTicks;
+    }
+
+    public void setBrightness(float brightness) {
+        this.prevBrightness = this.brightness = brightness;
+    }
+
+    public float getFocus(float partialTicks) {
+        return this.focus + (this.focus - this.prevFocus) * partialTicks;
+    }
+
+    public void setFocus(float focus) {
+        this.prevFocus = this.focus = focus;
+    }
 
     public float getValue(int index) {
         switch (index) {
@@ -113,7 +161,7 @@ public class TileEntityLight extends TileEntity {
         compound.setFloat("yaw", this.yaw);
         compound.setFloat("brightness", this.brightness);
         compound.setFloat("focus", this.focus);
-        compound.setInteger("channel", channel);
+        compound.setInteger("channel", this.channel);
     }
 
     @Override
@@ -176,8 +224,8 @@ public class TileEntityLight extends TileEntity {
                 this.motionPitch = -0.01F;
             }
             this.ticksRemaining--;
-            if (ticksRemaining <= 0) {
-                ticksRemaining = 100;
+            if (this.ticksRemaining <= 0) {
+                this.ticksRemaining = 100;
                 this.sync(2, 3, 4, 5, 6, 7, 8, 9);
             }
         }
@@ -190,8 +238,8 @@ public class TileEntityLight extends TileEntity {
     }
 
     public void sendUniverseData(short[] levels) {
-        this.brightness = (float) (levels[channel] / 255.0f);
-        worldObj.getPlayerEntityByName("mbl111").addChatMessage("Level: " + this.brightness);
+        this.brightness = (float) (levels[this.channel] / 255.0f);
+        this.worldObj.getPlayerEntityByName("mbl111").addChatMessage("Level: " + this.brightness);
     }
 
 }

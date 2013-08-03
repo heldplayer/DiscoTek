@@ -39,22 +39,24 @@ public class BlockLight extends Block {
 
         if (stack.stackTagCompound != null) {
             if (stack.stackTagCompound.hasKey("color")) {
-                tile.color = stack.stackTagCompound.getInteger("color");
+                tile.setColor(stack.stackTagCompound.getInteger("color"));
             }
             if (stack.stackTagCompound.hasKey("hasLens")) {
-                tile.hasLens = stack.stackTagCompound.getBoolean("hasLens");
+                tile.setHasLens(stack.stackTagCompound.getBoolean("hasLens"));
             }
         }
 
-        tile.prevYaw = tile.yaw = (float) (-entity.rotationYawHead * Math.PI / 180.0D);
-        tile.prevPitch = tile.pitch = (float) (entity.rotationPitch * Math.PI / 180.0D);
+        float yaw = (float) (-entity.rotationYawHead * Math.PI / 180.0D);
+        float pitch = (float) (-entity.rotationPitch * Math.PI / 180.0D);
+        if (pitch > 0.8F) {
+            pitch = 0.8F;
+        }
+        if (pitch < -0.8F) {
+            pitch = -0.8F;
+        }
 
-        if (tile.pitch > 0.8F) {
-            tile.prevPitch = tile.pitch = 0.8F;
-        }
-        if (tile.pitch < -0.8F) {
-            tile.prevPitch = tile.pitch = -0.8F;
-        }
+        tile.setYaw(yaw);
+        tile.setPitch(pitch);
     }
 
     @Override
@@ -63,11 +65,11 @@ public class BlockLight extends Block {
             TileEntity te = world.getBlockTileEntity(x, y, z);
             if (te != null && te instanceof TileEntityLight) {
                 TileEntityLight light = (TileEntityLight) te;
-                if (light.hasLens) {
+                if (light.hasLens()) {
                     if (!world.isRemote) {
                         ItemStack is = new ItemStack(Objects.itemLens);
                         NBTTagCompound cpnd = new NBTTagCompound("tag");
-                        cpnd.setInteger("color", light.color);
+                        cpnd.setInteger("color", light.getColor());
                         is.setTagCompound(cpnd);
 
                         Random rand = new Random();
@@ -77,8 +79,8 @@ public class BlockLight extends Block {
                         ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
                         ent.delayBeforeCanPickup = 1;
                     }
-                    light.color = 0xFFFFFF;
-                    light.hasLens = false;
+                    light.setColor(0xFFFFFF);
+                    light.setHasLens(false);
                     return true;
                 }
             }

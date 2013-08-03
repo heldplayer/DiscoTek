@@ -75,7 +75,7 @@ public class ModjamMod {
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug").setFull3D();
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
-        
+
         Objects.itemWirelessLinker = new ItemWirelessLinker(Config.itemWirelessLinkerId);
         Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:wirelessLinker").setUnlocalizedName("WirelessLinker").setFull3D();
         GameRegistry.registerItem(Objects.itemWirelessLinker, "ModJam2013.itemWirelessLinker");

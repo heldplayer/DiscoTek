@@ -45,8 +45,8 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     public void render1(TileEntityLight light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 
-        float pitch = light.pitch + (light.pitch - light.prevPitch) * partialTicks;
-        float yaw = light.yaw + (light.yaw - light.prevYaw) * partialTicks;
+        float pitch = light.getPitch(partialTicks);
+        float yaw = light.getYaw(partialTicks);
         this.modelLightYoke.setRotations(pitch, yaw);
         this.modelLightYoke.renderAll();
         this.modelLightParCan.setRotations(pitch, yaw);
@@ -60,12 +60,12 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        int color = light.color;
+        int color = light.getColor();
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
         float green = (float) ((color >> 8) & 0xFF) / 255.0F;
         float blue = (float) (color & 0xFF) / 255.0F;
-        float brightness = light.brightness + (light.brightness - light.prevBrightness) * partialTicks;
-        if (light.hasLens) {
+        float brightness = light.getBrightness(partialTicks);
+        if (light.hasLens()) {
             GL11.glColor4f(red * brightness, green * brightness, blue * brightness, 0.4F);
 
             this.modelLightParCan.renderLens();
@@ -74,14 +74,14 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         if (disableLight) {
             int lightLength = 16;
             float alpha = 0.8F * brightness;
-//            if (light.brightness > 0) {
-//                System.out.println("A:" + alpha + " | B: " + light.brightness);
-//            }
+            //            if (light.brightness > 0) {
+            //                System.out.println("A:" + alpha + " | B: " + light.brightness);
+            //            }
             GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
 
             //HUzzah! I'm a wizard
-            float lightangle = light.focus + (light.focus - light.prevFocus) * partialTicks;
+            float lightangle = light.getFocus(partialTicks);
             float downDiff = (float) (lightLength * Math.tan(Math.toRadians(lightangle)));
 
             GL11.glShadeModel(GL11.GL_SMOOTH);

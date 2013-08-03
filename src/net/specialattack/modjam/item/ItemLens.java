@@ -75,11 +75,11 @@ public class ItemLens extends Item {
         TileEntity te = world.getBlockTileEntity(x, y, z);
         if (te != null && te instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) te;
-            if (light.hasLens) {
+            if (light.hasLens()) {
                 if (!world.isRemote) {
                     ItemStack is = new ItemStack(Objects.itemLens);
                     NBTTagCompound cpnd = new NBTTagCompound("tag");
-                    cpnd.setInteger("color", light.color);
+                    cpnd.setInteger("color", light.getColor());
                     is.setTagCompound(cpnd);
 
                     Random rand = new Random();
@@ -95,8 +95,8 @@ public class ItemLens extends Item {
             if (compound.hasKey("color")) {
                 color = compound.getInteger("color");
             }
-            light.color = color;
-            light.hasLens = true;
+            light.setColor(color);
+            light.setHasLens(true);
 
             if (!player.capabilities.isCreativeMode) {
                 itemStack.stackSize--;

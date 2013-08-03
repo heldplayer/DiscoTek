@@ -23,10 +23,10 @@ public class TileEntityController extends TileEntity {
             float oldPercent = this.levels[channel];
             if (oldPercent != percent) {
                 this.levels[channel] = percent;
-                for (ChunkCoordinates coord : lightsLinked){
-                    TileEntity te = worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
-                    if (te != null && te instanceof TileEntityLight){
-                        ((TileEntityLight)te).sendUniverseData(levels);
+                for (ChunkCoordinates coord : this.lightsLinked) {
+                    TileEntity te = this.worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
+                    if (te != null && te instanceof TileEntityLight) {
+                        ((TileEntityLight) te).sendUniverseData(this.levels);
                     }
                 }
             }
@@ -35,14 +35,13 @@ public class TileEntityController extends TileEntity {
 
     @Override
     public void updateEntity() {
-        this.setChannelLevel(0, (short)255);
-//        for (ChunkCoordinates coord : lightsLinked){
-//            TileEntity te = worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
-//            if (te != null && te instanceof TileEntityLight){
-//                worldObj.getPlayerEntityByName("mbl111").addChatMessage(te.toString());
-//            }
-//        }
+        this.setChannelLevel(0, (short) 255);
+        //        for (ChunkCoordinates coord : lightsLinked){
+        //            TileEntity te = worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
+        //            if (te != null && te instanceof TileEntityLight){
+        //                worldObj.getPlayerEntityByName("mbl111").addChatMessage(te.toString());
+        //            }
+        //        }
     }
-    
 
 }

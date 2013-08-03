@@ -47,7 +47,6 @@ public class Config {
         itemWirelessLinkerId = property.getInt();
         modified = modified || property.hasChanged();
 
-        
         if (modified) {
             config.save();
         }

@@ -34,11 +34,12 @@ public class PacketHandler implements IPacketHandler {
         switch (id) {
         case 1: {
             TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            tile.color = in.readInt();
-            tile.prevPitch = tile.pitch = in.readFloat();
-            tile.prevYaw = tile.yaw = in.readFloat();
-            tile.prevBrightness = tile.brightness = in.readFloat();
-            tile.prevFocus = tile.focus = in.readFloat();
+            tile.setColor(in.readInt());
+            tile.setHasLens(in.readBoolean());
+            tile.setPitch(in.readFloat());
+            tile.setYaw(in.readFloat());
+            tile.setBrightness(in.readFloat());
+            tile.setFocus(in.readFloat());
         }
         break;
         case 2: {
@@ -47,10 +48,10 @@ public class PacketHandler implements IPacketHandler {
             for (int i = 0; i < count; i++) {
                 int type = in.readUnsignedByte();
                 if (type == 0) {
-                    tile.color = in.readInt();
+                    tile.setColor(in.readInt());
                 }
                 else if (type == 1) {
-                    tile.hasLens = in.readBoolean();
+                    tile.setHasLens(in.readBoolean());
                 }
                 else {
                     tile.setValue(type, in.readFloat());
@@ -74,11 +75,12 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                dos.writeInt(tile.color);
-                dos.writeFloat(tile.pitch);
-                dos.writeFloat(tile.yaw);
-                dos.writeFloat(tile.brightness);
-                dos.writeFloat(tile.focus);
+                dos.writeInt(tile.getColor());
+                dos.writeBoolean(tile.hasLens());
+                dos.writeFloat(tile.getPitch(0.0F));
+                dos.writeFloat(tile.getYaw(0.0F));
+                dos.writeFloat(tile.getBrightness(0.0F));
+                dos.writeFloat(tile.getFocus(0.0F));
             }
             break;
             case 2: { // Sync value
@@ -92,10 +94,10 @@ public class PacketHandler implements IPacketHandler {
                     int type = types[i];
                     dos.writeByte(type);
                     if (type == 0) {
-                        dos.writeInt(tile.color);
+                        dos.writeInt(tile.getColor());
                     }
                     else if (type == 1) {
-                        dos.writeBoolean(tile.hasLens);
+                        dos.writeBoolean(tile.hasLens());
                     }
                     else {
                         dos.writeFloat(tile.getValue(type));
