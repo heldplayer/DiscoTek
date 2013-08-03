@@ -27,14 +27,13 @@ public class TileEntityLight extends TileEntity {
     private float motionYaw = 0.0F;
     private float motionBrightness = 0.0F;
     private float motionFocus = 0.0F;
+
     //Channels 1 - 512 (0 - 511)
     public int channel = 0;
     public static final int numChannels = 1;
 
     private int ticksRemaining = 100;
     private boolean[] needsUpdate = new boolean[10];
-
-    private boolean debug = false;
 
     public int getColor() {
         return this.color;
@@ -198,12 +197,10 @@ public class TileEntityLight extends TileEntity {
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
             this.motionPitch = 0.0F;
-            this.debug = false;
         }
         else if (this.pitch < -0.8F) {
             this.prevPitch = this.pitch = -0.8F;
             this.motionPitch = 0.0F;
-            this.debug = true;
         }
 
         if (this.brightness > 1.0F) {
@@ -240,12 +237,6 @@ public class TileEntityLight extends TileEntity {
                 this.sync(ints);
             }
 
-            if (this.debug) {
-                this.motionPitch = 0.01F;
-            }
-            else {
-                this.motionPitch = -0.01F;
-            }
             this.ticksRemaining--;
             if (this.ticksRemaining <= 0) {
                 this.ticksRemaining = 100;

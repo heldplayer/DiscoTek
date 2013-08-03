@@ -95,8 +95,10 @@ public class ItemLens extends Item {
             if (compound.hasKey("color")) {
                 color = compound.getInteger("color");
             }
-            light.setColor(color);
-            light.setHasLens(true);
+            if (!world.isRemote) {
+                light.setColor(color);
+                light.setHasLens(true);
+            }
 
             if (!player.capabilities.isCreativeMode) {
                 itemStack.stackSize--;

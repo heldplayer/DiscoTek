@@ -78,9 +78,10 @@ public class BlockLight extends Block {
                         ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
                         ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
                         ent.delayBeforeCanPickup = 1;
+
+                        light.setColor(0xFFFFFF);
+                        light.setHasLens(false);
                     }
-                    light.setColor(0xFFFFFF);
-                    light.setHasLens(false);
                     return true;
                 }
             }
