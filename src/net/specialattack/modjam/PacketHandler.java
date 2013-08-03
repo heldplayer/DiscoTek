@@ -83,7 +83,7 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                int type = (int) data[1];
+                int type = (Integer) data[1];
                 dos.writeByte(type);
                 if (type == 0) {
                     dos.writeInt(tile.color);
