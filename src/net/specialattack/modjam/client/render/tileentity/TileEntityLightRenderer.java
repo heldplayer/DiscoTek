@@ -55,6 +55,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         this.modelLightParCan.renderLens();
         
+        GL11.glColor4f(red, green, blue, 0.6F * light.brightness);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glVertex3f((float)0, (float)0, (float)0);
         GL11.glVertex3f((float)0, (float)0, (float)0 + 1);

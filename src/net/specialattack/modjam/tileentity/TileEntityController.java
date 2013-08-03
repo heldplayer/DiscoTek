@@ -34,6 +34,7 @@ public class TileEntityController extends TileEntity{
     
     @Override
     public void updateEntity() {
+        setChannelLevel(0, 0.5f);
     }
     
     public class LightRecord{
