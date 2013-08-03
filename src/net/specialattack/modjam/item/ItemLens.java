@@ -31,7 +31,6 @@ public class ItemLens extends Item {
                     return compound.getInteger("color");
                 }
             }
-            return 0x0;
         }
         return 0xFFFFFF;
     }

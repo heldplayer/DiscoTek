@@ -1,5 +1,9 @@
 tile.light.name=Light
+tile.truss.name=Truss
+tile.decoration.name=Decorative Block
+tile.controller.name=Controller
 
 item.debug.name=Debug Item
+item.lens.name=Lens
 
-itemgroup.modjam2013=ModJam 2013
+itemGroup.modjam2013=ModJam 2013

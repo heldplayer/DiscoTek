@@ -12,7 +12,7 @@ public class ModelLightYoke extends ModelBase {
     public ModelRenderer base;
 
     public ModelLightYoke() {
-        this.base = new ModelRenderer(this, 0, 0).setTextureSize(256, 256);
+        this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         //Left vert
         this.base.addBox(-5.0F, 0.0F, -1.0F, 1, 8, 2, 0.0F);
         //Top

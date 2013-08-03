@@ -8,6 +8,8 @@ public class Config {
 
     public static int blockLightId = 2070;
     public static int blockTrussId = 2071;
+    public static int blockDecorationId = 2072;
+    public static int blockControllerId = 2071;
     public static int itemDebugId = 5070;
     public static int itemLensId = 5071;
 
@@ -22,6 +24,14 @@ public class Config {
 
         property = config.getBlock("BlockTruss", blockTrussId);
         blockTrussId = property.getInt();
+        modified = modified || property.hasChanged();
+
+        property = config.getBlock("BlockDecoration", blockDecorationId);
+        blockDecorationId = property.getInt();
+        modified = modified || property.hasChanged();
+
+        property = config.getBlock("BlockController", blockControllerId);
+        blockControllerId = property.getInt();
         modified = modified || property.hasChanged();
 
         property = config.getItem("ItemDebug", itemDebugId);

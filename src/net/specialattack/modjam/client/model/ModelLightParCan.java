@@ -10,9 +10,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ModelLightParCan extends ModelBase {
 
     public ModelRenderer base;
+    public ModelRenderer lens;
 
+    @SuppressWarnings("unchecked")
     public ModelLightParCan() {
-        this.base = new ModelRenderer(this, 0, 0).setTextureSize(256, 256);
+        this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         //Four sides. + Back
 
         //Left
@@ -27,15 +29,25 @@ public class ModelLightParCan extends ModelBase {
         //Back
         this.base.addBox(-3.0F, -3.0F, 6.0F, 6, 6, 1);
         this.base.addBox(-2.0F, -2.0F, 7.0F, 4, 4, 1);
+
+        this.lens = new ModelRenderer(this, 0, 0);
+        this.lens.addBox(-3.0F, -3.0F, -8.0F, 6, 6, 1);
+        this.lens.cubeList.add(new ModelBoxNormalless(this.lens, 0, 0, -3.0F, -3.0F, -8.0F, 6, 6, 1, 0.0F));
     }
 
-    public void renderAll() {
+    public void render() {
         this.base.renderWithRotation(0.0625F);
+    }
+
+    public void renderLens() {
+        this.lens.renderWithRotation(0.0625F);
     }
 
     public void setRotations(float pitch, float yaw) {
         this.base.rotateAngleY = yaw;
         this.base.rotateAngleX = pitch;
+        this.lens.rotateAngleY = yaw;
+        this.lens.rotateAngleX = pitch;
     }
 
 }
