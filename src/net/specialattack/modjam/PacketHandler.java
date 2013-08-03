@@ -75,6 +75,13 @@ public class PacketHandler implements IPacketHandler {
             }
         }
         break;
+        case 4: {
+            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            if (tile != null && !tile.worldObj.isRemote) {
+                tile.channels[in.readInt()] = in.readInt();
+            }
+        }
+        break;
         }
     }
 
@@ -140,6 +147,18 @@ public class PacketHandler implements IPacketHandler {
                 for (int i = 0; i < tile.channels.length; i++) {
                     dos.writeInt(tile.channels[i]);
                 }
+            }
+            break;
+            case 4: { // Set channel
+                TileEntityLight tile = (TileEntityLight) data[0];
+                if (!tile.worldObj.isRemote) {
+                    return null;
+                }
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt((int) data[1]);
+                dos.writeInt((int) data[2]);
             }
             break;
             }

@@ -99,7 +99,7 @@ public class BlockLight extends Block {
             else {
                 if (player instanceof EntityPlayerMP) {
                     if (player instanceof EntityPlayerMP) {
-                        Packet packet = PacketHandler.createPacket(4, tile);
+                        Packet packet = PacketHandler.createPacket(3, tile);
                         if (packet != null) {
                             ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(packet);
                         }
