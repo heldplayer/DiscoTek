@@ -35,6 +35,8 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         float pitch = light.pitch + (light.pitch - light.prevPitch) * partialTicks;
         float yaw = light.yaw + (light.yaw - light.prevYaw) * partialTicks;
+//        pitch = 0f;
+//        yaw = 0f;
         this.modelLightYoke.setRotations(pitch, yaw);
         this.modelLightYoke.renderAll();
         this.modelLightParCan.setRotations(pitch, yaw);
@@ -54,21 +56,51 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glColor4f(red, green, blue, 0.4F);
 
         this.modelLightParCan.renderLens();
+        int lightLength = 10;
+
+        //GL11.glTranslatef(pitch * 0.625f, yaw * 0.625f, 0);
+
+            GL11.glRotatef(yaw * (180F / (float)Math.PI), 0.0F, 1.0F, 0.0F);
+
+            GL11.glRotatef(pitch * (180F / (float)Math.PI), 1.0F, 0.0F, 0.0F);
+
+
         
-        GL11.glColor4f(red, green, blue, 0.6F * light.brightness);
+        
+        //HUzzah! I'm a wizard
+        float lightangle = 13;
+        float downDiff = (float) (lightLength * Math.tan(Math.toRadians(lightangle)));
+
+        GL11.glColor4f(red, green, blue, 0.3F * light.brightness);
         GL11.glBegin(GL11.GL_QUADS);
-        GL11.glVertex3f((float)0, (float)0, (float)0);
-        GL11.glVertex3f((float)0, (float)0, (float)0 + 1);
-        GL11.glVertex3f((float)0 + 1, (float)0, (float)0 + 1);
-        GL11.glVertex3f((float)0 + 1, (float)0, (float)0);
+        GL11.glVertex3f((float) -0.15f, (float) -0.15f, (float) -0.5f);
+        GL11.glVertex3f((float) -0.15f - downDiff, (float) -0.15f - downDiff, (float) -lightLength);
+        GL11.glVertex3f((float) 0.15f + downDiff, (float) -0.15f - downDiff, (float) -lightLength);
+        GL11.glVertex3f((float) 0.15f, (float) -0.15f, (float) -0.5f);
+
+        
+        GL11.glVertex3f((float) -0.15f, (float) 0.15f, (float) -0.5f);
+        GL11.glVertex3f((float) 0.15f, (float) 0.15f, (float) -0.5f);
+        GL11.glVertex3f((float) 0.15f + downDiff, (float) 0.15f + downDiff, (float) -lightLength);
+        GL11.glVertex3f((float) -0.15f - downDiff, (float) 0.15f + downDiff, (float) -lightLength);
+
+        GL11.glVertex3f((float) 0.15f, (float) -0.15f, (float) -0.5f);
+        GL11.glVertex3f((float) 0.15f + downDiff, (float) -0.15f - downDiff, (float) -lightLength);
+        GL11.glVertex3f((float) 0.15f + downDiff, (float) 0.15f + downDiff, (float) -lightLength);
+        GL11.glVertex3f((float) 0.15f, (float) 0.15f, (float) -0.5f);
+
+        GL11.glVertex3f((float) -0.15f, (float) -0.15f, (float) -0.5f);
+        GL11.glVertex3f((float) -0.15f, (float) 0.15f, (float) -0.5f);
+        GL11.glVertex3f((float) -0.15f - downDiff, (float) 0.15f + downDiff, (float) -lightLength);
+        GL11.glVertex3f((float) -0.15f - downDiff, (float) -0.15f - downDiff, (float) -lightLength);
+
         GL11.glEnd();
-        
         GL11.glDisable(GL11.GL_BLEND);
-        
+
         if (disableLight) {
-            
+
             GL11.glBegin(GL11.GL_QUADS);
-               
+
             GL11.glEnd();
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);

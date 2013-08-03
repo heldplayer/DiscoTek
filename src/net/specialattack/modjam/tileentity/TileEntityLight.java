@@ -54,11 +54,11 @@ public class TileEntityLight extends TileEntity {
             this.prevPitch = this.pitch = -0.8F;
         }
         
-        brightness += 0.01f;
-        if (brightness > 1f){
-            brightness = 0f;
-        }
-        
+//        brightness += 0.01f;
+//        if (brightness > 1f){
+//            brightness = 0f;
+//        }
+        brightness = 1.0f;
     }
 
     public boolean hasGel() {
