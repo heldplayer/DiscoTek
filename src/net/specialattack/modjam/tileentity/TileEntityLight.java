@@ -3,6 +3,7 @@ package net.specialattack.modjam.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.modjam.PacketHandler;
@@ -12,6 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityLight extends TileEntity {
 
     public int color = 0xFFFFFF;
+    public boolean hasLens = true; // Relax, don't do it
     public float pitch = 0.0F;
     public float prevPitch = 0.0F;
     public float yaw = 0.0F;
@@ -29,10 +31,62 @@ public class TileEntityLight extends TileEntity {
     public int channel = 0;
     public static final int numChannels = 1;
 
+    private boolean debug = false;
+
+    public float getValue(int index) {
+        switch (index) {
+        case 2:
+            return this.pitch;
+        case 3:
+            return this.yaw;
+        case 4:
+            return this.brightness;
+        case 5:
+            return this.focus;
+        case 6:
+            return this.motionPitch;
+        case 7:
+            return this.motionYaw;
+        case 8:
+            return this.motionBrightness;
+        case 9:
+            return this.motionFocus;
+        default:
+            return 0.0F;
+        }
+    }
+
+    public void setValue(int index, float value) {
+        switch (index) {
+        case 2:
+            this.pitch = value;
+        case 3:
+            this.yaw = value;
+        case 4:
+            this.brightness = value;
+        case 5:
+            this.focus = value;
+        case 6:
+            this.motionPitch = value;
+        case 7:
+            this.motionYaw = value;
+        case 8:
+            this.motionBrightness = value;
+        case 9:
+            this.motionFocus = value;
+        }
+    }
+
+    public void sync(int value) {
+        Packet250CustomPayload packet = PacketHandler.createPacket(2, this, value);
+        PacketHandler.sendPacketToPlayersWatchingBlock(packet, this.worldObj, this.xCoord, this.zCoord);
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         this.color = compound.getInteger("color");
+        this.hasLens = compound.getBoolean("hasLens");
         this.prevPitch = this.pitch = compound.getFloat("pitch");
         this.prevYaw = this.yaw = compound.getFloat("yaw");
         this.prevBrightness = this.brightness = compound.getFloat("brightness");
@@ -44,6 +98,7 @@ public class TileEntityLight extends TileEntity {
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("color", this.color);
+        compound.setBoolean("hasLens", this.hasLens);
         compound.setFloat("pitch", this.pitch);
         compound.setFloat("yaw", this.yaw);
         compound.setFloat("brightness", this.brightness);
@@ -68,6 +123,7 @@ public class TileEntityLight extends TileEntity {
 //        this.motionBrightness += (Math.random() - 0.5D) / 100.0D;
 //        this.motionFocus += (Math.random() - 0.5D) / 100.0D;
 
+
         if (this.motionYaw > 1.0F) {
             this.motionYaw = 1.0F;
         }
@@ -83,10 +139,12 @@ public class TileEntityLight extends TileEntity {
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
             this.motionPitch = 0.0F;
+            this.debug = false;
         }
         else if (this.pitch < -0.8F) {
             this.prevPitch = this.pitch = -0.8F;
             this.motionPitch = 0.0F;
+            this.debug = true;
         }
 
 //        if (this.brightness > 1.0F) {
@@ -105,10 +163,6 @@ public class TileEntityLight extends TileEntity {
             this.focus = 0.0F;
             this.motionFocus = 0.0F;
         }
-    }
-
-    public boolean hasGel() {
-        return !(this.color == 0xFFFFFF);
     }
 
     @Override

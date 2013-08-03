@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
-import net.specialattack.modjam.block.BlockLight;
 import net.specialattack.modjam.block.BlockTruss;
 
 import org.lwjgl.opengl.GL11;
@@ -77,12 +76,12 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
-        boolean connectTop = this.canConnect(world, x, y + 1, z);
-        boolean connectBottom = this.canConnect(world, x, y - 1, z);
-        boolean connectNorth = this.canConnect(world, x, y, z - 1);
-        boolean connectSouth = this.canConnect(world, x, y, z + 1);
-        boolean connectWest = this.canConnect(world, x - 1, y, z);
-        boolean connectEast = this.canConnect(world, x + 1, y, z);
+        boolean connectTop = this.canConnect(world, x, y + 1, z, true);
+        boolean connectBottom = this.canConnect(world, x, y - 1, z, true);
+        boolean connectNorth = this.canConnect(world, x, y, z - 1, false);
+        boolean connectSouth = this.canConnect(world, x, y, z + 1, false);
+        boolean connectWest = this.canConnect(world, x - 1, y, z, false);
+        boolean connectEast = this.canConnect(world, x + 1, y, z, false);
 
         if (((connectNorth || connectSouth) && (connectWest || connectEast)) || (!connectNorth && !connectSouth && !connectWest && !connectEast && !connectBottom && !connectTop)) {
             connectTop = true;
@@ -95,6 +94,21 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
         if (connectBottom || connectTop) {
             // Top-bottom connection
+            float off = connectNorth || connectEast || connectSouth || connectWest ? 0.1875F : 0.0F;
+
+            block.setBlockBounds(0.0F, off, 0.0F, 0.1875F, 1.0F - off, 0.1875F);
+            this.doRender(block, x, y, z, renderer);
+
+            block.setBlockBounds(0.0F, off, 0.8125F, 0.1875F, 1.0F - off, 1.0F);
+            this.doRender(block, x, y, z, renderer);
+
+            block.setBlockBounds(0.8125F, off, 0.8125F, 1.0F, 1.0F - off, 1.0F);
+            this.doRender(block, x, y, z, renderer);
+
+            block.setBlockBounds(0.8125F, off, 0.0F, 1.0F, 1.0F - off, 0.1875F);
+            this.doRender(block, x, y, z, renderer);
+        }
+        else {
             float off = connectNorth || connectEast || connectSouth || connectWest ? 0.1875F : 0.0F;
 
             boolean flag = connectNorth && connectSouth && connectWest && connectEast;
@@ -132,6 +146,41 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
             block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
             this.doRender(block, x, y, z, renderer);
         }
+        else {
+            // Bottom bars
+            if (connectTop && !connectBottom) {
+                block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 0.1875F);
+                this.doRender(block, x, y, z, renderer);
+
+                block.setBlockBounds(0.0F, 0.0F, 0.8125F, 1.0F, 0.1875F, 1.0F);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (connectNorth && !connectSouth) {
+                block.setBlockBounds(0.0F, 0.0F, 0.8125F, 1.0F, 0.1875F, 1.0F);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (!connectNorth && connectSouth) {
+                block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 0.1875F);
+                this.doRender(block, x, y, z, renderer);
+            }
+
+            // Top bars
+            if (!connectTop && connectBottom) {
+                block.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 0.1875F);
+                this.doRender(block, x, y, z, renderer);
+
+                block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (connectNorth && !connectSouth) {
+                block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (!connectNorth && connectSouth) {
+                block.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 0.1875F);
+                this.doRender(block, x, y, z, renderer);
+            }
+        }
 
         if (connectNorth || connectSouth) {
             float off = connectWest || connectEast ? 0.1875F : 0.0F;
@@ -148,6 +197,43 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
             block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
             this.doRender(block, x, y, z, renderer);
+        }
+        else {
+            float off = connectWest || connectEast ? 0.1875F : 0.0F;
+
+            // Bottom bars
+            if (connectTop && !connectBottom) {
+                block.setBlockBounds(0.0F, 0.0F, off, 0.1875F, 0.1875F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+
+                block.setBlockBounds(0.8125F, 0.0F, off, 1.0F, 0.1875F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (connectWest && !connectEast) {
+                block.setBlockBounds(0.8125F, 0.0F, off, 1.0F, 0.1875F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (!connectWest && connectEast) {
+                block.setBlockBounds(0.0F, 0.0F, off, 0.1875F, 0.1875F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+            }
+
+            // Top bars
+            if (!connectTop && connectBottom) {
+                block.setBlockBounds(0.0F, 0.8125F, off, 0.1875F, 1.0F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+
+                block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (connectWest && !connectEast) {
+                block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+            }
+            else if (!connectWest && connectEast) {
+                block.setBlockBounds(0.0F, 0.8125F, off, 0.1875F, 1.0F, 1.0F - off);
+                this.doRender(block, x, y, z, renderer);
+            }
         }
 
         // Reset block
@@ -191,15 +277,18 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         renderer.renderStandardBlockWithColorMultiplier(block, x, y, z, 1.0F, 1.0F, 1.0F);
     }
 
-    public boolean canConnect(IBlockAccess world, int x, int y, int z) {
+    public boolean canConnect(IBlockAccess world, int x, int y, int z, boolean strict) {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
 
         if (block == null || block.blockID == 0) {
             return false;
         }
 
-        if (block instanceof BlockLight || block instanceof BlockTruss) {
+        if (block instanceof BlockTruss) {
             return true;
+        }
+        else if (strict) {
+            return false;
         }
 
         if (!block.renderAsNormalBlock() || !block.isOpaqueCube()) {

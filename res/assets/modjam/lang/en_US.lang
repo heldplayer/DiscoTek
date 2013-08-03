@@ -1,4 +1,4 @@
-tile.light.name=Light
+tile.light0.name=Fresnel
 tile.truss.name=Truss
 tile.decoration.name=Decorative Block
 tile.controller.name=Controller

@@ -108,7 +108,7 @@ public class RecipesLens implements IRecipe {
 
             NBTTagCompound compound = lens.stackTagCompound;
             if (compound == null) {
-                compound = new NBTTagCompound();
+                compound = new NBTTagCompound("tag");
                 lens.stackTagCompound = compound;
             }
             compound.setInteger("color", color);

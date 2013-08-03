@@ -29,14 +29,30 @@ public class PacketHandler implements IPacketHandler {
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
         ByteArrayDataInput in = ByteStreams.newDataInput(packet.data);
 
-        int type = in.readUnsignedByte();
+        int id = in.readUnsignedByte();
 
-        switch (type) {
+        switch (id) {
         case 1: {
             TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             tile.color = in.readInt();
             tile.prevPitch = tile.pitch = in.readFloat();
             tile.prevYaw = tile.yaw = in.readFloat();
+            tile.prevBrightness = tile.brightness = in.readFloat();
+            tile.prevFocus = tile.focus = in.readFloat();
+        }
+        break;
+        case 2: {
+            TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            int type = in.readUnsignedByte();
+            if (type == 0) {
+                tile.color = in.readInt();
+            }
+            else if (type == 1) {
+                tile.hasLens = in.readBoolean();
+            }
+            else {
+                tile.setValue(id, in.readFloat());
+            }
         }
         break;
         }
@@ -50,7 +66,7 @@ public class PacketHandler implements IPacketHandler {
             dos.writeByte(id);
 
             switch (id) {
-            case 1: {
+            case 1: { // Send light info
                 TileEntityLight tile = (TileEntityLight) data[0];
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
@@ -58,6 +74,26 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.color);
                 dos.writeFloat(tile.pitch);
                 dos.writeFloat(tile.yaw);
+                dos.writeFloat(tile.brightness);
+                dos.writeFloat(tile.focus);
+            }
+            break;
+            case 2: { // Sync value
+                TileEntityLight tile = (TileEntityLight) data[0];
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                int type = (int) data[1];
+                dos.writeByte(type);
+                if (type == 0) {
+                    dos.writeInt(tile.color);
+                }
+                else if (type == 1) {
+                    dos.writeBoolean(tile.hasLens);
+                }
+                else {
+                    dos.writeFloat(tile.getValue(type));
+                }
             }
             break;
             }
