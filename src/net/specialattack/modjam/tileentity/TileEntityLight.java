@@ -3,6 +3,7 @@ package net.specialattack.modjam.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.modjam.PacketHandler;
@@ -28,6 +29,55 @@ public class TileEntityLight extends TileEntity {
     public float motionFocus = 0.0F;
 
     private boolean debug = false;
+
+    public float getValue(int index) {
+        switch (index) {
+        case 2:
+            return this.pitch;
+        case 3:
+            return this.yaw;
+        case 4:
+            return this.brightness;
+        case 5:
+            return this.focus;
+        case 6:
+            return this.motionPitch;
+        case 7:
+            return this.motionYaw;
+        case 8:
+            return this.motionBrightness;
+        case 9:
+            return this.motionFocus;
+        default:
+            return 0.0F;
+        }
+    }
+
+    public void setValue(int index, float value) {
+        switch (index) {
+        case 2:
+            this.pitch = value;
+        case 3:
+            this.yaw = value;
+        case 4:
+            this.brightness = value;
+        case 5:
+            this.focus = value;
+        case 6:
+            this.motionPitch = value;
+        case 7:
+            this.motionYaw = value;
+        case 8:
+            this.motionBrightness = value;
+        case 9:
+            this.motionFocus = value;
+        }
+    }
+
+    public void sync(int value) {
+        Packet250CustomPayload packet = PacketHandler.createPacket(2, this, value);
+        PacketHandler.sendPacketToPlayersWatchingBlock(packet, this.worldObj, this.xCoord, this.zCoord);
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -63,7 +113,7 @@ public class TileEntityLight extends TileEntity {
         this.prevBrightness = this.brightness;
         this.prevFocus = this.focus;
 
-        if (debug) {
+        if (this.debug) {
             this.pitch += 0.01F;
         }
         else {
@@ -85,12 +135,12 @@ public class TileEntityLight extends TileEntity {
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
             this.motionPitch = 0.0F;
-            debug = false;
+            this.debug = false;
         }
         else if (this.pitch < -0.8F) {
             this.prevPitch = this.pitch = -0.8F;
             this.motionPitch = 0.0F;
-            debug = true;
+            this.debug = true;
         }
 
         if (this.brightness > 1.0F) {
