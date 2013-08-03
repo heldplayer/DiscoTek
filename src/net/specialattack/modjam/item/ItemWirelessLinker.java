@@ -78,6 +78,8 @@ public class ItemWirelessLinker extends Item {
                 ChunkCoordinates coord = new ChunkCoordinates(lx, ly, lz);
 
                 if (controller.link(coord)) {
+                    controller.updateDmxNetwork();
+
                     player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
                 }
                 else {
