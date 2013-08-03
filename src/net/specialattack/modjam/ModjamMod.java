@@ -73,11 +73,11 @@ public class ModjamMod {
         GameRegistry.registerBlock(Objects.blockController, "ModJam2013.blockController");
 
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
-        Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug").setFull3D();
+        Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug");
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
 
         Objects.itemWirelessLinker = new ItemWirelessLinker(Config.itemWirelessLinkerId);
-        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:wirelessLinker").setUnlocalizedName("WirelessLinker").setFull3D();
+        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:wirelessLinker").setUnlocalizedName("WirelessLinker");
         GameRegistry.registerItem(Objects.itemWirelessLinker, "ModJam2013.itemWirelessLinker");
 
         Objects.itemLens = new ItemLens(Config.itemLensId);

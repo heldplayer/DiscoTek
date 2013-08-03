@@ -34,27 +34,31 @@ public class PacketHandler implements IPacketHandler {
         switch (id) {
         case 1: {
             TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            tile.setColor(in.readInt());
-            tile.setHasLens(in.readBoolean());
-            tile.setPitch(in.readFloat());
-            tile.setYaw(in.readFloat());
-            tile.setBrightness(in.readFloat());
-            tile.setFocus(in.readFloat());
+            if (tile != null) {
+                tile.setColor(in.readInt());
+                tile.setHasLens(in.readBoolean());
+                tile.setPitch(in.readFloat());
+                tile.setYaw(in.readFloat());
+                tile.setBrightness(in.readFloat());
+                tile.setFocus(in.readFloat());
+            }
         }
         break;
         case 2: {
             TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            int count = in.readUnsignedByte();
-            for (int i = 0; i < count; i++) {
-                int type = in.readUnsignedByte();
-                if (type == 0) {
-                    tile.setColor(in.readInt());
-                }
-                else if (type == 1) {
-                    tile.setHasLens(in.readBoolean());
-                }
-                else {
-                    tile.setValue(type, in.readFloat());
+            if (tile != null) {
+                int count = in.readUnsignedByte();
+                for (int i = 0; i < count; i++) {
+                    int type = in.readUnsignedByte();
+                    if (type == 0) {
+                        tile.setColor(in.readInt());
+                    }
+                    else if (type == 1) {
+                        tile.setHasLens(in.readBoolean());
+                    }
+                    else {
+                        tile.setValue(type, in.readFloat());
+                    }
                 }
             }
         }

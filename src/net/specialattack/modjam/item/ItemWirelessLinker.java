@@ -19,6 +19,8 @@ public class ItemWirelessLinker extends Item {
 
     public ItemWirelessLinker(int itemId) {
         super(itemId);
+        this.setFull3D();
+        this.setMaxStackSize(1);
     }
 
     @Override
@@ -46,37 +48,48 @@ public class ItemWirelessLinker extends Item {
             return true;
         }
 
-        if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("x") || !stack.stackTagCompound.hasKey("y") || !stack.stackTagCompound.hasKey("z")) {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-            TileEntity tile = world.getBlockTileEntity(x, y, z);
-            if (tile != null && tile instanceof TileEntityLight) {
-                player.addChatMessage("Created link to light (" + x + ", " + y + ", " + z + ")");
-                NBTTagCompound compound = new NBTTagCompound();
-                compound.setInteger("x", x);
-                compound.setInteger("y", y);
-                compound.setInteger("z", z);
-                stack.stackTagCompound = compound;
-            }
+        if (tile != null && tile instanceof TileEntityLight) {
+            player.addChatMessage("Created link to light (" + x + ", " + y + ", " + z + ")");
+
+            NBTTagCompound compound = new NBTTagCompound("tag");
+            compound.setInteger("x", x);
+            compound.setInteger("y", y);
+            compound.setInteger("z", z);
+
+            stack.stackTagCompound = compound;
+
+            return true;
         }
-        else {
+        else if (tile != null && tile instanceof TileEntityController) {
+            if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("x") || !stack.stackTagCompound.hasKey("y") || !stack.stackTagCompound.hasKey("z")) {
+                player.addChatMessage("No light has been selected yet");
+            }
+            else {
+                TileEntityController controller = (TileEntityController) tile;
 
-            TileEntity tile = world.getBlockTileEntity(x, y, z);
-            if (tile != null && tile instanceof TileEntityController) {
                 NBTTagCompound compound = stack.stackTagCompound;
+
                 int lx = compound.getInteger("x");
                 int ly = compound.getInteger("y");
                 int lz = compound.getInteger("z");
-                player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
+
+                ChunkCoordinates coord = new ChunkCoordinates(lx, ly, lz);
+
+                if (controller.link(coord)) {
+                    player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
+                }
+                else {
+                    player.addChatMessage("Link failed");
+                }
+
                 stack.stackTagCompound = null;
-
-                TileEntityController controller = (TileEntityController) tile;
-                controller.lightsLinked.add(new ChunkCoordinates(lx, ly, lz));
-            }
-            else {
-                player.addChatMessage("Must select a controller to add this to");
             }
 
+            return true;
         }
-        return true;
+
+        return false;
     }
 }

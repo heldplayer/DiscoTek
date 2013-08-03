@@ -13,6 +13,8 @@ public class ItemDebug extends Item {
 
     public ItemDebug(int itemId) {
         super(itemId);
+        this.setFull3D();
+        this.setMaxStackSize(1);
     }
 
     @Override

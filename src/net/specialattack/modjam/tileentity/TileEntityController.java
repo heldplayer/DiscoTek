@@ -11,7 +11,7 @@ import net.minecraft.util.ChunkCoordinates;
 
 public class TileEntityController extends TileEntity {
 
-    public List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
+    private List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
     public short[] levels = new short[512];
 
     public TileEntityController() {
@@ -45,6 +45,25 @@ public class TileEntityController extends TileEntity {
             lightsLinked.appendTag(tag);
         }
         compound.setTag("Lights", lightsLinked);
+    }
+
+    public boolean link(ChunkCoordinates coords) {
+        if (this.lightsLinked.contains(coords)) {
+            return false;
+        }
+
+        double reach = 32.0D * 32.0D;
+        double distance = (coords.posX - this.xCoord) * (coords.posX - this.xCoord);
+        distance += (coords.posY - this.yCoord) * (coords.posY - this.yCoord);
+        distance += (coords.posZ - this.zCoord) * (coords.posZ - this.zCoord);
+
+        if (distance < reach) {
+            this.lightsLinked.add(coords);
+
+            return true;
+        }
+
+        return false;
     }
 
     public void setChannelLevel(int channel, short percent) {
