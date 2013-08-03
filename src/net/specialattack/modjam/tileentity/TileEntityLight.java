@@ -25,6 +25,9 @@ public class TileEntityLight extends TileEntity {
     public float motionYaw = 0.0F;
     public float motionBrightness = 0.0F;
     public float motionFocus = 0.0F;
+    //Channels 1 - 512 (0 - 511)
+    public int channel = 0;
+    public static final int numChannels = 1;
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -34,6 +37,7 @@ public class TileEntityLight extends TileEntity {
         this.prevYaw = this.yaw = compound.getFloat("yaw");
         this.prevBrightness = this.brightness = compound.getFloat("brightness");
         this.prevFocus = this.focus = compound.getFloat("focus");
+        this.channel = compound.getInteger("channel");
     }
 
     @Override
@@ -44,6 +48,7 @@ public class TileEntityLight extends TileEntity {
         compound.setFloat("yaw", this.yaw);
         compound.setFloat("brightness", this.brightness);
         compound.setFloat("focus", this.focus);
+        compound.setInteger("channel", channel);
     }
 
     @Override
@@ -58,10 +63,10 @@ public class TileEntityLight extends TileEntity {
         this.prevBrightness = this.brightness;
         this.prevFocus = this.focus;
 
-        this.motionPitch += (Math.random() - 0.5D) / 100.0D;
-        this.motionYaw += (Math.random() - 0.5D) / 100.0D;
-        this.motionBrightness += (Math.random() - 0.5D) / 100.0D;
-        this.motionFocus += (Math.random() - 0.5D) / 100.0D;
+//        this.motionPitch += (Math.random() - 0.5D) / 100.0D;
+//        this.motionYaw += (Math.random() - 0.5D) / 100.0D;
+//        this.motionBrightness += (Math.random() - 0.5D) / 100.0D;
+//        this.motionFocus += (Math.random() - 0.5D) / 100.0D;
 
         if (this.motionYaw > 1.0F) {
             this.motionYaw = 1.0F;
@@ -84,15 +89,14 @@ public class TileEntityLight extends TileEntity {
             this.motionPitch = 0.0F;
         }
 
-        if (this.brightness > 1.0F) {
-            this.brightness = 1.0F;
-            this.motionBrightness = 0.0F;
-        }
-        else if (this.brightness < 0.0F) {
-            this.brightness = 0.0F;
-            this.motionBrightness = 0.0F;
-        }
-
+//        if (this.brightness > 1.0F) {
+//            this.brightness = 1.0F;
+//            this.motionBrightness = 0.0F;
+//        }
+//        else if (this.brightness < 0.0F) {
+//            this.brightness = 0.0F;
+//            this.motionBrightness = 0.0F;
+//        }
         if (this.focus > 20.0F) {
             this.focus = 20.0F;
             this.motionFocus = 0.0F;
@@ -107,14 +111,15 @@ public class TileEntityLight extends TileEntity {
         return !(this.color == 0xFFFFFF);
     }
 
-    public void setBrightness(float percent) {
-        this.brightness = percent;
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return super.getRenderBoundingBox().expand(10.0D, 10.0D, 10.0D);
+    }
+
+    public void sendUniverseData(short[] levels) {
+        this.brightness = (float)(levels[channel] / 255.0f);
+        worldObj.getPlayerEntityByName("mbl111").addChatMessage("Level: " + this.brightness);
     }
 
 }

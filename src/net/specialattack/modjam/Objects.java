@@ -8,6 +8,7 @@ import net.specialattack.modjam.block.BlockTruss;
 import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
+import net.specialattack.modjam.item.ItemWirelessLinker;
 
 public class Objects {
 
@@ -19,5 +20,6 @@ public class Objects {
     public static ItemLens itemLens;
 
     public static CreativeTabIcon creativeTab;
+    public static ItemWirelessLinker itemWirelessLinker;
 
 }
