@@ -4,10 +4,6 @@ package net.specialattack.modjam.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-<<<<<<< HEAD
-import net.minecraft.util.Icon;
-=======
->>>>>>> refs/remotes/origin/master
 import net.minecraft.world.World;
 import net.specialattack.modjam.client.render.BlockRendererTruss;
 import cpw.mods.fml.client.registry.RenderingRegistry;
