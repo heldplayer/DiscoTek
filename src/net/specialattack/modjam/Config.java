@@ -12,6 +12,7 @@ public class Config {
     public static int blockControllerId = 2071;
     public static int itemDebugId = 5070;
     public static int itemLensId = 5071;
+    public static int itemWirelessLinkerId = 5072;
 
     public static void loadConfig(Configuration config) {
         config.load();
@@ -42,6 +43,11 @@ public class Config {
         itemLensId = property.getInt();
         modified = modified || property.hasChanged();
 
+        property = config.getItem("ItemWirelessLinker", itemWirelessLinkerId);
+        itemWirelessLinkerId = property.getInt();
+        modified = modified || property.hasChanged();
+
+        
         if (modified) {
             config.save();
         }

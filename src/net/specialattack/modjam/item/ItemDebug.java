@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.specialattack.modjam.tileentity.TileEntityLight;
 
 public class ItemDebug extends Item {
 
@@ -36,6 +37,9 @@ public class ItemDebug extends Item {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if (tile != null) {
             player.addChatMessage(tile.toString());
+            if (tile instanceof TileEntityLight){
+                player.addChatMessage("Level: " + ((TileEntityLight)tile).brightness);
+            }
         }
 
         return true;

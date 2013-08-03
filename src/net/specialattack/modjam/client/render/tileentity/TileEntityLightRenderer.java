@@ -72,9 +72,11 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         }
 
         if (disableLight) {
-            int lightLength = 10;
+            int lightLength = 16;
             float alpha = 0.8F * brightness;
-
+//            if (light.brightness > 0) {
+//                System.out.println("A:" + alpha + " | B: " + light.brightness);
+//            }
             GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
 

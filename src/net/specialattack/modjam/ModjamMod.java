@@ -16,6 +16,7 @@ import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.item.ItemBlockLight;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
+import net.specialattack.modjam.item.ItemWirelessLinker;
 import net.specialattack.modjam.item.crafting.RecipesLens;
 import net.specialattack.modjam.item.crafting.RecipesLight;
 import net.specialattack.modjam.tileentity.TileEntityController;
@@ -74,6 +75,10 @@ public class ModjamMod {
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug").setFull3D();
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
+        
+        Objects.itemWirelessLinker = new ItemWirelessLinker(Config.itemWirelessLinkerId);
+        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:wirelessLinker").setUnlocalizedName("WirelessLinker").setFull3D();
+        GameRegistry.registerItem(Objects.itemWirelessLinker, "ModJam2013.itemWirelessLinker");
 
         Objects.itemLens = new ItemLens(Config.itemLensId);
         Objects.itemLens.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:lens").setUnlocalizedName("lens");
