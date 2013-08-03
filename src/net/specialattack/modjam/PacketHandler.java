@@ -78,21 +78,9 @@ public class PacketHandler implements IPacketHandler {
             return;
         }
 
-        MinecraftServer server = MinecraftServer.getServer();
+        Chunk chunk = world.getChunkFromBlockCoords(x, z);
 
-        if (server != null) {
-            for (WorldServer worldServer : server.worldServers) {
-                if (worldServer.provider.dimensionId == world.getWorldInfo().getVanillaDimension()) {
-                    Chunk chunk = world.getChunkFromBlockCoords(x, z);
-                    PlayerManager manager = worldServer.getPlayerManager();
-                    PlayerInstance instance = manager.getOrCreateChunkWatcher(chunk.xPosition, chunk.zPosition, false);
-
-                    if (instance != null) {
-                        instance.sendToAllPlayersWatchingChunk(packet);
-                    }
-                }
-            }
-        }
+        sendPacketToPlayersWatchingChunk(packet, world.provider.dimensionId, chunk.xPosition, chunk.zPosition);
     }
 
     public static void sendPacketToPlayersWatchingChunk(Packet packet, int dimensionId, int chunkX, int chunkZ) {
