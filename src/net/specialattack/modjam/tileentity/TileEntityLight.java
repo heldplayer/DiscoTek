@@ -28,6 +28,8 @@ public class TileEntityLight extends TileEntity {
     public float motionBrightness = 0.0F;
     public float motionFocus = 0.0F;
 
+    private int ticksRemaining = 100;
+
     private boolean debug = false;
 
     public float getValue(int index) {
@@ -74,8 +76,8 @@ public class TileEntityLight extends TileEntity {
         }
     }
 
-    public void sync(int value) {
-        Packet250CustomPayload packet = PacketHandler.createPacket(2, this, value);
+    public void sync(int... values) {
+        Packet250CustomPayload packet = PacketHandler.createPacket(2, this, values);
         PacketHandler.sendPacketToPlayersWatchingBlock(packet, this.worldObj, this.xCoord, this.zCoord);
     }
 
@@ -112,13 +114,6 @@ public class TileEntityLight extends TileEntity {
         this.prevYaw = this.yaw;
         this.prevBrightness = this.brightness;
         this.prevFocus = this.focus;
-
-        if (this.debug) {
-            this.pitch += 0.01F;
-        }
-        else {
-            this.pitch -= 0.01F;
-        }
 
         if (this.motionYaw > 1.0F) {
             this.motionYaw = 1.0F;
@@ -159,6 +154,20 @@ public class TileEntityLight extends TileEntity {
         else if (this.focus < 0.0F) {
             this.focus = 0.0F;
             this.motionFocus = 0.0F;
+        }
+
+        if (!this.worldObj.isRemote) {
+            if (this.debug) {
+                this.motionPitch = 0.01F;
+            }
+            else {
+                this.motionPitch = -0.01F;
+            }
+            this.ticksRemaining--;
+            if (ticksRemaining <= 0) {
+                ticksRemaining = 100;
+                this.sync(2, 3, 4, 5, 6, 7, 8, 9);
+            }
         }
     }
 
