@@ -15,6 +15,7 @@ import net.minecraft.server.management.PlayerManager;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.specialattack.modjam.tileentity.TileEntityController;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -79,6 +80,27 @@ public class PacketHandler implements IPacketHandler {
             TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null && !tile.worldObj.isRemote) {
                 tile.channels[in.readInt()] = in.readInt();
+            }
+        }
+        break;
+        case 5: {
+            TileEntityController tile = (TileEntityController) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            if (tile != null) {
+                int count = in.readInt();
+                tile.instructions = new Instruction[count];
+                for (int i = 0; i < count; i++) {
+                    int length = in.readUnsignedByte();
+                    if (length == 0) {
+                        continue;
+                    }
+
+                    tile.instructions[i] = new Instruction();
+
+                    byte[] data = new byte[length];
+                    in.readFully(data);
+                    tile.instructions[i].identifier = new String(data);
+                    tile.instructions[i].argument = in.readUnsignedByte();
+                }
             }
         }
         break;
@@ -159,6 +181,25 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.zCoord);
                 dos.writeInt((int) data[1]);
                 dos.writeInt((int) data[2]);
+            }
+            break;
+            case 5: { // Controller instructions
+                TileEntityController tile = (TileEntityController) data[0];
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt(tile.instructions.length);
+                for (int i = 0; i < tile.instructions.length; i++) {
+                    Instruction instruction = tile.instructions[i];
+                    if (instruction == null) {
+                        dos.writeByte(0);
+                    }
+                    else {
+                        dos.writeByte(instruction.identifier.length());
+                        dos.writeBytes(instruction.identifier);
+                        dos.writeByte(instruction.argument);
+                    }
+                }
             }
             break;
             }

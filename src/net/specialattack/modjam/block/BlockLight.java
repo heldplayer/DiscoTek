@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.PacketHandler;
-import net.specialattack.modjam.client.gui.GuiConfigureSmall;
+import net.specialattack.modjam.client.gui.GuiLight;
 import net.specialattack.modjam.client.render.BlockRendererLight;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -94,7 +94,7 @@ public class BlockLight extends Block {
             }
 
             if (world.isRemote) {
-                FMLClientHandler.instance().displayGuiScreen(player, new GuiConfigureSmall(light));
+                FMLClientHandler.instance().displayGuiScreen(player, new GuiLight(light));
             }
             else {
                 if (player instanceof EntityPlayerMP) {

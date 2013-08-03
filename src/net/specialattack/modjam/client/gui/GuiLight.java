@@ -9,13 +9,13 @@ import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class GuiConfigureSmall extends GuiScreen {
+public class GuiLight extends GuiScreen {
 
     private TileEntityLight light;
     private boolean initialized = false;
     private int guiHeight;
 
-    public GuiConfigureSmall(TileEntityLight light) {
+    public GuiLight(TileEntityLight light) {
         this.light = light;
     }
 

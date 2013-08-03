@@ -8,11 +8,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.specialattack.modjam.Instruction;
 
 public class TileEntityController extends TileEntity {
 
     private List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
-    public short[] levels = new short[512];
+    public int[] levels = new int[512];
+    public Instruction[] instructions;
+    public int instructionPointer;
 
     public TileEntityController() {
         for (int i = 0; i < this.levels.length; i++) {
@@ -32,6 +35,16 @@ public class TileEntityController extends TileEntity {
             coord.posZ = tag.getInteger("z");
             this.link(coord);
         }
+        compound.setIntArray("Levels", this.levels);
+        compound.setInteger("Pointer", this.instructionPointer);
+        NBTTagList instructions = compound.getTagList("Instructions");
+        this.instructions = new Instruction[instructions.tagCount()];
+        for (int i = 0; i < instructions.tagCount(); i++) {
+            NBTTagCompound tag = (NBTTagCompound) instructions.tagAt(i);
+            Instruction instruction = new Instruction();
+            instruction.identifier = tag.getString("Identifier");
+            instruction.argument = tag.getInteger("Argument");
+        }
     }
 
     @Override
@@ -46,6 +59,24 @@ public class TileEntityController extends TileEntity {
             lightsLinked.appendTag(tag);
         }
         compound.setTag("Lights", lightsLinked);
+        this.levels = compound.getIntArray("Levels");
+        if (this.levels.length < 512) {
+            int[] temp = this.levels;
+            this.levels = new int[512];
+            System.arraycopy(temp, 0, this.levels, 0, temp.length);
+        }
+        this.instructionPointer = compound.getInteger("Pointer");
+        NBTTagList instructions = new NBTTagList();
+        for (Instruction instruction : this.instructions) {
+            if (instruction == null) {
+                continue;
+            }
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("Identifier", instruction.identifier);
+            tag.setInteger("Argument", instruction.argument);
+            instructions.appendTag(tag);
+        }
+        compound.setTag("Instructions", instructions);
     }
 
     public boolean link(ChunkCoordinates coords) {
@@ -67,7 +98,7 @@ public class TileEntityController extends TileEntity {
         return false;
     }
 
-    public void setChannelLevel(int channel, short percent) {
+    public void setChannelLevel(int channel, int percent) {
         if (channel >= 0 && channel < 256) {
             float oldPercent = this.levels[channel];
             if (oldPercent != percent) {
@@ -93,13 +124,23 @@ public class TileEntityController extends TileEntity {
 
     @Override
     public void updateEntity() {
-        this.setChannelLevel(0, (short) 50);
-        //        for (ChunkCoordinates coord : lightsLinked){
-        //            TileEntity te = worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
-        //            if (te != null && te instanceof TileEntityLight){
-        //                worldObj.getPlayerEntityByName("mbl111").addChatMessage(te.toString());
-        //            }
-        //        }
+        if (!this.worldObj.isRemote) {
+            int size = 0;
+            switch (this.getBlockMetadata()) {
+            case 0:
+                size = 50;
+            break;
+            }
+            if (this.instructions == null) {
+                this.instructions = new Instruction[size];
+            }
+            else if (this.instructions.length != size) {
+                Instruction[] temp = this.instructions;
+                this.instructions = new Instruction[size];
+                System.arraycopy(temp, 0, this.instructions, 0, temp.length < this.instructions.length ? temp.length : this.instructions.length);
+            }
+        }
+
     }
 
 }

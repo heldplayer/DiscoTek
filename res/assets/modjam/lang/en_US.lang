@@ -9,5 +9,11 @@ item.lens.name=Lens
 itemGroup.modjam2013=ModJam 2013
 
 gui.light.title=Configuring Light
-gui.light.loading=Loading information
+gui.light.loading=Loading...
 gui.light.0=Brightness Channel: %s
+
+gui.controller.title=Configuring Controller
+gui.controller.loading=Loading...
+gui.controller.done=Done
+gui.controller.down=Down
+gui.controller.up=Up

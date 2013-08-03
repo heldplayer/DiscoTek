@@ -140,7 +140,7 @@ public class TileEntityLight extends TileEntity {
         }
     }
 
-    public boolean setValue(int index, short value) {
+    public boolean setValue(int index, int value) {
         switch (index) {
         case 2:
             float prev = this.brightness;
@@ -300,7 +300,7 @@ public class TileEntityLight extends TileEntity {
         return super.getRenderBoundingBox().expand(10.0D, 10.0D, 10.0D);
     }
 
-    public void sendUniverseData(short[] levels) {
+    public void sendUniverseData(int[] levels) {
         for (int i = 0; this.channels != null && i < this.channels.length; i++) {
             if (this.setValue(i + 2, levels[this.channels[i]])) {
                 this.sync(i + 2);
