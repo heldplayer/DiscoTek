@@ -4,6 +4,8 @@ package net.specialattack.modjam.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 
@@ -16,6 +18,33 @@ public class TileEntityController extends TileEntity {
         for (int i = 0; i < this.levels.length; i++) {
             this.levels[i] = 0x0;
         }
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        NBTTagList lightsLinked = compound.getTagList("Lights");
+        for (int i = 0; i < lightsLinked.tagCount(); i++) {
+            NBTTagCompound tag = (NBTTagCompound) lightsLinked.tagAt(i);
+            ChunkCoordinates coord = new ChunkCoordinates();
+            coord.posX = tag.getInteger("x");
+            coord.posY = tag.getInteger("y");
+            coord.posZ = tag.getInteger("z");
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        NBTTagList lightsLinked = new NBTTagList();
+        for (ChunkCoordinates coord : this.lightsLinked) {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("x", coord.posX);
+            tag.setInteger("y", coord.posY);
+            tag.setInteger("z", coord.posZ);
+            lightsLinked.appendTag(tag);
+        }
+        compound.setTag("Lights", lightsLinked);
     }
 
     public void setChannelLevel(int channel, short percent) {
