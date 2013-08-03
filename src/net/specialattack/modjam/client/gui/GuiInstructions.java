@@ -16,6 +16,7 @@ public class GuiInstructions extends Gui {
 
     public int rows;
     public int scroll;
+    public int selected;
     private TileEntityController controller;
 
     public GuiInstructions(TileEntityController controller, FontRenderer font, int posX, int posY, int width, int rows) {
@@ -46,7 +47,16 @@ public class GuiInstructions extends Gui {
         for (int i = this.scroll; i < this.controller.instructions.length && i < this.rows + this.scroll; i++) {
             Instruction instruction = this.controller.instructions[i];
 
-            this.font.drawString("Row " + (i + 1), this.posX + 1, this.posY + (i - this.scroll) * 10 + 1, 0xFFFFFF);
+            String display = (i + 1) + ": ";
+
+            if (instruction == null) {
+                display += "NOOP";
+            }
+            else {
+
+            }
+
+            this.font.drawString(display, this.posX + 1, this.posY + (i - this.scroll) * 10 + 1, 0xFFFFFF);
         }
 
     }
