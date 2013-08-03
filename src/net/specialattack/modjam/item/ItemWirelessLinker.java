@@ -19,8 +19,11 @@ public class ItemWirelessLinker extends Item {
 
     public ItemWirelessLinker(int itemId) {
         super(itemId);
+        maxStackSize = 1;
     }
 
+    
+    
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -67,10 +70,12 @@ public class ItemWirelessLinker extends Item {
                 int ly = compound.getInteger("y");
                 int lz = compound.getInteger("z");
                 player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
+                
                 stack.stackTagCompound = null;
 
                 TileEntityController controller = (TileEntityController) tile;
                 controller.lightsLinked.add(new ChunkCoordinates(lx, ly, lz));
+                controller.updateDmxNetwork();
             }
             else {
                 player.addChatMessage("Must select a controller to add this to");

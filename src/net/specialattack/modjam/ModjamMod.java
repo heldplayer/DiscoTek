@@ -13,6 +13,7 @@ import net.specialattack.modjam.block.BlockDecoration;
 import net.specialattack.modjam.block.BlockLight;
 import net.specialattack.modjam.block.BlockTruss;
 import net.specialattack.modjam.creativetabs.CreativeTabIcon;
+import net.specialattack.modjam.gui.GuiHandler;
 import net.specialattack.modjam.item.ItemBlockLight;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
@@ -29,6 +30,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
@@ -88,7 +90,9 @@ public class ModjamMod {
 
         TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
         TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller");
-
+        
+        NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+        
         proxy.init(event);
     }
 
