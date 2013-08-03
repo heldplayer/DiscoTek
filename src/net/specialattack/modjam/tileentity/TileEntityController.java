@@ -71,24 +71,25 @@ public class TileEntityController extends TileEntity {
             float oldPercent = this.levels[channel];
             if (oldPercent != percent) {
                 this.levels[channel] = percent;
-                updateDmxNetwork();
+                this.updateDmxNetwork();
             }
         }
     }
 
-    public void updateDmxNetwork(){
-        for (int i = 0; i < lightsLinked.size(); i++) {
-            ChunkCoordinates coord = lightsLinked.get(i);
+    public void updateDmxNetwork() {
+        for (int i = 0; i < this.lightsLinked.size(); i++) {
+            ChunkCoordinates coord = this.lightsLinked.get(i);
             TileEntity te = this.worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
             if (te != null && te instanceof TileEntityLight) {
                 ((TileEntityLight) te).sendUniverseData(this.levels);
-            }else{
+            }
+            else {
                 this.lightsLinked.remove(i);
                 i--;
             }
         }
     }
-    
+
     @Override
     public void updateEntity() {
         this.setChannelLevel(0, (short) 50);
