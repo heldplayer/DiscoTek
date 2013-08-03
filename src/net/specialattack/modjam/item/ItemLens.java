@@ -75,27 +75,28 @@ public class ItemLens extends Item {
         TileEntity te = world.getBlockTileEntity(x, y, z);
         if (te != null && te instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) te;
-            if (light.hasGel()) {
-                ItemStack is = new ItemStack(Objects.itemLens);
-                NBTTagCompound cpnd = new NBTTagCompound();
-                cpnd.setInteger("color", light.color);
-                is.setTagCompound(cpnd);
+            if (light.hasLens) {
+                if (!world.isRemote) {
+                    ItemStack is = new ItemStack(Objects.itemLens);
+                    NBTTagCompound cpnd = new NBTTagCompound("tag");
+                    cpnd.setInteger("color", light.color);
+                    is.setTagCompound(cpnd);
 
-                Random rand = new Random();
-                EntityItem ent = player.entityDropItem(is, 1.0F);
-                ent.motionY += rand.nextFloat() * 0.05F;
-                ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    Random rand = new Random();
+                    EntityItem ent = player.entityDropItem(is, 1.0F);
+                    ent.motionY += rand.nextFloat() * 0.05F;
+                    ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    ent.delayBeforeCanPickup = 1;
+                }
             }
             NBTTagCompound compound = itemStack.stackTagCompound;
             int color = 0xFFFFFF;
             if (compound.hasKey("color")) {
                 color = compound.getInteger("color");
             }
-            if (color == 0xFFFFFF) {
-                return false;
-            }
             light.color = color;
+            light.hasLens = true;
 
             if (!player.capabilities.isCreativeMode) {
                 itemStack.stackSize--;

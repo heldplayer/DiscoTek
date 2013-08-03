@@ -65,9 +65,11 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         float green = (float) ((color >> 8) & 0xFF) / 255.0F;
         float blue = (float) (color & 0xFF) / 255.0F;
         float brightness = light.brightness + (light.brightness - light.prevBrightness) * partialTicks;
-        GL11.glColor4f(red * brightness, green * brightness, blue * brightness, 0.4F);
+        if (light.hasLens) {
+            GL11.glColor4f(red * brightness, green * brightness, blue * brightness, 0.4F);
 
-        this.modelLightParCan.renderLens();
+            this.modelLightParCan.renderLens();
+        }
 
         if (disableLight) {
             int lightLength = 10;

@@ -41,6 +41,9 @@ public class BlockLight extends Block {
             if (stack.stackTagCompound.hasKey("color")) {
                 tile.color = stack.stackTagCompound.getInteger("color");
             }
+            if (stack.stackTagCompound.hasKey("hasLens")) {
+                tile.hasLens = stack.stackTagCompound.getBoolean("hasLens");
+            }
         }
 
         tile.prevYaw = tile.yaw = (float) (-entity.rotationYawHead * Math.PI / 180.0D);
@@ -55,25 +58,27 @@ public class BlockLight extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ) {
         if (player.isSneaking()) {
             TileEntity te = world.getBlockTileEntity(x, y, z);
             if (te != null && te instanceof TileEntityLight) {
                 TileEntityLight light = (TileEntityLight) te;
-                if (light.hasGel()) {
-                    ItemStack is = new ItemStack(Objects.itemLens);
-                    NBTTagCompound cpnd = new NBTTagCompound();
-                    cpnd.setInteger("color", light.color);
-                    is.setTagCompound(cpnd);
+                if (light.hasLens) {
+                    if (!world.isRemote) {
+                        ItemStack is = new ItemStack(Objects.itemLens);
+                        NBTTagCompound cpnd = new NBTTagCompound("tag");
+                        cpnd.setInteger("color", light.color);
+                        is.setTagCompound(cpnd);
 
-                    Random rand = new Random();
-                    EntityItem ent = player.entityDropItem(is, 1.0F);
-                    ent.motionY += rand.nextFloat() * 0.05F;
-                    ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                    ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                    ent.delayBeforeCanPickup = 1;
-
+                        Random rand = new Random();
+                        EntityItem ent = player.entityDropItem(is, 1.0F);
+                        ent.motionY += rand.nextFloat() * 0.05F;
+                        ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                        ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                        ent.delayBeforeCanPickup = 1;
+                    }
                     light.color = 0xFFFFFF;
+                    light.hasLens = false;
                     return true;
                 }
             }

@@ -37,6 +37,8 @@ public class PacketHandler implements IPacketHandler {
             tile.color = in.readInt();
             tile.prevPitch = tile.pitch = in.readFloat();
             tile.prevYaw = tile.yaw = in.readFloat();
+            tile.prevBrightness = tile.brightness = in.readFloat();
+            tile.prevFocus = tile.focus = in.readFloat();
         }
         break;
         }
@@ -58,6 +60,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.color);
                 dos.writeFloat(tile.pitch);
                 dos.writeFloat(tile.yaw);
+                dos.writeFloat(tile.brightness);
+                dos.writeFloat(tile.focus);
             }
             break;
             }

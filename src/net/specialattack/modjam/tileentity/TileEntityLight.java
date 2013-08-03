@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityLight extends TileEntity {
 
     public int color = 0xFFFFFF;
+    public boolean hasLens = true; // Relax, don't do it
     public float pitch = 0.0F;
     public float prevPitch = 0.0F;
     public float yaw = 0.0F;
@@ -26,10 +27,13 @@ public class TileEntityLight extends TileEntity {
     public float motionBrightness = 0.0F;
     public float motionFocus = 0.0F;
 
+    private boolean debug = false;
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         this.color = compound.getInteger("color");
+        this.hasLens = compound.getBoolean("hasLens");
         this.prevPitch = this.pitch = compound.getFloat("pitch");
         this.prevYaw = this.yaw = compound.getFloat("yaw");
         this.prevBrightness = this.brightness = compound.getFloat("brightness");
@@ -40,6 +44,7 @@ public class TileEntityLight extends TileEntity {
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("color", this.color);
+        compound.setBoolean("hasLens", this.hasLens);
         compound.setFloat("pitch", this.pitch);
         compound.setFloat("yaw", this.yaw);
         compound.setFloat("brightness", this.brightness);
@@ -58,10 +63,12 @@ public class TileEntityLight extends TileEntity {
         this.prevBrightness = this.brightness;
         this.prevFocus = this.focus;
 
-        this.motionPitch += (Math.random() - 0.5D) / 100.0D;
-        this.motionYaw += (Math.random() - 0.5D) / 100.0D;
-        this.motionBrightness += (Math.random() - 0.5D) / 100.0D;
-        this.motionFocus += (Math.random() - 0.5D) / 100.0D;
+        if (debug) {
+            this.pitch += 0.01F;
+        }
+        else {
+            this.pitch -= 0.01F;
+        }
 
         if (this.motionYaw > 1.0F) {
             this.motionYaw = 1.0F;
@@ -78,10 +85,12 @@ public class TileEntityLight extends TileEntity {
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
             this.motionPitch = 0.0F;
+            debug = false;
         }
         else if (this.pitch < -0.8F) {
             this.prevPitch = this.pitch = -0.8F;
             this.motionPitch = 0.0F;
+            debug = true;
         }
 
         if (this.brightness > 1.0F) {
@@ -101,10 +110,6 @@ public class TileEntityLight extends TileEntity {
             this.focus = 0.0F;
             this.motionFocus = 0.0F;
         }
-    }
-
-    public boolean hasGel() {
-        return !(this.color == 0xFFFFFF);
     }
 
     public void setBrightness(float percent) {

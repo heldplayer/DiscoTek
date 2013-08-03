@@ -18,6 +18,11 @@ public class ItemBlockLight extends ItemBlock {
     }
 
     @Override
+    public String getLocalizedName(ItemStack stack) {
+        return super.getLocalizedName(stack) + stack.getItemDamage();
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean extra) {
