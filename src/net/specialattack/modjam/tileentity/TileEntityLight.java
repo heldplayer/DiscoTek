@@ -31,6 +31,8 @@ public class TileEntityLight extends TileEntity {
     public int channel = 0;
     public static final int numChannels = 1;
 
+    private int ticksRemaining = 100;
+
     private boolean debug = false;
 
     public float getValue(int index) {
@@ -60,25 +62,33 @@ public class TileEntityLight extends TileEntity {
         switch (index) {
         case 2:
             this.pitch = value;
+        break;
         case 3:
             this.yaw = value;
+        break;
         case 4:
             this.brightness = value;
+        break;
         case 5:
             this.focus = value;
+        break;
         case 6:
             this.motionPitch = value;
+        break;
         case 7:
             this.motionYaw = value;
+        break;
         case 8:
             this.motionBrightness = value;
+        break;
         case 9:
             this.motionFocus = value;
+        break;
         }
     }
 
-    public void sync(int value) {
-        Packet250CustomPayload packet = PacketHandler.createPacket(2, this, value);
+    public void sync(int... values) {
+        Packet250CustomPayload packet = PacketHandler.createPacket(2, this, values);
         PacketHandler.sendPacketToPlayersWatchingBlock(packet, this.worldObj, this.xCoord, this.zCoord);
     }
 
@@ -118,12 +128,6 @@ public class TileEntityLight extends TileEntity {
         this.prevBrightness = this.brightness;
         this.prevFocus = this.focus;
 
-//        this.motionPitch += (Math.random() - 0.5D) / 100.0D;
-//        this.motionYaw += (Math.random() - 0.5D) / 100.0D;
-//        this.motionBrightness += (Math.random() - 0.5D) / 100.0D;
-//        this.motionFocus += (Math.random() - 0.5D) / 100.0D;
-
-
         if (this.motionYaw > 1.0F) {
             this.motionYaw = 1.0F;
         }
@@ -147,14 +151,14 @@ public class TileEntityLight extends TileEntity {
             this.debug = true;
         }
 
-//        if (this.brightness > 1.0F) {
-//            this.brightness = 1.0F;
-//            this.motionBrightness = 0.0F;
-//        }
-//        else if (this.brightness < 0.0F) {
-//            this.brightness = 0.0F;
-//            this.motionBrightness = 0.0F;
-//        }
+        //        if (this.brightness > 1.0F) {
+        //            this.brightness = 1.0F;
+        //            this.motionBrightness = 0.0F;
+        //        }
+        //        else if (this.brightness < 0.0F) {
+        //            this.brightness = 0.0F;
+        //            this.motionBrightness = 0.0F;
+        //        }
         if (this.focus > 20.0F) {
             this.focus = 20.0F;
             this.motionFocus = 0.0F;
@@ -162,6 +166,20 @@ public class TileEntityLight extends TileEntity {
         else if (this.focus < 0.0F) {
             this.focus = 0.0F;
             this.motionFocus = 0.0F;
+        }
+
+        if (!this.worldObj.isRemote) {
+            if (this.debug) {
+                this.motionPitch = 0.01F;
+            }
+            else {
+                this.motionPitch = -0.01F;
+            }
+            this.ticksRemaining--;
+            if (ticksRemaining <= 0) {
+                ticksRemaining = 100;
+                this.sync(2, 3, 4, 5, 6, 7, 8, 9);
+            }
         }
     }
 
@@ -174,6 +192,7 @@ public class TileEntityLight extends TileEntity {
     public void sendUniverseData(short[] levels) {
         this.setValue(4, (float)(levels[channel] / 255.0f));
         this.sync(4);
+
     }
 
 }

@@ -43,15 +43,18 @@ public class PacketHandler implements IPacketHandler {
         break;
         case 2: {
             TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            int type = in.readUnsignedByte();
-            if (type == 0) {
-                tile.color = in.readInt();
-            }
-            else if (type == 1) {
-                tile.hasLens = in.readBoolean();
-            }
-            else {
-                tile.setValue(id, in.readFloat());
+            int count = in.readUnsignedByte();
+            for (int i = 0; i < count; i++) {
+                int type = in.readUnsignedByte();
+                if (type == 0) {
+                    tile.color = in.readInt();
+                }
+                else if (type == 1) {
+                    tile.hasLens = in.readBoolean();
+                }
+                else {
+                    tile.setValue(type, in.readFloat());
+                }
             }
         }
         break;
@@ -83,16 +86,21 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                int type = (Integer) data[1];
-                dos.writeByte(type);
-                if (type == 0) {
-                    dos.writeInt(tile.color);
-                }
-                else if (type == 1) {
-                    dos.writeBoolean(tile.hasLens);
-                }
-                else {
-                    dos.writeFloat(tile.getValue(type));
+
+                int[] types = (int[]) data[1];
+                dos.writeByte(types.length);
+                for (int i = 0; i < types.length; i++) {
+                    int type = types[i];
+                    dos.writeByte(type);
+                    if (type == 0) {
+                        dos.writeInt(tile.color);
+                    }
+                    else if (type == 1) {
+                        dos.writeBoolean(tile.hasLens);
+                    }
+                    else {
+                        dos.writeFloat(tile.getValue(type));
+                    }
                 }
             }
             break;
