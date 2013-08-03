@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.specialattack.modjam.tileentity.TileEntityController;
 
 public class BlockController extends Block {
 
@@ -15,12 +16,12 @@ public class BlockController extends Block {
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
         //return new TileEntityLight();
-        return null;
+        return new TileEntityController();
     }
 
     @Override
     public boolean hasTileEntity(int metadata) {
-        return false;
+        return true;
     }
 
 }

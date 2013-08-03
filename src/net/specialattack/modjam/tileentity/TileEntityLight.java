@@ -13,6 +13,7 @@ public class TileEntityLight extends TileEntity {
     public float prevPitch = 0.0F;
     public float yaw = 0.0F;
     public float prevYaw = 0.0F;
+    public float brightness = 0.0F;
 
     public float motionPitch = 0.0F;
     public float motionYaw = 0.0F;
@@ -52,6 +53,14 @@ public class TileEntityLight extends TileEntity {
         else if (this.pitch < -0.8F) {
             this.prevPitch = this.pitch = -0.8F;
         }
+    }
+
+    public boolean hasGel() {
+        return !(color == 0xFFFFFF);
+    }
+
+    public void setBrightness(float percent) {
+        this.brightness = percent;
     }
 
 }

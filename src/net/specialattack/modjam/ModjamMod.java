@@ -18,6 +18,7 @@ import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
 import net.specialattack.modjam.item.crafting.RecipesLens;
 import net.specialattack.modjam.item.crafting.RecipesLight;
+import net.specialattack.modjam.tileentity.TileEntityController;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -81,6 +82,7 @@ public class ModjamMod {
         Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockLight));
 
         TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
+        TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller");
 
         proxy.init(event);
     }

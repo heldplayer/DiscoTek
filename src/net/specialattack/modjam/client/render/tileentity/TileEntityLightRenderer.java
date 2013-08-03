@@ -45,20 +45,29 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
-
+        //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         int color = light.color;
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
         float green = (float) ((color >> 8) & 0xFF) / 255.0F;
         float blue = (float) (color & 0xFF) / 255.0F;
-        GL11.glColor4f(red, green, blue, 0.5F);
+        GL11.glColor4f(red, green, blue, 0.4F);
 
         this.modelLightParCan.renderLens();
+        
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glVertex3f((float)0, (float)0, (float)0);
+        GL11.glVertex3f((float)0, (float)0, (float)0 + 1);
+        GL11.glVertex3f((float)0 + 1, (float)0, (float)0 + 1);
+        GL11.glVertex3f((float)0 + 1, (float)0, (float)0);
+        GL11.glEnd();
+        
         GL11.glDisable(GL11.GL_BLEND);
-
+        
         if (disableLight) {
+            
             GL11.glBegin(GL11.GL_QUADS);
-
+               
             GL11.glEnd();
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
