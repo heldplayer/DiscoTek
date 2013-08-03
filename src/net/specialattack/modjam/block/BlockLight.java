@@ -88,6 +88,7 @@ public class BlockLight extends Block {
 
                         light.setColor(0xFFFFFF);
                         light.setHasLens(false);
+                        light.onInventoryChanged();
                     }
                     return true;
                 }

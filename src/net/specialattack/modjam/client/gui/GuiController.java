@@ -25,7 +25,13 @@ public class GuiController extends GuiScreen {
     public void initGui() {
         this.buttonList.clear();
         if (this.initialized) {
-            this.instructions = new GuiInstructions(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 24, 160, 11);
+            if (this.instructions == null) {
+                this.instructions = new GuiInstructions(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 24, 160, 11);
+            }
+            else {
+                this.instructions.posX = this.width / 2 - 80;
+                this.instructions.posY = (this.height - this.guiHeight) / 2 + 24;
+            }
 
             this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.done")));
             this.buttonList.add(new GuiButton(2, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.up")));
@@ -42,8 +48,23 @@ public class GuiController extends GuiScreen {
 
     @Override
     protected void keyTyped(char character, int key) {
+        if (this.initialized) {
+            if (this.instructions.onKeyPressed(character, key)) {
+                return;
+            }
+        }
+
         if (key == 1 || key == this.mc.gameSettings.keyBindInventory.keyCode) {
             this.mc.thePlayer.closeScreen();
+        }
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int button) {
+        super.mouseClicked(mouseX, mouseY, button);
+
+        if (this.initialized) {
+            this.instructions.onClick(mouseX, mouseY, button);
         }
     }
 

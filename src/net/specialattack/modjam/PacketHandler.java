@@ -80,6 +80,7 @@ public class PacketHandler implements IPacketHandler {
             TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null && !tile.worldObj.isRemote) {
                 tile.channels[in.readInt()] = in.readInt();
+                tile.onInventoryChanged();
             }
         }
         break;
@@ -101,6 +102,7 @@ public class PacketHandler implements IPacketHandler {
                     tile.instructions[i].identifier = new String(data);
                     tile.instructions[i].argument = in.readUnsignedByte();
                 }
+                tile.onInventoryChanged();
             }
         }
         break;
