@@ -26,15 +26,17 @@ import cpw.mods.fml.common.network.Player;
 public class PacketHandler implements IPacketHandler {
 
     @Override
-    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
+    public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player playerObj) {
         ByteArrayDataInput in = ByteStreams.newDataInput(packet.data);
+
+        EntityPlayer player = ((EntityPlayer) playerObj);
 
         int id = in.readUnsignedByte();
 
         switch (id) {
         case 1: {
-            TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            if (tile != null) {
+            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            if (tile != null && tile.worldObj.isRemote) {
                 tile.setColor(in.readInt());
                 tile.setHasLens(in.readBoolean());
                 tile.setPitch(in.readFloat());
@@ -45,8 +47,8 @@ public class PacketHandler implements IPacketHandler {
         }
         break;
         case 2: {
-            TileEntityLight tile = (TileEntityLight) ((EntityPlayer) player).worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            if (tile != null) {
+            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            if (tile != null && tile.worldObj.isRemote) {
                 int count = in.readUnsignedByte();
                 for (int i = 0; i < count; i++) {
                     int type = in.readUnsignedByte();
@@ -59,6 +61,16 @@ public class PacketHandler implements IPacketHandler {
                     else {
                         tile.setValue(type, in.readFloat());
                     }
+                }
+            }
+        }
+        break;
+        case 3: {
+            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            if (tile != null && tile.worldObj.isRemote) {
+                tile.channels = new int[in.readInt()];
+                for (int i = 0; i < tile.channels.length; i++) {
+                    tile.channels[i] = in.readInt();
                 }
             }
         }
@@ -76,6 +88,9 @@ public class PacketHandler implements IPacketHandler {
             switch (id) {
             case 1: { // Send light info
                 TileEntityLight tile = (TileEntityLight) data[0];
+                if (tile.worldObj.isRemote) {
+                    return null;
+                }
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
@@ -89,6 +104,9 @@ public class PacketHandler implements IPacketHandler {
             break;
             case 2: { // Sync value
                 TileEntityLight tile = (TileEntityLight) data[0];
+                if (tile.worldObj.isRemote) {
+                    return null;
+                }
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
@@ -107,6 +125,20 @@ public class PacketHandler implements IPacketHandler {
                     else {
                         dos.writeFloat(tile.getValue(type));
                     }
+                }
+            }
+            break;
+            case 3: { // Channel info
+                TileEntityLight tile = (TileEntityLight) data[0];
+                if (tile.worldObj.isRemote) {
+                    return null;
+                }
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt(tile.channels.length);
+                for (int i = 0; i < tile.channels.length; i++) {
+                    dos.writeInt(tile.channels[i]);
                 }
             }
             break;

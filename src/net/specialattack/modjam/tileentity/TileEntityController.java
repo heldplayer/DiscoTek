@@ -30,6 +30,7 @@ public class TileEntityController extends TileEntity {
             coord.posX = tag.getInteger("x");
             coord.posY = tag.getInteger("y");
             coord.posZ = tag.getInteger("z");
+            this.link(coord);
         }
     }
 
@@ -79,9 +80,9 @@ public class TileEntityController extends TileEntity {
     public void updateDmxNetwork() {
         for (int i = 0; i < this.lightsLinked.size(); i++) {
             ChunkCoordinates coord = this.lightsLinked.get(i);
-            TileEntity te = this.worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
-            if (te != null && te instanceof TileEntityLight) {
-                ((TileEntityLight) te).sendUniverseData(this.levels);
+            TileEntity tile = this.worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
+            if (tile != null && tile instanceof TileEntityLight) {
+                ((TileEntityLight) tile).sendUniverseData(this.levels);
             }
             else {
                 this.lightsLinked.remove(i);

@@ -7,3 +7,7 @@ item.debug.name=Debug Item
 item.lens.name=Lens
 
 itemGroup.modjam2013=ModJam 2013
+
+gui.light.title=Configuring Light
+gui.light.loading=Loading information
+gui.light.0=Brightness Channel: %s

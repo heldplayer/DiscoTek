@@ -29,8 +29,7 @@ public class TileEntityLight extends TileEntity {
     private float motionFocus = 0.0F;
 
     //Channels 1 - 512 (0 - 511)
-    public int channel = 0;
-    public static final int numChannels = 1;
+    public int[] channels;
 
     private int ticksRemaining = 100;
     private boolean[] needsUpdate = new boolean[10];
@@ -92,11 +91,11 @@ public class TileEntityLight extends TileEntity {
     public float getValue(int index) {
         switch (index) {
         case 2:
-            return this.pitch;
-        case 3:
-            return this.yaw;
-        case 4:
             return this.brightness;
+        case 3:
+            return this.pitch;
+        case 4:
+            return this.yaw;
         case 5:
             return this.focus;
         case 6:
@@ -115,13 +114,13 @@ public class TileEntityLight extends TileEntity {
     public void setValue(int index, float value) {
         switch (index) {
         case 2:
-            this.pitch = value;
+            this.brightness = value;
         break;
         case 3:
-            this.yaw = value;
+            this.pitch = value;
         break;
         case 4:
-            this.brightness = value;
+            this.yaw = value;
         break;
         case 5:
             this.focus = value;
@@ -141,6 +140,45 @@ public class TileEntityLight extends TileEntity {
         }
     }
 
+    public boolean setValue(int index, short value) {
+        switch (index) {
+        case 2:
+            float prev = this.brightness;
+            this.brightness = (float) value / 255.0F;
+            return prev != this.brightness;
+        case 3:
+            prev = this.pitch;
+            this.pitch = (float) value * 1.6F / 255.0F - 0.8F;
+            return prev != this.pitch;
+        case 4:
+            prev = this.yaw;
+            this.yaw = (float) value * 6.28318530718F / 255.0F; // 2 Pi Radians
+            return prev != this.yaw;
+        case 5:
+            prev = this.focus;
+            this.focus = (float) value * 20F / 255.0F;
+            return prev != this.focus;
+        case 6:
+            prev = this.motionPitch;
+            this.motionPitch = (float) value / 255.0F - 0.5F;
+            return prev != this.motionPitch;
+        case 7:
+            prev = this.motionYaw;
+            this.motionYaw = (float) value / 255.0F - 0.5F;
+            return prev != this.motionYaw;
+        case 8:
+            prev = this.motionBrightness;
+            this.motionBrightness = (float) value / 255.0F - 0.5F;
+            return prev != this.motionBrightness;
+        case 9:
+            prev = this.motionFocus;
+            this.motionFocus = (float) value / 255.0F - 0.5F;
+            return prev != this.motionFocus;
+        }
+
+        return false;
+    }
+
     public void sync(int... values) {
         Packet250CustomPayload packet = PacketHandler.createPacket(2, this, values);
         PacketHandler.sendPacketToPlayersWatchingBlock(packet, this.worldObj, this.xCoord, this.zCoord);
@@ -155,7 +193,7 @@ public class TileEntityLight extends TileEntity {
         this.prevYaw = this.yaw = compound.getFloat("yaw");
         this.prevBrightness = this.brightness = compound.getFloat("brightness");
         this.prevFocus = this.focus = compound.getFloat("focus");
-        this.channel = compound.getInteger("channel");
+        this.channels = compound.getIntArray("channels");
     }
 
     @Override
@@ -167,7 +205,7 @@ public class TileEntityLight extends TileEntity {
         compound.setFloat("yaw", this.yaw);
         compound.setFloat("brightness", this.brightness);
         compound.setFloat("focus", this.focus);
-        compound.setInteger("channel", this.channel);
+        compound.setIntArray("channels", this.channels);
     }
 
     @Override
@@ -222,6 +260,16 @@ public class TileEntityLight extends TileEntity {
         }
 
         if (!this.worldObj.isRemote) {
+            int size = 0;
+            switch (this.getBlockMetadata()) {
+            case 0:
+                size = 1;
+            break;
+            }
+            if (this.channels == null || this.channels.length != size) {
+                this.channels = new int[size];
+            }
+
             int count = 0;
             for (int i = 0; i < this.needsUpdate.length; i++) {
                 if (this.needsUpdate[i]) {
@@ -252,8 +300,11 @@ public class TileEntityLight extends TileEntity {
     }
 
     public void sendUniverseData(short[] levels) {
-        this.setValue(4, (float) (levels[this.channel] / 255.0f));
-        this.sync(4);
+        for (int i = 0; this.channels != null && i < this.channels.length; i++) {
+            if (this.setValue(i + 2, levels[this.channels[i]])) {
+                this.sync(i + 2);
+            }
+        }
     }
 
 }

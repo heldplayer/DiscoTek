@@ -10,13 +10,18 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.modjam.Objects;
+import net.specialattack.modjam.PacketHandler;
+import net.specialattack.modjam.client.gui.GuiConfigureSmall;
 import net.specialattack.modjam.client.render.BlockRendererLight;
 import net.specialattack.modjam.tileentity.TileEntityLight;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,7 +52,7 @@ public class BlockLight extends Block {
         }
 
         float yaw = (float) (-entity.rotationYawHead * Math.PI / 180.0D);
-        float pitch = (float) (-entity.rotationPitch * Math.PI / 180.0D);
+        float pitch = (float) (entity.rotationPitch * Math.PI / 180.0D);
         if (pitch > 0.8F) {
             pitch = 0.8F;
         }
@@ -61,10 +66,12 @@ public class BlockLight extends Block {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ) {
-        if (player.isSneaking()) {
-            TileEntity te = world.getBlockTileEntity(x, y, z);
-            if (te != null && te instanceof TileEntityLight) {
-                TileEntityLight light = (TileEntityLight) te;
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+        if (tile != null && tile instanceof TileEntityLight) {
+            TileEntityLight light = (TileEntityLight) tile;
+
+            if (player.isSneaking()) {
                 if (light.hasLens()) {
                     if (!world.isRemote) {
                         ItemStack is = new ItemStack(Objects.itemLens);
@@ -85,8 +92,23 @@ public class BlockLight extends Block {
                     return true;
                 }
             }
+
+            if (world.isRemote) {
+                FMLClientHandler.instance().displayGuiScreen(player, new GuiConfigureSmall(light));
+            }
+            else {
+                if (player instanceof EntityPlayerMP) {
+                    if (player instanceof EntityPlayerMP) {
+                        Packet packet = PacketHandler.createPacket(4, tile);
+                        if (packet != null) {
+                            ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(packet);
+                        }
+                    }
+                }
+            }
         }
-        return false;
+
+        return true;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
