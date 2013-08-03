@@ -47,7 +47,7 @@ public class BlockLight extends Block {
         }
 
         float yaw = (float) (-entity.rotationYawHead * Math.PI / 180.0D);
-        float pitch = (float) (-entity.rotationPitch * Math.PI / 180.0D);
+        float pitch = (float) (entity.rotationPitch * Math.PI / 180.0D);
         if (pitch > 0.8F) {
             pitch = 0.8F;
         }

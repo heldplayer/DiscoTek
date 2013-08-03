@@ -91,7 +91,7 @@ public class TileEntityController extends TileEntity {
     
     @Override
     public void updateEntity() {
-        this.setChannelLevel(0, (short) 255);
+        this.setChannelLevel(0, (short) 50);
         //        for (ChunkCoordinates coord : lightsLinked){
         //            TileEntity te = worldObj.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
         //            if (te != null && te instanceof TileEntityLight){

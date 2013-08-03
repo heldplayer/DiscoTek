@@ -242,6 +242,7 @@ public class TileEntityLight extends TileEntity {
                 this.ticksRemaining = 100;
                 this.sync(2, 3, 4, 5, 6, 7, 8, 9);
             }
+            this.focus = 10f;
         }
     }
 
