@@ -31,12 +31,22 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         TileEntityLight light = (TileEntityLight) tile;
 
         GL11.glPushMatrix();
-        this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+
+        switch (light.getBlockMetadata()) {
+        case 0:
+            this.render1(light, x, y, z, partialTicks);
+        break;
+        }
+
+        GL11.glPopMatrix();
+    }
+
+    public void render1(TileEntityLight light, double x, double y, double z, float partialTicks) {
+        this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+
         float pitch = light.pitch + (light.pitch - light.prevPitch) * partialTicks;
         float yaw = light.yaw + (light.yaw - light.prevYaw) * partialTicks;
-        //        pitch = 0f;
-        //        yaw = 0f;
         this.modelLightYoke.setRotations(pitch, yaw);
         this.modelLightYoke.renderAll();
         this.modelLightParCan.setRotations(pitch, yaw);
@@ -140,7 +150,6 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         if (disableLight) {
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
-
-        GL11.glPopMatrix();
     }
+
 }

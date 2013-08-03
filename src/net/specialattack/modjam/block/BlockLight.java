@@ -1,10 +1,12 @@
 
 package net.specialattack.modjam.block;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +18,8 @@ import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.client.render.BlockRendererLight;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLight extends Block {
 
@@ -75,6 +79,13 @@ public class BlockLight extends Block {
             }
         }
         return false;
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
+        list.add(new ItemStack(itemId, 1, 0));
     }
 
     @Override

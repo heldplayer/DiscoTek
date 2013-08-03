@@ -14,6 +14,7 @@ public class ItemBlockLight extends ItemBlock {
 
     public ItemBlockLight(int itemId) {
         super(itemId);
+        this.setHasSubtypes(true);
     }
 
     @Override
@@ -26,7 +27,11 @@ public class ItemBlockLight extends ItemBlock {
             NBTTagCompound compound = stack.stackTagCompound;
             if (compound != null) {
                 if (compound.hasKey("color")) {
-                    list.add("Color: #" + Integer.toHexString(compound.getInteger("color")).toUpperCase());
+                    String color = Integer.toHexString(compound.getInteger("color")).toUpperCase();
+                    while (color.length() < 6) {
+                        color = "0" + color;
+                    }
+                    list.add("Color: #" + color);
                 }
             }
         }

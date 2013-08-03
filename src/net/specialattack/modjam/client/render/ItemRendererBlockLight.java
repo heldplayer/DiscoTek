@@ -44,6 +44,7 @@ public class ItemRendererBlockLight implements IItemRenderer {
                 this.renderTile.color = item.stackTagCompound.getInteger("color");
             }
         }
+        this.renderTile.blockMetadata = item.getItemDamage();
 
         GL11.glPushMatrix();
 

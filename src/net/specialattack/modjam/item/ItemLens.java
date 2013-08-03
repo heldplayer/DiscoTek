@@ -59,7 +59,11 @@ public class ItemLens extends Item {
             NBTTagCompound compound = stack.stackTagCompound;
             if (compound != null) {
                 if (compound.hasKey("color")) {
-                    list.add("Color: #" + Integer.toHexString(compound.getInteger("color")).toUpperCase());
+                    String color = Integer.toHexString(compound.getInteger("color")).toUpperCase();
+                    while (color.length() < 6) {
+                        color = "0" + color;
+                    }
+                    list.add("Color: #" + color);
                 }
             }
         }
