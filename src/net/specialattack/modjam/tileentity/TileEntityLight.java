@@ -32,6 +32,7 @@ public class TileEntityLight extends TileEntity {
     public static final int numChannels = 1;
 
     private int ticksRemaining = 100;
+    private boolean[] needsUpdate = new boolean[10];
 
     private boolean debug = false;
 
@@ -41,6 +42,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setColor(int color) {
         this.color = color;
+        needsUpdate[0] = true;
     }
 
     public boolean hasLens() {
@@ -49,6 +51,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setHasLens(boolean hasLens) {
         this.hasLens = hasLens;
+        needsUpdate[1] = true;
     }
 
     public float getPitch(float partialTicks) {
@@ -57,6 +60,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setPitch(float pitch) {
         this.prevPitch = this.pitch = pitch;
+        needsUpdate[2] = true;
     }
 
     public float getYaw(float partialTicks) {
@@ -65,6 +69,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setYaw(float yaw) {
         this.prevYaw = this.yaw = yaw;
+        needsUpdate[3] = true;
     }
 
     public float getBrightness(float partialTicks) {
@@ -73,6 +78,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setBrightness(float brightness) {
         this.prevBrightness = this.brightness = brightness;
+        needsUpdate[4] = true;
     }
 
     public float getFocus(float partialTicks) {
@@ -81,6 +87,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setFocus(float focus) {
         this.prevFocus = this.focus = focus;
+        needsUpdate[5] = true;
     }
 
     public float getValue(int index) {
@@ -218,6 +225,21 @@ public class TileEntityLight extends TileEntity {
         }
 
         if (!this.worldObj.isRemote) {
+            int count = 0;
+            for (int i = 0; i < this.needsUpdate.length; i++) {
+                if (this.needsUpdate[i]) {
+                    count++;
+                }
+            }
+            if (count > 0) {
+                int[] ints = new int[count];
+                int j = 0;
+                for (int i = 0; i < this.needsUpdate.length; i++) {
+                    ints[j] = i;
+                }
+                this.sync(ints);
+            }
+
             if (this.debug) {
                 this.motionPitch = 0.01F;
             }
