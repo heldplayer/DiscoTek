@@ -41,7 +41,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setColor(int color) {
         this.color = color;
-        needsUpdate[0] = true;
+        this.needsUpdate[0] = true;
     }
 
     public boolean hasLens() {
@@ -50,7 +50,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setHasLens(boolean hasLens) {
         this.hasLens = hasLens;
-        needsUpdate[1] = true;
+        this.needsUpdate[1] = true;
     }
 
     public float getPitch(float partialTicks) {
@@ -59,7 +59,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setPitch(float pitch) {
         this.prevPitch = this.pitch = pitch;
-        needsUpdate[2] = true;
+        this.needsUpdate[2] = true;
     }
 
     public float getYaw(float partialTicks) {
@@ -68,7 +68,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setYaw(float yaw) {
         this.prevYaw = this.yaw = yaw;
-        needsUpdate[3] = true;
+        this.needsUpdate[3] = true;
     }
 
     public float getBrightness(float partialTicks) {
@@ -77,7 +77,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setBrightness(float brightness) {
         this.prevBrightness = this.brightness = brightness;
-        needsUpdate[4] = true;
+        this.needsUpdate[4] = true;
     }
 
     public float getFocus(float partialTicks) {
@@ -86,7 +86,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setFocus(float focus) {
         this.prevFocus = this.focus = focus;
-        needsUpdate[5] = true;
+        this.needsUpdate[5] = true;
     }
 
     public float getValue(int index) {
@@ -252,7 +252,7 @@ public class TileEntityLight extends TileEntity {
     }
 
     public void sendUniverseData(short[] levels) {
-        this.setValue(4, (float) (levels[channel] / 255.0f));
+        this.setValue(4, (float) (levels[this.channel] / 255.0f));
         this.sync(4);
     }
 

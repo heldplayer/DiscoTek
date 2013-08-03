@@ -90,9 +90,9 @@ public class ModjamMod {
 
         TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
         TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller");
-        
+
         NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
-        
+
         proxy.init(event);
     }
 
