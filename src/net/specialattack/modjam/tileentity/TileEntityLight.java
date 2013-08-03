@@ -62,20 +62,28 @@ public class TileEntityLight extends TileEntity {
         switch (index) {
         case 2:
             this.pitch = value;
+        break;
         case 3:
             this.yaw = value;
+        break;
         case 4:
             this.brightness = value;
+        break;
         case 5:
             this.focus = value;
+        break;
         case 6:
             this.motionPitch = value;
+        break;
         case 7:
             this.motionYaw = value;
+        break;
         case 8:
             this.motionBrightness = value;
+        break;
         case 9:
             this.motionFocus = value;
+        break;
         }
     }
 
