@@ -8,13 +8,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.EnumGameType;
 import net.minecraft.world.World;
-import net.specialattack.modjam.Config;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.client.render.BlockRendererLight;
 import net.specialattack.modjam.tileentity.TileEntityLight;
@@ -71,7 +68,7 @@ public class BlockLight extends Block {
                     ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
                     ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
                     ent.delayBeforeCanPickup = 1;
-                    
+
                     light.color = 0xFFFFFF;
                     return true;
                 }

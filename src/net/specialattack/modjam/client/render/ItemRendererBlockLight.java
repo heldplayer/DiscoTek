@@ -38,10 +38,10 @@ public class ItemRendererBlockLight implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        renderTile.color = 0xFFFFFF;
+        this.renderTile.color = 0xFFFFFF;
         if (item.stackTagCompound != null) {
             if (item.stackTagCompound.hasKey("color")) {
-                renderTile.color = item.stackTagCompound.getInteger("color");
+                this.renderTile.color = item.stackTagCompound.getInteger("color");
             }
         }
 

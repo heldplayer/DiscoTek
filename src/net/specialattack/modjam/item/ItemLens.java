@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import net.specialattack.modjam.Config;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.relauncher.Side;
@@ -89,8 +88,9 @@ public class ItemLens extends Item {
             if (compound.hasKey("color")) {
                 color = compound.getInteger("color");
             }
-            if (color == 0xFFFFFF)
+            if (color == 0xFFFFFF) {
                 return false;
+            }
             light.color = color;
 
             if (!player.capabilities.isCreativeMode) {

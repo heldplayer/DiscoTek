@@ -42,8 +42,9 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         this.modelLightParCan.setRotations(pitch, yaw);
         this.modelLightParCan.render();
 
-        if (disableLight)
+        if (disableLight) {
             Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
+        }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
@@ -136,8 +137,9 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-        if (disableLight)
+        if (disableLight) {
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
+        }
 
         GL11.glPopMatrix();
     }

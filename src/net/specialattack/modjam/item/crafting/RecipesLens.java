@@ -4,7 +4,6 @@ package net.specialattack.modjam.item.crafting;
 import java.util.ArrayList;
 
 import net.minecraft.block.BlockColored;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +13,8 @@ import net.minecraft.world.World;
 import net.specialattack.modjam.item.ItemLens;
 
 public class RecipesLens implements IRecipe {
+
+    public static float[][] dyeColors = new float[][] { { 1.0F, 1.0F, 1.0F }, { 1.0F, 0.5F, 0.0F }, { 0.7F, 0.3F, 0.7F }, { 0.5F, 0.5F, 1.0F }, { 1.0F, 1.0F, 0.0F }, { 0.0F, 1.0F, 0.0F }, { 1.0F, 0.5F, 0.5F }, { 0.3F, 0.3F, 0.3F }, { 0.6F, 0.6F, 0.6F }, { 0.0F, 0.7F, 0.7F }, { 0.7F, 0.0F, 0.7F }, { 0.0F, 0.0F, 1.0F }, { 0.4F, 0.3F, 0.2F }, { 0.0F, 0.5F, 0.0F }, { 1.0F, 0.0F, 0.0F }, { 0.1F, 0.1F, 0.1F } };
 
     @Override
     public boolean matches(InventoryCrafting crafting, World world) {
@@ -75,7 +76,7 @@ public class RecipesLens implements IRecipe {
                     }
                 }
                 else if (stack.itemID == Item.dyePowder.itemID) {
-                    float[] dyeColors = EntitySheep.fleeceColorTable[BlockColored.getBlockFromDye(stack.getItemDamage())];
+                    float[] dyeColors = RecipesLens.dyeColors[BlockColored.getBlockFromDye(stack.getItemDamage())];
                     int red = (int) (dyeColors[0] * 255.0F);
                     int green = (int) (dyeColors[1] * 255.0F);
                     int blue = (int) (dyeColors[2] * 255.0F);

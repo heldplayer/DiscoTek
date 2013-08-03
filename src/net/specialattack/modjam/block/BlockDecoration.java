@@ -20,7 +20,7 @@ public class BlockDecoration extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side, int meta) {
-        return icons[meta];
+        return this.icons[meta];
     }
 
     @Override

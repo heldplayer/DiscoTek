@@ -104,7 +104,7 @@ public class TileEntityLight extends TileEntity {
     }
 
     public boolean hasGel() {
-        return !(color == 0xFFFFFF);
+        return !(this.color == 0xFFFFFF);
     }
 
     public void setBrightness(float percent) {

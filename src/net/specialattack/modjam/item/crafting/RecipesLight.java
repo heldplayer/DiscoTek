@@ -71,7 +71,7 @@ public class RecipesLight implements IRecipe {
     public ItemStack getCraftingResult(InventoryCrafting crafting) {
         ItemStack result = this.result.copy();
 
-        ItemStack parent = crafting.getStackInSlot(copyIndex);
+        ItemStack parent = crafting.getStackInSlot(this.copyIndex);
 
         if (parent != null && parent.stackTagCompound != null) {
             result.stackTagCompound = (NBTTagCompound) parent.stackTagCompound.copy();

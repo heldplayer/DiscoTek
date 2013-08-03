@@ -31,42 +31,42 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
         // Top-bottom connection
         block.setBlockBounds(0.0F, off, 0.0F, 0.1875F, 1.0F - off, 0.1875F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.0F, off, 0.8125F, 0.1875F, 1.0F - off, 1.0F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.8125F, off, 0.8125F, 1.0F, 1.0F - off, 1.0F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.8125F, off, 0.0F, 1.0F, 1.0F - off, 0.1875F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         // Bottom bars
         block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 0.1875F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.0F, 0.0F, 0.8125F, 1.0F, 0.1875F, 1.0F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.0F, 0.0F, off, 0.1875F, 0.1875F, 1.0F - off);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.8125F, 0.0F, off, 1.0F, 0.1875F, 1.0F - off);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         // Top bars
         block.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 0.1875F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.0F, 0.8125F, off, 0.1875F, 1.0F, 1.0F - off);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
-        doRender(block, renderer);
+        this.doRender(block, renderer);
 
         GL11.glPopMatrix();
 
@@ -77,12 +77,12 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
-        boolean connectTop = canConnect(world, x, y + 1, z);
-        boolean connectBottom = canConnect(world, x, y - 1, z);
-        boolean connectNorth = canConnect(world, x, y, z - 1);
-        boolean connectSouth = canConnect(world, x, y, z + 1);
-        boolean connectWest = canConnect(world, x - 1, y, z);
-        boolean connectEast = canConnect(world, x + 1, y, z);
+        boolean connectTop = this.canConnect(world, x, y + 1, z);
+        boolean connectBottom = this.canConnect(world, x, y - 1, z);
+        boolean connectNorth = this.canConnect(world, x, y, z - 1);
+        boolean connectSouth = this.canConnect(world, x, y, z + 1);
+        boolean connectWest = this.canConnect(world, x - 1, y, z);
+        boolean connectEast = this.canConnect(world, x + 1, y, z);
 
         if (((connectNorth || connectSouth) && (connectWest || connectEast)) || (!connectNorth && !connectSouth && !connectWest && !connectEast && !connectBottom && !connectTop)) {
             connectTop = true;
@@ -101,53 +101,53 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
             if ((!connectNorth && !connectWest) || flag) {
                 block.setBlockBounds(0.0F, off, 0.0F, 0.1875F, 1.0F - off, 0.1875F);
-                doRender(block, x, y, z, renderer);
+                this.doRender(block, x, y, z, renderer);
             }
             if ((!connectSouth && !connectWest) || flag) {
                 block.setBlockBounds(0.0F, off, 0.8125F, 0.1875F, 1.0F - off, 1.0F);
-                doRender(block, x, y, z, renderer);
+                this.doRender(block, x, y, z, renderer);
             }
             if ((!connectSouth && !connectEast) || flag) {
                 block.setBlockBounds(0.8125F, off, 0.8125F, 1.0F, 1.0F - off, 1.0F);
-                doRender(block, x, y, z, renderer);
+                this.doRender(block, x, y, z, renderer);
             }
             if ((!connectNorth && !connectEast) || flag) {
                 block.setBlockBounds(0.8125F, off, 0.0F, 1.0F, 1.0F - off, 0.1875F);
-                doRender(block, x, y, z, renderer);
+                this.doRender(block, x, y, z, renderer);
             }
         }
 
         if (connectWest || connectEast) {
             // Bottom bars
             block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 0.1875F);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
 
             block.setBlockBounds(0.0F, 0.0F, 0.8125F, 1.0F, 0.1875F, 1.0F);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
 
             // Top bars
             block.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 0.1875F);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
 
             block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
         }
 
         if (connectNorth || connectSouth) {
             float off = connectWest || connectEast ? 0.1875F : 0.0F;
             // Bottom bars
             block.setBlockBounds(0.0F, 0.0F, off, 0.1875F, 0.1875F, 1.0F - off);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
 
             block.setBlockBounds(0.8125F, 0.0F, off, 1.0F, 0.1875F, 1.0F - off);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
 
             // Top bars
             block.setBlockBounds(0.0F, 0.8125F, off, 0.1875F, 1.0F, 1.0F - off);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
 
             block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
-            doRender(block, x, y, z, renderer);
+            this.doRender(block, x, y, z, renderer);
         }
 
         // Reset block
