@@ -88,6 +88,7 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
+
                 int[] types = (int[]) data[1];
                 dos.writeByte(types.length);
                 for (int i = 0; i < types.length; i++) {

@@ -238,8 +238,8 @@ public class TileEntityLight extends TileEntity {
     }
 
     public void sendUniverseData(short[] levels) {
-        this.brightness = (float) (levels[this.channel] / 255.0f);
-        this.worldObj.getPlayerEntityByName("mbl111").addChatMessage("Level: " + this.brightness);
+        this.setValue(4, (float) (levels[channel] / 255.0f));
+        this.sync(4);
     }
 
 }
