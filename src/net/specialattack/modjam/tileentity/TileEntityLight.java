@@ -27,6 +27,7 @@ public class TileEntityLight extends TileEntity {
 
     //Channels 1 - 512 (0 - 511)
     public int[] channels;
+    private int[] cachedLevels = new int[256];
 
     private int ticksRemaining = 100;
     private boolean[] needsUpdate = new boolean[9];
@@ -145,39 +146,30 @@ public class TileEntityLight extends TileEntity {
         }
     }
 
-    public boolean setValue(int index, int value) {
+    public void setValue(int index, int value) {
         switch (index) {
         case 2:
-            float prev = this.brightness;
             this.brightness = (float) value / 255.0F;
-            return prev != this.brightness;
+        break;
         case 3:
-            prev = this.pitch;
             this.pitch = (float) value * 1.6F / 255.0F - 0.8F;
-            return prev != this.pitch;
+        break;
         case 4:
-            prev = this.yaw;
             this.yaw = (float) value * 6.28318530718F / 255.0F; // 2 Pi Radians
-            return prev != this.yaw;
+        break;
         case 5:
-            prev = this.focus;
             this.focus = (float) value * 20F / 255.0F;
-            return prev != this.focus;
+        break;
         case 6:
-            int prevColor = this.color;
             this.color = (this.color & 0x00FFFF) | ((value << 16) & 0xFF0000);
-            return prevColor != this.color;
+        break;
         case 7:
-            prevColor = this.color;
             this.color = (this.color & 0xFF00FF) | ((value << 8) & 0x00FF00);
-            return prevColor != this.color;
+        break;
         case 8:
-            prevColor = this.color;
             this.color = (this.color & 0xFFFF00) | (value & 0x0000FF);
-            return prevColor != this.color;
+        break;
         }
-
-        return false;
     }
 
     public void sync(int... values) {
@@ -281,6 +273,7 @@ public class TileEntityLight extends TileEntity {
                     if (this.needsUpdate[i]) {
                         ints[j] = i;
                         j++;
+                        this.needsUpdate[i] = false;
                     }
                 }
                 this.sync(ints);
@@ -289,7 +282,7 @@ public class TileEntityLight extends TileEntity {
             this.ticksRemaining--;
             if (this.ticksRemaining <= 0) {
                 this.ticksRemaining = 100;
-                this.sync(2, 3, 4, 5, 9, 10, 11, 12);
+                //this.sync(2, 3, 4, 5, 9, 10, 11, 12);
             }
         }
     }
@@ -308,13 +301,15 @@ public class TileEntityLight extends TileEntity {
             if (this.channels[i] == 0) {
                 continue;
             }
-            if (this.setValue(i + 2, levels[this.channels[i]])) {
+            if (levels[this.channels[i]] != this.cachedLevels[this.channels[i]]) {
+                this.setValue(i + 2, levels[this.channels[i]]);
                 this.sync(i + 2);
             }
         }
         if (this.getBlockMetadata() == 3) {
             this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, Config.blockLightId);
         }
+        System.arraycopy(levels, 0, this.cachedLevels, 0, levels.length);
     }
 
 }

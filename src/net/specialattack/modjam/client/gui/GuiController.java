@@ -1,6 +1,7 @@
 
 package net.specialattack.modjam.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -13,7 +14,7 @@ public class GuiController extends GuiScreen {
 
     private TileEntityController controller;
     private boolean initialized = false;
-    private int guiHeight = 160;
+    private int guiHeight;
     private GuiInstructions instructions;
 
     public GuiController(TileEntityController controller) {
@@ -25,10 +26,10 @@ public class GuiController extends GuiScreen {
     public void initGui() {
         this.buttonList.clear();
         if (this.initialized) {
-            this.guiHeight = 160;
+            this.guiHeight = 164;
 
             if (this.instructions == null) {
-                this.instructions = new GuiInstructions(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 24, 160, 11);
+                this.instructions = new GuiInstructions(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 11);
             }
             else {
                 this.instructions.posX = this.width / 2 - 80;
@@ -38,6 +39,7 @@ public class GuiController extends GuiScreen {
             this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.done")));
             this.buttonList.add(new GuiButton(2, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.up")));
             this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.down")));
+            this.buttonList.add(new GuiButton(4, this.width / 2 + 60, (this.height - this.guiHeight) / 2 + 2, 20, 20, "?"));
         }
         else {
             this.guiHeight = 64;
@@ -86,6 +88,9 @@ public class GuiController extends GuiScreen {
             if (this.instructions.scroll < this.controller.instructions.length - this.instructions.rows) {
                 this.instructions.scroll++;
             }
+        }
+        if (button.id == 4) {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiControllerHelp(this));
         }
     }
 
