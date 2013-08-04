@@ -1,7 +1,6 @@
 
 package net.specialattack.modjam.client.render.tileentity;
 
-import net.minecraft.block.BlockPistonBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;

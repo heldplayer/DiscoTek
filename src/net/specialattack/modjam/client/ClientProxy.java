@@ -6,7 +6,9 @@ import net.specialattack.modjam.CommonProxy;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.client.render.ItemRendererBlockLight;
 import net.specialattack.modjam.client.render.ItemRendererLens;
+import net.specialattack.modjam.client.render.tileentity.TileEntityConsoleRenderer;
 import net.specialattack.modjam.client.render.tileentity.TileEntityLightRenderer;
+import net.specialattack.modjam.tileentity.TileEntityController;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -22,6 +24,7 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLight.class, new TileEntityLightRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityController.class, new TileEntityConsoleRenderer());
     }
 
     @Override

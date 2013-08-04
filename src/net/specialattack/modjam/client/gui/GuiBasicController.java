@@ -2,10 +2,7 @@
 package net.specialattack.modjam.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.EnumOptions;
 import net.specialattack.modjam.Assets;
 import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.tileentity.TileEntityController;

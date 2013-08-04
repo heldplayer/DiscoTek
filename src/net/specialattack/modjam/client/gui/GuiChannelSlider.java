@@ -1,6 +1,5 @@
 package net.specialattack.modjam.client.gui;
 
-import java.util.logging.Level;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
