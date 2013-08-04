@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,25 +13,24 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.client.gui.GuiBasicController;
 import net.specialattack.modjam.client.gui.GuiController;
-import net.specialattack.modjam.client.render.BlockRendererConsole;
 import net.specialattack.modjam.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockController extends Block {
 
-    private int renderId;
+    private Icon[] bottom;
+    private Icon[] top;
+    private Icon[] side;
 
     public BlockController(int blockId) {
         super(blockId, Material.piston);
-        this.renderId = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererConsole(this.renderId));
     }
 
     @Override
@@ -85,6 +85,32 @@ public class BlockController extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister register) {
+        this.top = new Icon[2];
+        this.bottom = new Icon[2];
+        this.side = new Icon[2];
+        for (int i = 0; i < this.top.length; i++) {
+            this.top[i] = register.registerIcon("modjam:controller-top" + i);
+            this.bottom[i] = register.registerIcon("modjam:controller-bottom" + i);
+            this.side[i] = register.registerIcon("modjam:controller-side" + i);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int side, int meta) {
+        Icon[] array = this.side;
+        if (side == 0) {
+            array = this.bottom;
+        }
+        else if (side == 1) {
+            array = this.top;
+        }
+        return array[meta % array.length];
+    }
+
+    @Override
     public TileEntity createTileEntity(World world, int metadata) {
         return new TileEntityController();
     }
@@ -102,11 +128,6 @@ public class BlockController extends Block {
     @Override
     public boolean isOpaqueCube() {
         return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return this.renderId;
     }
 
 }
