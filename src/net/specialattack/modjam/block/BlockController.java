@@ -41,7 +41,10 @@ public class BlockController extends Block {
             TileEntityController controller = (TileEntityController) tile;
 
             if (player.isSneaking()) {
-                controller.startStop();
+                int meta = world.getBlockMetadata(x, y, z);
+                if (meta == 1) {
+                    controller.startStop();
+                }
             }
             else {
                 if (world.isRemote) {
