@@ -30,7 +30,7 @@ public class GuiBasicController extends GuiSliderCompat {
             if (this.levels == null) {
                 this.levels = new short[24];
             }
-
+            //TODO: Make more faders, use FOR loop, paginate them.
             float b0Val = ((float) controller.levels[0] / 255.0f);
             float b1Val = ((float) controller.levels[1] / 255.0f);
             float b2Val = ((float) controller.levels[2] / 255.0f);

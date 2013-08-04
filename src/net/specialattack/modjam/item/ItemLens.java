@@ -75,7 +75,7 @@ public class ItemLens extends Item {
         TileEntity te = world.getBlockTileEntity(x, y, z);
         if (te != null && te instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) te;
-            if (light.getBlockMetadata() == 2)
+            if ((light.getBlockMetadata() & 0xFF) == 2)
                 return false;
             if (light.hasLens()) {
                 if (!world.isRemote) {

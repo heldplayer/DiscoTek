@@ -27,7 +27,7 @@ public class GuiLight extends GuiSliderCompat {
             this.guiHeight = 24 * 4 + 20;
             int y = 16;
             float pan = this.light.getYaw(0) / 8.0f;
-            float tilt = (this.light.getPitch(0) + this.light.pitchRange[light.getBlockMetadata()]) / (this.light.pitchRange[light.getBlockMetadata()] * 2);
+            float tilt = (this.light.getPitch(0) + this.light.pitchRange[light.getBlockMetadata() & 0xFF]) / (this.light.pitchRange[light.getBlockMetadata() & 0xFF] * 2);
             float focus = (this.light.getFocus(0) / 20.0f);
             this.buttonList.add(new GuiButton(100, 192 / 2 - 80, y, 20, 20, "-"));
             this.buttonList.add(new GuiButton(101, 192 / 2 + 60, y, 20, 20, "+"));

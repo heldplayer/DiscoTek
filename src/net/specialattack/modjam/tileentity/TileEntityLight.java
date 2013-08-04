@@ -37,6 +37,16 @@ public class TileEntityLight extends TileEntity {
     private int ticksRemaining = 100;
     private boolean[] needsUpdate = new boolean[13];
 
+    private int direction  = 0;
+    
+    public void setDirection(int side) {
+        this.direction = side;
+    }
+    
+    public int getDirection() {
+        return direction;
+    }
+    
     public int getColor() {
         return this.color;
     }
@@ -168,7 +178,7 @@ public class TileEntityLight extends TileEntity {
             return prev != this.brightness;
         case 3:
             prev = this.pitch;
-            this.pitch = (float) (((value / 255.0F) * pitchRange[this.getBlockMetadata()] * 2) - pitchRange[this.getBlockMetadata()]);
+            this.pitch = (float) (((value / 255.0F) * pitchRange[this.getBlockMetadata() & 0xFF] * 2) - pitchRange[this.getBlockMetadata() & 0xFF]);
             return prev != this.pitch;
         case 4:
             prev = this.yaw;
@@ -264,12 +274,12 @@ public class TileEntityLight extends TileEntity {
         this.brightness += this.motionBrightness;
         this.focus += this.motionFocus;
 
-        if (this.pitch > pitchRange[getBlockMetadata()]) {
-            this.prevPitch = this.pitch = pitchRange[getBlockMetadata()];
+        if (this.pitch > pitchRange[getBlockMetadata() & 0xFF]) {
+            this.prevPitch = this.pitch = pitchRange[getBlockMetadata() & 0xFF];
             this.motionPitch = 0.0F;
         }
-        else if (this.pitch < -pitchRange[getBlockMetadata()]) {
-            this.prevPitch = this.pitch = -pitchRange[getBlockMetadata()];
+        else if (this.pitch < -pitchRange[getBlockMetadata() & 0xFF]) {
+            this.prevPitch = this.pitch = -pitchRange[getBlockMetadata() & 0xFF];
             this.motionPitch = 0.0F;
         }
 
@@ -293,7 +303,7 @@ public class TileEntityLight extends TileEntity {
 
         if (!this.worldObj.isRemote) {
             int size = 0;
-            switch (this.getBlockMetadata()) {
+            switch (this.getBlockMetadata() & 0xFF) {
             case 0:
                 size = 3;
             break;
@@ -337,7 +347,7 @@ public class TileEntityLight extends TileEntity {
     }
 
     public void sendUniverseData(int[] levels) {
-        for (int i = 0; i < this.numChannels[this.getBlockMetadata()]; i++) {
+        for (int i = 0; i < this.numChannels[this.getBlockMetadata() & 0xFF]; i++) {
             if (this.setValue(i + 2, levels[this.channel + i])) {
                 int sv = i;
                 if (sv == 3){

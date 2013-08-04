@@ -144,7 +144,7 @@ public class TileEntityController extends TileEntity {
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
             int size = 0;
-            switch (this.getBlockMetadata()) {
+            switch (this.getBlockMetadata() & 0xFF) {
             case 0:
                 size = 50;
             break;
