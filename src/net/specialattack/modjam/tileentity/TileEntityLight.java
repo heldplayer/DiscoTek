@@ -188,7 +188,7 @@ public class TileEntityLight extends TileEntity {
             return this.color != prev;
         case 8:
             prev = this.color;
-            this.color = ((this.color & 0xFFFF00) | (int) value & 0xFF);
+            this.color = ((this.color & 0xFFFF00) | ((int) (value & 0xFF)));
             return this.color != prev;
         case 9:
             prev = this.motionPitch;
@@ -340,11 +340,11 @@ public class TileEntityLight extends TileEntity {
         for (int i = 0; i < this.numChannels[this.getBlockMetadata()]; i++) {
             if (this.setValue(i + 2, levels[this.channel + i])) {
                 int sv = i;
-                if (sv == 6){
+                if (sv == 3){
                     this.color = 0x0;
                     this.hasLens = false;
                 }
-                if (sv == 6 || sv == 7 || sv == 8){
+                if (sv == 4 || sv == 5 || sv == 6){
                     sv = -1;
                 }
                 this.sync(sv + 2);

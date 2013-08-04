@@ -41,6 +41,11 @@ public class ItemDebug extends Item {
             player.addChatMessage(tile.toString());
             if (tile instanceof TileEntityLight) {
                 player.addChatMessage("Level: " + ((TileEntityLight) tile).getBrightness(0.0F));
+                String color = Integer.toHexString(((TileEntityLight) tile).getColor()).toUpperCase();
+                while (color.length() < 6) {
+                    color = "0" + color;
+                }
+                player.addChatMessage("Color: " + color);
             }
         }
 
