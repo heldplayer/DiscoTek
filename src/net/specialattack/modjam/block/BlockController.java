@@ -24,6 +24,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockController extends Block {
+    
+    // This is the rythem of the night
+    // http://www.youtube.com/watch?v=BfSpU0vEh4M
 
     private Icon[] bottom;
     private Icon[] top;
