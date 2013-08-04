@@ -34,6 +34,16 @@ public class TileEntityLight extends TileEntity {
     private int ticksRemaining = 100;
     private boolean[] needsUpdate = new boolean[13];
 
+    private int direction = 0;
+
+    public void setDirection(int side) {
+        this.direction = side;
+    }
+
+    public int getDirection() {
+        return this.direction;
+    }
+
     public int getColor() {
         return this.color;
     }
@@ -288,7 +298,7 @@ public class TileEntityLight extends TileEntity {
 
         if (!this.worldObj.isRemote) {
             int size = 0;
-            switch (this.getBlockMetadata()) {
+            switch (this.getBlockMetadata() & 0xFF) {
             case 0:
                 size = 1;
             break;

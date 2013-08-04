@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.PacketHandler;
@@ -62,6 +63,32 @@ public class BlockLight extends Block {
 
         tile.setYaw(yaw);
         tile.setPitch(pitch);
+        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int m = MathHelper.floor_double((double) ((entity.rotationPitch) * 4.0F / 360.0F) + 0.5D) & 3;
+        System.out.println(l);
+        int side = 1;
+
+        if (m == 1) {
+            side = 0;
+        }
+        else if (m == 3) {
+            side = 1;
+        }
+        else {
+            if (l == 0) {
+                side = 2;
+            }
+            else if (l == 1) {
+                side = 5;
+            }
+            else if (l == 2) {
+                side = 3;
+            }
+            else if (l == 3) {
+                side = 4;
+            }
+        }
+        tile.setDirection(side);
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
     }
 

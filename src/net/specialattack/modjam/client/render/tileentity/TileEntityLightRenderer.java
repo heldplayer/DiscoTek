@@ -39,7 +39,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
-        switch (light.getBlockMetadata()) {
+        switch (light.getBlockMetadata() & 0xFF) {
         case 0:
             this.render1(light, x, y, z, partialTicks);
         break;
@@ -178,10 +178,20 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     public void render2(TileEntityLight light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 
+        int[] yawRotations = { 180, 180, 180, 180, 0, 0 };
+        int[] pitchRotations = { 0, 180, 270, 90, 180, 180 };
+        int[] rollRotations = { 0, 0, 0, 0, 90, 270 };
+        int side = light.getDirection();
+        GL11.glPushMatrix();
+        GL11.glRotatef(pitchRotations[side], 1.0f, 0.0f, 0.0f);
+        GL11.glRotatef(yawRotations[side], 0.0f, 1.0f, 0.0f);
+        GL11.glRotatef(rollRotations[side], 0.0f, 0.0f, 1.0f);
+
         float pitch = light.getPitch(partialTicks);
         float yaw = light.getYaw(partialTicks);
+        this.modelLightMoverBase.setRotations(0, 0);
         this.modelLightMoverBase.renderAll();
-        this.modelLightTiltArms.setRotations(pitch, yaw);
+        this.modelLightTiltArms.setRotations(0, yaw);
         this.modelLightTiltArms.renderAll();
         GL11.glTranslatef((float) 0, (float) 0.15f, (float) 0);
         this.modelLightMover.setRotations(pitch, yaw);
@@ -296,6 +306,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         if (disableLight) {
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
+        GL11.glPopMatrix();
     }
 
 }

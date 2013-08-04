@@ -16,15 +16,21 @@ import net.minecraft.world.World;
 import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.client.gui.GuiBasicController;
 import net.specialattack.modjam.client.gui.GuiController;
+import net.specialattack.modjam.client.render.BlockRendererConsole;
 import net.specialattack.modjam.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockController extends Block {
 
+    private int renderId;
+
     public BlockController(int blockId) {
         super(blockId, Material.piston);
+        this.renderId = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererConsole(this.renderId));
     }
 
     @Override
@@ -83,6 +89,21 @@ public class BlockController extends Block {
     @Override
     public boolean hasTileEntity(int metadata) {
         return true;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return this.renderId;
     }
 
 }
