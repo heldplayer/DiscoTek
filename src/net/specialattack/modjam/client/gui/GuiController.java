@@ -25,6 +25,8 @@ public class GuiController extends GuiScreen {
     public void initGui() {
         this.buttonList.clear();
         if (this.initialized) {
+            this.guiHeight = 160;
+
             if (this.instructions == null) {
                 this.instructions = new GuiInstructions(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 24, 160, 11);
             }
@@ -38,6 +40,8 @@ public class GuiController extends GuiScreen {
             this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.down")));
         }
         else {
+            this.guiHeight = 64;
+
             this.initialized = this.controller.instructions != null;
 
             if (this.initialized) {

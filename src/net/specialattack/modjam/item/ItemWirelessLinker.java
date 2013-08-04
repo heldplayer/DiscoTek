@@ -44,13 +44,13 @@ public class ItemWirelessLinker extends Item {
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float posX, float posY, float posZ) {
-        if (world.isRemote) {
-            return true;
-        }
-
         TileEntity tile = world.getBlockTileEntity(x, y, z);
 
         if (tile != null && tile instanceof TileEntityLight) {
+            if (world.isRemote) {
+                return true;
+            }
+
             player.addChatMessage("Created link to light (" + x + ", " + y + ", " + z + ")");
 
             NBTTagCompound compound = new NBTTagCompound("tag");
@@ -63,6 +63,10 @@ public class ItemWirelessLinker extends Item {
             return true;
         }
         else if (tile != null && tile instanceof TileEntityController) {
+            if (world.isRemote) {
+                return true;
+            }
+
             if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("x") || !stack.stackTagCompound.hasKey("y") || !stack.stackTagCompound.hasKey("z")) {
                 player.addChatMessage("No light has been selected yet");
             }

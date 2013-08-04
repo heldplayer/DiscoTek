@@ -11,7 +11,12 @@ import org.lwjgl.opengl.GL11;
 
 public class ItemRendererBlockLight implements IItemRenderer {
 
-    private TileEntityLight renderTile = new TileEntityLight();
+    private TileEntityLight renderTile;
+
+    public ItemRendererBlockLight() {
+        renderTile = new TileEntityLight();
+        renderTile.setDirection(1);
+    }
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {

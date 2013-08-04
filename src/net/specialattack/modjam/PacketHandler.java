@@ -44,6 +44,7 @@ public class PacketHandler implements IPacketHandler {
                 tile.setYaw(in.readFloat());
                 tile.setBrightness(in.readFloat());
                 tile.setFocus(in.readFloat());
+                tile.setDirection(in.readInt());
             }
         }
         break;
@@ -87,33 +88,42 @@ public class PacketHandler implements IPacketHandler {
         case 5: {
             TileEntityController tile = (TileEntityController) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null) {
-                int errorLength = in.readInt();
-                if (errorLength > 0) {
-                    byte[] error = new byte[errorLength];
-                    in.readFully(error);
-                    tile.error = new String(error);
-                    tile.errorIndex = in.readInt();
+                if (tile.getBlockMetadata() == 0) {
+                    int count = in.readInt();
+                    tile.levels = new int[count];
+                    for (int i = 0; i < count; i++) {
+                        tile.levels[i] = in.readInt();
+                    }
                 }
-                else {
-                    tile.error = null;
-                }
-
-                int count = in.readInt();
-                tile.instructions = new Instruction[count];
-                for (int i = 0; i < count; i++) {
-                    int length = in.readUnsignedByte();
-                    if (length == 0) {
-                        continue;
+                else if (tile.getBlockMetadata() == 1) {
+                    int errorLength = in.readInt();
+                    if (errorLength > 0) {
+                        byte[] error = new byte[errorLength];
+                        in.readFully(error);
+                        tile.error = new String(error);
+                        tile.errorIndex = in.readInt();
+                    }
+                    else {
+                        tile.error = null;
                     }
 
-                    tile.instructions[i] = new Instruction();
+                    int count = in.readInt();
+                    tile.instructions = new Instruction[count];
+                    for (int i = 0; i < count; i++) {
+                        int length = in.readUnsignedByte();
+                        if (length == 0) {
+                            continue;
+                        }
 
-                    byte[] data = new byte[length];
-                    in.readFully(data);
-                    tile.instructions[i].identifier = new String(data);
-                    tile.instructions[i].argument = in.readUnsignedByte();
+                        tile.instructions[i] = new Instruction();
+
+                        byte[] data = new byte[length];
+                        in.readFully(data);
+                        tile.instructions[i].identifier = new String(data);
+                        tile.instructions[i].argument = in.readUnsignedByte();
+                    }
+                    tile.onInventoryChanged();
                 }
-                tile.onInventoryChanged();
             }
         }
         break;
@@ -166,12 +176,13 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                dos.writeInt(tile.getColor());
+                dos.writeInt(tile.getColor(1.0F));
                 dos.writeBoolean(tile.hasLens());
-                dos.writeFloat(tile.getPitch(0.0F));
-                dos.writeFloat(tile.getYaw(0.0F));
-                dos.writeFloat(tile.getBrightness(0.0F));
-                dos.writeFloat(tile.getFocus(0.0F));
+                dos.writeFloat(tile.getPitch(1.0F));
+                dos.writeFloat(tile.getYaw(1.0F));
+                dos.writeFloat(tile.getBrightness(1.0F));
+                dos.writeFloat(tile.getFocus(1.0F));
+                dos.writeInt(tile.getDirection());
             }
             break;
             case 2: { // Sync value
@@ -189,7 +200,7 @@ public class PacketHandler implements IPacketHandler {
                     int type = types[i];
                     dos.writeByte(type);
                     if (type == 0) {
-                        dos.writeInt(tile.getColor());
+                        dos.writeInt(tile.getColor(1.0F));
                     }
                     else if (type == 1) {
                         dos.writeBoolean(tile.hasLens());
@@ -231,24 +242,32 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                if (tile.error == null) {
-                    dos.writeInt(0);
+                if (tile.getBlockMetadata() == 0) {
+                    dos.writeInt(tile.levels.length);
+                    for (int i = 0; i < tile.levels.length; i++) {
+                        dos.writeInt(tile.levels[i]);
+                    }
                 }
-                else {
-                    dos.writeInt(tile.error.length());
-                    dos.writeBytes(tile.error);
-                    dos.writeInt(tile.errorIndex);
-                }
-                dos.writeInt(tile.instructions.length);
-                for (int i = 0; i < tile.instructions.length; i++) {
-                    Instruction instruction = tile.instructions[i];
-                    if (instruction == null) {
-                        dos.writeByte(0);
+                else if (tile.getBlockMetadata() == 1) {
+                    if (tile.error == null) {
+                        dos.writeInt(0);
                     }
                     else {
-                        dos.writeByte(instruction.identifier.length());
-                        dos.writeBytes(instruction.identifier);
-                        dos.writeByte(instruction.argument);
+                        dos.writeInt(tile.error.length());
+                        dos.writeBytes(tile.error);
+                        dos.writeInt(tile.errorIndex);
+                    }
+                    dos.writeInt(tile.instructions.length);
+                    for (int i = 0; i < tile.instructions.length; i++) {
+                        Instruction instruction = tile.instructions[i];
+                        if (instruction == null) {
+                            dos.writeByte(0);
+                        }
+                        else {
+                            dos.writeByte(instruction.identifier.length());
+                            dos.writeBytes(instruction.identifier);
+                            dos.writeByte(instruction.argument);
+                        }
                     }
                 }
             }

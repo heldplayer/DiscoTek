@@ -8,6 +8,10 @@ tile.controller1.name=Programmable Controller
 
 item.debug.name=Debug Item
 item.lens.name=Lens
+item.wirelesslinker.name=Wireless Linker
+item.orienter0.name=Orienter (Rotation)
+item.orienter1.name=Orienter (Angle)
+item.orienter2.name=Orienter (Focus)
 
 itemGroup.modjam2013=ModJam 2013
 

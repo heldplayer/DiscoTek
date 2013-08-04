@@ -148,7 +148,7 @@ public class GuiInstructions extends Gui {
         if (this.editing) {
             switch (key) {
             case 1:
-                this.stopEditing();
+                this.editing = false;   
 
                 return true;
             case 14:

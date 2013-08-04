@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityLight extends TileEntity {
 
     private int color = 0xFFFFFF;
+    private int prevColor = 0xFFFFFF;
     private boolean hasLens = true; // Relax, don't do it
     private float pitch = 0.0F;
     private float prevPitch = 0.0F;
@@ -44,12 +45,15 @@ public class TileEntityLight extends TileEntity {
         return this.direction;
     }
 
-    public int getColor() {
-        return this.color;
+    public int getColor(float partialTicks) {
+        int red = (int) (((this.prevColor >> 16) & 0xFF) + (((this.color >> 16) & 0xFF) - ((this.prevColor >> 16) & 0xFF)) * partialTicks);
+        int green = (int) (((this.prevColor >> 8) & 0xFF) + (((this.color >> 8) & 0xFF) - ((this.prevColor >> 8) & 0xFF)) * partialTicks);
+        int blue = (int) ((this.prevColor & 0xFF) + ((this.color & 0xFF) - (this.prevColor & 0xFF)) * partialTicks);
+        return red << 16 | green << 8 | blue;
     }
 
     public void setColor(int color) {
-        this.color = color;
+        this.prevColor = this.color = color;
         this.needsUpdate[0] = true;
     }
 
@@ -63,34 +67,34 @@ public class TileEntityLight extends TileEntity {
     }
 
     public float getPitch(float partialTicks) {
-        return this.pitch + (this.pitch - this.prevPitch) * partialTicks;
+        return this.prevPitch + (this.pitch - this.prevPitch) * partialTicks;
     }
 
     public void setPitch(float pitch) {
         this.prevPitch = this.pitch = pitch;
-        this.needsUpdate[2] = true;
+        this.needsUpdate[3] = true;
     }
 
     public float getYaw(float partialTicks) {
-        return this.yaw + (this.yaw - this.prevYaw) * partialTicks;
+        return this.prevYaw + (this.yaw - this.prevYaw) * partialTicks;
     }
 
     public void setYaw(float yaw) {
         this.prevYaw = this.yaw = yaw;
-        this.needsUpdate[3] = true;
+        this.needsUpdate[4] = true;
     }
 
     public float getBrightness(float partialTicks) {
-        return this.brightness + (this.brightness - this.prevBrightness) * partialTicks;
+        return this.prevBrightness + (this.brightness - this.prevBrightness) * partialTicks;
     }
 
     public void setBrightness(float brightness) {
         this.prevBrightness = this.brightness = brightness;
-        this.needsUpdate[4] = true;
+        this.needsUpdate[2] = true;
     }
 
     public float getFocus(float partialTicks) {
-        return this.focus + (this.focus - this.prevFocus) * partialTicks;
+        return this.prevFocus + (this.focus - this.prevFocus) * partialTicks;
     }
 
     public void setFocus(float focus) {
@@ -231,6 +235,7 @@ public class TileEntityLight extends TileEntity {
         this.prevBrightness = this.brightness = compound.getFloat("brightness");
         this.prevFocus = this.focus = compound.getFloat("focus");
         this.channels = compound.getIntArray("channels");
+        this.direction = compound.getInteger("direction");
     }
 
     @Override
@@ -243,6 +248,7 @@ public class TileEntityLight extends TileEntity {
         compound.setFloat("brightness", this.brightness);
         compound.setFloat("focus", this.focus);
         compound.setIntArray("channels", this.channels);
+        compound.setInteger("direction", this.direction);
     }
 
     @Override
@@ -256,6 +262,7 @@ public class TileEntityLight extends TileEntity {
         this.prevYaw = this.yaw;
         this.prevBrightness = this.brightness;
         this.prevFocus = this.focus;
+        this.prevColor = this.color;
 
         if (this.motionYaw > 1.0F) {
             this.motionYaw = 1.0F;

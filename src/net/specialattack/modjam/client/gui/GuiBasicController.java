@@ -12,7 +12,7 @@ public class GuiBasicController extends GuiSliderCompat {
 
     private TileEntityController controller;
     private boolean initialized = false;
-    private int guiHeight = 160;
+    private int guiHeight;
     private short[] levels;
 
     public GuiBasicController(TileEntityController controller) {
@@ -24,6 +24,8 @@ public class GuiBasicController extends GuiSliderCompat {
     public void initGui() {
         this.buttonList.clear();
         if (this.initialized) {
+            this.guiHeight = 160;
+
             if (this.levels == null) {
                 this.levels = new short[24];
             }
@@ -51,7 +53,9 @@ public class GuiBasicController extends GuiSliderCompat {
             // this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.down")));
         }
         else {
-            this.initialized = this.controller.levels != null;
+            this.guiHeight = 64;
+
+            this.initialized = this.controller.levels[0] != -1;
 
             if (this.initialized) {
                 this.initGui();
@@ -70,10 +74,6 @@ public class GuiBasicController extends GuiSliderCompat {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-
-        if (this.initialized) {
-            //
-        }
     }
 
     @Override
@@ -93,6 +93,13 @@ public class GuiBasicController extends GuiSliderCompat {
         y += 6;
         x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
 
+        if (!this.initialized) {
+            title = I18n.func_135052_a("gui.controller.loading");
+            y += 20;
+            x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
+            this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
+        }
+
         this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -103,7 +110,7 @@ public class GuiBasicController extends GuiSliderCompat {
         super.updateScreen();
 
         if (!this.initialized) {
-            this.initialized = this.controller.instructions != null;
+            this.initialized = this.controller.levels[0] != -1;
 
             if (this.initialized) {
                 this.initGui();

@@ -72,7 +72,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        int color = light.getColor();
+        int color = light.getColor(partialTicks);
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
         float green = (float) ((color >> 8) & 0xFF) / 255.0F;
         float blue = (float) (color & 0xFF) / 255.0F;
@@ -88,7 +88,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         blue *= brightness;
 
         if (disableLight) {
-            float lightLength = (64f / ((light.getFocus(0) + 0.01f) * 0.7f));
+            float lightLength = (64f / ((light.getFocus(partialTicks) + 0.01f) * 0.7f));
             float alpha = (0.5F * brightness) + 0.1f;
             //            if (light.brightness > 0) {
             //                System.out.println("A:" + alpha + " | B: " + light.brightness);
@@ -178,8 +178,8 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     public void render2(TileEntityLight light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 
-        int[] yawRotations = { 180, 180, 180, 180, 0, 0 };
-        int[] pitchRotations = { 0, 180, 270, 90, 180, 180 };
+        int[] yawRotations = { 180, 0, 180, 180, 0, 0 };
+        int[] pitchRotations = { 180, 0, 270, 90, 0, 0 };
         int[] rollRotations = { 0, 0, 0, 0, 90, 270 };
         int side = light.getDirection();
         GL11.glPushMatrix();
@@ -205,7 +205,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        int color = light.getColor();
+        int color = light.getColor(partialTicks);
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
         float green = (float) ((color >> 8) & 0xFF) / 255.0F;
         float blue = (float) (color & 0xFF) / 255.0F;
@@ -221,7 +221,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         blue *= brightness;
 
         if (disableLight) {
-            float lightLength = (64f / ((light.getFocus(0) + 0.01f) * 0.7f));
+            float lightLength = (64f / ((light.getFocus(partialTicks) + 0.01f) * 0.7f));
             float alpha = (0.5F * brightness) + 0.1f;
             //            if (light.brightness > 0) {
             //                System.out.println("A:" + alpha + " | B: " + light.brightness);

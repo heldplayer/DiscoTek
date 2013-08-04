@@ -31,7 +31,7 @@ public class GuiLight extends GuiSliderCompat {
             for (int i = 0; i < this.light.channels.length; i++) {
                 this.buttonList.add(new GuiButton(100 + i * 2, this.width / 2 - 90, y, 20, 20, "-"));
                 this.buttonList.add(new GuiButton(101 + i * 2, this.width / 2 + 70, y, 20, 20, "+"));
-                this.buttonList.add(this.sliders[i] = new GuiHorizontalSlider(i, this.width / 2 - 70, y, 140, 20, "gui.light." + i, (float) this.light.channels[i] / 512.0F, this));
+                this.buttonList.add(this.sliders[i] = new GuiHorizontalSlider(i, this.width / 2 - 70, y, 140, 20, "gui.light." + i, (float) this.light.channels[i] / 255.0F, this));
                 y += 24;
             }
         }
@@ -80,7 +80,7 @@ public class GuiLight extends GuiSliderCompat {
                     this.light.channels[id] = 255;
                 }
 
-                this.sliders[id].sliderValue = (float) this.light.channels[id] / 512.0F;
+                this.sliders[id].sliderValue = (float) this.light.channels[id] / 255.0F;
 
                 FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(4, this.light, id, this.light.channels[id]));
             }
@@ -143,7 +143,7 @@ public class GuiLight extends GuiSliderCompat {
     @Override
     public void slideActionPerformed(ModJamSlider slider) {
         if (this.initialized) {
-            this.light.channels[slider.id] = (int) ((float) slider.sliderValue * 512.0F);
+            this.light.channels[slider.id] = (int) ((float) slider.sliderValue * 255.0F);
             FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(4, this.light, slider.id, this.light.channels[slider.id]));
         }
     }

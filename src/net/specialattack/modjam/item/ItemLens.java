@@ -82,7 +82,7 @@ public class ItemLens extends Item {
                 if (!world.isRemote) {
                     ItemStack is = new ItemStack(Objects.itemLens);
                     NBTTagCompound cpnd = new NBTTagCompound("tag");
-                    cpnd.setInteger("color", light.getColor());
+                    cpnd.setInteger("color", light.getColor(1.0F));
                     is.setTagCompound(cpnd);
 
                     Random rand = new Random();

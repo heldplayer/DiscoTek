@@ -15,12 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.client.gui.GuiLight;
 import net.specialattack.modjam.client.render.BlockRendererLight;
+import net.specialattack.modjam.item.ItemOrienter;
 import net.specialattack.modjam.tileentity.TileEntityLight;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -30,11 +30,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockLight extends Block {
 
     private final int renderId;
+    private int temp = 0;
 
     public BlockLight(int blockId) {
         super(blockId, Material.piston);
         this.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererLight(this.renderId));
+    }
+
+    @Override
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float posX, float posY, float posZ, int meta) {
+        temp = side;
+
+        return super.onBlockPlaced(world, x, y, z, side, posX, posY, posZ, meta);
     }
 
     @Override
@@ -52,48 +60,40 @@ public class BlockLight extends Block {
             }
         }
 
-        float yaw = (float) (-entity.rotationYawHead * Math.PI / 180.0D);
-        float pitch = (float) (entity.rotationPitch * Math.PI / 180.0D);
-        if (pitch > 0.8F) {
-            pitch = 0.8F;
+        float yaw = -entity.rotationYawHead;
+        float pitch = entity.rotationPitch;
+        if (pitch > 46.0F) {
+            pitch = 46.0F;
         }
-        if (pitch < -0.8F) {
-            pitch = -0.8F;
+        if (pitch < -46.0F) {
+            pitch = -46.0F;
         }
 
-        tile.setYaw(yaw);
-        tile.setPitch(pitch);
-        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        int m = MathHelper.floor_double((double) ((entity.rotationPitch) * 4.0F / 360.0F) + 0.5D) & 3;
-        System.out.println(l);
-        int side = 1;
+        if (temp == 0) {
+            yaw = -yaw;
+        }
+        if (temp == 4 || temp == 5) {
+            yaw = -yaw;
+        }
 
-        if (m == 1) {
-            side = 0;
+        if (stack.getItemDamage() == 2) {
+            tile.setHasLens(false);
         }
-        else if (m == 3) {
-            side = 1;
-        }
-        else {
-            if (l == 0) {
-                side = 2;
-            }
-            else if (l == 1) {
-                side = 5;
-            }
-            else if (l == 2) {
-                side = 3;
-            }
-            else if (l == 3) {
-                side = 4;
-            }
-        }
-        tile.setDirection(side);
+
+        tile.setYaw((float) (yaw * Math.PI / 180.0D));
+        tile.setPitch((float) (pitch * Math.PI / 180.0D));
+        tile.setDirection(temp);
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ) {
+        ItemStack selected = player.getCurrentEquippedItem();
+
+        if (selected != null && selected.getItem() != null && selected.getItem() instanceof ItemOrienter) {
+            return false;
+        }
+
         TileEntity tile = world.getBlockTileEntity(x, y, z);
 
         if (tile != null && tile instanceof TileEntityLight) {
@@ -104,7 +104,7 @@ public class BlockLight extends Block {
                     if (!world.isRemote) {
                         ItemStack is = new ItemStack(Objects.itemLens);
                         NBTTagCompound cpnd = new NBTTagCompound("tag");
-                        cpnd.setInteger("color", light.getColor());
+                        cpnd.setInteger("color", light.getColor(1.0F));
                         is.setTagCompound(cpnd);
 
                         Random rand = new Random();

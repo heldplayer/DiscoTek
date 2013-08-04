@@ -18,6 +18,7 @@ import net.specialattack.modjam.item.ItemBlockController;
 import net.specialattack.modjam.item.ItemBlockLight;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
+import net.specialattack.modjam.item.ItemOrienter;
 import net.specialattack.modjam.item.ItemWirelessLinker;
 import net.specialattack.modjam.item.crafting.RecipesLens;
 import net.specialattack.modjam.item.crafting.RecipesLight;
@@ -79,13 +80,17 @@ public class ModjamMod {
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug");
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
 
-        Objects.itemWirelessLinker = new ItemWirelessLinker(Config.itemWirelessLinkerId);
-        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:wirelessLinker").setUnlocalizedName("WirelessLinker");
-        GameRegistry.registerItem(Objects.itemWirelessLinker, "ModJam2013.itemWirelessLinker");
-
         Objects.itemLens = new ItemLens(Config.itemLensId);
         Objects.itemLens.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:lens").setUnlocalizedName("lens");
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemLens");
+
+        Objects.itemWirelessLinker = new ItemWirelessLinker(Config.itemWirelessLinkerId);
+        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:wirelessLinker").setUnlocalizedName("wirelesslinker");
+        GameRegistry.registerItem(Objects.itemWirelessLinker, "ModJam2013.itemWirelessLinker");
+
+        Objects.itemOrienter = new ItemOrienter(Config.itemOrienterId);
+        Objects.itemOrienter.setCreativeTab(Objects.creativeTab).setUnlocalizedName("orienter");
+        GameRegistry.registerItem(Objects.itemOrienter, "ModJam2013.itemOrienter");
 
         Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockLight));
 

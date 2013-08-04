@@ -13,7 +13,7 @@ import net.specialattack.modjam.Instruction;
 public class TileEntityController extends TileEntity {
 
     private List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
-    public int[] levels = new int[512];
+    public int[] levels = new int[256];
     public int[] stack = new int[16];
     public int stackPointer;
     public boolean interpretFirst;
@@ -27,6 +27,7 @@ public class TileEntityController extends TileEntity {
         for (int i = 0; i < this.levels.length; i++) {
             this.levels[i] = 0x0;
         }
+        this.levels[0] = -1;
     }
 
     @Override
@@ -42,11 +43,6 @@ public class TileEntityController extends TileEntity {
             this.link(coord);
         }
         this.levels = compound.getIntArray("Levels");
-        if (this.levels.length < 512) {
-            int[] temp = this.levels;
-            this.levels = new int[512];
-            System.arraycopy(temp, 0, this.levels, 0, temp.length);
-        }
         this.instructionPointer = compound.getInteger("Pointer");
         NBTTagList instructions = compound.getTagList("Instructions");
         this.instructions = new Instruction[instructions.tagCount()];
@@ -141,11 +137,14 @@ public class TileEntityController extends TileEntity {
                 i--;
             }
         }
+        this.onInventoryChanged();
     }
 
     @Override
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
+            this.levels[0] = 0;
+
             int size = 0;
             switch (this.getBlockMetadata()) {
             case 1:
