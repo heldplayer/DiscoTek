@@ -11,11 +11,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.PacketHandler;
@@ -147,6 +149,7 @@ public class BlockLight extends Block {
         list.add(new ItemStack(itemId, 1, 0));
         list.add(new ItemStack(itemId, 1, 1));
         list.add(new ItemStack(itemId, 1, 2));
+        list.add(new ItemStack(itemId, 1, 3));
     }
 
     @Override
@@ -172,6 +175,17 @@ public class BlockLight extends Block {
     @Override
     public int getRenderType() {
         return this.renderId;
+    }
+
+    @Override
+    public int isProvidingWeakPower(IBlockAccess blockAccess, int x, int y, int z, int side) {
+        if (blockAccess.getBlockMetadata(x, y, z) == 3) {
+            if (side > 1) {
+                TileEntityLight tileEntityLight = (TileEntityLight)blockAccess.getBlockTileEntity(x, y, z);
+                return (int)(tileEntityLight.getBrightness(0) * 16.0);
+            }
+        }
+        return 0;
     }
 
 }

@@ -1,11 +1,16 @@
 
 package net.specialattack.modjam.tileentity;
 
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockRedstoneRepeater;
+import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.specialattack.modjam.Config;
 import net.specialattack.modjam.PacketHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -308,6 +313,9 @@ public class TileEntityLight extends TileEntity {
             case 2:
                 size = 7;
             break;
+            case 3:
+                size = 1;
+            break;
             }
             if (this.channels == null || this.channels.length != size) {
                 this.channels = new int[size];
@@ -357,6 +365,9 @@ public class TileEntityLight extends TileEntity {
                 this.sync(i + 2);
             }
         }
+        if (this.getBlockMetadata() == 3){
+            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, Config.blockLightId);
+        }
     }
-
+    
 }
