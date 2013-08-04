@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.specialattack.modjam.Assets;
 import net.specialattack.modjam.client.model.ModelDMXRedstone;
+import net.specialattack.modjam.client.model.ModelLaserRound;
 import net.specialattack.modjam.client.model.ModelLightMover;
 import net.specialattack.modjam.client.model.ModelLightMoverBase;
 import net.specialattack.modjam.client.model.ModelLightParCan;
@@ -27,6 +28,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     private ModelLightMoverBase modelLightMoverBase = new ModelLightMoverBase();
     private ModelLightTiltArms modelLightTiltArms = new ModelLightTiltArms();
     private ModelDMXRedstone modelDMXRedstone = new ModelDMXRedstone();
+    private ModelLaserRound modelLaserRound = new ModelLaserRound();
 
     public static boolean disableLight = true;
 
@@ -54,6 +56,9 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         case 3:
             this.render3(light, x, y, z, partialTicks);
         break;
+        case 4:
+            this.render4(light, x, y, z, partialTicks);
+        break;
         }
 
         GL11.glPopMatrix();
@@ -62,6 +67,47 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     private void render3(TileEntityLight light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
         this.modelDMXRedstone.renderAll();
+    }
+
+    private void render4(TileEntityLight light, double x, double y, double z, float partialTicks) {
+        this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+        this.modelLaserRound.renderAll();
+
+        if (disableLight) {
+            Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
+
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            int color = light.getColor(partialTicks);
+            float red = (float) ((color >> 16) & 0xFF) / 255.0F;
+            float green = (float) ((color >> 8) & 0xFF) / 255.0F;
+            float blue = (float) (color & 0xFF) / 255.0F;
+            float brightness = light.getBrightness(partialTicks);
+            red *= brightness;
+            green *= brightness;
+            blue *= brightness;
+
+            GL11.glColor4f(red, green, blue, 1.0F);
+
+            GL11.glRotatef((float) (light.getYaw(partialTicks) * 180.0F / Math.PI), 0.0F, 1.0F, 0.0F);
+
+            for (int i = 0; i < 32; i++) {
+                GL11.glPushMatrix();
+                GL11.glRotatef(light.getFocus(partialTicks) * 4.4F, 1.0F, 0.0F, -1.0F);
+                GL11.glBegin(GL11.GL_LINES);
+                GL11.glVertex3f(0.15F, 0.0F, 0.15F);
+                GL11.glVertex3f(0.15F, (light.getPitch(partialTicks) + 0.8F) * 10.0F + 6.0F, 0.15F);
+                GL11.glEnd();
+                GL11.glPopMatrix();
+                GL11.glRotatef(11.25F, 0.0F, 1.0F, 0.0F);
+            }
+
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+            Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
+        }
     }
 
     public void render1(TileEntityLight light, double x, double y, double z, float partialTicks) {
@@ -80,7 +126,6 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
-        //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         int color = light.getColor(partialTicks);
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
@@ -100,9 +145,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         if (disableLight) {
             float lightLength = (64f / ((light.getFocus(partialTicks) + 0.01f) * 0.7f));
             float alpha = (0.5F * brightness) + 0.1f;
-            //            if (light.brightness > 0) {
-            //                System.out.println("A:" + alpha + " | B: " + light.brightness);
-            //            }
+
             GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
 
@@ -213,19 +256,16 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
-        //GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         int color = light.getColor(partialTicks);
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
         float green = (float) ((color >> 8) & 0xFF) / 255.0F;
         float blue = (float) (color & 0xFF) / 255.0F;
         float brightness = light.getBrightness(partialTicks);
-        //if (light.hasLens()) {
         float lensBrightness = brightness + 0.1f;
         GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
 
         this.modelLightMover.renderLens();
-        //}
         red *= brightness;
         green *= brightness;
         blue *= brightness;
@@ -233,9 +273,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         if (disableLight) {
             float lightLength = (64f / ((light.getFocus(partialTicks) + 0.01f) * 0.7f));
             float alpha = (0.5F * brightness) + 0.1f;
-            //            if (light.brightness > 0) {
-            //                System.out.println("A:" + alpha + " | B: " + light.brightness);
-            //            }
+
             GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
             GL11.glTranslatef(0, 0, 0.35f);

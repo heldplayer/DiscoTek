@@ -149,6 +149,7 @@ public class BlockLight extends Block {
         list.add(new ItemStack(itemId, 1, 1));
         list.add(new ItemStack(itemId, 1, 2));
         list.add(new ItemStack(itemId, 1, 3));
+        list.add(new ItemStack(itemId, 1, 4));
     }
 
     @Override

@@ -7,21 +7,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelDMXRedstone extends ModelBase {
+public class ModelLaserRound extends ModelBase {
 
     public ModelRenderer base;
 
-    public ModelDMXRedstone() {
+    public ModelLaserRound() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
-        this.base.addBox(-4.0F, -8.0F, -4.0F, 8, 5, 8, 0.0F);
 
-        this.base.addBox(-8.0F, -8.0F, -4.0F, 4, 5, 8, 0.0F);
+        this.base.addBox(-6.0F, -8.0F, -6.0F, 12, 5, 12, 0.0F);
 
-        this.base.addBox(4.0F, -8.0F, -4.0F, 4, 5, 8, 0.0F);
-
-        this.base.addBox(-4.0F, -8.0F, -8.0F, 8, 5, 4, 0.0F);
-
-        this.base.addBox(-4.0F, -8.0F, 4.0F, 8, 5, 4, 0.0F);
+        this.base.addBox(-4.0F, -3.0F, -4.0F, 8, 2, 8, 0.0F);
     }
 
     public void renderAll() {

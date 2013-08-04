@@ -12,7 +12,7 @@ public class ModelBasicConsole extends ModelBase {
     public ModelRenderer base;
 
     public ModelBasicConsole() {
-        this.base = new ModelRenderer(this, 0, 0).setTextureSize(16, 16);
+        this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         this.base.addBox(-6.0F, -8.0F, -4.0F, 12, 5, 8, 0.0F);
     }
 

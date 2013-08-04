@@ -21,7 +21,7 @@ public class TileEntityController extends TileEntity {
     public int instructionPointer;
     public String error;
     public int errorIndex;
-    private boolean running; // Do NOT turn me on yet!
+    private boolean running;
 
     public TileEntityController() {
         for (int i = 0; i < this.levels.length; i++) {
@@ -206,6 +206,48 @@ public class TileEntityController extends TileEntity {
                         this.next();
                     }
                     else if (instruction.identifier.equals("LEV3")) { // Set 3 channels
+                        int value3 = instruction.argument;
+                        int channel3 = this.popStack();
+                        int value2 = this.popStack();
+                        int channel2 = this.popStack();
+                        int value1 = this.popStack();
+                        int channel1 = this.popStack();
+                        this.setChannelLevel(channel1, value1);
+                        this.setChannelLevel(channel2, value2);
+                        this.setChannelLevel(channel3, value3);
+                        this.next();
+                    }
+                    else if (instruction.identifier.equals("MOT")) { // Motion channel to N
+                        if (this.interpretFirst) {
+                            this.interpretFirst = false;
+
+                            int ticks = instruction.argument;
+                            int value = this.popStack();
+                            int channel = this.popStack();
+                            this.setChannelLevel(channel, value);
+                            this.next();
+                        }
+                        else {
+                            int value = this.popStack();
+                            value--;
+                            if (value == 0) {
+                                this.next();
+                            }
+                            else {
+                                this.pushStack(value);
+                            }
+                        }
+                    }
+                    else if (instruction.identifier.equals("MOT2")) { // Motion 2 channels
+                        int value2 = instruction.argument;
+                        int channel2 = this.popStack();
+                        int value1 = this.popStack();
+                        int channel1 = this.popStack();
+                        this.setChannelLevel(channel1, value1);
+                        this.setChannelLevel(channel2, value2);
+                        this.next();
+                    }
+                    else if (instruction.identifier.equals("MOT3")) { // Motion 3 channels
                         int value3 = instruction.argument;
                         int channel3 = this.popStack();
                         int value2 = this.popStack();

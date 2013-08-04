@@ -25,16 +25,11 @@ public class TileEntityLight extends TileEntity {
     private float focus = 1.0F;
     private float prevFocus = 1.0F;
 
-    private float motionPitch = 0.0F;
-    private float motionYaw = 0.0F;
-    private float motionBrightness = 0.0F;
-    private float motionFocus = 0.0F;
-
     //Channels 1 - 512 (0 - 511)
     public int[] channels;
 
     private int ticksRemaining = 100;
-    private boolean[] needsUpdate = new boolean[13];
+    private boolean[] needsUpdate = new boolean[9];
 
     private int direction = 0;
 
@@ -119,14 +114,6 @@ public class TileEntityLight extends TileEntity {
             return (float) ((this.color & 0x00FF00) >> 8) / 255.0F;
         case 8: // Blue
             return (float) (this.color & 0x0000FF) / 255.0F;
-        case 9:
-            return this.motionPitch;
-        case 10:
-            return this.motionYaw;
-        case 11:
-            return this.motionBrightness;
-        case 12:
-            return this.motionFocus;
         default:
             return 0.0F;
         }
@@ -154,18 +141,6 @@ public class TileEntityLight extends TileEntity {
         break;
         case 8: // Blue
             this.color = (this.color & 0xFFFF00) | ((int) (value * 255.0F) & 0x0000FF);
-        break;
-        case 9:
-            this.motionPitch = value;
-        break;
-        case 10:
-            this.motionYaw = value;
-        break;
-        case 11:
-            this.motionBrightness = value;
-        break;
-        case 12:
-            this.motionFocus = value;
         break;
         }
     }
@@ -200,22 +175,6 @@ public class TileEntityLight extends TileEntity {
             prevColor = this.color;
             this.color = (this.color & 0xFFFF00) | (value & 0x0000FF);
             return prevColor != this.color;
-        case 9:
-            prev = this.motionPitch;
-            this.motionPitch = (float) value / 255.0F - 0.5F;
-            return prev != this.motionPitch;
-        case 10:
-            prev = this.motionYaw;
-            this.motionYaw = (float) value / 255.0F - 0.5F;
-            return prev != this.motionYaw;
-        case 11:
-            prev = this.motionBrightness;
-            this.motionBrightness = (float) value / 255.0F - 0.5F;
-            return prev != this.motionBrightness;
-        case 12:
-            prev = this.motionFocus;
-            this.motionFocus = (float) value / 255.0F - 0.5F;
-            return prev != this.motionFocus;
         }
 
         return false;
@@ -265,43 +224,25 @@ public class TileEntityLight extends TileEntity {
         this.prevFocus = this.focus;
         this.prevColor = this.color;
 
-        if (this.motionYaw > 1.0F) {
-            this.motionYaw = 1.0F;
-        }
-        else if (this.motionYaw < -1.0F) {
-            this.motionYaw = -1.0F;
-        }
-
-        this.pitch += this.motionPitch;
-        this.yaw += this.motionYaw;
-        this.brightness += this.motionBrightness;
-        this.focus += this.motionFocus;
-
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
-            this.motionPitch = 0.0F;
         }
         else if (this.pitch < -0.8F) {
             this.prevPitch = this.pitch = -0.8F;
-            this.motionPitch = 0.0F;
         }
 
         if (this.brightness > 1.0F) {
             this.brightness = 1.0F;
-            this.motionBrightness = 0.0F;
         }
         else if (this.brightness < 0.0F) {
             this.brightness = 0.0F;
-            this.motionBrightness = 0.0F;
         }
 
         if (this.focus > 20.0F) {
             this.focus = 20.0F;
-            this.motionFocus = 0.0F;
         }
         else if (this.focus < 0.0F) {
             this.focus = 0.0F;
-            this.motionFocus = 0.0F;
         }
 
         if (!this.worldObj.isRemote) {
@@ -318,6 +259,9 @@ public class TileEntityLight extends TileEntity {
             break;
             case 3:
                 size = 1;
+            break;
+            case 4:
+                size = 7;
             break;
             }
             if (this.channels == null || this.channels.length != size) {
@@ -353,8 +297,8 @@ public class TileEntityLight extends TileEntity {
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        if (this.getBlockMetadata() == 0) {
-            return super.getRenderBoundingBox().expand(10.0D, 10.0D, 10.0D);
+        if (this.getBlockMetadata() == 3) {
+            return super.getRenderBoundingBox();
         }
         return super.getRenderBoundingBox().expand(64.0D, 64.0D, 64.0D);
     }
