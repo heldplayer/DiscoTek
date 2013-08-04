@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.specialattack.modjam.Assets;
+import net.specialattack.modjam.client.model.ModelDMXRedstone;
 import net.specialattack.modjam.client.model.ModelLightMover;
 import net.specialattack.modjam.client.model.ModelLightMoverBase;
 import net.specialattack.modjam.client.model.ModelLightParCan;
@@ -25,6 +26,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     private ModelLightMover modelLightMover = new ModelLightMover();
     private ModelLightMoverBase modelLightMoverBase = new ModelLightMoverBase();
     private ModelLightTiltArms modelLightTiltArms = new ModelLightTiltArms();
+    private ModelDMXRedstone modelDMXRedstone = new ModelDMXRedstone();
 
     public static boolean disableLight = true;
 
@@ -49,9 +51,17 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         case 2:
             this.render2(light, x, y, z, partialTicks);
         break;
+        case 3:
+            this.render3(light, x, y, z, partialTicks);
+        break;
         }
 
         GL11.glPopMatrix();
+    }
+
+    private void render3(TileEntityLight light, double x, double y, double z, float partialTicks) {
+        this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+        this.modelDMXRedstone.renderAll();
     }
 
     public void render1(TileEntityLight light, double x, double y, double z, float partialTicks) {

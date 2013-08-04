@@ -140,6 +140,8 @@ public class TileEntityController extends TileEntity {
         this.onInventoryChanged();
     }
 
+    //TODO Move this to a seperate method so that a switch would look pretty here :P
+    //then I can use the same framework to work on my experimental console idea :D
     @Override
     public void updateEntity() {
         if (!this.worldObj.isRemote) {

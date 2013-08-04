@@ -233,8 +233,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                dos.writeInt((int) data[1]);
-                dos.writeInt((int) data[2]);
+                dos.writeInt((Integer) data[1]);
+                dos.writeInt((Integer) data[2]);
             }
             break;
             case 5: { // Controller instructions

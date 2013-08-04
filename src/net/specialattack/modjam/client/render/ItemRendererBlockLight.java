@@ -14,8 +14,8 @@ public class ItemRendererBlockLight implements IItemRenderer {
     private TileEntityLight renderTile;
 
     public ItemRendererBlockLight() {
-        renderTile = new TileEntityLight();
-        renderTile.setDirection(1);
+        this.renderTile = new TileEntityLight();
+        this.renderTile.setDirection(1);
     }
 
     @Override

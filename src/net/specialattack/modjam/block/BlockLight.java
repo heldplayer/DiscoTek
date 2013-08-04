@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.specialattack.modjam.Objects;
 import net.specialattack.modjam.PacketHandler;
@@ -40,7 +41,7 @@ public class BlockLight extends Block {
 
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float posX, float posY, float posZ, int meta) {
-        temp = side;
+        this.temp = side;
 
         return super.onBlockPlaced(world, x, y, z, side, posX, posY, posZ, meta);
     }
@@ -69,10 +70,10 @@ public class BlockLight extends Block {
             pitch = -46.0F;
         }
 
-        if (temp == 0) {
+        if (this.temp == 0) {
             yaw = -yaw;
         }
-        if (temp == 4 || temp == 5) {
+        if (this.temp == 4 || this.temp == 5) {
             yaw = -yaw;
         }
 
@@ -82,7 +83,7 @@ public class BlockLight extends Block {
 
         tile.setYaw((float) (yaw * Math.PI / 180.0D));
         tile.setPitch((float) (pitch * Math.PI / 180.0D));
-        tile.setDirection(temp);
+        tile.setDirection(this.temp);
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
     }
 
@@ -147,6 +148,7 @@ public class BlockLight extends Block {
         list.add(new ItemStack(itemId, 1, 0));
         list.add(new ItemStack(itemId, 1, 1));
         list.add(new ItemStack(itemId, 1, 2));
+        list.add(new ItemStack(itemId, 1, 3));
     }
 
     @Override
@@ -172,6 +174,17 @@ public class BlockLight extends Block {
     @Override
     public int getRenderType() {
         return this.renderId;
+    }
+
+    @Override
+    public int isProvidingWeakPower(IBlockAccess blockAccess, int x, int y, int z, int side) {
+        if (blockAccess.getBlockMetadata(x, y, z) == 3) {
+            if (side > 1) {
+                TileEntityLight tileEntityLight = (TileEntityLight) blockAccess.getBlockTileEntity(x, y, z);
+                return (int) (tileEntityLight.getBrightness(0) * 16.0);
+            }
+        }
+        return 0;
     }
 
 }
