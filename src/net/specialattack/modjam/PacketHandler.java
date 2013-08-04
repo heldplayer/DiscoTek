@@ -69,17 +69,14 @@ public class PacketHandler implements IPacketHandler {
         case 3: {
             TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null && tile.worldObj.isRemote) {
-                tile.channels = new int[in.readInt()];
-                for (int i = 0; i < tile.channels.length; i++) {
-                    tile.channels[i] = in.readInt();
-                }
+                tile.channel = in.readInt();
             }
         }
         break;
         case 4: {
             TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null && !tile.worldObj.isRemote) {
-                tile.channels[in.readInt()] = in.readInt();
+                tile.channel = in.readInt();
                 tile.onInventoryChanged();
             }
         }
@@ -101,6 +98,36 @@ public class PacketHandler implements IPacketHandler {
                     in.readFully(data);
                     tile.instructions[i].identifier = new String(data);
                     tile.instructions[i].argument = in.readUnsignedByte();
+                }
+                tile.onInventoryChanged();
+            }
+        }
+        break;
+        case 6: {
+            TileEntityController tile = (TileEntityController) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            if (tile != null) {
+                int count = in.readInt();
+                for (int i = 0; i < count; i++) {
+                    tile.levels[i] = in.readUnsignedByte();
+                }
+                tile.onInventoryChanged();
+                tile.updateDmxNetwork();
+            }
+        }
+        break;
+        case 7: {
+            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
+            if (tile != null && !tile.worldObj.isRemote) {
+                switch (in.readInt()){
+                case 1:
+                    tile.setYaw(in.readFloat());
+                    break;
+                case 2:
+                    tile.setPitch(in.readFloat());
+                    break;
+                case 3:
+                    tile.setFocus(in.readFloat());
+                    break;
                 }
                 tile.onInventoryChanged();
             }
@@ -167,10 +194,7 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                dos.writeInt(tile.channels.length);
-                for (int i = 0; i < tile.channels.length; i++) {
-                    dos.writeInt(tile.channels[i]);
-                }
+                dos.writeInt(tile.channel);
             }
             break;
             case 4: { // Set channel
@@ -181,8 +205,7 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                dos.writeInt((int) data[1]);
-                dos.writeInt((int) data[2]);
+                dos.writeInt((Integer) data[1]);
             }
             break;
             case 5: { // Controller instructions
@@ -204,6 +227,26 @@ public class PacketHandler implements IPacketHandler {
                 }
             }
             break;
+                case 6: { // Controller levels
+                    TileEntityController tile = (TileEntityController) data[0];
+                    dos.writeInt(tile.xCoord);
+                    dos.writeInt(tile.yCoord);
+                    dos.writeInt(tile.zCoord);
+                    dos.writeInt(tile.levels.length);
+                    for (int i = 0; i < tile.levels.length; i++) {
+                        dos.writeByte(tile.levels[i]);
+                    }
+                }
+            break;
+                case 7: { // Set Pan || Tilt
+                    TileEntityLight tile = (TileEntityLight) data[0];
+                    dos.writeInt(tile.xCoord);
+                    dos.writeInt(tile.yCoord);
+                    dos.writeInt(tile.zCoord);
+                    dos.writeInt((Integer) data[1]);
+                    dos.writeFloat((Float) data[2]);
+                }
+                break;
             }
         }
         catch (IOException e) {

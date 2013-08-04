@@ -62,6 +62,7 @@ public class BlockLight extends Block {
 
         tile.setYaw(yaw);
         tile.setPitch(pitch);
+        world.setBlockMetadataWithNotify(x, y, z,stack.getItemDamage(), 0);
     }
 
     @Override
@@ -117,6 +118,8 @@ public class BlockLight extends Block {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
         list.add(new ItemStack(itemId, 1, 0));
+        list.add(new ItemStack(itemId, 1, 1));
+        list.add(new ItemStack(itemId, 1, 2));
     }
 
     @Override

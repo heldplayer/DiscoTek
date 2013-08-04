@@ -75,6 +75,8 @@ public class ItemLens extends Item {
         TileEntity te = world.getBlockTileEntity(x, y, z);
         if (te != null && te instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) te;
+            if (light.getBlockMetadata() == 2)
+                return false;
             if (light.hasLens()) {
                 if (!world.isRemote) {
                     ItemStack is = new ItemStack(Objects.itemLens);
@@ -95,6 +97,7 @@ public class ItemLens extends Item {
             if (compound.hasKey("color")) {
                 color = compound.getInteger("color");
             }
+
             if (!world.isRemote) {
                 light.setColor(color);
                 light.setHasLens(true);

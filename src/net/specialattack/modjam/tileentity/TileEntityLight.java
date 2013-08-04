@@ -28,11 +28,14 @@ public class TileEntityLight extends TileEntity {
     private float motionBrightness = 0.0F;
     private float motionFocus = 0.0F;
 
+    public static float[] pitchRange = { 0.8f, 1.8f, 1.8f };
+
     //Channels 1 - 512 (0 - 511)
-    public int[] channels;
+    public int channel = 0;
+    public int[] numChannels = { 1, 4 , 7};
 
     private int ticksRemaining = 100;
-    private boolean[] needsUpdate = new boolean[10];
+    private boolean[] needsUpdate = new boolean[13];
 
     public int getColor() {
         return this.color;
@@ -58,6 +61,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setPitch(float pitch) {
         this.prevPitch = this.pitch = pitch;
+        this.motionPitch = 0;
         this.needsUpdate[2] = true;
     }
 
@@ -67,6 +71,7 @@ public class TileEntityLight extends TileEntity {
 
     public void setYaw(float yaw) {
         this.prevYaw = this.yaw = yaw;
+        this.motionYaw = 0;
         this.needsUpdate[3] = true;
     }
 
@@ -99,12 +104,18 @@ public class TileEntityLight extends TileEntity {
         case 5:
             return this.focus;
         case 6:
-            return this.motionPitch;
+            return (this.color & 0xFF0000 >> 16);
         case 7:
-            return this.motionYaw;
+            return (this.color & 0xFF00 >> 8);
         case 8:
-            return this.motionBrightness;
+            return (this.color & 0xFF);
         case 9:
+            return this.motionPitch;
+        case 10:
+            return this.motionYaw;
+        case 11:
+            return this.motionBrightness;
+        case 12:
             return this.motionFocus;
         default:
             return 0.0F;
@@ -126,15 +137,24 @@ public class TileEntityLight extends TileEntity {
             this.focus = value;
         break;
         case 6:
-            this.motionPitch = value;
+            this.color = (this.color & 0x00FFFF) | (((int)(value * 255) & 0xFF) << 16);
         break;
         case 7:
-            this.motionYaw = value;
+            this.color = (this.color & 0xFF00FF) | (((int)(value * 255) & 0xFF) << 8);
         break;
         case 8:
-            this.motionBrightness = value;
+            this.color = (this.color & 0xFFFF00) | (((int)(value * 255) & 0xFF));
         break;
         case 9:
+            this.motionPitch = value;
+        break;
+        case 10:
+            this.motionYaw = value;
+        break;
+        case 11:
+            this.motionBrightness = value;
+        break;
+        case 12:
             this.motionFocus = value;
         break;
         }
@@ -148,7 +168,7 @@ public class TileEntityLight extends TileEntity {
             return prev != this.brightness;
         case 3:
             prev = this.pitch;
-            this.pitch = (float) value * 1.6F / 255.0F - 0.8F;
+            this.pitch = (float) (((value / 255.0F) * pitchRange[this.getBlockMetadata()] * 2) - pitchRange[this.getBlockMetadata()]);
             return prev != this.pitch;
         case 4:
             prev = this.yaw;
@@ -159,18 +179,30 @@ public class TileEntityLight extends TileEntity {
             this.focus = (float) value * 20F / 255.0F;
             return prev != this.focus;
         case 6:
+            prev = this.color;
+            this.color = ((this.color & 0x00FFFF) | ((int) (value & 0xFF) << 16));
+            return this.color != prev;
+        case 7:
+            prev = this.color;
+            this.color = ((this.color & 0xFF00FF) | ((int) (value & 0xFF) << 8));
+            return this.color != prev;
+        case 8:
+            prev = this.color;
+            this.color = ((this.color & 0xFFFF00) | (int) value & 0xFF);
+            return this.color != prev;
+        case 9:
             prev = this.motionPitch;
             this.motionPitch = (float) value / 255.0F - 0.5F;
             return prev != this.motionPitch;
-        case 7:
+        case 10:
             prev = this.motionYaw;
             this.motionYaw = (float) value / 255.0F - 0.5F;
             return prev != this.motionYaw;
-        case 8:
+        case 11:
             prev = this.motionBrightness;
             this.motionBrightness = (float) value / 255.0F - 0.5F;
             return prev != this.motionBrightness;
-        case 9:
+        case 12:
             prev = this.motionFocus;
             this.motionFocus = (float) value / 255.0F - 0.5F;
             return prev != this.motionFocus;
@@ -193,7 +225,7 @@ public class TileEntityLight extends TileEntity {
         this.prevYaw = this.yaw = compound.getFloat("yaw");
         this.prevBrightness = this.brightness = compound.getFloat("brightness");
         this.prevFocus = this.focus = compound.getFloat("focus");
-        this.channels = compound.getIntArray("channels");
+        this.channel = compound.getInteger("channel");
     }
 
     @Override
@@ -205,7 +237,7 @@ public class TileEntityLight extends TileEntity {
         compound.setFloat("yaw", this.yaw);
         compound.setFloat("brightness", this.brightness);
         compound.setFloat("focus", this.focus);
-        compound.setIntArray("channels", this.channels);
+        compound.setInteger("channel", this.channel);
     }
 
     @Override
@@ -232,12 +264,12 @@ public class TileEntityLight extends TileEntity {
         this.brightness += this.motionBrightness;
         this.focus += this.motionFocus;
 
-        if (this.pitch > 0.8F) {
-            this.prevPitch = this.pitch = 0.8F;
+        if (this.pitch > pitchRange[getBlockMetadata()]) {
+            this.prevPitch = this.pitch = pitchRange[getBlockMetadata()];
             this.motionPitch = 0.0F;
         }
-        else if (this.pitch < -0.8F) {
-            this.prevPitch = this.pitch = -0.8F;
+        else if (this.pitch < -pitchRange[getBlockMetadata()]) {
+            this.prevPitch = this.pitch = -pitchRange[getBlockMetadata()];
             this.motionPitch = 0.0F;
         }
 
@@ -263,11 +295,14 @@ public class TileEntityLight extends TileEntity {
             int size = 0;
             switch (this.getBlockMetadata()) {
             case 0:
-                size = 1;
+                size = 3;
             break;
-            }
-            if (this.channels == null || this.channels.length != size) {
-                this.channels = new int[size];
+            case 1:
+                size = 8;
+            break;
+            case 2:
+                size = 8;
+            break;
             }
 
             int count = 0;
@@ -281,6 +316,7 @@ public class TileEntityLight extends TileEntity {
                 int j = 0;
                 for (int i = 0; i < this.needsUpdate.length; i++) {
                     ints[j] = i;
+                    //j++;
                 }
                 this.sync(ints);
             }
@@ -288,22 +324,30 @@ public class TileEntityLight extends TileEntity {
             this.ticksRemaining--;
             if (this.ticksRemaining <= 0) {
                 this.ticksRemaining = 100;
-                this.sync(2, 3, 4, 5, 6, 7, 8, 9);
+                this.sync(1, 2, 3, 4, 5, 9, 10, 11, 12);
             }
-            this.focus = 10f;
+            //this.focus = 10f;
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().expand(10.0D, 10.0D, 10.0D);
+        return super.getRenderBoundingBox().expand(32.0D, 32.0D, 32.0D);
     }
 
     public void sendUniverseData(int[] levels) {
-        for (int i = 0; this.channels != null && i < this.channels.length; i++) {
-            if (this.setValue(i + 2, levels[this.channels[i]])) {
-                this.sync(i + 2);
+        for (int i = 0; i < this.numChannels[this.getBlockMetadata()]; i++) {
+            if (this.setValue(i + 2, levels[this.channel + i])) {
+                int sv = i;
+                if (sv == 6){
+                    this.color = 0x0;
+                    this.hasLens = false;
+                }
+                if (sv == 6 || sv == 7 || sv == 8){
+                    sv = -1;
+                }
+                this.sync(sv + 2);
             }
         }
     }

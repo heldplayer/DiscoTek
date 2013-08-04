@@ -13,6 +13,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.modjam.PacketHandler;
+import net.specialattack.modjam.client.gui.GuiBasicController;
 import net.specialattack.modjam.client.gui.GuiController;
 import net.specialattack.modjam.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -33,7 +34,7 @@ public class BlockController extends Block {
             TileEntityController controller = (TileEntityController) tile;
 
             if (world.isRemote) {
-                FMLClientHandler.instance().displayGuiScreen(player, new GuiController(controller));
+                FMLClientHandler.instance().displayGuiScreen(player, new GuiBasicController(controller));
             }
             else {
                 if (player instanceof EntityPlayerMP) {

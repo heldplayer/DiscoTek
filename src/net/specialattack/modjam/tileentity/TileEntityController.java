@@ -186,13 +186,13 @@ public class TileEntityController extends TileEntity {
                         this.popStack();
                         next();
                     }
-                    else if (instruction.identifier.equals("PUSH")) { // Set channel to N
+                    else if (instruction.identifier.equals("LEV")) { // Set channel to N
                         int channel = this.popStack();
                         int value = instruction.argument;
                         this.setChannelLevel(channel, value);
                         next();
                     }
-                    else if (instruction.identifier.equals("PUSH")) { // Go to instruction at index N
+                    else if (instruction.identifier.equals("GOTO")) { // Go to instruction at index N
                         changeTo(instruction.argument);
                         next();
                     }
@@ -241,5 +241,4 @@ public class TileEntityController extends TileEntity {
         }
         return this.stack[this.stackPointer + 1];
     }
-
 }
