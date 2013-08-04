@@ -2,8 +2,9 @@ tile.light0.name=Fresnel
 tile.light1.name=SpA 250
 tile.light2.name=SpA 250 LED
 tile.light3.name=DMX to Redstone Converter
+tile.light4.name=Radial laser emitter
 tile.truss.name=Truss
-tile.decoration.name=Decorative Block
+tile.decoration.name=Lighting Hull
 tile.controller0.name=Basic Controller
 tile.controller1.name=Programmable Controller
 

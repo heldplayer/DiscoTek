@@ -21,20 +21,25 @@ public class RecipesLight implements IRecipe {
 
     @Override
     public boolean matches(InventoryCrafting crafting, World world) {
+        boolean noMatch = false;
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
-                boolean noMatch = true;
-                if (this.checkMatch(crafting, i, j, true)) {
-                    noMatch = false;
+                if (!this.checkMatch(crafting, i, j, true)) {
+                    noMatch = true;
                 }
-
-                if (this.checkMatch(crafting, i, j, false)) {
-                    noMatch = false;
+            }
+        }
+        if (noMatch) {
+            noMatch = false;
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 3; ++j) {
+                    if (!this.checkMatch(crafting, i, j, false)) {
+                        noMatch = true;
+                    }
                 }
-
-                if (noMatch) {
-                    return false;
-                }
+            }
+            if (noMatch) {
+                return false;
             }
         }
 

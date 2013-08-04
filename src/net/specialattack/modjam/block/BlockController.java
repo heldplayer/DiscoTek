@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockController extends Block {
-    
+
     // This is the rythem of the night
     // http://www.youtube.com/watch?v=BfSpU0vEh4M
 
@@ -83,8 +83,9 @@ public class BlockController extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
-        list.add(new ItemStack(itemId, 1, 0));
-        list.add(new ItemStack(itemId, 1, 1));
+        for (int i = 0; i < 2; i++) {
+            list.add(new ItemStack(itemId, 1, i));
+        }
     }
 
     @Override

@@ -44,6 +44,9 @@ public class TileEntityController extends TileEntity {
             this.link(coord);
         }
         this.levels = compound.getIntArray("Levels");
+        if (this.levels.length != 255) {
+            this.levels = new int[255];
+        }
         this.instructionPointer = compound.getInteger("Pointer");
         NBTTagList instructions = compound.getTagList("Instructions");
         this.instructions = new Instruction[instructions.tagCount()];

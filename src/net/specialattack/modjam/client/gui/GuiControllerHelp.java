@@ -63,7 +63,7 @@ public class GuiControllerHelp extends GuiScreen {
         "", //
         "\u00a79SLEEP_PARAM", //
         "Sleeps for 'PARAM' ticks, there are", //
-        "20 seconds in a tick", //
+        "20 ticks in a second", //
         "", //
         "\u00a79PUSH_PARAM", //
         "Pushes the value 'PARAM' to the", //
@@ -78,12 +78,12 @@ public class GuiControllerHelp extends GuiScreen {
         "", //
         "\u00a79LEV2_PARAM", //
         "Sets channel $1 to 'PARAM' and", //
-        "sets channel $3 to $2", //
+        "channel $3 to $2", //
         "", //
         "\u00a79LEV3_PARAM", //
         "Sets channel $1 to 'PARAM',", //
-        "sets channel $3 to $2 and", //
-        "sets channel $5 to $4", //
+        "channel $3 to $2 and", //
+        "channel $5 to $4", //
         }, //
         new String[] { // Page 6
         "\u00a79MOT_PARAM", //
@@ -122,8 +122,8 @@ public class GuiControllerHelp extends GuiScreen {
     public void initGui() {
         this.buttonList.clear();
 
-        this.buttonList.add(prev = new GuiButton(0, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.help.previous")));
-        this.buttonList.add(next = new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.help.next")));
+        this.buttonList.add(this.prev = new GuiButton(0, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.help.previous")));
+        this.buttonList.add(this.next = new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.help.next")));
 
         this.prev.enabled = false;
         if (this.lines.length == 1) {
@@ -156,7 +156,7 @@ public class GuiControllerHelp extends GuiScreen {
     @Override
     protected void keyTyped(char character, int key) {
         if (key == 1 || key == this.mc.gameSettings.keyBindInventory.keyCode) {
-            this.mc.displayGuiScreen(parent);
+            this.mc.displayGuiScreen(this.parent);
         }
     }
 
@@ -178,7 +178,7 @@ public class GuiControllerHelp extends GuiScreen {
         y += 12;
         x = (this.width - 192) / 2 + 6;
 
-        for (String str : this.lines[page]) {
+        for (String str : this.lines[this.page]) {
             this.fontRenderer.drawString(str, x, y, 0x4F4F4F);
             y += 10;
         }

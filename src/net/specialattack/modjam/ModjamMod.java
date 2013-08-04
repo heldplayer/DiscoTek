@@ -3,6 +3,7 @@ package net.specialattack.modjam;
 
 import java.io.File;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +17,7 @@ import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.gui.GuiHandler;
 import net.specialattack.modjam.item.ItemBlockController;
 import net.specialattack.modjam.item.ItemBlockLight;
+import net.specialattack.modjam.item.ItemCrafting;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
 import net.specialattack.modjam.item.ItemOrienter;
@@ -92,6 +94,10 @@ public class ModjamMod {
         Objects.itemOrienter.setCreativeTab(Objects.creativeTab).setUnlocalizedName("orienter");
         GameRegistry.registerItem(Objects.itemOrienter, "ModJam2013.itemOrienter");
 
+        Objects.itemCrafting = new ItemCrafting(Config.itemCraftingId);
+        Objects.itemCrafting.setCreativeTab(Objects.creativeTab).setUnlocalizedName("crafting");
+        GameRegistry.registerItem(Objects.itemCrafting, "ModJam2013.itemCrafting");
+
         Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockLight));
 
         TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
@@ -106,10 +112,38 @@ public class ModjamMod {
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
 
+        ItemStack hull = new ItemStack(Objects.blockDecoration, 1, 0);
+        ItemStack lens = new ItemStack(Objects.itemLens, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack glass = new ItemStack(Block.glass, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack glassPane = new ItemStack(Block.thinGlass, 1, 0);
+        ItemStack bulb = new ItemStack(Objects.itemCrafting, 1, 0);
+        ItemStack led = new ItemStack(Objects.itemCrafting, 1, 1);
+        ItemStack servo = new ItemStack(Objects.itemCrafting, 1, 2);
+        ItemStack iron = new ItemStack(Item.ingotIron, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack redstone = new ItemStack(Item.redstone, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack quartz = new ItemStack(Item.netherQuartz, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack glassBottle = new ItemStack(Item.glassBottle, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack glowstone = new ItemStack(Item.glowstone, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack dyeBlack = new ItemStack(Item.dyePowder, 1, 0);
+
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockDecoration, 4, 0), " i ", "idi", " i ", 'i', iron, 'd', dyeBlack);
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.itemLens, 1, 0), " i ", "iPi", " i ", 'i', iron, 'P', glassPane);
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.itemCrafting, 1, 0), "i", "r", "b", 'i', iron, 'r', redstone, 'b', glassBottle);
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.itemCrafting, 1, 1), "r", "g", "b", 'r', redstone, 'g', glowstone, 'b', glassBottle);
+        // TODO: Servo
+
         GameRegistry.addRecipe(new RecipesLens());
-        ItemStack iron = new ItemStack(Item.ingotIron.itemID, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack lens = new ItemStack(Objects.itemLens);
-        GameRegistry.addRecipe(new RecipesLight(new ItemStack(Objects.blockLight), 4, new ItemStack[] { iron, iron, iron, iron, lens, iron, null, iron, null }));
+
+        // Fresnel
+        GameRegistry.addRecipe(new RecipesLight(new ItemStack(Objects.blockLight, 1, 0), 7, new ItemStack[] { hull, hull, hull, hull, bulb, hull, null, lens, null }));
+        // SpA 250
+        GameRegistry.addRecipe(new RecipesLight(new ItemStack(Objects.blockLight, 1, 1), 1, new ItemStack[] { null, lens, null, servo, bulb, servo, hull, servo, hull }));
+        // SpA 250 LED
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 2), " G ", "sls", "HsH", 'G', glass, 's', servo, 'l', led, 'H', hull);
+        // DMX To Redstone Converter
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 3), "HrH", "rqr", "HrH", 'H', hull, 'r', redstone, 'q', quartz);
+        // Radial Laser Emitter
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 4), "HlH", "lsl", "HlH", 'H', hull, 'l', led, 's', servo);
     }
 
 }

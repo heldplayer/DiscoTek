@@ -14,6 +14,7 @@ public class Config {
     public static int itemLensId = 5071;
     public static int itemWirelessLinkerId = 5072;
     public static int itemOrienterId = 5073;
+    public static int itemCraftingId = 5074;
 
     public static void loadConfig(Configuration config) {
         config.load();
@@ -50,6 +51,10 @@ public class Config {
 
         property = config.getItem("ItemOrienter", itemOrienterId);
         itemOrienterId = property.getInt();
+        modified = modified || property.hasChanged();
+
+        property = config.getItem("ItemCrafting", itemCraftingId);
+        itemCraftingId = property.getInt();
         modified = modified || property.hasChanged();
 
         if (modified) {

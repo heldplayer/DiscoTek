@@ -77,7 +77,8 @@ public class BlockLight extends Block {
             yaw = -yaw;
         }
 
-        if (stack.getItemDamage() == 2) {
+        int meta = stack.getItemDamage();
+        if (meta == 2 || meta == 3 || meta == 4) {
             tile.setHasLens(false);
         }
 
@@ -145,11 +146,9 @@ public class BlockLight extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
-        list.add(new ItemStack(itemId, 1, 0));
-        list.add(new ItemStack(itemId, 1, 1));
-        list.add(new ItemStack(itemId, 1, 2));
-        list.add(new ItemStack(itemId, 1, 3));
-        list.add(new ItemStack(itemId, 1, 4));
+        for (int i = 0; i < 5; i++) {
+            list.add(new ItemStack(itemId, 1, i));
+        }
     }
 
     @Override

@@ -71,6 +71,16 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
     private void render4(TileEntityLight light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+
+        int[] yawRotations = { 180, 0, 180, 180, 0, 0 };
+        int[] pitchRotations = { 180, 0, 270, 90, 0, 0 };
+        int[] rollRotations = { 0, 0, 0, 0, 90, 270 };
+        int side = light.getDirection();
+        GL11.glPushMatrix();
+        GL11.glRotatef(pitchRotations[side], 1.0f, 0.0f, 0.0f);
+        GL11.glRotatef(yawRotations[side], 0.0f, 1.0f, 0.0f);
+        GL11.glRotatef(rollRotations[side], 0.0f, 0.0f, 1.0f);
+
         this.modelLaserRound.renderAll();
 
         if (disableLight) {
@@ -84,19 +94,24 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             float green = (float) ((color >> 8) & 0xFF) / 255.0F;
             float blue = (float) (color & 0xFF) / 255.0F;
             float brightness = light.getBrightness(partialTicks);
+            float alpha = (0.9F * brightness) + 0.1F;
             red *= brightness;
             green *= brightness;
             blue *= brightness;
 
-            GL11.glColor4f(red, green, blue, 1.0F);
-
             GL11.glRotatef((float) (light.getYaw(partialTicks) * 180.0F / Math.PI), 0.0F, 1.0F, 0.0F);
+
+            GL11.glShadeModel(GL11.GL_SMOOTH);
 
             for (int i = 0; i < 32; i++) {
                 GL11.glPushMatrix();
                 GL11.glRotatef(light.getFocus(partialTicks) * 4.4F, 1.0F, 0.0F, -1.0F);
                 GL11.glBegin(GL11.GL_LINES);
+                GL11.glColor4f(red, green, blue, alpha);
                 GL11.glVertex3f(0.15F, 0.0F, 0.15F);
+                GL11.glVertex3f(0.15F, (light.getPitch(partialTicks) + 0.8F) * 10.0F + 1.0F, 0.15F);
+                GL11.glVertex3f(0.15F, (light.getPitch(partialTicks) + 0.8F) * 10.0F + 1.0F, 0.15F);
+                GL11.glColor4f(red, green, blue, 0.0F);
                 GL11.glVertex3f(0.15F, (light.getPitch(partialTicks) + 0.8F) * 10.0F + 6.0F, 0.15F);
                 GL11.glEnd();
                 GL11.glPopMatrix();
@@ -108,6 +123,8 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
+
+        GL11.glPopMatrix();
     }
 
     public void render1(TileEntityLight light, double x, double y, double z, float partialTicks) {
