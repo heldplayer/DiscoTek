@@ -62,7 +62,7 @@ public class BlockLight extends Block {
 
         tile.setYaw(yaw);
         tile.setPitch(pitch);
-        world.setBlockMetadataWithNotify(x, y, z,stack.getItemDamage(), 0);
+        world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
     }
 
     @Override

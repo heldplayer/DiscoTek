@@ -69,14 +69,17 @@ public class PacketHandler implements IPacketHandler {
         case 3: {
             TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null && tile.worldObj.isRemote) {
-                tile.channel = in.readInt();
+                tile.channels = new int[in.readInt()];
+                for (int i = 0; i < tile.channels.length; i++) {
+                    tile.channels[i] = in.readInt();
+                }
             }
         }
         break;
         case 4: {
             TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null && !tile.worldObj.isRemote) {
-                tile.channel = in.readInt();
+                tile.channels[in.readInt()] = in.readInt();
                 tile.onInventoryChanged();
             }
         }
@@ -84,6 +87,17 @@ public class PacketHandler implements IPacketHandler {
         case 5: {
             TileEntityController tile = (TileEntityController) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null) {
+                int errorLength = in.readInt();
+                if (errorLength > 0) {
+                    byte[] error = new byte[errorLength];
+                    in.readFully(error);
+                    tile.error = new String(error);
+                    tile.errorIndex = in.readInt();
+                }
+                else {
+                    tile.error = null;
+                }
+
                 int count = in.readInt();
                 tile.instructions = new Instruction[count];
                 for (int i = 0; i < count; i++) {
@@ -118,16 +132,16 @@ public class PacketHandler implements IPacketHandler {
         case 7: {
             TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null && !tile.worldObj.isRemote) {
-                switch (in.readInt()){
+                switch (in.readInt()) {
                 case 1:
                     tile.setYaw(in.readFloat());
-                    break;
+                break;
                 case 2:
                     tile.setPitch(in.readFloat());
-                    break;
+                break;
                 case 3:
                     tile.setFocus(in.readFloat());
-                    break;
+                break;
                 }
                 tile.onInventoryChanged();
             }
@@ -194,7 +208,10 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                dos.writeInt(tile.channel);
+                dos.writeInt(tile.channels.length);
+                for (int i = 0; i < tile.channels.length; i++) {
+                    dos.writeInt(tile.channels[i]);
+                }
             }
             break;
             case 4: { // Set channel
@@ -205,7 +222,8 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
-                dos.writeInt((Integer) data[1]);
+                dos.writeInt((int) data[1]);
+                dos.writeInt((int) data[2]);
             }
             break;
             case 5: { // Controller instructions
@@ -213,6 +231,14 @@ public class PacketHandler implements IPacketHandler {
                 dos.writeInt(tile.xCoord);
                 dos.writeInt(tile.yCoord);
                 dos.writeInt(tile.zCoord);
+                if (tile.error == null) {
+                    dos.writeInt(0);
+                }
+                else {
+                    dos.writeInt(tile.error.length());
+                    dos.writeBytes(tile.error);
+                    dos.writeInt(tile.errorIndex);
+                }
                 dos.writeInt(tile.instructions.length);
                 for (int i = 0; i < tile.instructions.length; i++) {
                     Instruction instruction = tile.instructions[i];
@@ -227,26 +253,26 @@ public class PacketHandler implements IPacketHandler {
                 }
             }
             break;
-                case 6: { // Controller levels
-                    TileEntityController tile = (TileEntityController) data[0];
-                    dos.writeInt(tile.xCoord);
-                    dos.writeInt(tile.yCoord);
-                    dos.writeInt(tile.zCoord);
-                    dos.writeInt(tile.levels.length);
-                    for (int i = 0; i < tile.levels.length; i++) {
-                        dos.writeByte(tile.levels[i]);
-                    }
+            case 6: { // Controller levels
+                TileEntityController tile = (TileEntityController) data[0];
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt(tile.levels.length);
+                for (int i = 0; i < tile.levels.length; i++) {
+                    dos.writeByte(tile.levels[i]);
                 }
+            }
             break;
-                case 7: { // Set Pan || Tilt
-                    TileEntityLight tile = (TileEntityLight) data[0];
-                    dos.writeInt(tile.xCoord);
-                    dos.writeInt(tile.yCoord);
-                    dos.writeInt(tile.zCoord);
-                    dos.writeInt((Integer) data[1]);
-                    dos.writeFloat((Float) data[2]);
-                }
-                break;
+            case 7: { // Set Pan || Tilt
+                TileEntityLight tile = (TileEntityLight) data[0];
+                dos.writeInt(tile.xCoord);
+                dos.writeInt(tile.yCoord);
+                dos.writeInt(tile.zCoord);
+                dos.writeInt((Integer) data[1]);
+                dos.writeFloat((Float) data[2]);
+            }
+            break;
             }
         }
         catch (IOException e) {

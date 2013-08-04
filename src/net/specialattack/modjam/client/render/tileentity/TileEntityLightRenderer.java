@@ -174,7 +174,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
     }
-    
+
     public void render2(TileEntityLight light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 
@@ -183,7 +183,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         this.modelLightMoverBase.renderAll();
         this.modelLightTiltArms.setRotations(pitch, yaw);
         this.modelLightTiltArms.renderAll();
-        GL11.glTranslatef((float)0, (float)0.15f, (float)0);
+        GL11.glTranslatef((float) 0, (float) 0.15f, (float) 0);
         this.modelLightMover.setRotations(pitch, yaw);
         this.modelLightMover.render();
 
@@ -201,10 +201,10 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         float blue = (float) (color & 0xFF) / 255.0F;
         float brightness = light.getBrightness(partialTicks);
         //if (light.hasLens()) {
-            float lensBrightness = brightness + 0.1f;
-            GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
+        float lensBrightness = brightness + 0.1f;
+        GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
 
-           this.modelLightMover.renderLens();
+        this.modelLightMover.renderLens();
         //}
         red *= brightness;
         green *= brightness;

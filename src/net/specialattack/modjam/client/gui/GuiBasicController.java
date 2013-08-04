@@ -2,10 +2,7 @@
 package net.specialattack.modjam.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSlider;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.EnumOptions;
 import net.specialattack.modjam.Assets;
 import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.tileentity.TileEntityController;
@@ -31,23 +28,23 @@ public class GuiBasicController extends GuiSliderCompat {
                 this.levels = new short[24];
             }
 
-            float b0Val = ((float) controller.levels[0] / 255.0f);
-            float b1Val = ((float) controller.levels[1] / 255.0f);
-            float b2Val = ((float) controller.levels[2] / 255.0f);
-            float b3Val = ((float) controller.levels[3] / 255.0f);
-            float b4Val = ((float) controller.levels[4] / 255.0f);
-            float b5Val = ((float) controller.levels[5] / 255.0f);
-            float b6Val = ((float) controller.levels[6] / 255.0f);
-            float b7Val = ((float) controller.levels[7] / 255.0f);
+            float b0Val = ((float) this.controller.levels[1] / 255.0f);
+            float b1Val = ((float) this.controller.levels[2] / 255.0f);
+            float b2Val = ((float) this.controller.levels[3] / 255.0f);
+            float b3Val = ((float) this.controller.levels[4] / 255.0f);
+            float b4Val = ((float) this.controller.levels[5] / 255.0f);
+            float b5Val = ((float) this.controller.levels[6] / 255.0f);
+            float b6Val = ((float) this.controller.levels[7] / 255.0f);
+            float b7Val = ((float) this.controller.levels[8] / 255.0f);
 
-            this.buttonList.add(new GuiChannelSlider(0, this.width / 2 - 9 - (18 * 3), (this.height) / 2 - 40, "" + (b0Val == 1 ? "FF" : (int) (b0Val * 100)), b0Val, this));
-            this.buttonList.add(new GuiChannelSlider(1, this.width / 2 - 9 - (18 * 2), (this.height) / 2 - 40, "" + (b1Val == 1 ? "FF" : (int) (b1Val * 100)), b1Val, this));
-            this.buttonList.add(new GuiChannelSlider(2, this.width / 2 - 9 - 18, (this.height) / 2 - 40, "" + (b2Val == 1 ? "FF" : (int) (b2Val * 100)), b2Val, this));
-            this.buttonList.add(new GuiChannelSlider(3, this.width / 2 - 9, (this.height) / 2 - 40, "" + (b3Val == 1 ? "FF" : (int) (b3Val * 100)), b3Val, this));
-            this.buttonList.add(new GuiChannelSlider(4, this.width / 2 + 9, (this.height) / 2 - 40, "" + (b4Val == 1 ? "FF" : (int) (b4Val * 100)), b4Val, this));
-            this.buttonList.add(new GuiChannelSlider(5, this.width / 2 + 9 + (18 * 1), (this.height) / 2 - 40, "" + (b5Val == 1 ? "FF" : (int) (b5Val * 100)), b5Val, this));
-            this.buttonList.add(new GuiChannelSlider(6, this.width / 2 + 9 + (18 * 2), (this.height) / 2 - 40, "" + (b6Val == 1 ? "FF" : (int) (b6Val * 100)), b6Val, this));
-            this.buttonList.add(new GuiChannelSlider(7, this.width / 2 + 9 + (18 * 3), (this.height) / 2 - 40, "" + (b7Val == 1 ? "FF" : (int) (b7Val * 100)), b7Val, this));
+            this.buttonList.add(new GuiChannelSlider(1, this.width / 2 - 9 - (18 * 3), (this.height) / 2 - 40, "" + (b0Val == 1 ? "FF" : (int) (b0Val * 100)), b0Val, this));
+            this.buttonList.add(new GuiChannelSlider(2, this.width / 2 - 9 - (18 * 2), (this.height) / 2 - 40, "" + (b1Val == 1 ? "FF" : (int) (b1Val * 100)), b1Val, this));
+            this.buttonList.add(new GuiChannelSlider(3, this.width / 2 - 9 - 18, (this.height) / 2 - 40, "" + (b2Val == 1 ? "FF" : (int) (b2Val * 100)), b2Val, this));
+            this.buttonList.add(new GuiChannelSlider(4, this.width / 2 - 9, (this.height) / 2 - 40, "" + (b3Val == 1 ? "FF" : (int) (b3Val * 100)), b3Val, this));
+            this.buttonList.add(new GuiChannelSlider(5, this.width / 2 + 9, (this.height) / 2 - 40, "" + (b4Val == 1 ? "FF" : (int) (b4Val * 100)), b4Val, this));
+            this.buttonList.add(new GuiChannelSlider(6, this.width / 2 + 9 + (18 * 1), (this.height) / 2 - 40, "" + (b5Val == 1 ? "FF" : (int) (b5Val * 100)), b5Val, this));
+            this.buttonList.add(new GuiChannelSlider(7, this.width / 2 + 9 + (18 * 2), (this.height) / 2 - 40, "" + (b6Val == 1 ? "FF" : (int) (b6Val * 100)), b6Val, this));
+            this.buttonList.add(new GuiChannelSlider(8, this.width / 2 + 9 + (18 * 3), (this.height) / 2 - 40, "" + (b7Val == 1 ? "FF" : (int) (b7Val * 100)), b7Val, this));
 
             // this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.done")));
             // this.buttonList.add(new GuiButton(2, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.up")));
@@ -119,6 +116,7 @@ public class GuiBasicController extends GuiSliderCompat {
         return false;
     }
 
+    @Override
     public void slideActionPerformed(ModJamSlider slider) {
         this.controller.setChannelLevel(slider.id, (short) (slider.sliderValue * 255));
         FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
