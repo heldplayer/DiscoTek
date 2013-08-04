@@ -30,17 +30,16 @@ public class ModelLightMover extends ModelBase {
         //Back
         this.base.addBox(-3.0F, -3.0F, 2.0F, 6, 6, 1);
         this.base.addBox(-2.0F, -2.0F, 3.0F, 4, 4, 1);
-        
+
         this.lens = new ModelRenderer(this, 0, 0);
         this.lens.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 1);
         this.lens.cubeList.add(new ModelBoxNormalless(this.lens, 0, 0, -3.0F, -3.0F, -3.0F, 6, 6, 1, 0.0F));
     }
 
     public void render() {
-        
+
         this.base.renderWithRotation(0.0625F);
 
-        
     }
 
     public void renderLens() {

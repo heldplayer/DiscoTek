@@ -19,6 +19,8 @@ public class TileEntityController extends TileEntity {
     public boolean interpretFirst;
     public Instruction[] instructions;
     public int instructionPointer;
+    public String error;
+    public int errorIndex;
     private boolean running; // Do NOT turn me on yet!
 
     public TileEntityController() {
@@ -39,8 +41,13 @@ public class TileEntityController extends TileEntity {
             coord.posZ = tag.getInteger("z");
             this.link(coord);
         }
-        compound.setIntArray("Levels", this.levels);
-        compound.setInteger("Pointer", this.instructionPointer);
+        this.levels = compound.getIntArray("Levels");
+        if (this.levels.length < 512) {
+            int[] temp = this.levels;
+            this.levels = new int[512];
+            System.arraycopy(temp, 0, this.levels, 0, temp.length);
+        }
+        this.instructionPointer = compound.getInteger("Pointer");
         NBTTagList instructions = compound.getTagList("Instructions");
         this.instructions = new Instruction[instructions.tagCount()];
         for (int i = 0; i < instructions.tagCount(); i++) {
@@ -52,15 +59,15 @@ public class TileEntityController extends TileEntity {
                 this.instructions[i] = instruction;
             }
         }
-        compound.setIntArray("Stack", stack);
-        compound.setInteger("StackPointer", stackPointer);
-        compound.setBoolean("InterpretFirst", this.interpretFirst);
+        this.stack = compound.getIntArray("Stack");
+        this.stackPointer = compound.getInteger("StackPointer");
+        this.interpretFirst = compound.getBoolean("Interpret");
+        this.running = compound.getBoolean("Running");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        System.out.println("Saving TileEntity " + this);
         NBTTagList lightsLinked = new NBTTagList();
         for (ChunkCoordinates coord : this.lightsLinked) {
             NBTTagCompound tag = new NBTTagCompound();
@@ -70,13 +77,8 @@ public class TileEntityController extends TileEntity {
             lightsLinked.appendTag(tag);
         }
         compound.setTag("Lights", lightsLinked);
-        this.levels = compound.getIntArray("Levels");
-        if (this.levels.length < 512) {
-            int[] temp = this.levels;
-            this.levels = new int[512];
-            System.arraycopy(temp, 0, this.levels, 0, temp.length);
-        }
-        this.instructionPointer = compound.getInteger("Pointer");
+        compound.setIntArray("Levels", this.levels);
+        compound.setInteger("Pointer", this.instructionPointer);
         NBTTagList instructions = new NBTTagList();
         for (Instruction instruction : this.instructions) {
             if (instruction == null) {
@@ -92,9 +94,10 @@ public class TileEntityController extends TileEntity {
             instructions.appendTag(tag);
         }
         compound.setTag("Instructions", instructions);
-        this.stack = compound.getIntArray("Stack");
-        this.stackPointer = compound.getInteger("StackPointer");
-        this.interpretFirst = compound.getBoolean("Interpret");
+        compound.setIntArray("Stack", this.stack);
+        compound.setInteger("StackPointer", this.stackPointer);
+        compound.setBoolean("InterpretFirst", this.interpretFirst);
+        compound.setBoolean("Running", this.running);
     }
 
     public boolean link(ChunkCoordinates coords) {
@@ -144,8 +147,8 @@ public class TileEntityController extends TileEntity {
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
             int size = 0;
-            switch (this.getBlockMetadata() & 0xFF) {
-            case 0:
+            switch (this.getBlockMetadata()) {
+            case 1:
                 size = 50;
             break;
             }
@@ -169,43 +172,71 @@ public class TileEntityController extends TileEntity {
                         }
                         else {
                             int value = this.popStack();
+                            value--;
                             if (value == 0) {
-                                next();
+                                this.next();
                             }
                             else {
-                                value--;
-                                pushStack(value);
+                                this.pushStack(value);
                             }
                         }
                     }
                     else if (instruction.identifier.equals("PUSH")) { // Push N to the stack
                         this.pushStack(instruction.argument);
-                        next();
+                        this.next();
                     }
                     else if (instruction.identifier.equals("POP")) { // Pop the stack
                         this.popStack();
-                        next();
+                        this.next();
                     }
                     else if (instruction.identifier.equals("LEV")) { // Set channel to N
                         int channel = this.popStack();
                         int value = instruction.argument;
                         this.setChannelLevel(channel, value);
-                        next();
+                        this.next();
+                    }
+                    else if (instruction.identifier.equals("LEV2")) { // Set 2 channels
+                        int value2 = instruction.argument;
+                        int channel2 = this.popStack();
+                        int value1 = this.popStack();
+                        int channel1 = this.popStack();
+                        this.setChannelLevel(channel1, value1);
+                        this.setChannelLevel(channel2, value2);
+                        this.next();
+                    }
+                    else if (instruction.identifier.equals("LEV3")) { // Set 3 channels
+                        int value3 = instruction.argument;
+                        int channel3 = this.popStack();
+                        int value2 = this.popStack();
+                        int channel2 = this.popStack();
+                        int value1 = this.popStack();
+                        int channel1 = this.popStack();
+                        this.setChannelLevel(channel1, value1);
+                        this.setChannelLevel(channel2, value2);
+                        this.setChannelLevel(channel3, value3);
+                        this.next();
                     }
                     else if (instruction.identifier.equals("GOTO")) { // Go to instruction at index N
-                        changeTo(instruction.argument);
-                        next();
+                        this.changeTo(instruction.argument - 1);
+                    }
+                    else if (instruction.identifier.equals("CLEAR")) { // Clear the stack
+                        this.stackPointer = 0;
+                        this.next();
                     }
                     else {
-                        throw new RuntimeException();
+                        throw new ControllerException("gui.controller.unknowninstruction", this.instructionPointer + 1);
                     }
                 }
                 else {
-                    next();
+                    this.next();
                 }
+                this.onInventoryChanged();
             }
-            catch (Exception e) {
-                running = false;
+            catch (ControllerException e) {
+                this.running = false;
+                this.error = e.getMessage();
+                this.errorIndex = e.index;
+                e.printStackTrace();
             }
         }
     }
@@ -226,19 +257,44 @@ public class TileEntityController extends TileEntity {
         this.interpretFirst = true;
     }
 
-    private void pushStack(int value) {
+    private void pushStack(int value) throws ControllerException {
         this.stackPointer++;
         if (this.stackPointer >= this.stack.length) {
-            throw new RuntimeException();
+            throw new ControllerException("gui.controller.stackoverflow", this.instructionPointer);
         }
         this.stack[this.stackPointer] = value;
     }
 
-    private int popStack() {
+    private int popStack() throws ControllerException {
         this.stackPointer--;
         if (this.stackPointer < 0) {
-            throw new RuntimeException();
+            throw new ControllerException("gui.controller.stackunderflow", this.instructionPointer);
         }
         return this.stack[this.stackPointer + 1];
     }
+
+    public void startStop() {
+        this.running = !this.running;
+        if (this.running) {
+            this.interpretFirst = true;
+            this.stackPointer = 0;
+            this.stack = new int[16];
+            this.instructionPointer = 0;
+            this.error = null;
+            this.errorIndex = 0;
+        }
+    }
+
+    public static class ControllerException extends Exception {
+
+        private static final long serialVersionUID = 7486507998690757872L;
+        public final int index;
+
+        public ControllerException(String message, int index) {
+            super(message);
+            this.index = index;
+        }
+
+    }
+
 }

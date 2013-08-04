@@ -18,7 +18,7 @@ public class ModelLightMoverBase extends ModelBase {
     }
 
     public void renderAll() {
-        
+
         this.base.renderWithRotation(0.0625F);
     }
 

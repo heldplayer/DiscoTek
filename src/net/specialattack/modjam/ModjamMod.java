@@ -14,6 +14,7 @@ import net.specialattack.modjam.block.BlockLight;
 import net.specialattack.modjam.block.BlockTruss;
 import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.gui.GuiHandler;
+import net.specialattack.modjam.item.ItemBlockController;
 import net.specialattack.modjam.item.ItemBlockLight;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
@@ -65,14 +66,14 @@ public class ModjamMod {
         Objects.blockTruss.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("truss");
         GameRegistry.registerBlock(Objects.blockTruss, "ModJam2013.blockTruss");
 
-        // FIXME: decoration block needs a good dark texture
+        // FIXME: decoration block needs good dark textures
         Objects.blockDecoration = new BlockDecoration(Config.blockDecorationId);
         Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setUnlocalizedName("decoration");
         GameRegistry.registerBlock(Objects.blockDecoration, "ModJam2013.blockDecoration");
 
         Objects.blockController = new BlockController(Config.blockControllerId);
         Objects.blockController.setCreativeTab(Objects.creativeTab).setUnlocalizedName("controller");
-        GameRegistry.registerBlock(Objects.blockController, "ModJam2013.blockController");
+        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "ModJam2013.blockController");
 
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug");

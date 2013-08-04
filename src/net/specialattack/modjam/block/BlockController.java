@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,6 @@ import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.client.gui.GuiBasicController;
 import net.specialattack.modjam.client.gui.GuiController;
 import net.specialattack.modjam.client.render.BlockRendererConsole;
-import net.specialattack.modjam.client.render.BlockRendererLight;
 import net.specialattack.modjam.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -40,11 +40,20 @@ public class BlockController extends Block {
         if (tile != null && tile instanceof TileEntityController) {
             TileEntityController controller = (TileEntityController) tile;
 
-            if (world.isRemote) {
-                FMLClientHandler.instance().displayGuiScreen(player, new GuiBasicController(controller));
+            if (player.isSneaking()) {
+                controller.startStop();
             }
             else {
-                if (player instanceof EntityPlayerMP) {
+                if (world.isRemote) {
+                    int meta = world.getBlockMetadata(x, y, z);
+                    if (meta == 0) {
+                        FMLClientHandler.instance().displayGuiScreen(player, new GuiBasicController(controller));
+                    }
+                    else if (meta == 1) {
+                        FMLClientHandler.instance().displayGuiScreen(player, new GuiController(controller));
+                    }
+                }
+                else {
                     if (player instanceof EntityPlayerMP) {
                         Packet packet = PacketHandler.createPacket(5, tile);
                         if (packet != null) {
@@ -58,11 +67,18 @@ public class BlockController extends Block {
         return true;
     }
 
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
+        super.onBlockPlacedBy(world, x, y, z, entity, stack);
+        world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
         list.add(new ItemStack(itemId, 1, 0));
+        list.add(new ItemStack(itemId, 1, 1));
     }
 
     @Override
@@ -74,12 +90,12 @@ public class BlockController extends Block {
     public boolean hasTileEntity(int metadata) {
         return true;
     }
-    
+
     @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
-    
+
     @Override
     public boolean isOpaqueCube() {
         return false;

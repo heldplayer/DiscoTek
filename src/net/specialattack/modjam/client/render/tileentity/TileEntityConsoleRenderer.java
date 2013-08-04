@@ -49,7 +49,7 @@ public class TileEntityConsoleRenderer extends TileEntitySpecialRenderer {
         this.func_110628_a(Assets.BASIC_CONSOLE_TEXTURE);
         this.modelConsoleBasic.renderAll();
     }
-    
+
     public void render2(TileEntityController light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 

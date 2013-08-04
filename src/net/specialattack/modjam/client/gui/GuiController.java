@@ -98,8 +98,14 @@ public class GuiController extends GuiScreen {
         String title = I18n.func_135053_a("gui.controller.title");
         y += 6;
         x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
-
         this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
+
+        if (this.controller.error != null) {
+            title = I18n.func_135052_a(this.controller.error, this.controller.errorIndex);
+            y += 8;
+            x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
+            this.fontRenderer.drawString(title, x, y, 0xFF4444);
+        }
 
         if (this.initialized) {
             this.instructions.render();

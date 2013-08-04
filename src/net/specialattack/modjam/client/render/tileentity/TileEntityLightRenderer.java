@@ -174,26 +174,26 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
     }
-    
+
     public void render2(TileEntityLight light, double x, double y, double z, float partialTicks) {
         this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 
-        int[] yawRotations = {180,180,180,180, 0,0};
-        int[] pitchRotations = {0,180,270,90,180,180};
-        int[] rollRotations = {0,0,0,0,90,270};
+        int[] yawRotations = { 180, 180, 180, 180, 0, 0 };
+        int[] pitchRotations = { 0, 180, 270, 90, 180, 180 };
+        int[] rollRotations = { 0, 0, 0, 0, 90, 270 };
         int side = light.getDirection();
         GL11.glPushMatrix();
         GL11.glRotatef(pitchRotations[side], 1.0f, 0.0f, 0.0f);
         GL11.glRotatef(yawRotations[side], 0.0f, 1.0f, 0.0f);
         GL11.glRotatef(rollRotations[side], 0.0f, 0.0f, 1.0f);
-        
+
         float pitch = light.getPitch(partialTicks);
         float yaw = light.getYaw(partialTicks);
         this.modelLightMoverBase.setRotations(0, 0);
         this.modelLightMoverBase.renderAll();
         this.modelLightTiltArms.setRotations(0, yaw);
         this.modelLightTiltArms.renderAll();
-        GL11.glTranslatef((float)0, (float)0.15f, (float)0);
+        GL11.glTranslatef((float) 0, (float) 0.15f, (float) 0);
         this.modelLightMover.setRotations(pitch, yaw);
         this.modelLightMover.render();
 
@@ -211,10 +211,10 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         float blue = (float) (color & 0xFF) / 255.0F;
         float brightness = light.getBrightness(partialTicks);
         //if (light.hasLens()) {
-            float lensBrightness = brightness + 0.1f;
-            GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
+        float lensBrightness = brightness + 0.1f;
+        GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
 
-           this.modelLightMover.renderLens();
+        this.modelLightMover.renderLens();
         //}
         red *= brightness;
         green *= brightness;

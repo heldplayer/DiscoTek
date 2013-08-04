@@ -3,7 +3,8 @@ tile.light1.name=SpA 250
 tile.light2.name=SpA 250 LED
 tile.truss.name=Truss
 tile.decoration.name=Decorative Block
-tile.controller.name=Controller
+tile.controller0.name=Basic Controller
+tile.controller1.name=Programmable Controller
 
 item.debug.name=Debug Item
 item.lens.name=Lens
@@ -12,12 +13,20 @@ itemGroup.modjam2013=ModJam 2013
 
 gui.light.title=Configuring Light
 gui.light.loading=Loading...
-gui.light.pan=Pan (Yaw): %s
-gui.light.tilt=Tilt (Pitch): %s
-gui.light.channel=Starting Channel: %s
+gui.light.0=Brightness Channel: %s
+gui.light.1=Angle Channel: %s
+gui.light.2=Rotation Channel: %s
+gui.light.3=Focus Channel: %s
+gui.light.4=Red Channel: %s
+gui.light.5=Green Channel: %s
+gui.light.6=Blue Channel: %s
 
 gui.controller.title=Configuring Controller
 gui.controller.loading=Loading...
 gui.controller.done=Done
 gui.controller.down=Down
 gui.controller.up=Up
+
+gui.controller.unknowninstruction=Unknown instruction at %s
+gui.controller.stackoverflow=Stack Overflow at %s
+gui.controller.stackunderflow=Stack Underflow at %s
