@@ -14,7 +14,7 @@ import net.specialattack.modjam.Instruction;
 public class TileEntityController extends TileEntity {
 
     private List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
-    public int[] levels = new int[256];
+    public int[] levels = new int[255];
     public int[] stack = new int[16];
     public int stackPointer;
     public boolean interpretFirst;
@@ -47,7 +47,7 @@ public class TileEntityController extends TileEntity {
         if (this.levels.length != 255) {
             this.levels = new int[255];
         }
-        if (this.getBlockMetadata() == 1){
+        if (this.blockMetadata == 1){
             readProgrammableFromNBT(compound);
         }
     }
@@ -133,7 +133,7 @@ public class TileEntityController extends TileEntity {
     }
 
     public void setChannelLevel(int channel, int percent) {
-        if (channel >= 0 && channel < 256) {
+        if (channel > 0 && channel < 255) {
             float oldPercent = this.levels[channel];
             if (oldPercent != percent) {
                 this.levels[channel] = percent;

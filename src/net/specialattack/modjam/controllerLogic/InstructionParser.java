@@ -127,7 +127,7 @@ public class InstructionParser {
             }
         }
         if (!inst.isFixture()) {
-            if (start < 0 || start > 256 || end < -1 || end > 256) {
+            if (start < 0 || start > 255 || end < -1 || end > 255) {
                 return inst.setError("Channels out of range!");
             }
         }

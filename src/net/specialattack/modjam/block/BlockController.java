@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.client.gui.GuiBasicController;
 import net.specialattack.modjam.client.gui.GuiController;
+import net.specialattack.modjam.client.gui.GuiFancyController;
 import net.specialattack.modjam.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -57,6 +58,8 @@ public class BlockController extends Block {
                     }
                     else if (meta == 1) {
                         FMLClientHandler.instance().displayGuiScreen(player, new GuiController(controller));
+                    }else if (meta == 2) {
+                        FMLClientHandler.instance().displayGuiScreen(player, new GuiFancyController(controller));
                     }
                 }
                 else {
@@ -83,7 +86,7 @@ public class BlockController extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             list.add(new ItemStack(itemId, 1, i));
         }
     }

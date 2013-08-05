@@ -53,7 +53,7 @@ public class GuiBasicController extends GuiSliderCompat {
         else {
             this.guiHeight = 64;
 
-            this.initialized = this.controller.levels[0] != -1;
+            this.initialized = true;
 
             if (this.initialized) {
                 this.initGui();
