@@ -100,9 +100,9 @@ public class BlockController extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
-        this.top = new Icon[2];
-        this.bottom = new Icon[2];
-        this.side = new Icon[2];
+        this.top = new Icon[3];
+        this.bottom = new Icon[3];
+        this.side = new Icon[3];
         for (int i = 0; i < this.top.length; i++) {
             this.top[i] = register.registerIcon("modjam:controller-top" + i);
             this.bottom[i] = register.registerIcon("modjam:controller-bottom" + i);
