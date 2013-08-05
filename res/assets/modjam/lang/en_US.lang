@@ -3,7 +3,9 @@ tile.light1.name=SpA Map 250
 tile.light2.name=SpA Map 101 LED
 tile.light3.name=Single Channel Dimmer
 tile.light4.name=SpA RGB Radial laser
-tile.truss.name=Truss
+tile.truss0.name=Gray Truss
+tile.truss1.name=Silver Truss
+tile.truss2.name=Black Truss
 
 tile.decoration0.name=Lighting Hull
 tile.decoration1.name=Dark Stone Bricks
