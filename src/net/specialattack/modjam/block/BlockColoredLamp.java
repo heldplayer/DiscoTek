@@ -22,6 +22,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
 
     private final boolean powered;
 
+    
     public BlockColoredLamp(int blockId, boolean powered) {
         super(blockId, powered);
         this.powered = powered;
