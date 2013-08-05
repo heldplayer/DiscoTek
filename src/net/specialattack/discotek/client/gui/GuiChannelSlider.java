@@ -36,7 +36,7 @@ public class GuiChannelSlider extends ModJamSlider {
     protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3) {
         if (this.drawButton) {
             if (this.dragging) {
-                this.sliderValue = 1.0f - (float) (par3 - (this.yPosition + 1)) / (float) (this.height - 4);
+                this.sliderValue = 1.0F - (float) (par3 - (this.yPosition + 1)) / (float) (this.height - 4);
 
                 if (this.sliderValue < 0.0F) {
                     this.sliderValue = 0.0F;

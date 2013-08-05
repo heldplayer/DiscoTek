@@ -58,7 +58,7 @@ public class InstructionParser {
         try {
             int num = Integer.parseInt(numS);
             if (string.endsWith("%")) {
-                return (int) ((num / 100.0f) * 255.0f);
+                return (int) ((num / 100.0F) * 255.0F);
             }
             else {
                 return num;

@@ -48,6 +48,15 @@ public class TileEntityLight extends TileEntity {
         }
     }
 
+    @Override
+    public void invalidate() {
+        super.invalidate();
+
+        if (this.worldObj != null && this.worldObj.isRemote) {
+            ClientProxy.addTile(this);
+        }
+    }
+
     public int getDirection() {
         return this.direction;
     }

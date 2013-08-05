@@ -23,7 +23,7 @@ public class ModelLightTiltArms extends ModelBase {
         //Right Vert
         this.base.addBox(4.0F, 3.0F, -1.0F, 2, 1, 2, 0.0F);
 
-        this.base.addBox(-4.0f, -5.0f, -2.0f, 8, 2, 4, 0.0F);
+        this.base.addBox(-4.0F, -5.0F, -2.0F, 8, 2, 4, 0.0F);
     }
 
     public void renderAll() {

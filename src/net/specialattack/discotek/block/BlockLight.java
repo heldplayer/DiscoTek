@@ -223,7 +223,7 @@ public class BlockLight extends Block {
         if (blockAccess.getBlockMetadata(x, y, z) == 3) {
             if (side > 1) {
                 TileEntityLight tileEntityLight = (TileEntityLight) blockAccess.getBlockTileEntity(x, y, z);
-                return (int) (tileEntityLight.getBrightness(1.0f) * 16.0);
+                return (int) (tileEntityLight.getBrightness(1.0F) * 16.0F);
             }
         }
         return 0;

@@ -45,6 +45,8 @@ item.crafting3.name=Dark Brick
 
 itemGroup.modjam2013=ModJam 2013
 
+gui.tooltip.lens.color=Color: %s
+gui.tooltip.lens.nocolor=Undyed
 gui.tooltip.light.color=Color: %s
 gui.tooltip.light.lens.true=Has lens
 gui.tooltip.light.lens.false=Doesn't have lens

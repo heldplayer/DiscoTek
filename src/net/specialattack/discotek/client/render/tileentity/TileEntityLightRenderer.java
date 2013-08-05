@@ -4,6 +4,7 @@ package net.specialattack.discotek.client.render.tileentity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.client.model.ModelDMXRedstone;
 import net.specialattack.discotek.client.model.ModelLaserRound;
@@ -33,12 +34,18 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     public static boolean renderLight = true;
     public static boolean lightOnly = false;
 
+    public static int[] yawRotations = { 180, 0, 180, 180, 0, 0 };
+    public static int[] pitchRotations = { 180, 0, 270, 90, 0, 0 };
+    public static int[] rollRotations = { 0, 0, 0, 0, 90, 270 };
+
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
         if (!(tile instanceof TileEntityLight)) {
             return;
         }
-        Minecraft.getMinecraft().mcProfiler.startSection("discotek");
+        if (!lightOnly) {
+            Minecraft.getMinecraft().mcProfiler.startSection("discotek");
+        }
 
         TileEntityLight light = (TileEntityLight) tile;
 
@@ -75,36 +82,40 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         GL11.glPopMatrix();
 
-        Minecraft.getMinecraft().mcProfiler.endSection();
+        if (!lightOnly) {
+            Minecraft.getMinecraft().mcProfiler.endSection();
+        }
     }
 
     private void render3(TileEntityLight light, double x, double y, double z, float partialTicks) {
         if (!lightOnly) {
+            Minecraft.getMinecraft().mcProfiler.startSection("model");
             this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
             this.modelDMXRedstone.renderAll();
+            Minecraft.getMinecraft().mcProfiler.endSection();
         }
     }
 
     private void render4(TileEntityLight light, double x, double y, double z, float partialTicks) {
-        int[] yawRotations = { 180, 0, 180, 180, 0, 0 };
-        int[] pitchRotations = { 180, 0, 270, 90, 0, 0 };
-        int[] rollRotations = { 0, 0, 0, 0, 90, 270 };
+        Minecraft.getMinecraft().mcProfiler.startSection("transformations");
+
         int side = light.getDirection();
 
         GL11.glPushMatrix();
-        GL11.glRotatef(pitchRotations[side], 1.0f, 0.0f, 0.0f);
-        GL11.glRotatef(yawRotations[side], 0.0f, 1.0f, 0.0f);
-        GL11.glRotatef(rollRotations[side], 0.0f, 0.0f, 1.0f);
+        GL11.glRotatef(pitchRotations[side], 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(yawRotations[side], 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(rollRotations[side], 0.0F, 0.0F, 1.0F);
 
         if (!lightOnly) {
+            Minecraft.getMinecraft().mcProfiler.endStartSection("model");
             this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
             this.modelLaserRound.renderAll();
         }
 
         if (renderLight && lightOnly) {
-            Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
+            Minecraft.getMinecraft().mcProfiler.endStartSection("beam");
+            Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
             int color = light.getColor(partialTicks);
             float red = (float) ((color >> 16) & 0xFF) / 255.0F;
             float green = (float) ((color >> 8) & 0xFF) / 255.0F;
@@ -115,38 +126,61 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             green *= brightness;
             blue *= brightness;
 
-            GL11.glRotatef((float) (light.getYaw(partialTicks) * 180.0F / Math.PI), 0.0F, 1.0F, 0.0F);
+            float angle = (float) (light.getFocus(partialTicks) * Math.PI / 42.0F);
+            float length1 = (light.getPitch(partialTicks) + 0.8F) * 10.0F + 1.0F;
+            float length2 = (light.getPitch(partialTicks) + 0.8F) * 10.0F + 6.0F;
+            float height1 = MathHelper.cos(angle) * length1;
+            float height2 = MathHelper.cos(angle) * length2;
+            float distance1 = MathHelper.sin(angle) * length1;
+            float distance2 = MathHelper.sin(angle) * length2;
 
+            Minecraft.getMinecraft().mcProfiler.endStartSection("rendering");
+
+            Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glShadeModel(GL11.GL_SMOOTH);
 
             for (int i = 0; i < 32; i++) {
-                GL11.glPushMatrix();
-                GL11.glRotatef(light.getFocus(partialTicks) * 4.4F, 1.0F, 0.0F, -1.0F);
+                float currentAngle = (float) ((float) i * Math.PI / 16.0F);
+                float startX = MathHelper.cos(currentAngle) * 0.2F;
+                float startZ = MathHelper.sin(currentAngle) * 0.2F;
+                float posX1 = MathHelper.cos(currentAngle) * (distance1 + 0.2F);
+                float posZ1 = MathHelper.sin(currentAngle) * (distance1 + 0.2F);
+                float posX2 = MathHelper.cos(currentAngle) * (distance2 + 0.2F);
+                float posZ2 = MathHelper.sin(currentAngle) * (distance2 + 0.2F);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glColor4f(red, green, blue, alpha);
-                GL11.glVertex3f(0.15F, 0.0F, 0.15F);
-                GL11.glVertex3f(0.15F, (light.getPitch(partialTicks) + 0.8F) * 10.0F + 1.0F, 0.15F);
-                GL11.glVertex3f(0.15F, (light.getPitch(partialTicks) + 0.8F) * 10.0F + 1.0F, 0.15F);
+                GL11.glVertex3f(startX, 0.0F, startZ);
+                GL11.glVertex3f(posX1, height1, posZ1);
+                GL11.glVertex3f(posX1, height1, posZ1);
                 GL11.glColor4f(red, green, blue, 0.0F);
-                GL11.glVertex3f(0.15F, (light.getPitch(partialTicks) + 0.8F) * 10.0F + 6.0F, 0.15F);
+                GL11.glVertex3f(posX2, height2, posZ2);
                 GL11.glEnd();
-                GL11.glPopMatrix();
-                GL11.glRotatef(11.25F, 0.0F, 1.0F, 0.0F);
             }
 
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
+
+            Minecraft.getMinecraft().mcProfiler.endSection();
         }
 
         GL11.glPopMatrix();
+        Minecraft.getMinecraft().mcProfiler.endSection();
     }
 
     public void render1(TileEntityLight light, double x, double y, double z, float partialTicks) {
+        Minecraft.getMinecraft().mcProfiler.startSection("calculations");
         float pitch = light.getPitch(partialTicks);
         float yaw = light.getYaw(partialTicks);
 
+        int color = light.getColor(partialTicks);
+        float red = (float) ((color >> 16) & 0xFF) / 255.0F;
+        float green = (float) ((color >> 8) & 0xFF) / 255.0F;
+        float blue = (float) (color & 0xFF) / 255.0F;
+        float brightness = light.getBrightness(partialTicks);
+
         if (!lightOnly) {
+            Minecraft.getMinecraft().mcProfiler.endStartSection("model");
             this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 
             this.modelLightYoke.setRotations(pitch, yaw);
@@ -160,18 +194,10 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        //GL11.glEnable(GL11.GL_BLEND);
-        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        int color = light.getColor(partialTicks);
-        float red = (float) ((color >> 16) & 0xFF) / 255.0F;
-        float green = (float) ((color >> 8) & 0xFF) / 255.0F;
-        float blue = (float) (color & 0xFF) / 255.0F;
-        float brightness = light.getBrightness(partialTicks);
 
         if (!lightOnly) {
             if (light.hasLens()) {
-                float lensBrightness = brightness + 0.1f;
+                float lensBrightness = brightness + 0.1F;
                 GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
 
                 this.modelLightParCan.renderLens();
@@ -183,19 +209,25 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         blue *= brightness;
 
         if (renderLight && lightOnly) {
-            float lightLength = (64f / ((light.getFocus(partialTicks) + 0.01f) * 0.7f));
-            float alpha = (0.5F * brightness) + 0.1f;
+            Minecraft.getMinecraft().mcProfiler.endStartSection("beam");
+            Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
-            GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+            float lightLength = (64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F));
+            float alpha = (0.5F * brightness) + 0.1F;
 
             //HUzzah! I'm a wizard
             float lightangle = light.getFocus(partialTicks);
             float downDiff = (float) (lightLength * Math.tan(Math.toRadians(lightangle)));
 
-            float rend = red * 0.3f;
-            float gend = green * 0.3f;
-            float bend = blue * 0.3f;
+            float rend = red * 0.3F;
+            float gend = green * 0.3F;
+            float bend = blue * 0.3F;
+
+            Minecraft.getMinecraft().mcProfiler.endStartSection("rendering");
+
+            GL11.glRotatef(yaw * (180.0F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(pitch * (180.0F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+
             GL11.glShadeModel(GL11.GL_SMOOTH);
 
             GL11.glBegin(GL11.GL_QUADS);
@@ -259,29 +291,33 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
 
             GL11.glEnd();
-            //GL11.glDisable(GL11.GL_BLEND);
+
+            Minecraft.getMinecraft().mcProfiler.endSection();
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         if (renderLight && lightOnly) {
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
+
+        Minecraft.getMinecraft().mcProfiler.endSection();
     }
 
     public void render2(TileEntityLight light, double x, double y, double z, float partialTicks) {
-        int[] yawRotations = { 180, 0, 180, 180, 0, 0 };
-        int[] pitchRotations = { 180, 0, 270, 90, 0, 0 };
-        int[] rollRotations = { 0, 0, 0, 0, 90, 270 };
+        Minecraft.getMinecraft().mcProfiler.startSection("transformations");
+
         int side = light.getDirection();
+
         GL11.glPushMatrix();
-        GL11.glRotatef(pitchRotations[side], 1.0f, 0.0f, 0.0f);
-        GL11.glRotatef(yawRotations[side], 0.0f, 1.0f, 0.0f);
-        GL11.glRotatef(rollRotations[side], 0.0f, 0.0f, 1.0f);
+        GL11.glRotatef(pitchRotations[side], 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(yawRotations[side], 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(rollRotations[side], 0.0F, 0.0F, 1.0F);
 
         float pitch = light.getPitch(partialTicks);
         float yaw = light.getYaw(partialTicks);
 
         if (!lightOnly) {
+            Minecraft.getMinecraft().mcProfiler.endStartSection("model");
             this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
 
             this.modelLightMoverBase.setRotations(0, 0);
@@ -289,7 +325,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             this.modelLightTiltArms.setRotations(0, yaw);
             this.modelLightTiltArms.renderAll();
 
-            GL11.glTranslatef((float) 0, (float) 0.15f, (float) 0);
+            GL11.glTranslatef((float) 0, (float) 0.15F, (float) 0);
             this.modelLightMover.setRotations(pitch, yaw);
             this.modelLightMover.render();
         }
@@ -298,17 +334,20 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
         }
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        //GL11.glEnable(GL11.GL_BLEND);
-        //GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        Minecraft.getMinecraft().mcProfiler.endStartSection("calculations");
+
         int color = light.getColor(partialTicks);
         float red = (float) ((color >> 16) & 0xFF) / 255.0F;
         float green = (float) ((color >> 8) & 0xFF) / 255.0F;
         float blue = (float) (color & 0xFF) / 255.0F;
         float brightness = light.getBrightness(partialTicks);
-        float lensBrightness = brightness + 0.1f;
+        float lensBrightness = brightness + 0.1F;
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         if (!lightOnly) {
+            Minecraft.getMinecraft().mcProfiler.endStartSection("model");
+
             GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
 
             this.modelLightMover.renderLens();
@@ -319,19 +358,25 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         blue *= brightness;
 
         if (renderLight && lightOnly) {
-            float lightLength = (64f / ((light.getFocus(partialTicks) + 0.01f) * 0.7f));
-            float alpha = (0.5F * brightness) + 0.1f;
+            Minecraft.getMinecraft().mcProfiler.endStartSection("beam");
+            Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
-            GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
-            GL11.glTranslatef(0, 0, 0.35f);
-            //HUzzah! I'm a wizard
+            float lightLength = (64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F));
+            float alpha = (0.5F * brightness) + 0.1F;
+
             float lightangle = light.getFocus(partialTicks);
             float downDiff = (float) (lightLength * Math.tan(Math.toRadians(lightangle)));
 
-            float rend = red * 0.3f;
-            float gend = green * 0.3f;
-            float bend = blue * 0.3f;
+            float rend = red * 0.3F;
+            float gend = green * 0.3F;
+            float bend = blue * 0.3F;
+
+            Minecraft.getMinecraft().mcProfiler.endStartSection("rendering");
+
+            GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+            GL11.glTranslatef(0, 0, 0.35F);
+
             GL11.glShadeModel(GL11.GL_SMOOTH);
 
             GL11.glBegin(GL11.GL_QUADS);
@@ -395,7 +440,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
 
             GL11.glEnd();
-            //GL11.glDisable(GL11.GL_BLEND);
+            Minecraft.getMinecraft().mcProfiler.endSection();
         }
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
@@ -403,6 +448,8 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
         GL11.glPopMatrix();
+
+        Minecraft.getMinecraft().mcProfiler.endSection();
     }
 
 }

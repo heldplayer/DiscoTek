@@ -14,7 +14,7 @@ public class ModelLightMoverBase extends ModelBase {
     public ModelLightMoverBase() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         //Base
-        this.base.addBox(-7.0f, -8.0f, -7.0f, 14, 3, 14, 0.0F);
+        this.base.addBox(-7.0F, -8.0F, -7.0F, 14, 3, 14, 0.0F);
     }
 
     public void renderAll() {

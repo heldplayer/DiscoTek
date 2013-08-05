@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Objects;
+import net.specialattack.discotek.item.crafting.RecipesLens;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -63,8 +66,14 @@ public class ItemLens extends Item {
                     while (color.length() < 6) {
                         color = "0" + color;
                     }
-                    list.add("Color: #" + color);
+                    list.add(I18n.func_135052_a("gui.tooltip.lens.color", "#" + color));
                 }
+                else {
+                    list.add(I18n.func_135053_a("gui.tooltip.lens.nocolor"));
+                }
+            }
+            else {
+                list.add(I18n.func_135053_a("gui.tooltip.lens.nocolor"));
             }
         }
     }
@@ -72,9 +81,9 @@ public class ItemLens extends Item {
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         //Dont need that... Silly me :p
-        TileEntity te = world.getBlockTileEntity(x, y, z);
-        if (te != null && te instanceof TileEntityLight) {
-            TileEntityLight light = (TileEntityLight) te;
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        if (tile != null && tile instanceof TileEntityLight) {
+            TileEntityLight light = (TileEntityLight) tile;
             if (light.getBlockMetadata() == 2) {
                 return false;
             }
@@ -123,6 +132,26 @@ public class ItemLens extends Item {
     public void registerIcons(IconRegister register) {
         super.registerIcons(register);
         this.overlay = register.registerIcon(this.field_111218_cA + "_overlay");
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(int itemId, CreativeTabs tab, List list) {
+        list.add(new ItemStack(itemId, 1, 0));
+
+        for (float[] colorArray : RecipesLens.dyeColors) {
+            int red = (int) (colorArray[0] * 255.0F);
+            int green = (int) (colorArray[1] * 255.0F);
+            int blue = (int) (colorArray[2] * 255.0F);
+            int color = red << 16 | green << 8 | blue;
+
+            ItemStack stack = new ItemStack(itemId, 1, 0);
+            NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound("tag");
+            compound.setInteger("color", color);
+
+            list.add(stack);
+        }
     }
 
 }
