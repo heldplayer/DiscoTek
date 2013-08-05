@@ -4,8 +4,6 @@ package net.specialattack.modjam.controllerLogic;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 public class Instruction {
 
     private int value;
@@ -18,35 +16,35 @@ public class Instruction {
     private boolean hasValidSelection = false;
 
     public Instruction() {
-        selected = new ArrayList<Integer>();
+        this.selected = new ArrayList<Integer>();
     }
-    
+
     public int getAction() {
-        return action;
+        return this.action;
     }
 
     public String getError() {
-        return error;
+        return this.error;
     }
 
     public List<Integer> getSelected() {
-        return selected;
+        return this.selected;
     }
 
     public boolean hasError() {
-        return hasError;
+        return this.hasError;
     }
 
     public boolean isFixture() {
-        return isFixture;
+        return this.isFixture;
     }
 
     public boolean isHasValidSelection() {
-        return hasValidSelection;
+        return this.hasValidSelection;
     }
 
     public boolean isNeedsPreSelected() {
-        return needsPreSelected;
+        return this.needsPreSelected;
     }
 
     public Instruction setAction(int action) {
@@ -73,23 +71,23 @@ public class Instruction {
     }
 
     public void addSelection(int id) {
-        selected.add(id);
+        this.selected.add(id);
     }
 
     public void removeSelection(int id) {
-        for (int i = 0; i < selected.size(); i++) {
-            if (selected.get(i) == id) {
-                selected.remove(i--);
+        for (int i = 0; i < this.selected.size(); i++) {
+            if (this.selected.get(i) == id) {
+                this.selected.remove(i--);
             }
         }
     }
 
     public int getSelectedCount() {
-        return selected.size();
+        return this.selected.size();
     }
 
     public int getSelectedAt(int i) {
-        return selected.get(i);
+        return this.selected.get(i);
     }
 
     public void setValue(int val) {
