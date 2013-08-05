@@ -237,15 +237,12 @@ public class TileEntityLight extends TileEntity {
         this.prevFocus = this.focus;
         this.prevColor = this.color;
 
-        this.pitch += this.motionPitch;
         
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
-            this.motionPitch = 0;
         }
         else if (this.pitch < -0.8F) {
             this.prevPitch = this.pitch = -0.8F;
-            this.motionPitch = 0;
         }
 
         if (this.brightness > 1.0F) {
@@ -337,7 +334,4 @@ public class TileEntityLight extends TileEntity {
         System.arraycopy(levels, 0, this.cachedLevels, 0, levels.length);
     }
 
-    public void setMotionPitch(float f) {
-        this.motionPitch = f;
-    }
 }
