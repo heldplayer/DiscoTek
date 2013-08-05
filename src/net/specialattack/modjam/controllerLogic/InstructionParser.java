@@ -14,17 +14,17 @@ public class InstructionParser {
     //Syntax
     //DIGIT = 0|1|2|3|4|5|6|7|8|9
     //NUMBER = digit{digit}
-    //COMMAND = CLEAR | BRIGHTNESS | @ | COLOR | COLOUR
+    //COMMAND = CLEAR | @
     //LEVEL = <NUMBER> | <NUMBER>% | FULL | FF | *
     //SELECTION = (FIXTURE | CHANNEL) (<NUMBER> | <NUMBER> THRU <NUMBER>) {+|- <NUMBER>}
     //COMMAND = (<SELECTION> | <SELECTION> <COMMAND> {<NUMBER>}| <COMMAND> {<NUMBER>})
 
-    String[] actionKeys = { "CLEAR", "@", "BRIGHTNESS", "COLOR", "COLOUR" };
+    String[] actionKeys = { "CLEAR", "@" };
     //Ref by position of keyword in actionKeys
-    int[] actionIds = { 0, 1, 1, 2, 2 };
+    int[] actionIds = { 0, 1 };
 
     //Ref by action id
-    int[] argCounts = { 0, 1, 1 };
+    int[] argCounts = { 0, 1 };
 
     public Instruction validateCommand(String command) {
         String testCommand = command.toUpperCase().replace(" ", "");
@@ -34,16 +34,13 @@ public class InstructionParser {
             //We dont care about anything else really. We just clear the selected cache
             return new Instruction().setAction(0);
         }
-        if (action == -1) {
-            return new Instruction().setError("Action not found!");
-        }
 
         Instruction instruction;
         if (commandParts.length == 2) {
             instruction = validateSelectionStatement(commandParts[0], action);
             instruction.setNeedsPreSelected(!instruction.isHasValidSelection());
             instruction.setAction(action);
-            instruction.setValue(validateValuesStatement(commandParts[1], action));
+            instruction.setValue(validateValuesStatement(commandParts[1]));
         }
         else if (commandParts.length == 1) {
             instruction = new Instruction();
@@ -57,30 +54,24 @@ public class InstructionParser {
         return instruction;
     }
 
-    private int validateValuesStatement(String string, int action) {
+    private int validateValuesStatement(String string) {
+        if (string.contains("*") || string.contains("FULL") || string.contains("FF")) {
+            return 255;
+        }
         String numS = getNextNum(string);
-        switch (action) {
-        case 2:
-//            if (string.endsWith("%")){
-//                
-//                return (0xFF) | () | ();
-//            }
-//            //Translate as hex;
-            
-            try {
-                return Integer.parseInt(numS, 16);
+        try {
+            int num = Integer.parseInt(numS);
+            if (string.endsWith("%")) {
+                return (int) ((num / 100.0f) * 255.0f);
             }
-            catch (NumberFormatException e) {
-                return -1;
-            }
-        default:
-            try {
-                return Integer.parseInt(numS);
-            }
-            catch (NumberFormatException e) {
-                return -1;
+            else {
+                return num;
             }
         }
+        catch (NumberFormatException e) {
+            return 0;
+        }
+
     }
 
     private Instruction validateSelectionStatement(String string, int action) {
