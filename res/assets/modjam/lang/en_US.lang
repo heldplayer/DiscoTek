@@ -1,16 +1,18 @@
 tile.light0.name=Fresnel
-tile.light1.name=SpA 250
-tile.light2.name=SpA 250 LED
-tile.light3.name=DMX to Redstone Converter
-tile.light4.name=Radial laser emitter
+tile.light1.name=SpA Map 250
+tile.light2.name=SpA Map 101 LED
+tile.light3.name=Single Channel Dimmer
+tile.light4.name=SpA RGB Radial laser
 tile.truss.name=Truss
+
 tile.decoration0.name=Lighting Hull
 tile.decoration1.name=Dark Stone Bricks
 tile.decoration2.name=Dark Chiseled Stone Bricks
 tile.decoration3.name=Dark Chiseled Quartz Block
 tile.decoration4.name=Dark Bricks
-tile.controller0.name=Basic Controller
-tile.controller1.name=Programmable Controller
+tile.controller0.name=SpA PixEl 12/24
+tile.controller1.name=SpA grandSpA2
+tile.controller2.name=SpA Guo (WIP)
 tile.lamp0.name=White Light
 tile.lamp1.name=Orange Light
 tile.lamp2.name=Magenta Light
