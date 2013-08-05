@@ -51,7 +51,7 @@ public class GuiChannelSlider extends ModJamSlider {
             }
             par1Minecraft.func_110434_K().func_110577_a(Assets.SMALL_GUI);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.xPosition - 1, this.yPosition + this.height - 4 - (int) (this.sliderValue * (float) (this.height - 4)), 209, 0, 17, 4);
+            this.drawTexturedModalRect(this.xPosition + 1, this.yPosition + this.height - 4 - (int) (this.sliderValue * (float) (this.height - 4)), 209, 0, 17, 4);
         }
     }
 
