@@ -1,7 +1,7 @@
 [
 	{
-		"modid" : "ModjamMod2013",
-		"name" : "Modjam Mod 2013 Unnamed",
+		"modid" : "discotek",
+		"name" : "DiscoTek",
 		"description" : "A mod created by Team Bleigh for ModJam 2013",
 		"version" : "@VERSION@",
 		"authors" : [
