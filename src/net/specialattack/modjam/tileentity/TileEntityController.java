@@ -14,7 +14,7 @@ import net.specialattack.modjam.Instruction;
 public class TileEntityController extends TileEntity {
 
     private List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
-    public int[] levels = new int[255];
+    public int[] levels = new int[256];
     public int[] stack = new int[16];
     public int stackPointer;
     public boolean interpretFirst;
