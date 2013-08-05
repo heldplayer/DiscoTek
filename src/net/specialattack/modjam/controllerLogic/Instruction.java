@@ -1,13 +1,14 @@
 
 package net.specialattack.modjam.controllerLogic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 public class Instruction {
 
-    private int[] values;
+    private int value;
     private List<Integer> selected;
     private boolean isFixture = false;
     private boolean hasError = false;
@@ -16,6 +17,10 @@ public class Instruction {
     private boolean needsPreSelected = false;
     private boolean hasValidSelection = false;
 
+    public Instruction() {
+        selected = new ArrayList<Integer>();
+    }
+    
     public int getAction() {
         return action;
     }
@@ -26,10 +31,6 @@ public class Instruction {
 
     public List<Integer> getSelected() {
         return selected;
-    }
-
-    public int[] getValues() {
-        return values;
     }
 
     public boolean hasError() {
@@ -48,8 +49,9 @@ public class Instruction {
         return needsPreSelected;
     }
 
-    public void setAction(int action) {
+    public Instruction setAction(int action) {
         this.action = action;
+        return this;
     }
 
     public Instruction setError(String error) {
@@ -70,10 +72,6 @@ public class Instruction {
         this.needsPreSelected = needsPreSelected;
     }
 
-    public void addValue(int value) {
-        ArrayUtils.add(values, values.length, value);
-    }
-
     public void addSelection(int id) {
         selected.add(id);
     }
@@ -88,6 +86,18 @@ public class Instruction {
 
     public int getSelectedCount() {
         return selected.size();
+    }
+
+    public int getSelectedAt(int i) {
+        return selected.get(i);
+    }
+
+    public void setValue(int val) {
+        this.value = val;
+    }
+
+    public int getValue() {
+        return this.value;
     }
 
 }
