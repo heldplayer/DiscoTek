@@ -150,7 +150,7 @@ public class ModDiscotek {
         // Darker Truss
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockTruss, 8, 0), "TTT", "TdT", "TTT", 'T', new ItemStack(Objects.blockTruss, 1, 1), 'd', "dyeBlack"));
         // Silver truss
-        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockTruss, 1, 8), "isi", "s s", "isi", 'i', iron, 's', stick);
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockTruss, 8, 1), "isi", "s s", "isi", 'i', iron, 's', stick);
         // Darkest Truss
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockTruss, 8, 2), "TTT", "TdT", "TTT", 'T', new ItemStack(Objects.blockTruss, 1, 0), 'd', "dyeBlack"));
         // Orienter
