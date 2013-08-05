@@ -1,13 +1,9 @@
 
 package net.specialattack.modjam.controllerLogic;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import org.bouncycastle.util.encoders.HexEncoder;
-import org.bouncycastle.util.encoders.HexTranslator;
 
 public class InstructionParser {
 
@@ -28,8 +24,8 @@ public class InstructionParser {
 
     public Instruction validateCommand(String command) {
         String testCommand = command.toUpperCase().replace(" ", "");
-        String[] commandParts = splitAtKeyWord(testCommand);
-        int action = getKeyWordActionId(testCommand);
+        String[] commandParts = this.splitAtKeyWord(testCommand);
+        int action = this.getKeyWordActionId(testCommand);
         if (action == 0) {
             //We dont care about anything else really. We just clear the selected cache
             return new Instruction().setAction(0);
@@ -37,10 +33,10 @@ public class InstructionParser {
 
         Instruction instruction;
         if (commandParts.length == 2) {
-            instruction = validateSelectionStatement(commandParts[0], action);
+            instruction = this.validateSelectionStatement(commandParts[0], action);
             instruction.setNeedsPreSelected(!instruction.isHasValidSelection());
             instruction.setAction(action);
-            instruction.setValue(validateValuesStatement(commandParts[1]));
+            instruction.setValue(this.validateValuesStatement(commandParts[1]));
         }
         else if (commandParts.length == 1) {
             instruction = new Instruction();
@@ -58,7 +54,7 @@ public class InstructionParser {
         if (string.contains("*") || string.contains("FULL") || string.contains("FF")) {
             return 255;
         }
-        String numS = getNextNum(string);
+        String numS = this.getNextNum(string);
         try {
             int num = Integer.parseInt(numS);
             if (string.endsWith("%")) {
@@ -93,7 +89,7 @@ public class InstructionParser {
             string = string.substring(1);
         }
 
-        String startS = getNextNum(string);
+        String startS = this.getNextNum(string);
         int start = 0;
         if (startS.length() == 0) {
             return inst.setError("Failed to parse selection values.");
@@ -116,7 +112,7 @@ public class InstructionParser {
             else {
                 string = string.substring(1);
             }
-            String endS = getNextNum(string);
+            String endS = this.getNextNum(string);
             if (endS.length() == 0) {
                 return inst.setError("Failed to parse selection values after THRU.");
             }
@@ -154,7 +150,7 @@ public class InstructionParser {
         while (string.length() > 1) {
             if (string.startsWith("+")) {
                 string = string.substring(1);
-                String additionalS = getNextNum(string);
+                String additionalS = this.getNextNum(string);
                 if (additionalS.length() == 0) {
                     return inst.setError("Failed to parse optional additional selection values (+ <number>).");
                 }
@@ -171,7 +167,7 @@ public class InstructionParser {
             }
             else if (string.startsWith("-")) {
                 string = string.substring(1);
-                String additionalS = getNextNum(string);
+                String additionalS = this.getNextNum(string);
                 if (additionalS.length() == 0) {
                     return inst.setError("Failed to parse optional additional selection values (- <number>).");
                 }
@@ -208,9 +204,9 @@ public class InstructionParser {
     }
 
     private String[] splitAtKeyWord(String command) {
-        for (int i = 0; i < actionKeys.length; i++) {
-            if (command.indexOf(actionKeys[i]) > -1) {
-                return command.split(actionKeys[i]);
+        for (int i = 0; i < this.actionKeys.length; i++) {
+            if (command.indexOf(this.actionKeys[i]) > -1) {
+                return command.split(this.actionKeys[i]);
             }
         }
         String[] ret = { "", command };
@@ -218,9 +214,9 @@ public class InstructionParser {
     }
 
     private int getKeyWordActionId(String command) {
-        for (int i = 0; i < actionKeys.length; i++) {
-            if (command.indexOf(actionKeys[i]) > -1) {
-                return actionIds[i];
+        for (int i = 0; i < this.actionKeys.length; i++) {
+            if (command.indexOf(this.actionKeys[i]) > -1) {
+                return this.actionIds[i];
             }
         }
         return -1;
