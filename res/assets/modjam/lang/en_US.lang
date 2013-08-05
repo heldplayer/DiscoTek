@@ -5,7 +5,7 @@ tile.light3.name=Single Channel Dimmer
 tile.light4.name=SpA RGB Radial laser
 tile.truss.name=Truss
 
-tile.decoration.name=Lighting Hull
+tile.decoration0.name=Lighting Hull
 tile.decoration1.name=Dark Stone Bricks
 tile.decoration2.name=Dark Chiseled Stone Bricks
 tile.decoration3.name=Dark Chiseled Quartz Block
