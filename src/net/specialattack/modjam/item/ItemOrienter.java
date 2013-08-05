@@ -56,30 +56,30 @@ public class ItemOrienter extends Item {
             case 0:
                 float yaw = light.getYaw(1.0F);
                 if (player.isSneaking()) {
-                    yaw += 0.1F;
+                    yaw += 0.01F;
                 }
                 else {
-                    yaw -= 0.1F;
+                    yaw -= 0.01F;
                 }
                 light.setYaw(yaw);
             break;
             case 1:
                 float pitch = light.getPitch(1.0F);
                 if (player.isSneaking()) {
-                    pitch -= 0.1F;
+                    pitch -= 0.01F;
                 }
                 else {
-                    pitch += 0.1F;
+                    pitch += 0.01F;
                 }
                 light.setPitch(pitch);
             break;
             case 2:
                 float focus = light.getFocus(1.0F);
                 if (player.isSneaking()) {
-                    focus -= 0.5F;
+                    focus -= 0.2F;
                 }
                 else {
-                    focus += 0.5F;
+                    focus += 0.2F;
                 }
                 light.setFocus(focus);
             break;
