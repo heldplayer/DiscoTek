@@ -4,7 +4,11 @@ tile.light2.name=SpA 250 LED
 tile.light3.name=DMX to Redstone Converter
 tile.light4.name=Radial laser emitter
 tile.truss.name=Truss
-tile.decoration.name=Lighting Hull
+tile.decoration0.name=Lighting Hull
+tile.decoration1.name=Dark Stone Bricks
+tile.decoration2.name=Dark Chiseled Stone Bricks
+tile.decoration3.name=Dark Chiseled Quartz Block
+tile.decoration4.name=Dark Bricks
 tile.controller0.name=Basic Controller
 tile.controller1.name=Programmable Controller
 
@@ -14,8 +18,16 @@ item.wirelesslinker.name=Wireless Linker
 item.orienter0.name=Orienter (Rotation)
 item.orienter1.name=Orienter (Angle)
 item.orienter2.name=Orienter (Focus)
+item.crafting0.name=Light Bulb
+item.crafting1.name=LED
+item.crafting2.name=Servo
+item.crafting3.name=Dark Brick
 
 itemGroup.modjam2013=ModJam 2013
+
+gui.tooltip.light.color=Color: %s
+gui.tooltip.light.lens.true=Has lens
+gui.tooltip.light.lens.false=Doesn't have lens
 
 gui.light.title=Configuring Light
 gui.light.loading=Loading...

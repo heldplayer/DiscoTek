@@ -1,6 +1,7 @@
 
 package net.specialattack.modjam.block;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -34,9 +35,14 @@ public class BlockLight extends Block {
     private int temp = 0;
 
     public BlockLight(int blockId) {
-        super(blockId, Material.piston);
+        super(blockId, Material.iron);
         this.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererLight(this.renderId));
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
     }
 
     @Override
@@ -140,6 +146,42 @@ public class BlockLight extends Block {
         }
 
         return true;
+    }
+
+    private TileEntityLight light;
+
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int side, EntityPlayer player) {
+        super.onBlockHarvested(world, x, y, z, side, player);
+
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+        if (tile != null && tile instanceof TileEntityLight) {
+            light = (TileEntityLight) tile;
+        }
+    }
+
+    @Override
+    public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
+        ArrayList<ItemStack> result = new ArrayList<ItemStack>();
+
+        ItemStack stack = new ItemStack(this, 1, metadata);
+
+        NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound("tag");
+
+        if (light != null) {
+            compound.setInteger("color", light.getColor(1.0F));
+            compound.setBoolean("hasLens", light.hasLens());
+            light = null;
+        }
+        else {
+            compound.setInteger("color", 0xFFFFFF);
+            compound.setBoolean("hasLens", false);
+        }
+
+        result.add(stack);
+
+        return result;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

@@ -33,7 +33,7 @@ public class BlockController extends Block {
     private Icon[] side;
 
     public BlockController(int blockId) {
-        super(blockId, Material.piston);
+        super(blockId, Material.iron);
     }
 
     @Override
@@ -71,6 +71,11 @@ public class BlockController extends Block {
         }
 
         return true;
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
     }
 
     @Override

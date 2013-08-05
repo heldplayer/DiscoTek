@@ -29,7 +29,7 @@ public class ItemCrafting extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
-        this.icons = new Icon[3];
+        this.icons = new Icon[4];
         for (int i = 0; i < this.icons.length; i++) {
             this.icons[i] = register.registerIcon("modjam:crafting" + i);
         }
@@ -45,7 +45,7 @@ public class ItemCrafting extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int itemId, CreativeTabs tab, List list) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             list.add(new ItemStack(itemId, 1, i));
         }
     }

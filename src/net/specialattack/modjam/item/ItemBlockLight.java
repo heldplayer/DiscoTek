@@ -3,6 +3,7 @@ package net.specialattack.modjam.item;
 
 import java.util.List;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,24 @@ public class ItemBlockLight extends ItemBlock {
                     while (color.length() < 6) {
                         color = "0" + color;
                     }
-                    list.add("Color: #" + color);
+                    list.add(I18n.func_135052_a("gui.tooltip.light.color", "#" + color));
+                }
+                if (compound.hasKey("hasLens")) {
+                    if (compound.getBoolean("hasLens")) {
+                        list.add(I18n.func_135053_a("gui.tooltip.light.lens.true"));
+                    }
+                    else {
+                        list.add(I18n.func_135053_a("gui.tooltip.light.lens.false"));
+                    }
+                }
+                else {
+                    int meta = stack.getItemDamage();
+                    if (meta < 2) {
+                        list.add(I18n.func_135053_a("gui.tooltip.light.lens.true"));
+                    }
+                    else {
+                        list.add(I18n.func_135053_a("gui.tooltip.light.lens.false"));
+                    }
                 }
             }
         }
