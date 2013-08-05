@@ -12,7 +12,7 @@ tile.decoration3.name=Dark Chiseled Quartz Block
 tile.decoration4.name=Dark Bricks
 tile.controller0.name=SpA PixEl 12/24
 tile.controller1.name=SpA grandSpA2
-tile.controller1.name=SpA Guo (WIP)
+tile.controller2.name=SpA Guo (WIP)
 
 item.debug.name=Debug Item
 item.lens.name=Lens
