@@ -23,7 +23,8 @@ public class TileEntityController extends TileEntity {
     public String error;
     public int errorIndex;
     private boolean running;
-
+    
+    
     public TileEntityController() {
         for (int i = 0; i < this.levels.length; i++) {
             this.levels[i] = 0x0;
@@ -34,6 +35,7 @@ public class TileEntityController extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+        int data = compound.getInteger("data");
         NBTTagList lightsLinked = compound.getTagList("Lights");
         for (int i = 0; i < lightsLinked.tagCount(); i++) {
             NBTTagCompound tag = (NBTTagCompound) lightsLinked.tagAt(i);
@@ -47,7 +49,7 @@ public class TileEntityController extends TileEntity {
         if (this.levels.length != 255) {
             this.levels = new int[255];
         }
-        if (this.blockMetadata == 1){
+        if (data == 1){
             readProgrammableFromNBT(compound);
         }
     }
@@ -74,6 +76,7 @@ public class TileEntityController extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
+        compound.setInteger("data", this.getBlockMetadata());
         NBTTagList lightsLinked = new NBTTagList();
         for (ChunkCoordinates coord : this.lightsLinked) {
             NBTTagCompound tag = new NBTTagCompound();
