@@ -127,7 +127,7 @@ public class TileEntityController extends TileEntity {
 
         if (distance < reach) {
             this.lightsLinked.add(coords);
-
+            
             return true;
         }
 
