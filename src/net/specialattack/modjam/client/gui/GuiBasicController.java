@@ -40,8 +40,8 @@ public class GuiBasicController extends GuiSliderCompat {
                     float val = ((float) this.controller.levels[i + (y * chans)] / 255.0f);
 
                     int x = this.width / 2 - ((chans / 2) * 18) + ((i - 1) * 18);
-                    int yp = (this.height) /2 - 100 + (y * 100);
-                    
+                    int yp = (this.height) / 2 - 100 + (y * 100);
+
                     this.buttonList.add(new GuiChannelSlider(i + (y * chans), x, yp, "" + (val == 1 ? "FF" : (int) (val * 100)), val, this));
                 }
             }
@@ -103,9 +103,9 @@ public class GuiBasicController extends GuiSliderCompat {
         for (int yi = 0; yi < 2; yi++) {
             for (int i = 1; i <= 12; i++) {
                 int xp = this.width / 2 - (6 * 18) + ((i - 1) * 18);
-                int yp = (this.height) /2+ (yi * 100);
+                int yp = (this.height) / 2 + (yi * 100);
                 String txt = (i + (yi * 12)) + "";
-                this.fontRenderer.drawString(txt, xp + (16 - this.fontRenderer.getStringWidth(txt))/2, yp - 16, 0x3F3F3F);
+                this.fontRenderer.drawString(txt, xp + (16 - this.fontRenderer.getStringWidth(txt)) / 2, yp - 16, 0x3F3F3F);
             }
         }
 

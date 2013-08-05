@@ -47,8 +47,8 @@ public class TileEntityController extends TileEntity {
         if (this.levels.length != 255) {
             this.levels = new int[255];
         }
-        if (this.getBlockMetadata() == 1){
-            readProgrammableFromNBT(compound);
+        if (this.getBlockMetadata() == 1) {
+            this.readProgrammableFromNBT(compound);
         }
     }
 
@@ -84,13 +84,13 @@ public class TileEntityController extends TileEntity {
         }
         compound.setTag("Lights", lightsLinked);
         compound.setIntArray("Levels", this.levels);
-        if (this.getBlockMetadata() == 1){
-            writeProgrammableToNBT(compound);
+        if (this.getBlockMetadata() == 1) {
+            this.writeProgrammableToNBT(compound);
         }
 
     }
-    
-    private void writeProgrammableToNBT(NBTTagCompound compound){
+
+    private void writeProgrammableToNBT(NBTTagCompound compound) {
         compound.setInteger("Pointer", this.instructionPointer);
         NBTTagList instructions = new NBTTagList();
         for (Instruction instruction : this.instructions) {
@@ -163,8 +163,8 @@ public class TileEntityController extends TileEntity {
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
             this.levels[0] = 0;
-            if (getBlockMetadata() == 1) {
-                doProgrammerTick();
+            if (this.getBlockMetadata() == 1) {
+                this.doProgrammerTick();
             }
         }
     }

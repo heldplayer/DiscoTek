@@ -157,7 +157,7 @@ public class BlockLight extends Block {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
 
         if (tile != null && tile instanceof TileEntityLight) {
-            light = (TileEntityLight) tile;
+            this.light = (TileEntityLight) tile;
         }
     }
 
@@ -169,10 +169,10 @@ public class BlockLight extends Block {
 
         NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound("tag");
 
-        if (light != null) {
-            compound.setInteger("color", light.getColor(1.0F));
-            compound.setBoolean("hasLens", light.hasLens());
-            light = null;
+        if (this.light != null) {
+            compound.setInteger("color", this.light.getColor(1.0F));
+            compound.setBoolean("hasLens", this.light.hasLens());
+            this.light = null;
         }
         else {
             compound.setInteger("color", 0xFFFFFF);
