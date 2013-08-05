@@ -34,7 +34,6 @@ public class GuiBasicController extends GuiSliderCompat {
                 this.levels = new short[chans * rows];
             }
 
-            int mod = 0;
             for (int y = 0; y < rows; y++) {
                 for (int i = 1; i <= chans; i++) {
                     float val = ((float) this.controller.levels[i + (y * chans)] / 255.0f);

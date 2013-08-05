@@ -1,6 +1,7 @@
 
 package net.specialattack.modjam;
 
+import net.specialattack.modjam.block.BlockColoredLamp;
 import net.specialattack.modjam.block.BlockController;
 import net.specialattack.modjam.block.BlockDecoration;
 import net.specialattack.modjam.block.BlockLight;
@@ -18,6 +19,8 @@ public class Objects {
     public static BlockTruss blockTruss;
     public static BlockDecoration blockDecoration;
     public static BlockController blockController;
+    public static BlockColoredLamp blockColoredLampOn;
+    public static BlockColoredLamp blockColoredLampOff;
     public static ItemDebug itemDebug;
     public static ItemLens itemLens;
     public static ItemWirelessLinker itemWirelessLinker;

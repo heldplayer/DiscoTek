@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.specialattack.modjam.block.BlockColoredLamp;
 import net.specialattack.modjam.block.BlockController;
 import net.specialattack.modjam.block.BlockDecoration;
 import net.specialattack.modjam.block.BlockLight;
@@ -77,6 +78,14 @@ public class ModjamMod {
         Objects.blockController = new BlockController(Config.blockControllerId);
         Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("controller");
         GameRegistry.registerBlock(Objects.blockController, ItemBlockMulti.class, "ModJam2013.blockController");
+
+        Objects.blockColoredLampOff = new BlockColoredLamp(Config.blockColoredLampOffId, false);
+        Objects.blockColoredLampOff.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lamp");
+        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "ModJam2013.blockColoredLampOff");
+
+        Objects.blockColoredLampOn = new BlockColoredLamp(Config.blockColoredLampOnId, true);
+        Objects.blockColoredLampOn.setHardness(0.3F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lamp");
+        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "ModJam2013.blockColoredLampOn");
 
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug");

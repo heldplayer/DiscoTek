@@ -24,12 +24,6 @@ public class BlockDecoration extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int meta) {
-        return this.icons[meta];
-    }
-
-    @Override
     public int damageDropped(int meta) {
         return meta;
     }
@@ -38,6 +32,12 @@ public class BlockDecoration extends Block {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int side, int meta) {
+        return this.icons[meta];
     }
 
     @Override

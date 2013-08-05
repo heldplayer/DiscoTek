@@ -49,7 +49,7 @@ public class TileEntityController extends TileEntity {
             this.levels = new int[255];
         }
         if (data == 1) {
-            readProgrammableFromNBT(compound);
+            this.readProgrammableFromNBT(compound);
         }
     }
 

@@ -58,7 +58,8 @@ public class BlockController extends Block {
                     }
                     else if (meta == 1) {
                         FMLClientHandler.instance().displayGuiScreen(player, new GuiController(controller));
-                    }else if (meta == 2) {
+                    }
+                    else if (meta == 2) {
                         FMLClientHandler.instance().displayGuiScreen(player, new GuiFancyController(controller));
                     }
                 }

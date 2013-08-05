@@ -3,7 +3,6 @@ package net.specialattack.modjam.client.gui;
 
 import java.util.List;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -13,6 +12,7 @@ import net.specialattack.modjam.PacketHandler;
 import net.specialattack.modjam.controllerLogic.Instruction;
 import net.specialattack.modjam.controllerLogic.InstructionParser;
 import net.specialattack.modjam.tileentity.TileEntityController;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class GuiFancyController extends GuiScreen {
 
@@ -30,7 +30,6 @@ public class GuiFancyController extends GuiScreen {
         this.parser = new InstructionParser();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui() {
         this.buttonList.clear();
@@ -38,7 +37,7 @@ public class GuiFancyController extends GuiScreen {
         if (this.initialized) {
             this.guiHeight = 164;
         }
-        commands = new GuiTextField(this.fontRenderer, 30, 30, 100, 18);
+        this.commands = new GuiTextField(this.fontRenderer, 30, 30, 100, 18);
 
     }
 
@@ -47,15 +46,16 @@ public class GuiFancyController extends GuiScreen {
         if (this.initialized) {
             this.commands.textboxKeyTyped(character, key);
             if (key == org.lwjgl.input.Keyboard.KEY_RETURN) {
-                Instruction inst = parser.validateCommand(commands.getText());
-                commands.setText("");
+                Instruction inst = this.parser.validateCommand(this.commands.getText());
+                this.commands.setText("");
                 if (inst.hasError() && !inst.isNeedsPreSelected()) {
                     this.error = inst.getError();
                     this.errorTime = System.currentTimeMillis();
-                }else if (inst.isNeedsPreSelected()){
-                    if (selected != null && selected.size() > 0){
-                        for (int i = 0; i < selected.size(); i++) {
-                            this.controller.setChannelLevel(selected.get(i) - 1, (short) (inst.getValue()));
+                }
+                else if (inst.isNeedsPreSelected()) {
+                    if (this.selected != null && this.selected.size() > 0) {
+                        for (int i = 0; i < this.selected.size(); i++) {
+                            this.controller.setChannelLevel(this.selected.get(i) - 1, (short) (inst.getValue()));
                         }
                         FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
                     }
@@ -65,7 +65,7 @@ public class GuiFancyController extends GuiScreen {
                         this.controller.setChannelLevel(inst.getSelectedAt(i), (short) (inst.getValue()));
                     }
                     FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
-                    if (inst.getSelectedCount() > 0){
+                    if (inst.getSelectedCount() > 0) {
                         this.selected = inst.getSelected();
                     }
                 }
@@ -80,7 +80,7 @@ public class GuiFancyController extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
-        
+
         if (this.initialized) {
             this.commands.mouseClicked(mouseX, mouseY, button);
         }
@@ -113,10 +113,10 @@ public class GuiFancyController extends GuiScreen {
             x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
             this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
         }
-        if (System.currentTimeMillis() < errorTime + 8000){
-            this.fontRenderer.drawString(error, 10, 10, 0xFFFFFFFF);
+        if (System.currentTimeMillis() < this.errorTime + 8000) {
+            this.fontRenderer.drawString(this.error, 10, 10, 0xFFFFFFFF);
         }
-        commands.drawTextBox();
+        this.commands.drawTextBox();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
