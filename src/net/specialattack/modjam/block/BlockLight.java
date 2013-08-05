@@ -108,7 +108,7 @@ public class BlockLight extends Block {
             TileEntityLight light = (TileEntityLight) tile;
 
             if (player.isSneaking()) {
-                if (light.hasLens()) {
+                if (light.hasLens() && light.getBlockMetadata() < 2) {
                     if (!world.isRemote) {
                         ItemStack is = new ItemStack(Objects.itemLens);
                         NBTTagCompound cpnd = new NBTTagCompound("tag");
@@ -223,7 +223,7 @@ public class BlockLight extends Block {
         if (blockAccess.getBlockMetadata(x, y, z) == 3) {
             if (side > 1) {
                 TileEntityLight tileEntityLight = (TileEntityLight) blockAccess.getBlockTileEntity(x, y, z);
-                return (int) (tileEntityLight.getBrightness(0) * 16.0);
+                return (int) (tileEntityLight.getBrightness(1.0f) * 16.0);
             }
         }
         return 0;

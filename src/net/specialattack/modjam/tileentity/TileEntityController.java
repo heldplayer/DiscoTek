@@ -14,7 +14,7 @@ import net.specialattack.modjam.Instruction;
 public class TileEntityController extends TileEntity {
 
     private List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
-    public int[] levels = new int[256];
+    public int[] levels = new int[255];
     public int[] stack = new int[16];
     public int stackPointer;
     public boolean interpretFirst;
@@ -34,6 +34,7 @@ public class TileEntityController extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+        int data = compound.getInteger("data");
         NBTTagList lightsLinked = compound.getTagList("Lights");
         for (int i = 0; i < lightsLinked.tagCount(); i++) {
             NBTTagCompound tag = (NBTTagCompound) lightsLinked.tagAt(i);
@@ -47,8 +48,8 @@ public class TileEntityController extends TileEntity {
         if (this.levels.length != 255) {
             this.levels = new int[255];
         }
-        if (this.getBlockMetadata() == 1) {
-            this.readProgrammableFromNBT(compound);
+        if (data == 1) {
+            readProgrammableFromNBT(compound);
         }
     }
 
@@ -74,6 +75,7 @@ public class TileEntityController extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
+        compound.setInteger("data", this.getBlockMetadata());
         NBTTagList lightsLinked = new NBTTagList();
         for (ChunkCoordinates coord : this.lightsLinked) {
             NBTTagCompound tag = new NBTTagCompound();
@@ -133,7 +135,7 @@ public class TileEntityController extends TileEntity {
     }
 
     public void setChannelLevel(int channel, int percent) {
-        if (channel >= 0 && channel < 256) {
+        if (channel > 0 && channel < 255) {
             float oldPercent = this.levels[channel];
             if (oldPercent != percent) {
                 this.levels[channel] = percent;
