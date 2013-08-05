@@ -7,7 +7,10 @@ import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiBasicController extends GuiSliderCompat {
 
     private TileEntityController controller;
@@ -110,7 +113,7 @@ public class GuiBasicController extends GuiSliderCompat {
 
         this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
         this.fontRenderer.drawString("SpA", x - 60, this.guiHeight + y - 20, 0x000000);
-        this.fontRenderer.drawString("§l§oPixEl", x - 39, this.guiHeight + y - 20, 0xAA0000);
+        this.fontRenderer.drawString("\u00a7l\u00a7oPixEl", x - 39, this.guiHeight + y - 20, 0xAA0000);
         this.fontRenderer.drawString("12/24", x - 10, this.guiHeight + y - 20, 0x000000);
 
         super.drawScreen(mouseX, mouseY, partialTicks);

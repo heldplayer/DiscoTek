@@ -7,7 +7,10 @@ import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiLight extends GuiSliderCompat {
 
     private TileEntityLight light;

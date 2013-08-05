@@ -373,9 +373,10 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
             Minecraft.getMinecraft().mcProfiler.endStartSection("rendering");
 
+            GL11.glTranslatef(0.0F, 0.15F, 0.0F);
             GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
             GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
-            GL11.glTranslatef(0, 0, 0.35F);
+            GL11.glTranslatef(0.0F, 0.0F, 0.35F);
 
             GL11.glShadeModel(GL11.GL_SMOOTH);
 

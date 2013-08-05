@@ -17,11 +17,8 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.PacketHandler;
-import net.specialattack.discotek.client.gui.GuiBasicController;
-import net.specialattack.discotek.client.gui.GuiController;
-import net.specialattack.discotek.client.gui.GuiFancyController;
+import net.specialattack.discotek.client.ClientProxy;
 import net.specialattack.discotek.tileentity.TileEntityController;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -54,15 +51,7 @@ public class BlockController extends Block {
             else {
                 if (world.isRemote) {
                     int meta = world.getBlockMetadata(x, y, z);
-                    if (meta == 0) {
-                        FMLClientHandler.instance().displayGuiScreen(player, new GuiBasicController(controller));
-                    }
-                    else if (meta == 1) {
-                        FMLClientHandler.instance().displayGuiScreen(player, new GuiController(controller));
-                    }
-                    else if (meta == 2) {
-                        FMLClientHandler.instance().displayGuiScreen(player, new GuiFancyController(controller));
-                    }
+                    ClientProxy.openControllerGui(meta, controller);
                 }
                 else {
                     if (player instanceof EntityPlayerMP) {

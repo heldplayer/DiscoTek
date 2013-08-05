@@ -6,7 +6,10 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.specialattack.discotek.Instruction;
 import net.specialattack.discotek.tileentity.TileEntityController;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiInstructions extends Gui {
 
     public FontRenderer font;

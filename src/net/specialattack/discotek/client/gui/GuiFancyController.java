@@ -13,7 +13,10 @@ import net.specialattack.discotek.controllerLogic.Instruction;
 import net.specialattack.discotek.controllerLogic.InstructionParser;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiFancyController extends GuiScreen {
     // Fancy
 

@@ -39,7 +39,7 @@ public class ItemOrienter extends Item {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (player.isSneaking()) {
-            stack.setItemDamage((stack.getItemDamage() + 1) % this.icons.length);
+            stack.setItemDamage((stack.getItemDamage() + 1) % 3);
             return stack;
         }
         return stack;

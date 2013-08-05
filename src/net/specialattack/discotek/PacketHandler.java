@@ -122,8 +122,8 @@ public class PacketHandler implements IPacketHandler {
                         tile.instructions[i].identifier = new String(data);
                         tile.instructions[i].argument = in.readUnsignedByte();
                     }
-                    tile.onInventoryChanged();
                 }
+                tile.onInventoryChanged();
             }
         }
         break;

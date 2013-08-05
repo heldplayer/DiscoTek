@@ -20,11 +20,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Objects;
 import net.specialattack.discotek.PacketHandler;
-import net.specialattack.discotek.client.gui.GuiLight;
+import net.specialattack.discotek.client.ClientProxy;
 import net.specialattack.discotek.client.render.BlockRendererLight;
 import net.specialattack.discotek.item.ItemOrienter;
 import net.specialattack.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -131,7 +130,7 @@ public class BlockLight extends Block {
             }
 
             if (world.isRemote) {
-                FMLClientHandler.instance().displayGuiScreen(player, new GuiLight(light));
+                ClientProxy.openLightGui(light);
             }
             else {
                 if (player instanceof EntityPlayerMP) {

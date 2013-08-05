@@ -20,22 +20,25 @@ import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.discotek.CommonProxy;
 import net.specialattack.discotek.Objects;
+import net.specialattack.discotek.client.gui.GuiBasicController;
+import net.specialattack.discotek.client.gui.GuiController;
+import net.specialattack.discotek.client.gui.GuiFancyController;
+import net.specialattack.discotek.client.gui.GuiLight;
 import net.specialattack.discotek.client.render.DistanceComparator;
 import net.specialattack.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.discotek.client.render.ItemRendererLens;
 import net.specialattack.discotek.client.render.tileentity.TileEntityLightRenderer;
+import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
     @Override
@@ -62,6 +65,22 @@ public class ClientProxy extends CommonProxy {
 
     private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
     private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
+
+    public static void openLightGui(TileEntityLight light) {
+        FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiLight(light));
+    }
+
+    public static void openControllerGui(int type, TileEntityController controller) {
+        if (type == 0) {
+            FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiBasicController(controller));
+        }
+        else if (type == 1) {
+            FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiController(controller));
+        }
+        else if (type == 2) {
+            FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiFancyController(controller));
+        }
+    }
 
     public static void addTile(TileEntityLight light) {
         lights.add(light);

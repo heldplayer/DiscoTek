@@ -16,7 +16,6 @@ import net.specialattack.discotek.block.BlockDecoration;
 import net.specialattack.discotek.block.BlockLight;
 import net.specialattack.discotek.block.BlockTruss;
 import net.specialattack.discotek.creativetabs.CreativeTabIcon;
-import net.specialattack.discotek.gui.GuiHandler;
 import net.specialattack.discotek.item.ItemBlockLight;
 import net.specialattack.discotek.item.ItemBlockMulti;
 import net.specialattack.discotek.item.ItemCrafting;
@@ -36,7 +35,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.MOD_VERSION)
@@ -112,8 +110,6 @@ public class ModDiscotek {
         TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
         TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller");
 
-        NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
-
         proxy.init(event);
     }
 
@@ -143,6 +139,22 @@ public class ModDiscotek {
         ItemStack chiseledQuartz = new ItemStack(Block.blockNetherQuartz, 1, 1);
         ItemStack redstoneLamp = new ItemStack(Block.redstoneLampIdle, 1, OreDictionary.WILDCARD_VALUE);
 
+        // Basic Controller
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 0), "sss", "dqd", "HrH", 's', stick, 'd', "dyeBlue", 'q', quartz, 'H', hull, 'r', redstone));
+        // Advanced Controller
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 1), "lll", "dqd", "HrH", 'l', led, 'd', "dyeRed", 'q', quartz, 'H', hull, 'r', redstone));
+        // Console
+        // XXX: Not craftable yet, WIP
+        // Wireless Linker
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.itemWirelessLinker, 1, 0), " qs", "idq", " i ", 'q', quartz, 's', stick, 'i', iron, 'd', "dyeBlue"));
+        // Darker Truss
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockTruss, 8, 0), "TTT", "TdT", "TTT", 'T', new ItemStack(Objects.blockTruss, 1, 1), 'd', "dyeBlack"));
+        // Silver truss
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockTruss, 1, 8), "isi", "s s", "isi", 'i', iron, 's', stick);
+        // Darkest Truss
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockTruss, 8, 2), "TTT", "TdT", "TTT", 'T', new ItemStack(Objects.blockTruss, 1, 0), 'd', "dyeBlack"));
+        // Orienter
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.itemOrienter, 1, 0), "s", "S", 's', servo, 'S', stick);
         // Lighting Hull
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 4, 0), " i ", "idi", " i ", 'i', iron, 'd', "dyeBlack"));
         // Dark Stone Bricks
@@ -184,5 +196,4 @@ public class ModDiscotek {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockColoredLampOff, 8, i), "LLL", "LdL", "LLL", 'L', redstoneLamp, 'd', dyes[i]));
         }
     }
-
 }

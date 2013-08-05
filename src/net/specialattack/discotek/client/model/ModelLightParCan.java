@@ -12,7 +12,6 @@ public class ModelLightParCan extends ModelBase {
     public ModelRenderer base;
     public ModelRenderer lens;
 
-    @SuppressWarnings("unchecked")
     public ModelLightParCan() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         //Four sides. + Back
@@ -32,7 +31,6 @@ public class ModelLightParCan extends ModelBase {
 
         this.lens = new ModelRenderer(this, 0, 0);
         this.lens.addBox(-3.0F, -3.0F, -8.0F, 6, 6, 1);
-        this.lens.cubeList.add(new ModelBoxNormalless(this.lens, 0, 0, -3.0F, -3.0F, -8.0F, 6, 6, 1, 0.0F));
     }
 
     public void render() {
