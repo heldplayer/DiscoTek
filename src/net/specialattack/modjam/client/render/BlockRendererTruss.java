@@ -28,6 +28,8 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
+        renderer.overrideBlockTexture = block.getIcon(0, metadata);
+
         // Top-bottom connection
         block.setBlockBounds(0.0F, off, 0.0F, 0.1875F, 1.0F - off, 0.1875F);
         this.doRender(block, renderer);
@@ -67,6 +69,8 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
         this.doRender(block, renderer);
 
+        renderer.overrideBlockTexture = null;
+
         GL11.glPopMatrix();
 
         // Reset block
@@ -75,13 +79,13 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-
-        boolean connectTop = this.canConnect(world, x, y + 1, z, true);
-        boolean connectBottom = this.canConnect(world, x, y - 1, z, true);
-        boolean connectNorth = this.canConnect(world, x, y, z - 1, false);
-        boolean connectSouth = this.canConnect(world, x, y, z + 1, false);
-        boolean connectWest = this.canConnect(world, x - 1, y, z, false);
-        boolean connectEast = this.canConnect(world, x + 1, y, z, false);
+        int meta = world.getBlockMetadata(x, y, z);
+        boolean connectTop = this.canConnect(world, x, y + 1, z, meta, true);
+        boolean connectBottom = this.canConnect(world, x, y - 1, z, meta, true);
+        boolean connectNorth = this.canConnect(world, x, y, z - 1, meta, false);
+        boolean connectSouth = this.canConnect(world, x, y, z + 1, meta, false);
+        boolean connectWest = this.canConnect(world, x - 1, y, z, meta, false);
+        boolean connectEast = this.canConnect(world, x + 1, y, z, meta, false);
 
         if (((connectNorth || connectSouth) && (connectWest || connectEast)) || (!connectNorth && !connectSouth && !connectWest && !connectEast && !connectBottom && !connectTop)) {
             connectTop = true;
@@ -277,14 +281,14 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         renderer.renderStandardBlockWithColorMultiplier(block, x, y, z, 1.0F, 1.0F, 1.0F);
     }
 
-    public boolean canConnect(IBlockAccess world, int x, int y, int z, boolean strict) {
+    public boolean canConnect(IBlockAccess world, int x, int y, int z, int meta, boolean strict) {
         Block block = Block.blocksList[world.getBlockId(x, y, z)];
 
         if (block == null || block.blockID == 0) {
             return false;
         }
 
-        if (block instanceof BlockTruss) {
+        if (block instanceof BlockTruss && world.getBlockMetadata(x, y, z) == meta) {
             return true;
         }
         else if (strict) {

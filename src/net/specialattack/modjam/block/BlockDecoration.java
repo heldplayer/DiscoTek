@@ -37,15 +37,15 @@ public class BlockDecoration extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side, int meta) {
-        return this.icons[meta];
+        return this.icons[meta % this.icons.length];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
-        this.icons = new Icon[16];
+        this.icons = new Icon[5];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < this.icons.length; i++) {
             this.icons[i] = register.registerIcon("modjam:decoration" + i);
         }
     }
@@ -54,7 +54,7 @@ public class BlockDecoration extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < this.icons.length; i++) {
             list.add(new ItemStack(itemId, 1, i));
         }
     }

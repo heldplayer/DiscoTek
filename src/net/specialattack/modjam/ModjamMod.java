@@ -141,6 +141,7 @@ public class ModjamMod {
         ItemStack stoneBricks = new ItemStack(Block.stoneBrick, 1, 0);
         ItemStack chiseledStoneBricks = new ItemStack(Block.stoneBrick, 1, 3);
         ItemStack chiseledQuartz = new ItemStack(Block.blockNetherQuartz, 1, 1);
+        ItemStack redstoneLamp = new ItemStack(Block.redstoneLampIdle, 1, OreDictionary.WILDCARD_VALUE);
 
         // Lighting Hull
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 4, 0), " i ", "idi", " i ", 'i', iron, 'd', "dyeBlack"));
@@ -175,6 +176,13 @@ public class ModjamMod {
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 3), "HrH", "rqr", "HrH", 'H', hull, 'r', redstone, 'q', quartz);
         // Radial Laser Emitter
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 4), "HlH", "lsl", "HlH", 'H', hull, 'l', led, 's', servo);
+
+        String[] dyes = { "dyeWhite", "dyeOrange", "dyeMagenta", "dyeLightBlue", "dyeYellow", "dyeLime", "dyePink", "dyeGray", "dyeLightGray", "dyeCyan", "dyePurple", "dyeBlue", "dyeBrown", "dyeGreen", "dyeRed", "dyeBlack", };
+
+        // Colored lights
+        for (int i = 0; i < dyes.length; i++) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockColoredLampOff, 8, i), "LLL", "LdL", "LLL", 'L', redstoneLamp, 'd', dyes[i]));
+        }
     }
 
 }
