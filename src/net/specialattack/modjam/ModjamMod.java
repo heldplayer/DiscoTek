@@ -9,14 +9,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.specialattack.modjam.block.BlockController;
 import net.specialattack.modjam.block.BlockDecoration;
 import net.specialattack.modjam.block.BlockLight;
 import net.specialattack.modjam.block.BlockTruss;
 import net.specialattack.modjam.creativetabs.CreativeTabIcon;
 import net.specialattack.modjam.gui.GuiHandler;
-import net.specialattack.modjam.item.ItemBlockController;
 import net.specialattack.modjam.item.ItemBlockLight;
+import net.specialattack.modjam.item.ItemBlockMulti;
 import net.specialattack.modjam.item.ItemCrafting;
 import net.specialattack.modjam.item.ItemDebug;
 import net.specialattack.modjam.item.ItemLens;
@@ -62,21 +63,20 @@ public class ModjamMod {
         Objects.creativeTab = new CreativeTabIcon("modjam2013");
 
         Objects.blockLight = new BlockLight(Config.blockLightId);
-        Objects.blockLight.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("light");
+        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).func_111022_d("modjam:truss").setUnlocalizedName("light");
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "ModJam2013.blockLight");
 
         Objects.blockTruss = new BlockTruss(Config.blockTrussId);
-        Objects.blockTruss.setCreativeTab(Objects.creativeTab).func_111022_d("modjam:truss").setUnlocalizedName("truss");
-        GameRegistry.registerBlock(Objects.blockTruss, "ModJam2013.blockTruss");
+        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).func_111022_d("modjam:truss").setUnlocalizedName("truss");
+        GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "ModJam2013.blockTruss");
 
-        // FIXME: decoration block needs good dark textures
         Objects.blockDecoration = new BlockDecoration(Config.blockDecorationId);
-        Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setUnlocalizedName("decoration");
-        GameRegistry.registerBlock(Objects.blockDecoration, "ModJam2013.blockDecoration");
+        Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("decoration");
+        GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "ModJam2013.blockDecoration");
 
         Objects.blockController = new BlockController(Config.blockControllerId);
-        Objects.blockController.setCreativeTab(Objects.creativeTab).setUnlocalizedName("controller");
-        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "ModJam2013.blockController");
+        Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("controller");
+        GameRegistry.registerBlock(Objects.blockController, ItemBlockMulti.class, "ModJam2013.blockController");
 
         Objects.itemDebug = new ItemDebug(Config.itemDebugId);
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d("modjam:debug").setUnlocalizedName("debug");
@@ -124,16 +124,38 @@ public class ModjamMod {
         ItemStack quartz = new ItemStack(Item.netherQuartz, 1, OreDictionary.WILDCARD_VALUE);
         ItemStack glassBottle = new ItemStack(Item.glassBottle, 1, OreDictionary.WILDCARD_VALUE);
         ItemStack glowstone = new ItemStack(Item.glowstone, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack dyeBlack = new ItemStack(Item.dyePowder, 1, 0);
+        ItemStack piston = new ItemStack(Block.pistonBase, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack stick = new ItemStack(Item.stick, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack brick = new ItemStack(Item.brick, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack netherBrick = new ItemStack(Item.netherrackBrick, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack darkBrick = new ItemStack(Objects.itemCrafting, 1, 3);
+        ItemStack stoneBricks = new ItemStack(Block.stoneBrick, 1, 0);
+        ItemStack chiseledStoneBricks = new ItemStack(Block.stoneBrick, 1, 3);
+        ItemStack chiseledQuartz = new ItemStack(Block.blockNetherQuartz, 1, 1);
 
-        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockDecoration, 4, 0), " i ", "idi", " i ", 'i', iron, 'd', dyeBlack);
+        // Lighting Hull
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 4, 0), " i ", "idi", " i ", 'i', iron, 'd', "dyeBlack"));
+        // Dark Stone Bricks
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 1), "BBB", "BdB", "BBB", 'B', stoneBricks, 'd', "dyeBlack"));
+        // Dark Chiseled Stone Bricks
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 2), "BBB", "BdB", "BBB", 'B', chiseledStoneBricks, 'd', "dyeBlack"));
+        // Dark Chiseled Quartz Block
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 3), "QQQ", "QdQ", "QQQ", 'Q', chiseledQuartz, 'd', "dyeBlack"));
+        // Dark Bricks
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockDecoration, 1, 4), "bb", "bb", 'b', darkBrick);
+        // Lens
         GameRegistry.addShapedRecipe(new ItemStack(Objects.itemLens, 1, 0), " i ", "iPi", " i ", 'i', iron, 'P', glassPane);
+        // Light Bulb
         GameRegistry.addShapedRecipe(new ItemStack(Objects.itemCrafting, 1, 0), "i", "r", "b", 'i', iron, 'r', redstone, 'b', glassBottle);
+        // Led
         GameRegistry.addShapedRecipe(new ItemStack(Objects.itemCrafting, 1, 1), "r", "g", "b", 'r', redstone, 'g', glowstone, 'b', glassBottle);
-        // TODO: Servo
-
+        // Servo
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.itemCrafting, 1, 2), " HH", "sPr", " HH", 'H', hull, 's', stick, 'P', piston, 'r', redstone);
+        // Dark brick
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.itemCrafting, 8, 3), "bbb", "bdb", "bbb", 'b', brick, 'd', "dyeBlack"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.itemCrafting, 8, 3), "bbb", "bdb", "bbb", 'b', netherBrick, 'd', "dyeBlack"));
+        // Lens colouring
         GameRegistry.addRecipe(new RecipesLens());
-
         // Fresnel
         GameRegistry.addRecipe(new RecipesLight(new ItemStack(Objects.blockLight, 1, 0), 7, new ItemStack[] { hull, hull, hull, hull, bulb, hull, null, lens, null }));
         // SpA 250
