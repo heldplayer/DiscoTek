@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.discotek.Config;
 import net.specialattack.discotek.PacketHandler;
+import net.specialattack.discotek.client.ClientProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,6 +37,15 @@ public class TileEntityLight extends TileEntity {
 
     public void setDirection(int side) {
         this.direction = side;
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+
+        if (this.worldObj != null && this.worldObj.isRemote) {
+            ClientProxy.addTile(this);
+        }
     }
 
     public int getDirection() {

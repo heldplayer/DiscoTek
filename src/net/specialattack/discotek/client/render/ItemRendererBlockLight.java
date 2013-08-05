@@ -58,9 +58,9 @@ public class ItemRendererBlockLight implements IItemRenderer {
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         }
 
-        TileEntityLightRenderer.disableLight = false;
+        TileEntityLightRenderer.renderLight = false;
         TileEntityRenderer.instance.renderTileEntityAt(this.renderTile, 0.0D, 0.0D, 0.0D, 0.0F);
-        TileEntityLightRenderer.disableLight = true;
+        TileEntityLightRenderer.renderLight = true;
         GL11.glPopMatrix();
     }
 
