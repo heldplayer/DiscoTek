@@ -6,12 +6,12 @@ import net.minecraftforge.common.Property;
 
 public class Config {
 
-    public static int blockLightId = 2070;
-    public static int blockTrussId = 2071;
-    public static int blockDecorationId = 2072;
-    public static int blockControllerId = 2073;
-    public static int blockColoredLampOnId = 2074;
-    public static int blockColoredLampOffId = 2075;
+    public static int blockLightId = 2080;
+    public static int blockTrussId = 2081;
+    public static int blockDecorationId = 2082;
+    public static int blockControllerId = 2083;
+    public static int blockColoredLampOnId = 2084;
+    public static int blockColoredLampOffId = 2085;
     public static int itemDebugId = 5070;
     public static int itemLensId = 5071;
     public static int itemWirelessLinkerId = 5072;
