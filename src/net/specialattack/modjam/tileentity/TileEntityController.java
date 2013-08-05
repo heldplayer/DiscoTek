@@ -47,6 +47,12 @@ public class TileEntityController extends TileEntity {
         if (this.levels.length != 255) {
             this.levels = new int[255];
         }
+        if (this.getBlockMetadata() == 1){
+            readProgrammableFromNBT(compound);
+        }
+    }
+
+    private void readProgrammableFromNBT(NBTTagCompound compound) {
         this.instructionPointer = compound.getInteger("Pointer");
         NBTTagList instructions = compound.getTagList("Instructions");
         this.instructions = new Instruction[instructions.tagCount()];
@@ -78,6 +84,13 @@ public class TileEntityController extends TileEntity {
         }
         compound.setTag("Lights", lightsLinked);
         compound.setIntArray("Levels", this.levels);
+        if (this.getBlockMetadata() == 1){
+            writeProgrammableToNBT(compound);
+        }
+
+    }
+    
+    private void writeProgrammableToNBT(NBTTagCompound compound){
         compound.setInteger("Pointer", this.instructionPointer);
         NBTTagList instructions = new NBTTagList();
         for (Instruction instruction : this.instructions) {
