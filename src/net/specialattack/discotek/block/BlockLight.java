@@ -86,7 +86,7 @@ public class BlockLight extends Block {
         if (meta == 2 || meta == 3 || meta == 4) {
             tile.setHasLens(false);
         }
-
+        
         tile.setYaw((float) (yaw * Math.PI / 180.0D));
         tile.setPitch((float) (pitch * Math.PI / 180.0D));
         tile.setDirection(this.temp);

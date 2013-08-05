@@ -25,6 +25,8 @@ public class TileEntityLight extends TileEntity {
     private float prevBrightness = 1.0F;
     private float focus = 1.0F;
     private float prevFocus = 1.0F;
+    private float motionYaw = 0.0f;
+    private float motionPitch = 0.0f;
 
     //Channels 1 - 512 (0 - 511)
     public int[] channels;
@@ -235,6 +237,7 @@ public class TileEntityLight extends TileEntity {
         this.prevFocus = this.focus;
         this.prevColor = this.color;
 
+        
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
         }
