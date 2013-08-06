@@ -33,15 +33,25 @@ public class InstructionParser {
 
         Instruction instruction;
         if (commandParts.length == 2) {
+            if (commandParts[0].length() == 0) {
+                instruction = new Instruction();
+                instruction.setAction(action);
+                instruction.setNeedsPreSelected(true);
+                instruction.setValue(this.validateValuesStatement(commandParts[1]));
+                return instruction;
+            }
+            else {
+                instruction = this.validateSelectionStatement(commandParts[0], action);
+                instruction.setNeedsPreSelected(!instruction.isHasValidSelection());
+                instruction.setAction(action);
+                instruction.setValue(this.validateValuesStatement(commandParts[1]));
+            }
+        }
+        else if (commandParts.length == 1) {
             instruction = this.validateSelectionStatement(commandParts[0], action);
             instruction.setNeedsPreSelected(!instruction.isHasValidSelection());
             instruction.setAction(action);
-            instruction.setValue(this.validateValuesStatement(commandParts[1]));
-        }
-        else if (commandParts.length == 1) {
-            instruction = new Instruction();
-            instruction.setAction(action);
-            instruction.setNeedsPreSelected(true);
+            instruction.settingSelection(true);
         }
         else {
             return new Instruction().setError("Syntax error on command!");
@@ -92,7 +102,7 @@ public class InstructionParser {
         String startS = this.getNextNum(string);
         int start = 0;
         if (startS.length() == 0) {
-            return inst.setError("Failed to parse selection values.");
+            return inst.setError("Failed to parse selection values. No Start");
         }
         else {
             try {
@@ -100,7 +110,7 @@ public class InstructionParser {
                 string = string.substring(startS.length());
             }
             catch (Exception e) {
-                return inst.setError("Failed to parse selection values.");
+                return inst.setError("Failed to parse selection values. Start is not number");
             }
         }
 
@@ -209,14 +219,14 @@ public class InstructionParser {
                 return command.split(this.actionKeys[i]);
             }
         }
-        String[] ret = { "", command };
+        String[] ret = { command };
         return ret;
     }
 
     private int getKeyWordActionId(String command) {
         for (int i = 0; i < this.actionKeys.length; i++) {
             if (command.indexOf(this.actionKeys[i]) > -1) {
-                return this.actionIds[i];
+                return i;//this.actionIds[i];
             }
         }
         return -1;
@@ -231,28 +241,33 @@ public class InstructionParser {
         String line = "";
         while (!(line = in.readLine()).equalsIgnoreCase("stop")) {
             Instruction inst = parser.validateCommand(line);
-            if (inst.hasError() && !inst.isNeedsPreSelected()) {
+            if (inst.getAction() == 0) {
+                System.out.println("Clearing Cache");
+            }
+            else if (inst.hasError()) {
                 System.err.println(inst.getError());
             }
-            else {
-                if (inst.getAction() == 0) {
-
+            else if (inst.isSettingSelection()) {
+                System.out.println("Setting Cache");
+                String chans = "";
+                for (int i = 0; i < inst.getSelectedCount(); i++) {
+                    chans += "," + inst.getSelectedAt(i);
                 }
-                else {
+                System.out.println((inst.isFixture() ? "Fixtures: " : "Channels: ") + chans.substring(1));
+            }
+            else {
+                if (!inst.isNeedsPreSelected()) {
                     String chans = "";
                     for (int i = 0; i < inst.getSelectedCount(); i++) {
                         chans += "," + inst.getSelectedAt(i);
                     }
-                    if (!inst.isNeedsPreSelected()) {
-                        System.out.println((inst.isFixture() ? "Fixtures: " : "Channels: ") + chans.substring(1));
-
-                    }
-                    else {
-                        System.out.println("Using cache");
-                        System.err.println(inst.getError());
-                    }
-                    System.out.println("Value: " + inst.getValue());
+                    System.out.println((inst.isFixture() ? "Fixtures: " : "Channels: ") + chans.substring(1));
                 }
+                else {
+                    System.out.println("Using cache");
+                    System.err.println(inst.getError());
+                }
+                System.out.println("Value: " + inst.getValue());
             }
         }
     }

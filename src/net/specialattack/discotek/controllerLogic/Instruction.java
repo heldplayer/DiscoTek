@@ -14,6 +14,7 @@ public class Instruction {
     private int action = 0;
     private boolean needsPreSelected = false;
     private boolean hasValidSelection = false;
+    private boolean settingSelection = false;
 
     public Instruction() {
         this.selected = new ArrayList<Integer>();
@@ -96,6 +97,14 @@ public class Instruction {
 
     public int getValue() {
         return this.value;
+    }
+
+    public boolean isSettingSelection() {
+        return this.settingSelection;
+    }
+    
+    public void settingSelection(boolean b){
+        this.settingSelection  = b;
     }
 
 }
