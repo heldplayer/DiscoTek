@@ -43,7 +43,7 @@ item.crafting1.name=LED
 item.crafting2.name=Servo
 item.crafting3.name=Dark Brick
 
-itemGroup.modjam2013=ModJam 2013
+itemGroup.discotek=DiscoTek
 
 gui.tooltip.lens.color=Color: %s
 gui.tooltip.lens.nocolor=Undyed
