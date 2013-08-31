@@ -43,8 +43,6 @@ public class ModDiscoTek extends HeldCoreMod {
     @Override
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-
         File file = new File(event.getModConfigurationDirectory(), "HeldCore");
 
         if (!file.exists()) {
@@ -79,6 +77,8 @@ public class ModDiscoTek extends HeldCoreMod {
         this.config.addConfigKey(blockLightId);
         this.config.addConfigKey(blockLightId);
         this.config.addConfigKey(blockLightId);
+
+        super.preInit(event);
     }
 
     @Override
