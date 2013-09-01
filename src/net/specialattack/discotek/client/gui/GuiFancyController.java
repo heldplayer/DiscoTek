@@ -29,7 +29,6 @@ public class GuiFancyController extends GuiScreen {
     private List<Integer> selected;
     private String error = "";
     private long errorTime;
-    
 
     public GuiFancyController(TileEntityController controller) {
         this.controller = (TileEntitySpAGuo) controller;

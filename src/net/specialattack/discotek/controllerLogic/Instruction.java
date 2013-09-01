@@ -103,13 +103,13 @@ public class Instruction {
     public boolean isSettingSelection() {
         return this.settingSelection;
     }
-    
-    public void settingSelection(boolean b){
-        this.settingSelection  = b;
+
+    public void settingSelection(boolean b) {
+        this.settingSelection = b;
     }
-    
+
     public String getRawTyped() {
-        return rawTyped;
+        return this.rawTyped;
     }
 
 }

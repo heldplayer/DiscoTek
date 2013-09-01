@@ -116,7 +116,7 @@ public class BlockController extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        if (metadata == 2){
+        if (metadata == 2) {
             return new TileEntitySpAGuo();
         }
         return new TileEntityController();
