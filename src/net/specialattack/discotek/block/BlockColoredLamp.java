@@ -68,7 +68,8 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     public void onBlockAdded(World world, int x, int y, int z) {
         if (!world.isRemote) {
             if (this.powered && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
-                world.scheduleBlockUpdate(x, y, z, this.blockID, 4);
+                //world.scheduleBlockUpdate(x, y, z, this.blockID, 4);
+                world.setBlock(x, y, z, Objects.blockColoredLampOff.blockID, world.getBlockMetadata(x, y, z), 2);
             }
             else if (!this.powered && world.isBlockIndirectlyGettingPowered(x, y, z)) {
                 world.setBlock(x, y, z, Objects.blockColoredLampOn.blockID, world.getBlockMetadata(x, y, z), 2);
@@ -80,7 +81,8 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighbor) {
         if (!world.isRemote) {
             if (this.powered && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
-                world.scheduleBlockUpdate(x, y, z, this.blockID, 4);
+                //world.scheduleBlockUpdate(x, y, z, this.blockID, 4);
+                world.setBlock(x, y, z, Objects.blockColoredLampOff.blockID, world.getBlockMetadata(x, y, z), 2);
             }
             else if (!this.powered && world.isBlockIndirectlyGettingPowered(x, y, z)) {
                 world.setBlock(x, y, z, Objects.blockColoredLampOn.blockID, world.getBlockMetadata(x, y, z), 2);
@@ -91,7 +93,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     @Override
     public void updateTick(World world, int x, int y, int z, Random rand) {
         if (!world.isRemote && this.powered && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
-            world.setBlock(x, y, z, Objects.blockColoredLampOff.blockID, world.getBlockMetadata(x, y, z), 2);
+            //world.setBlock(x, y, z, Objects.blockColoredLampOff.blockID, world.getBlockMetadata(x, y, z), 2);
         }
     }
 
