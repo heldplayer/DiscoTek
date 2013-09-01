@@ -2,6 +2,8 @@
 package net.specialattack.discotek;
 
 import me.heldplayer.util.HeldCore.HeldCoreProxy;
+import me.heldplayer.util.HeldCore.crafting.ICraftingResultHandler;
+import me.heldplayer.util.HeldCore.crafting.ShapedHeldCoreRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,8 +23,8 @@ import net.specialattack.discotek.item.ItemDebug;
 import net.specialattack.discotek.item.ItemLens;
 import net.specialattack.discotek.item.ItemOrienter;
 import net.specialattack.discotek.item.ItemWirelessLinker;
+import net.specialattack.discotek.item.crafting.LightCraftingHandler;
 import net.specialattack.discotek.item.crafting.RecipesLens;
-import net.specialattack.discotek.item.crafting.RecipesLight;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -152,10 +154,12 @@ public class CommonProxy extends HeldCoreProxy {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.itemCrafting, 8, 3), "bbb", "bdb", "bbb", 'b', netherBrick, 'd', "dyeBlack"));
         // Lens colouring
         GameRegistry.addRecipe(new RecipesLens());
+        // Light Crafting Handler
+        ICraftingResultHandler handler = new LightCraftingHandler();
         // Fresnel
-        GameRegistry.addRecipe(new RecipesLight(new ItemStack(Objects.blockLight, 1, 0), 7, new ItemStack[] { hull, hull, hull, hull, bulb, hull, null, lens, null }));
+        GameRegistry.addRecipe(new ShapedHeldCoreRecipe(handler, new ItemStack(Objects.blockLight, 1, 0), "HHH", "HbH", " l ", 'H', hull, 'b', bulb, 'l', lens));
         // SpA 250
-        GameRegistry.addRecipe(new RecipesLight(new ItemStack(Objects.blockLight, 1, 1), 1, new ItemStack[] { null, lens, null, servo, bulb, servo, hull, servo, hull }));
+        GameRegistry.addRecipe(new ShapedHeldCoreRecipe(handler, new ItemStack(Objects.blockLight, 1, 1), " l ", "sbs", "HsH", 'l', lens, 's', servo, 'b', bulb, 'H', hull));
         // SpA 250 LED
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 2), " G ", "sls", "HsH", 'G', glass, 's', servo, 'l', led, 'H', hull);
         // DMX To Redstone Converter
