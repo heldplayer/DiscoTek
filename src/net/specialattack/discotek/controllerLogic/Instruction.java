@@ -15,6 +15,7 @@ public class Instruction {
     private boolean needsPreSelected = false;
     private boolean hasValidSelection = false;
     private boolean settingSelection = false;
+    private String rawTyped = "";
 
     public Instruction() {
         this.selected = new ArrayList<Integer>();
@@ -105,6 +106,10 @@ public class Instruction {
     
     public void settingSelection(boolean b){
         this.settingSelection  = b;
+    }
+    
+    public String getRawTyped() {
+        return rawTyped;
     }
 
 }

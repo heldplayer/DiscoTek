@@ -82,8 +82,13 @@ public class ItemWirelessLinker extends Item {
                 ChunkCoordinates coord = new ChunkCoordinates(lx, ly, lz);
 
                 if (controller.link(coord)) {
-                    controller.updateDmxNetwork();
-
+                    //controller.updateDmxNetwork();
+                    
+                    TileEntity light = world.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
+                    if (light != null && light instanceof TileEntityLight) {
+                        ((TileEntityLight) light).sendUniverseData(controller.levels);
+                    }
+                    
                     player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
                 }
                 else {

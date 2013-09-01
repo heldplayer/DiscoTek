@@ -19,6 +19,7 @@ import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.client.ClientProxy;
 import net.specialattack.discotek.tileentity.TileEntityController;
+import net.specialattack.discotek.tileentity.TileEntitySpAGuo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -115,6 +116,9 @@ public class BlockController extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
+        if (metadata == 2){
+            return new TileEntitySpAGuo();
+        }
         return new TileEntityController();
     }
 
