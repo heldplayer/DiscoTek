@@ -32,4 +32,14 @@ public class LightCraftingHandler implements ICraftingResultHandler {
         return result;
     }
 
+    @Override
+    public String getOwningModName() {
+        return Objects.MOD_NAME;
+    }
+
+    @Override
+    public String getOwningModId() {
+        return Objects.MOD_ID;
+    }
+
 }
