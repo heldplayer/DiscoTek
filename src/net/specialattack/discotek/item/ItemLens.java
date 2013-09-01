@@ -58,24 +58,24 @@ public class ItemLens extends Item {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean extra) {
         super.addInformation(stack, player, list, extra);
 
-        if (extra) {
-            NBTTagCompound compound = stack.stackTagCompound;
-            if (compound != null) {
-                if (compound.hasKey("color")) {
-                    String color = Integer.toHexString(compound.getInteger("color")).toUpperCase();
-                    while (color.length() < 6) {
-                        color = "0" + color;
-                    }
-                    list.add(I18n.func_135052_a("gui.tooltip.lens.color", "#" + color));
+        // if (extra) {
+        NBTTagCompound compound = stack.stackTagCompound;
+        if (compound != null) {
+            if (compound.hasKey("color")) {
+                String color = Integer.toHexString(compound.getInteger("color")).toUpperCase();
+                while (color.length() < 6) {
+                    color = "0" + color;
                 }
-                else {
-                    list.add(I18n.func_135053_a("gui.tooltip.lens.nocolor"));
-                }
+                list.add(I18n.func_135052_a("gui.tooltip.lens.color", "#" + color));
             }
             else {
                 list.add(I18n.func_135053_a("gui.tooltip.lens.nocolor"));
             }
         }
+        else {
+            list.add(I18n.func_135053_a("gui.tooltip.lens.nocolor"));
+        }
+        // }
     }
 
     @Override
