@@ -127,7 +127,7 @@ public class TileEntityController extends TileEntity {
 
         if (distance < reach) {
             this.lightsLinked.add(coords);
-
+            
             return true;
         }
 
@@ -399,11 +399,6 @@ public class TileEntityController extends TileEntity {
             this.error = e.getMessage();
             this.errorIndex = e.index;
             System.err.println(I18n.func_135052_a(e.getMessage(), e.index));
-        }
-        catch (Throwable e) {
-            this.running = false;
-            this.error = e.getMessage();
-            System.err.println(I18n.func_135052_a(e.getMessage()));
         }
 
     }

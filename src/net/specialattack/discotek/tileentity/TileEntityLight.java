@@ -6,7 +6,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.specialattack.discotek.ModDiscoTek;
+import net.specialattack.discotek.Config;
 import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.client.ClientProxy;
 import cpw.mods.fml.relauncher.Side;
@@ -235,6 +235,7 @@ public class TileEntityLight extends TileEntity {
         this.prevFocus = this.focus;
         this.prevColor = this.color;
 
+        
         if (this.pitch > 0.8F) {
             this.prevPitch = this.pitch = 0.8F;
         }
@@ -326,7 +327,7 @@ public class TileEntityLight extends TileEntity {
             }
         }
         if (this.getBlockMetadata() == 3) {
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, ModDiscoTek.blockLightId.getValue());
+            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, Config.blockLightId);
         }
         System.arraycopy(levels, 0, this.cachedLevels, 0, levels.length);
     }

@@ -299,7 +299,7 @@ public class PacketHandler implements IPacketHandler {
         }
 
         Packet250CustomPayload packet = new Packet250CustomPayload();
-        packet.channel = Objects.MOD_CHANNEL;
+        packet.channel = Constants.MOD_CHANNEL;
         packet.data = bos.toByteArray();
         packet.length = packet.data.length;
         return packet;
