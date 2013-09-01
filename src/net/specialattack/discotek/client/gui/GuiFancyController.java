@@ -12,6 +12,7 @@ import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.controllerLogic.Instruction;
 import net.specialattack.discotek.controllerLogic.InstructionParser;
 import net.specialattack.discotek.tileentity.TileEntityController;
+import net.specialattack.discotek.tileentity.TileEntitySpAGuo;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiFancyController extends GuiScreen {
     // Fancy
 
-    private TileEntityController controller;
+    private TileEntitySpAGuo controller;
     private boolean initialized = false;
     private int guiHeight;
     private InstructionParser parser;
@@ -28,9 +29,10 @@ public class GuiFancyController extends GuiScreen {
     private List<Integer> selected;
     private String error = "";
     private long errorTime;
+    
 
     public GuiFancyController(TileEntityController controller) {
-        this.controller = controller;
+        this.controller = (TileEntitySpAGuo) controller;
         this.parser = new InstructionParser();
     }
 
@@ -109,16 +111,15 @@ public class GuiFancyController extends GuiScreen {
         this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
 
         if (this.initialized) {
-
+            if (System.currentTimeMillis() < this.errorTime + 8000) {
+                this.fontRenderer.drawString(this.error, 10, 10, 0xFFFFFFFF);
+            }
         }
         else {
             title = I18n.func_135052_a("gui.controller.loading");
             y += 20;
             x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
             this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
-        }
-        if (System.currentTimeMillis() < this.errorTime + 8000) {
-            this.fontRenderer.drawString(this.error, 10, 10, 0xFFFFFFFF);
         }
         this.commands.drawTextBox();
         super.drawScreen(mouseX, mouseY, partialTicks);

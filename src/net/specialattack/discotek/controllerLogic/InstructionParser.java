@@ -191,6 +191,8 @@ public class InstructionParser {
                         return inst.setError("Failed to parse optional additional selection values (- <number>).");
                     }
                 }
+            }else{
+                return inst.setError("Failed to parse command @ " + string);
             }
         }
         //Got this far... We must be good :D
