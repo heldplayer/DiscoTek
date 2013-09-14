@@ -19,8 +19,8 @@ public class ItemBlockLight extends ItemBlock {
     }
 
     @Override
-    public String getLocalizedName(ItemStack stack) {
-        return super.getLocalizedName(stack) + stack.getItemDamage();
+    public String getItemDisplayName(ItemStack stack) {
+        return super.getItemDisplayName(stack) + stack.getItemDamage();
     }
 
     @Override
@@ -37,23 +37,23 @@ public class ItemBlockLight extends ItemBlock {
                 while (color.length() < 6) {
                     color = "0" + color;
                 }
-                list.add(I18n.func_135052_a("gui.tooltip.light.color", "#" + color));
+                list.add(I18n.getStringParams("gui.tooltip.light.color", "#" + color));
             }
             if (compound.hasKey("hasLens")) {
                 if (compound.getBoolean("hasLens")) {
-                    list.add(I18n.func_135053_a("gui.tooltip.light.lens.true"));
+                    list.add(I18n.getString("gui.tooltip.light.lens.true"));
                 }
                 else {
-                    list.add(I18n.func_135053_a("gui.tooltip.light.lens.false"));
+                    list.add(I18n.getString("gui.tooltip.light.lens.false"));
                 }
             }
             else {
                 int meta = stack.getItemDamage();
                 if (meta < 2) {
-                    list.add(I18n.func_135053_a("gui.tooltip.light.lens.true"));
+                    list.add(I18n.getString("gui.tooltip.light.lens.true"));
                 }
                 else {
-                    list.add(I18n.func_135053_a("gui.tooltip.light.lens.false"));
+                    list.add(I18n.getString("gui.tooltip.light.lens.false"));
                 }
             }
         }

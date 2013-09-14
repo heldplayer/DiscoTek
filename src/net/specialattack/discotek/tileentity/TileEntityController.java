@@ -398,12 +398,12 @@ public class TileEntityController extends TileEntity {
             this.running = false;
             this.error = e.getMessage();
             this.errorIndex = e.index;
-            System.err.println(I18n.func_135052_a(e.getMessage(), e.index));
+            System.err.println(I18n.getStringParams(e.getMessage(), e.index));
         }
         catch (Throwable e) {
             this.running = false;
             this.error = e.getMessage();
-            System.err.println(I18n.func_135052_a(e.getMessage()));
+            System.err.println(I18n.getString(e.getMessage()));
         }
 
     }

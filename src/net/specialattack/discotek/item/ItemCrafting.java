@@ -23,8 +23,8 @@ public class ItemCrafting extends Item {
     }
 
     @Override
-    public String getLocalizedName(ItemStack stack) {
-        return super.getLocalizedName(stack) + stack.getItemDamage();
+    public String getItemDisplayName(ItemStack stack) {
+        return super.getItemDisplayName(stack) + stack.getItemDamage();
     }
 
     @Override

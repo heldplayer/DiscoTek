@@ -125,8 +125,8 @@ public class GuiControllerHelp extends GuiScreen {
     public void initGui() {
         this.buttonList.clear();
 
-        this.buttonList.add(this.prev = new GuiButton(0, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.help.previous")));
-        this.buttonList.add(this.next = new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.help.next")));
+        this.buttonList.add(this.prev = new GuiButton(0, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.getString("gui.controller.help.previous")));
+        this.buttonList.add(this.next = new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.getString("gui.controller.help.next")));
 
         this.prev.enabled = false;
         if (this.lines.length == 1) {
@@ -169,11 +169,11 @@ public class GuiControllerHelp extends GuiScreen {
 
         int x = (this.width - 192) / 2;
         int y = (this.height - this.guiHeight) / 2;
-        this.mc.func_110434_K().func_110577_a(Assets.SMALL_GUI);
+        this.mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
         this.drawTexturedModalRect(x, y, 0, 0, 192, this.guiHeight);
         this.drawTexturedModalRect(x, y + this.guiHeight, 0, 248, 192, 8);
 
-        String title = I18n.func_135053_a("gui.controller.help.title");
+        String title = I18n.getString("gui.controller.help.title");
         y += 6;
         x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
         this.fontRenderer.drawString(title, x, y, 0x4F4F4F);

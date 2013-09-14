@@ -66,14 +66,14 @@ public class ItemLens extends Item {
                 while (color.length() < 6) {
                     color = "0" + color;
                 }
-                list.add(I18n.func_135052_a("gui.tooltip.lens.color", "#" + color));
+                list.add(I18n.getStringParams("gui.tooltip.lens.color", "#" + color));
             }
             else {
-                list.add(I18n.func_135053_a("gui.tooltip.lens.nocolor"));
+                list.add(I18n.getString("gui.tooltip.lens.nocolor"));
             }
         }
         else {
-            list.add(I18n.func_135053_a("gui.tooltip.lens.nocolor"));
+            list.add(I18n.getString("gui.tooltip.lens.nocolor"));
         }
         // }
     }
@@ -131,7 +131,7 @@ public class ItemLens extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
         super.registerIcons(register);
-        this.overlay = register.registerIcon(this.field_111218_cA + "_overlay");
+        this.overlay = register.registerIcon(this.iconString + "_overlay");
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

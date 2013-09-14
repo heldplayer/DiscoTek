@@ -85,18 +85,18 @@ public class GuiBasicController extends GuiSliderCompat {
 
         int x = (this.width - this.guiWidth) / 2;
         int y = (this.height - this.guiHeight) / 2;
-        this.mc.func_110434_K().func_110577_a(Assets.SMALL_GUI);
+        this.mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
         //this.drawTexturedModalRect(x, y, 0, 0, this.guiWidth, this.guiHeight);
         //this.drawTexturedModalRect(x, y + this.guiHeight, 0, 248, this.guiWidth, 8);
 
         drawRect(x, y, x + this.guiWidth, y + this.guiHeight, 0xFF8888CC);
 
-        String title = I18n.func_135053_a("gui.controller.title");
+        String title = I18n.getString("gui.controller.title");
         y += 6;
         x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
 
         if (!this.initialized) {
-            title = I18n.func_135052_a("gui.controller.loading");
+            title = I18n.getString("gui.controller.loading");
             y += 20;
             x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
             this.fontRenderer.drawString(title, x, y, 0x4F4F4F);

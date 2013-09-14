@@ -42,11 +42,11 @@ public class CommonProxy extends HeldCoreProxy {
         Objects.creativeTab = new CreativeTabIcon("discotek");
 
         Objects.blockLight = new BlockLight(ModDiscoTek.blockLightId.getValue());
-        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).func_111022_d("modjam:truss").setUnlocalizedName("light");
+        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss").setUnlocalizedName("light");
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "ModJam2013.blockLight");
 
         Objects.blockTruss = new BlockTruss(ModDiscoTek.blockTrussId.getValue());
-        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).func_111022_d("modjam:truss").setUnlocalizedName("truss");
+        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss").setUnlocalizedName("truss");
         GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "ModJam2013.blockTruss");
 
         Objects.blockDecoration = new BlockDecoration(ModDiscoTek.blockDecorationId.getValue());
@@ -66,15 +66,15 @@ public class CommonProxy extends HeldCoreProxy {
         GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "ModJam2013.blockColoredLampOn");
 
         Objects.itemDebug = new ItemDebug(ModDiscoTek.itemDebugId.getValue());
-        Objects.itemDebug.setCreativeTab(Objects.creativeTab).func_111206_d(Assets.DOMAIN + "debug").setUnlocalizedName("debug");
+        Objects.itemDebug.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "debug").setUnlocalizedName("debug");
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
 
         Objects.itemLens = new ItemLens(ModDiscoTek.itemLensId.getValue());
-        Objects.itemLens.setCreativeTab(Objects.creativeTab).func_111206_d(Assets.DOMAIN + "lens").setUnlocalizedName("lens");
+        Objects.itemLens.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "lens").setUnlocalizedName("lens");
         GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemLens");
 
         Objects.itemWirelessLinker = new ItemWirelessLinker(ModDiscoTek.itemWirelessLinkerId.getValue());
-        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).func_111206_d(Assets.DOMAIN + "wirelessLinker").setUnlocalizedName("wirelesslinker");
+        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "wirelessLinker").setUnlocalizedName("wirelesslinker");
         GameRegistry.registerItem(Objects.itemWirelessLinker, "ModJam2013.itemWirelessLinker");
 
         Objects.itemOrienter = new ItemOrienter(ModDiscoTek.itemOrienterId.getValue());

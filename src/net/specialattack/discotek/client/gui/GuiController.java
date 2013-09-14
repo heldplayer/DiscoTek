@@ -39,9 +39,9 @@ public class GuiController extends GuiScreen {
                 this.instructions.posY = (this.height - this.guiHeight) / 2 + 24;
             }
 
-            this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.func_135053_a("gui.controller.done")));
-            this.buttonList.add(new GuiButton(2, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.up")));
-            this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.func_135053_a("gui.controller.down")));
+            this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.getString("gui.controller.done")));
+            this.buttonList.add(new GuiButton(2, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.getString("gui.controller.up")));
+            this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, I18n.getString("gui.controller.down")));
             this.buttonList.add(new GuiButton(4, this.width / 2 + 60, (this.height - this.guiHeight) / 2 + 2, 20, 20, "?"));
         }
         else {
@@ -103,17 +103,17 @@ public class GuiController extends GuiScreen {
 
         int x = (this.width - 192) / 2;
         int y = (this.height - this.guiHeight) / 2;
-        this.mc.func_110434_K().func_110577_a(Assets.SMALL_GUI);
+        this.mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
         this.drawTexturedModalRect(x, y, 0, 0, 192, this.guiHeight);
         this.drawTexturedModalRect(x, y + this.guiHeight, 0, 248, 192, 8);
 
-        String title = I18n.func_135053_a("gui.controller.title");
+        String title = I18n.getString("gui.controller.title");
         y += 6;
         x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
         this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
 
         if (this.controller.error != null) {
-            title = I18n.func_135052_a(this.controller.error, this.controller.errorIndex);
+            title = I18n.getStringParams(this.controller.error, this.controller.errorIndex);
             y += 8;
             x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
             this.fontRenderer.drawString(title, x, y, 0xFF4444);
@@ -123,7 +123,7 @@ public class GuiController extends GuiScreen {
             this.instructions.render();
         }
         else {
-            title = I18n.func_135052_a("gui.controller.loading");
+            title = I18n.getString("gui.controller.loading");
             y += 20;
             x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
             this.fontRenderer.drawString(title, x, y, 0x4F4F4F);

@@ -77,7 +77,7 @@ public class ItemRendererLens implements IItemRenderer {
             GL11.glPushMatrix();
             TextureManager textureManager = Minecraft.getMinecraft().renderEngine;
 
-            textureManager.func_110577_a(textureManager.func_130087_a(item.getItemSpriteNumber()));
+            textureManager.bindTexture(textureManager.getResourceLocation(item.getItemSpriteNumber()));
             Tessellator tess = Tessellator.instance;
             float minU = icon.getMinU();
             float maxU = icon.getMaxU();
@@ -87,7 +87,7 @@ public class ItemRendererLens implements IItemRenderer {
                 GL11.glTranslatef(-0.5F, -0.3F, 0.0F);
             }
 
-            this.renderItemIn3D(tess, maxU, minV, minU, maxV, icon.getOriginX(), icon.getOriginY(), 0.0625F);
+            this.renderItemIn3D(tess, maxU, minV, minU, maxV, icon.getIconHeight(), icon.getIconWidth(), 0.0625F);
 
             GL11.glPopMatrix();
         }

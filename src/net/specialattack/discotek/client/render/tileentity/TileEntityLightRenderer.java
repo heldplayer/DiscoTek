@@ -90,7 +90,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
     private void render3(TileEntityLight light, double x, double y, double z, float partialTicks) {
         if (!lightOnly) {
             Minecraft.getMinecraft().mcProfiler.startSection("model");
-            this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+            this.bindTexture(Assets.LIGHT_YOKE_TEXTURE);
             this.modelDMXRedstone.renderAll();
             Minecraft.getMinecraft().mcProfiler.endSection();
         }
@@ -108,7 +108,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         if (!lightOnly) {
             Minecraft.getMinecraft().mcProfiler.endStartSection("model");
-            this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+            this.bindTexture(Assets.LIGHT_YOKE_TEXTURE);
             this.modelLaserRound.renderAll();
         }
 
@@ -181,7 +181,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         if (!lightOnly) {
             Minecraft.getMinecraft().mcProfiler.endStartSection("model");
-            this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+            this.bindTexture(Assets.LIGHT_YOKE_TEXTURE);
 
             this.modelLightYoke.setRotations(pitch, yaw);
             this.modelLightYoke.renderAll();
@@ -318,7 +318,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         if (!lightOnly) {
             Minecraft.getMinecraft().mcProfiler.endStartSection("model");
-            this.func_110628_a(Assets.LIGHT_YOKE_TEXTURE);
+            this.bindTexture(Assets.LIGHT_YOKE_TEXTURE);
 
             this.modelLightMoverBase.setRotations(0, 0);
             this.modelLightMoverBase.renderAll();

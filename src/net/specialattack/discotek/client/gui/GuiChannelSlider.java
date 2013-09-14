@@ -33,10 +33,10 @@ public class GuiChannelSlider extends ModJamSlider {
      * MouseListener.mouseDragged(MouseEvent e).
      */
     @Override
-    protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3) {
+    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
         if (this.drawButton) {
             if (this.dragging) {
-                this.sliderValue = 1.0F - (float) (par3 - (this.yPosition + 1)) / (float) (this.height - 4);
+                this.sliderValue = 1.0F - (float) (mouseY - (this.yPosition + 1)) / (float) (this.height - 4);
 
                 if (this.sliderValue < 0.0F) {
                     this.sliderValue = 0.0F;
@@ -49,7 +49,7 @@ public class GuiChannelSlider extends ModJamSlider {
                 this.displayString = "" + (this.sliderValue == 1 ? "FF" : (int) (this.sliderValue * 100));
                 this.parent.slideActionPerformed(this);
             }
-            par1Minecraft.func_110434_K().func_110577_a(Assets.SMALL_GUI);
+            mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(this.xPosition + 1, this.yPosition + this.height - 4 - (int) (this.sliderValue * (float) (this.height - 4)), 209, 0, 17, 4);
         }
@@ -82,13 +82,13 @@ public class GuiChannelSlider extends ModJamSlider {
     }
 
     @Override
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
+    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (this.drawButton) {
-            FontRenderer fontrenderer = par1Minecraft.fontRenderer;
-            par1Minecraft.func_110434_K().func_110577_a(Assets.SMALL_GUI);
+            FontRenderer fontrenderer = mc.fontRenderer;
+            mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(this.xPosition, this.yPosition, 192, 0, this.width, this.height);
-            this.mouseDragged(par1Minecraft, par2, par3);
+            this.mouseDragged(mc, mouseX, mouseY);
             int l = 14737632;
 
             if (!this.enabled) {

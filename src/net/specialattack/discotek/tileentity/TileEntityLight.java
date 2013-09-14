@@ -12,6 +12,7 @@ import me.heldplayer.util.HeldCore.sync.SBoolean;
 import me.heldplayer.util.HeldCore.sync.SFloat;
 import me.heldplayer.util.HeldCore.sync.SInteger;
 import me.heldplayer.util.HeldCore.sync.packet.Packet4InitiateClientTracking;
+import me.heldplayer.util.HeldCore.sync.packet.PacketHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -249,7 +250,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     @Override
     public Packet getDescriptionPacket() {
-        return me.heldplayer.util.HeldCore.sync.packet.PacketHandler.instance.createPacket(new Packet4InitiateClientTracking(xCoord, yCoord, zCoord));
+        return PacketHandler.instance.createPacket(new Packet4InitiateClientTracking(xCoord, yCoord, zCoord));
     }
 
     @Override
@@ -375,5 +376,8 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     public int getPosZ() {
         return this.zCoord;
     }
+
+    @Override
+    public void onDataChanged(ISyncable syncable) {}
 
 }
