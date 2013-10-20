@@ -17,6 +17,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
+import net.specialattack.discotek.tileentity.TileEntitySpAGuo;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -268,6 +269,12 @@ public class PacketHandler implements IPacketHandler {
                             dos.writeBytes(instruction.identifier);
                             dos.writeByte(instruction.argument);
                         }
+                    }
+                }
+                else if (tile.getBlockMetadata() == 2) {
+                    TileEntitySpAGuo guo = (TileEntitySpAGuo)data[0];
+                    for (int i = 0; i < guo.messages.length; i++){
+                        System.out.println(guo.messages[i]);
                     }
                 }
             }

@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockController extends Block {
 
-    // This is the rythem of the night
+    // This is the rhythm of the night
     // http://www.youtube.com/watch?v=BfSpU0vEh4M
 
     private Icon[] bottom;
@@ -52,6 +52,7 @@ public class BlockController extends Block {
             else {
                 if (world.isRemote) {
                     int meta = world.getBlockMetadata(x, y, z);
+                    System.out.println(meta);
                     ClientProxy.openControllerGui(meta, controller);
                 }
                 else {
@@ -116,12 +117,15 @@ public class BlockController extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
+        if (!world.isRemote){
+        System.out.println(metadata);
+        }
         if (metadata == 2) {
             return new TileEntitySpAGuo();
         }
         return new TileEntityController();
     }
-
+    
     @Override
     public boolean hasTileEntity(int metadata) {
         return true;

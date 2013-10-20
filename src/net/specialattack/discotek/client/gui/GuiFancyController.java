@@ -43,7 +43,7 @@ public class GuiFancyController extends GuiScreen {
             this.guiHeight = 64;
         }
         this.commands = new GuiTextField(this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 18);
-
+        
     }
 
     @Override
@@ -54,6 +54,8 @@ public class GuiFancyController extends GuiScreen {
                 Instruction inst = this.parser.validateCommand(this.commands.getText());
                 this.commands.setText("");
                 if (inst.hasError() && !inst.isNeedsPreSelected()) {
+                    this.controller.println(inst.getError());
+                    
                     this.error = inst.getError();
                     this.errorTime = System.currentTimeMillis();
                 }
