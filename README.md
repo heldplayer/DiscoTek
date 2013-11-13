@@ -2,6 +2,9 @@
 
 **heldplayer has joined the game**
 
+# Notice
+You might see there isn't much going on here, that's because we're generally busy with our lives. Don't worry, we'll make a release some day ;)
+
 # DiscoTek
 DiscoTek is a mod aiming to add all kinds of blocks that you can use as if you were having a concert. It was developed for the second public Modjam held by Searge in 2013 and has been continued to be worked on to this date.
 
