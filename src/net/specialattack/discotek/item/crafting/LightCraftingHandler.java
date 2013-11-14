@@ -42,4 +42,14 @@ public class LightCraftingHandler implements ICraftingResultHandler {
         return Objects.MOD_ID;
     }
 
+    @Override
+    public boolean isValidRecipeInput(ItemStack input) {
+        return true; // Ignore, because there is no special casing here
+    }
+    
+    @Override
+    public String getNEIOverlayText() {
+        return null;
+    }
+
 }
