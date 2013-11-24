@@ -18,7 +18,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME, version = Objects.MOD_VERSION)
+@Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME, version = Objects.MOD_VERSION, dependencies = Objects.MOD_DEPENCIES)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = { Objects.MOD_CHANNEL }, packetHandler = PacketHandler.class)
 public class ModDiscoTek extends HeldCoreMod {
 
@@ -67,16 +67,16 @@ public class ModDiscoTek extends HeldCoreMod {
         this.config = new Config(event.getSuggestedConfigurationFile());
 
         this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
-        this.config.addConfigKey(blockLightId);
+        this.config.addConfigKey(blockTrussId);
+        this.config.addConfigKey(blockDecorationId);
+        this.config.addConfigKey(blockControllerId);
+        this.config.addConfigKey(blockColoredLampOnId);
+        this.config.addConfigKey(blockColoredLampOffId);
+        this.config.addConfigKey(itemDebugId);
+        this.config.addConfigKey(itemLensId);
+        this.config.addConfigKey(itemWirelessLinkerId);
+        this.config.addConfigKey(itemOrienterId);
+        this.config.addConfigKey(itemCraftingId);
 
         super.preInit(event);
     }

@@ -127,7 +127,7 @@ public class ClientProxy extends CommonProxy {
         while (iterator.hasNext()) {
             TileEntityLight light = iterator.next();
 
-            if (light.isInvalid()) {
+            if (light.isNotValid()) {
                 iterator.remove();
             }
         }
@@ -170,7 +170,7 @@ public class ClientProxy extends CommonProxy {
             double d4 = (double) light.yCoord - d1;
             double d5 = (double) light.zCoord - d2;
 
-            if (light.isInvalid()) {
+            if (light.isNotValid()) {
                 iterator.remove();
             }
 

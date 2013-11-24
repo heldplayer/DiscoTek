@@ -340,6 +340,11 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     // ISyncableObjectOwner
 
     @Override
+    public boolean isNotValid() {
+        return super.isInvalid();
+    }
+
+    @Override
     public List<ISyncable> getSyncables() {
         return this.syncables;
     }

@@ -3,11 +3,11 @@ package net.specialattack.discotek.item;
 
 import java.util.List;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -37,23 +37,23 @@ public class ItemBlockLight extends ItemBlock {
                 while (color.length() < 6) {
                     color = "0" + color;
                 }
-                list.add(I18n.getStringParams("gui.tooltip.light.color", "#" + color));
+                list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.color", "#" + color));
             }
             if (compound.hasKey("hasLens")) {
                 if (compound.getBoolean("hasLens")) {
-                    list.add(I18n.getString("gui.tooltip.light.lens.true"));
+                    list.add(StatCollector.translateToLocal("gui.tooltip.light.lens.true"));
                 }
                 else {
-                    list.add(I18n.getString("gui.tooltip.light.lens.false"));
+                    list.add(StatCollector.translateToLocal("gui.tooltip.light.lens.false"));
                 }
             }
             else {
                 int meta = stack.getItemDamage();
                 if (meta < 2) {
-                    list.add(I18n.getString("gui.tooltip.light.lens.true"));
+                    list.add(StatCollector.translateToLocal("gui.tooltip.light.lens.true"));
                 }
                 else {
-                    list.add(I18n.getString("gui.tooltip.light.lens.false"));
+                    list.add(StatCollector.translateToLocal("gui.tooltip.light.lens.false"));
                 }
             }
         }

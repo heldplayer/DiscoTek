@@ -4,11 +4,11 @@ package net.specialattack.discotek.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.specialattack.discotek.Instruction;
 
 public class TileEntityController extends TileEntity {
@@ -398,12 +398,12 @@ public class TileEntityController extends TileEntity {
             this.running = false;
             this.error = e.getMessage();
             this.errorIndex = e.index;
-            System.err.println(I18n.getStringParams(e.getMessage(), e.index));
+            System.err.println(StatCollector.translateToLocalFormatted(e.getMessage(), e.index));
         }
         catch (Throwable e) {
             this.running = false;
             this.error = e.getMessage();
-            System.err.println(I18n.getString(e.getMessage()));
+            System.err.println(StatCollector.translateToLocal(e.getMessage()));
         }
 
     }
