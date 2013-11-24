@@ -231,33 +231,6 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             GL11.glShadeModel(GL11.GL_SMOOTH);
 
             GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
-            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
-
-            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
-            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
-            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
-
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
-            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
-
-            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
-            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
-            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
 
             // Inside
 
@@ -289,6 +262,36 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             GL11.glColor4f(red, green, blue, alpha); // Origin
             GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
             GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
+
+            // Outside
+
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
+            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
+
+            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
+            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
+            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
+
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
+            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
+
+            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
+            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
+            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
 
             GL11.glEnd();
 
@@ -381,33 +384,6 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             GL11.glShadeModel(GL11.GL_SMOOTH);
 
             GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
-            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
-
-            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
-            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
-            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
-
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
-            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
-            GL11.glColor4f(red, green, blue, alpha); // Origin
-            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
-
-            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
-            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
-            GL11.glColor4f(rend, gend, bend, 0.0F); // End
-            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
-            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
 
             // Inside
 
@@ -439,6 +415,36 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             GL11.glColor4f(red, green, blue, alpha); // Origin
             GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
             GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
+
+            // Outside
+
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
+            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
+
+            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
+            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
+            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
+
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(0.15F, -0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
+            GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
+            GL11.glColor4f(red, green, blue, alpha); // Origin
+            GL11.glVertex3f(0.15F, 0.15F, -0.5F);
+
+            GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
+            GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
+            GL11.glColor4f(rend, gend, bend, 0.0F); // End
+            GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
+            GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
 
             GL11.glEnd();
             Minecraft.getMinecraft().mcProfiler.endSection();
