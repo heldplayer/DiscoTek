@@ -12,8 +12,8 @@ public class ItemBlockMulti extends ItemBlock {
     }
 
     @Override
-    public String getItemDisplayName(ItemStack stack) {
-        return super.getItemDisplayName(stack) + stack.getItemDamage();
+    public String getUnlocalizedNameInefficiently(ItemStack stack) {
+        return super.getUnlocalizedNameInefficiently(stack) + stack.getItemDamage();
     }
 
 }
