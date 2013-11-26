@@ -50,7 +50,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     public int[] channels;
     private int[] cachedLevels = new int[256];
 
-    private SInteger direction; // FIXME
+    private SInteger direction;
 
     public TileEntityLight() {
         this.color = new SInteger(this, 0xFFFFFF);
