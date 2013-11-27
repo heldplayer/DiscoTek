@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.specialattack.discotek.ModDiscoTek;
 import net.specialattack.discotek.client.ClientProxy;
 
@@ -250,7 +251,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     @Override
     public Packet getDescriptionPacket() {
-        return PacketHandler.instance.createPacket(new Packet4InitiateClientTracking(xCoord, yCoord, zCoord));
+        return PacketHandler.instance.createPacket(new Packet4InitiateClientTracking(this));
     }
 
     @Override
@@ -365,6 +366,21 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             out.writeInt(syncable.getId());
             syncable.write(out);
         }
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "TileEntityLight_" + this.xCoord + ";" + this.yCoord + ";" + this.zCoord;
+    }
+
+    @Override
+    public boolean isWorldBound() {
+        return true;
+    }
+
+    @Override
+    public World getWorld() {
+        return this.getWorldObj();
     }
 
     @Override
