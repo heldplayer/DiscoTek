@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.specialattack.discotek.tileentity.TileEntityController;
-import net.specialattack.discotek.tileentity.TileEntityLight;
 import net.specialattack.discotek.tileentity.TileEntitySpAGuo;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -25,6 +24,7 @@ import com.google.common.io.ByteStreams;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
+@Deprecated
 public class PacketHandler implements IPacketHandler {
 
     @Override
@@ -36,56 +36,6 @@ public class PacketHandler implements IPacketHandler {
         int id = in.readUnsignedByte();
 
         switch (id) {
-        case 1: {
-            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            if (tile != null && tile.worldObj.isRemote) {
-                tile.setColor(in.readInt());
-                tile.setHasLens(in.readBoolean());
-                tile.setPitch(in.readFloat());
-                tile.setYaw(in.readFloat());
-                tile.setBrightness(in.readFloat());
-                tile.setFocus(in.readFloat());
-                tile.setDirection(in.readInt());
-            }
-        }
-        break;
-        case 2: {
-            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            if (tile != null && tile.worldObj.isRemote) {
-                int count = in.readUnsignedByte();
-                for (int i = 0; i < count; i++) {
-                    int type = in.readUnsignedByte();
-                    if (type == 0) {
-                        tile.setColor(in.readInt());
-                    }
-                    else if (type == 1) {
-                        tile.setHasLens(in.readBoolean());
-                    }
-                    else {
-                        tile.setValue(type, in.readFloat());
-                    }
-                }
-            }
-        }
-        break;
-        case 3: {
-            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            if (tile != null && tile.worldObj.isRemote) {
-                tile.channels = new int[in.readInt()];
-                for (int i = 0; i < tile.channels.length; i++) {
-                    tile.channels[i] = in.readInt();
-                }
-            }
-        }
-        break;
-        case 4: {
-            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            if (tile != null && !tile.worldObj.isRemote) {
-                tile.channels[in.readInt()] = in.readInt();
-                tile.onInventoryChanged();
-            }
-        }
-        break;
         case 5: {
             TileEntityController tile = (TileEntityController) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
             if (tile != null) {
@@ -140,27 +90,10 @@ public class PacketHandler implements IPacketHandler {
             }
         }
         break;
-        case 7: {
-            TileEntityLight tile = (TileEntityLight) player.worldObj.getBlockTileEntity(in.readInt(), in.readInt(), in.readInt());
-            if (tile != null && !tile.worldObj.isRemote) {
-                switch (in.readInt()) {
-                case 1:
-                    tile.setYaw(in.readFloat());
-                break;
-                case 2:
-                    tile.setPitch(in.readFloat());
-                break;
-                case 3:
-                    tile.setFocus(in.readFloat());
-                break;
-                }
-                tile.onInventoryChanged();
-            }
-        }
-        break;
         }
     }
 
+    @Deprecated
     public static Packet250CustomPayload createPacket(int id, Object... data) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream(32767);
         DataOutputStream dos = new DataOutputStream(bos);
@@ -169,75 +102,6 @@ public class PacketHandler implements IPacketHandler {
             dos.writeByte(id);
 
             switch (id) {
-            case 1: { // Send light info
-                TileEntityLight tile = (TileEntityLight) data[0];
-                if (tile.worldObj.isRemote) {
-                    return null;
-                }
-                dos.writeInt(tile.xCoord);
-                dos.writeInt(tile.yCoord);
-                dos.writeInt(tile.zCoord);
-                dos.writeInt(tile.getColor(1.0F));
-                dos.writeBoolean(tile.hasLens());
-                dos.writeFloat(tile.getPitch(1.0F));
-                dos.writeFloat(tile.getYaw(1.0F));
-                dos.writeFloat(tile.getBrightness(1.0F));
-                dos.writeFloat(tile.getFocus(1.0F));
-                dos.writeInt(tile.getDirection());
-            }
-            break;
-            case 2: { // Sync value
-                TileEntityLight tile = (TileEntityLight) data[0];
-                if (tile.worldObj.isRemote) {
-                    return null;
-                }
-                dos.writeInt(tile.xCoord);
-                dos.writeInt(tile.yCoord);
-                dos.writeInt(tile.zCoord);
-
-                int[] types = (int[]) data[1];
-                dos.writeByte(types.length);
-                for (int i = 0; i < types.length; i++) {
-                    int type = types[i];
-                    dos.writeByte(type);
-                    if (type == 0) {
-                        dos.writeInt(tile.getColor(1.0F));
-                    }
-                    else if (type == 1) {
-                        dos.writeBoolean(tile.hasLens());
-                    }
-                    else {
-                        dos.writeFloat(tile.getValue(type));
-                    }
-                }
-            }
-            break;
-            case 3: { // Channel info
-                TileEntityLight tile = (TileEntityLight) data[0];
-                if (tile.worldObj.isRemote) {
-                    return null;
-                }
-                dos.writeInt(tile.xCoord);
-                dos.writeInt(tile.yCoord);
-                dos.writeInt(tile.zCoord);
-                dos.writeInt(tile.channels.length);
-                for (int i = 0; i < tile.channels.length; i++) {
-                    dos.writeInt(tile.channels[i]);
-                }
-            }
-            break;
-            case 4: { // Set channel
-                TileEntityLight tile = (TileEntityLight) data[0];
-                if (!tile.worldObj.isRemote) {
-                    return null;
-                }
-                dos.writeInt(tile.xCoord);
-                dos.writeInt(tile.yCoord);
-                dos.writeInt(tile.zCoord);
-                dos.writeInt((Integer) data[1]);
-                dos.writeInt((Integer) data[2]);
-            }
-            break;
             case 5: { // Controller instructions
                 TileEntityController tile = (TileEntityController) data[0];
                 dos.writeInt(tile.xCoord);
@@ -272,8 +136,8 @@ public class PacketHandler implements IPacketHandler {
                     }
                 }
                 else if (tile.getBlockMetadata() == 2) {
-                    TileEntitySpAGuo guo = (TileEntitySpAGuo)data[0];
-                    for (int i = 0; i < guo.messages.length; i++){
+                    TileEntitySpAGuo guo = (TileEntitySpAGuo) data[0];
+                    for (int i = 0; i < guo.messages.length; i++) {
                         System.out.println(guo.messages[i]);
                     }
                 }
@@ -288,15 +152,6 @@ public class PacketHandler implements IPacketHandler {
                 for (int i = 0; i < tile.levels.length; i++) {
                     dos.writeByte(tile.levels[i]);
                 }
-            }
-            break;
-            case 7: { // Set Pan || Tilt
-                TileEntityLight tile = (TileEntityLight) data[0];
-                dos.writeInt(tile.xCoord);
-                dos.writeInt(tile.yCoord);
-                dos.writeInt(tile.zCoord);
-                dos.writeInt((Integer) data[1]);
-                dos.writeFloat((Float) data[2]);
             }
             break;
             }

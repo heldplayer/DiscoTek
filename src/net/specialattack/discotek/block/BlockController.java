@@ -11,12 +11,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Assets;
-import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.client.ClientProxy;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntitySpAGuo;
@@ -57,10 +55,11 @@ public class BlockController extends Block {
                 }
                 else {
                     if (player instanceof EntityPlayerMP) {
-                        Packet packet = PacketHandler.createPacket(5, tile);
-                        if (packet != null) {
-                            ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(packet);
-                        }
+                        // FIXME: Packet 5
+                        // Packet packet = PacketHandler.createPacket(5, tile);
+                        // if (packet != null) {
+                        // ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(packet);
+                        // }
                     }
                 }
             }
@@ -117,15 +116,15 @@ public class BlockController extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        if (!world.isRemote){
-        System.out.println(metadata);
+        if (!world.isRemote) {
+            System.out.println(metadata);
         }
         if (metadata == 2) {
             return new TileEntitySpAGuo();
         }
         return new TileEntityController();
     }
-    
+
     @Override
     public boolean hasTileEntity(int metadata) {
         return true;

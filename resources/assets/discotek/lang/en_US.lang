@@ -1,8 +1,9 @@
-tile.light0.name=Fresnel
-tile.light1.name=SpA Map 250
-tile.light2.name=SpA Map 101 LED
-tile.light3.name=Single Channel Dimmer
-tile.light4.name=SpA RGB Radial laser
+tile.light.fresnel.name=Fresnel
+tile.light.map.name=SpA Map 250
+tile.light.mapLED.name=SpA Map 101 LED
+tile.light.dimmer.name=Single Channel Dimmer
+tile.light.radiallaser.name=SpA RGB Radial laser
+tile.light.error.name=Unknown Objects
 tile.truss0.name=Gray Truss
 tile.truss1.name=Silver Truss
 tile.truss2.name=Black Truss
@@ -53,13 +54,14 @@ gui.tooltip.light.lens.false=Doesn't have lens
 
 gui.light.title=Configuring Light
 gui.light.loading=Loading...
-gui.light.0=Brightness Channel: %s
-gui.light.1=Tilt Channel: %s
-gui.light.2=Pan Channel: %s
-gui.light.3=Focus Channel: %s
-gui.light.4=Red Channel: %s
-gui.light.5=Green Channel: %s
-gui.light.6=Blue Channel: %s
+gui.light.brightness=Brightness Channel: %s
+gui.light.tilt=Tilt Channel: %s
+gui.light.pan=Pan Channel: %s
+gui.light.focus=Focus Channel: %s
+gui.light.red=Red Channel: %s
+gui.light.green=Green Channel: %s
+gui.light.blue=Blue Channel: %s
+gui.light.strength=Strength Channel: %s
 
 gui.controller.title=Configuring Controller
 gui.controller.loading=Loading...

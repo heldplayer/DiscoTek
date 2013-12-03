@@ -11,9 +11,11 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.specialattack.discotek.Instruction;
 
+// TODO: break into smaller classes
 public class TileEntityController extends TileEntity {
 
     private List<ChunkCoordinates> lightsLinked = new ArrayList<ChunkCoordinates>();
+    @Deprecated
     public int[] levels = new int[255];
     public int[] stack = new int[16];
     public int stackPointer;
@@ -144,6 +146,7 @@ public class TileEntityController extends TileEntity {
         }
     }
 
+    @Deprecated
     public void updateDmxNetwork() {
         for (int i = 0; i < this.lightsLinked.size(); i++) {
             ChunkCoordinates coord = this.lightsLinked.get(i);

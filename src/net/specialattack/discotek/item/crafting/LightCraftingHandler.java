@@ -46,7 +46,7 @@ public class LightCraftingHandler implements ICraftingResultHandler {
     public boolean isValidRecipeInput(ItemStack input) {
         return true; // Ignore, because there is no special casing here
     }
-    
+
     @Override
     public String getNEIOverlayText() {
         return null;

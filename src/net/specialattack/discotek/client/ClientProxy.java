@@ -23,7 +23,10 @@ import net.specialattack.discotek.Objects;
 import net.specialattack.discotek.client.gui.GuiBasicController;
 import net.specialattack.discotek.client.gui.GuiController;
 import net.specialattack.discotek.client.gui.GuiFancyController;
-import net.specialattack.discotek.client.gui.GuiLight;
+import net.specialattack.discotek.client.lights.LightRendererDimmer;
+import net.specialattack.discotek.client.lights.LightRendererFresnel;
+import net.specialattack.discotek.client.lights.LightRendererMap;
+import net.specialattack.discotek.client.lights.LightRendererRadialLaser;
 import net.specialattack.discotek.client.render.DistanceComparator;
 import net.specialattack.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.discotek.client.render.ItemRendererLens;
@@ -53,6 +56,12 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLight.class, new TileEntityLightRenderer());
+
+        Objects.blockLight.setLightRenderer(0, new LightRendererFresnel());
+        Objects.blockLight.setLightRenderer(1, new LightRendererMap(false));
+        Objects.blockLight.setLightRenderer(2, new LightRendererMap(true));
+        Objects.blockLight.setLightRenderer(3, new LightRendererDimmer());
+        Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
     }
 
     @Override
@@ -65,10 +74,6 @@ public class ClientProxy extends CommonProxy {
 
     private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
     private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
-
-    public static void openLightGui(TileEntityLight light) {
-        FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiLight(light));
-    }
 
     public static void openControllerGui(int type, TileEntityController controller) {
         if (type == 0) {
@@ -157,6 +162,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glPolygonOffset(-3.0F, -3.0F);
         GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -184,6 +190,7 @@ public class ClientProxy extends CommonProxy {
         GL11.glPolygonOffset(0.0F, 0.0F);
         GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
         GL11.glPopMatrix();
 

@@ -8,12 +8,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
 import net.specialattack.discotek.Assets;
-import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.controllerLogic.Instruction;
 import net.specialattack.discotek.controllerLogic.InstructionParser;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntitySpAGuo;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,7 +41,7 @@ public class GuiFancyController extends GuiScreen {
             this.guiHeight = 64;
         }
         this.commands = new GuiTextField(this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 18);
-        
+
     }
 
     @Override
@@ -55,7 +53,7 @@ public class GuiFancyController extends GuiScreen {
                 this.commands.setText("");
                 if (inst.hasError() && !inst.isNeedsPreSelected()) {
                     this.controller.println(inst.getError());
-                    
+
                     this.error = inst.getError();
                     this.errorTime = System.currentTimeMillis();
                 }
@@ -64,14 +62,16 @@ public class GuiFancyController extends GuiScreen {
                         for (int i = 0; i < this.selected.size(); i++) {
                             this.controller.setChannelLevel(this.selected.get(i) - 1, (short) (inst.getValue()));
                         }
-                        FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
+                        // FIXME: Packet 6
+                        // FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
                     }
                 }
                 else {
                     for (int i = 0; i < inst.getSelectedCount(); i++) {
                         this.controller.setChannelLevel(inst.getSelectedAt(i), (short) (inst.getValue()));
                     }
-                    FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
+                    // FIXME: Packet 6
+                    // FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
                     if (inst.getSelectedCount() > 0) {
                         this.selected = inst.getSelected();
                     }

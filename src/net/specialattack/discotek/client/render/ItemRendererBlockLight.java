@@ -1,6 +1,7 @@
 
 package net.specialattack.discotek.client.render;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -48,6 +49,11 @@ public class ItemRendererBlockLight implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         this.renderTile.setColor(0xFFFFFF);
+        if (Block.blocksList[item.itemID] == null) {
+            return;
+        }
+        this.renderTile.blockType = Block.blocksList[item.itemID];
+
         if (item.stackTagCompound != null) {
             if (item.stackTagCompound.hasKey("color")) {
                 this.renderTile.setColor(item.stackTagCompound.getInteger("color"));

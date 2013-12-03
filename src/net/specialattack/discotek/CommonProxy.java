@@ -25,6 +25,10 @@ import net.specialattack.discotek.item.ItemOrienter;
 import net.specialattack.discotek.item.ItemWirelessLinker;
 import net.specialattack.discotek.item.crafting.LightCraftingHandler;
 import net.specialattack.discotek.item.crafting.RecipesLens;
+import net.specialattack.discotek.lights.LightDimmer;
+import net.specialattack.discotek.lights.LightFresnel;
+import net.specialattack.discotek.lights.LightMap;
+import net.specialattack.discotek.lights.LightRadialLaser;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -35,60 +39,78 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class CommonProxy extends HeldCoreProxy {
 
     @Override
-    public void preInit(FMLPreInitializationEvent event) {}
+    public void preInit(FMLPreInitializationEvent event) {
+        Objects.blockLight = new BlockLight(ModDiscoTek.blockLightId.getValue());
+        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "DiscoTek.blockLight");
+
+        Objects.blockTruss = new BlockTruss(ModDiscoTek.blockTrussId.getValue());
+        GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "DiscoTek.blockTruss");
+
+        Objects.blockDecoration = new BlockDecoration(ModDiscoTek.blockDecorationId.getValue());
+        GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "DiscoTek.blockDecoration");
+
+        Objects.blockController = new BlockController(ModDiscoTek.blockControllerId.getValue());
+        GameRegistry.registerBlock(Objects.blockController, ItemBlockMulti.class, "DiscoTek.blockController");
+
+        Objects.blockColoredLampOff = new BlockColoredLamp(ModDiscoTek.blockColoredLampOffId.getValue(), false);
+        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "DiscoTek.blockColoredLampOff");
+
+        Objects.blockColoredLampOn = new BlockColoredLamp(ModDiscoTek.blockColoredLampOnId.getValue(), true);
+        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "DiscoTek.blockColoredLampOn");
+
+        Objects.itemDebug = new ItemDebug(ModDiscoTek.itemDebugId.getValue());
+        GameRegistry.registerItem(Objects.itemDebug, "DiscoTek.itemDebug");
+
+        Objects.itemLens = new ItemLens(ModDiscoTek.itemLensId.getValue());
+        GameRegistry.registerItem(Objects.itemDebug, "DiscoTek.itemLens");
+
+        Objects.itemWirelessLinker = new ItemWirelessLinker(ModDiscoTek.itemWirelessLinkerId.getValue());
+        GameRegistry.registerItem(Objects.itemWirelessLinker, "DiscoTek.itemWirelessLinker");
+
+        Objects.itemOrienter = new ItemOrienter(ModDiscoTek.itemOrienterId.getValue());
+        GameRegistry.registerItem(Objects.itemOrienter, "DiscoTek.itemOrienter");
+
+        Objects.itemCrafting = new ItemCrafting(ModDiscoTek.itemCraftingId.getValue());
+        GameRegistry.registerItem(Objects.itemCrafting, "DiscoTek.itemCrafting");
+    }
 
     @Override
     public void init(FMLInitializationEvent event) {
         Objects.creativeTab = new CreativeTabIcon("discotek");
 
-        Objects.blockLight = new BlockLight(ModDiscoTek.blockLightId.getValue());
         Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss").setUnlocalizedName("light");
-        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "ModJam2013.blockLight");
+        Objects.blockLight.setLight(0, new LightFresnel());
+        Objects.blockLight.setLight(1, new LightMap(false));
+        Objects.blockLight.setLight(2, new LightMap(true));
+        Objects.blockLight.setLight(3, new LightDimmer());
+        Objects.blockLight.setLight(4, new LightRadialLaser());
 
-        Objects.blockTruss = new BlockTruss(ModDiscoTek.blockTrussId.getValue());
         Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss").setUnlocalizedName("truss");
-        GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "ModJam2013.blockTruss");
 
-        Objects.blockDecoration = new BlockDecoration(ModDiscoTek.blockDecorationId.getValue());
         Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("decoration");
-        GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "ModJam2013.blockDecoration");
 
-        Objects.blockController = new BlockController(ModDiscoTek.blockControllerId.getValue());
         Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("controller");
-        GameRegistry.registerBlock(Objects.blockController, ItemBlockMulti.class, "ModJam2013.blockController");
 
-        Objects.blockColoredLampOff = new BlockColoredLamp(ModDiscoTek.blockColoredLampOffId.getValue(), false);
         Objects.blockColoredLampOff.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lamp");
-        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "ModJam2013.blockColoredLampOff");
 
-        Objects.blockColoredLampOn = new BlockColoredLamp(ModDiscoTek.blockColoredLampOnId.getValue(), true);
         Objects.blockColoredLampOn.setHardness(0.3F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lamp");
-        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "ModJam2013.blockColoredLampOn");
 
-        Objects.itemDebug = new ItemDebug(ModDiscoTek.itemDebugId.getValue());
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "debug").setUnlocalizedName("debug");
-        GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemDebug");
 
-        Objects.itemLens = new ItemLens(ModDiscoTek.itemLensId.getValue());
         Objects.itemLens.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "lens").setUnlocalizedName("lens");
-        GameRegistry.registerItem(Objects.itemDebug, "ModJam2013.itemLens");
 
-        Objects.itemWirelessLinker = new ItemWirelessLinker(ModDiscoTek.itemWirelessLinkerId.getValue());
         Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "wirelessLinker").setUnlocalizedName("wirelesslinker");
-        GameRegistry.registerItem(Objects.itemWirelessLinker, "ModJam2013.itemWirelessLinker");
 
-        Objects.itemOrienter = new ItemOrienter(ModDiscoTek.itemOrienterId.getValue());
         Objects.itemOrienter.setCreativeTab(Objects.creativeTab).setUnlocalizedName("orienter");
-        GameRegistry.registerItem(Objects.itemOrienter, "ModJam2013.itemOrienter");
 
-        Objects.itemCrafting = new ItemCrafting(ModDiscoTek.itemCraftingId.getValue());
         Objects.itemCrafting.setCreativeTab(Objects.creativeTab).setUnlocalizedName("crafting");
-        GameRegistry.registerItem(Objects.itemCrafting, "ModJam2013.itemCrafting");
 
         Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockLight));
 
-        TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light");
-        TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller");
+        TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light"); // Compat
+        TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller"); // Compat
+        TileEntity.addMapping(TileEntityLight.class, "DiscoTek.Light");
+        TileEntity.addMapping(TileEntityController.class, "DiscoTek.Controller");
     }
 
     @Override

@@ -53,13 +53,13 @@ gui.tooltip.light.lens.false=Hat keine Linse
 
 gui.light.title=Konfiguriere Licht
 gui.light.loading=Laden...
-gui.light.0=Helligkeitskanal: %s
-gui.light.1=Neigungskanal: %s
-gui.light.2=Schwenkungskanal: %s
-gui.light.3=Fokuskanal: %s
-gui.light.4=Rot-Kanal: %s
-gui.light.5=Grün-Kanal: %s
-gui.light.6=Blau-Kanal: %s
+gui.light.brightness=Helligkeitskanal: %s
+gui.light.tilt=Neigungskanal: %s
+gui.light.pan=Schwenkungskanal: %s
+gui.light.focus=Fokuskanal: %s
+gui.light.red=Rot-Kanal: %s
+gui.light.green=Grün-Kanal: %s
+gui.light.blue=Blau-Kanal: %s
 
 gui.controller.title=Configuriere Controller
 gui.controller.loading=Laden...

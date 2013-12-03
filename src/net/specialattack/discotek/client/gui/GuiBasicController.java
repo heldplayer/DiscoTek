@@ -4,9 +4,7 @@ package net.specialattack.discotek.client.gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.specialattack.discotek.Assets;
-import net.specialattack.discotek.PacketHandler;
 import net.specialattack.discotek.tileentity.TileEntityController;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -140,7 +138,8 @@ public class GuiBasicController extends GuiSliderCompat {
     @Override
     public void slideActionPerformed(ModJamSlider slider) {
         this.controller.setChannelLevel(slider.id, (short) (slider.sliderValue * 255));
-        FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
+        // FIXME: Packet 6
+        // FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
     }
 
 }
