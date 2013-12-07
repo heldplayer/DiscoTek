@@ -82,7 +82,7 @@ public class Packet2LightGui extends HeldCorePacket {
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
 
-        TileEntity tile = world.getBlockTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getBlockTileEntity(this.posX, this.posY, this.posZ);
 
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;

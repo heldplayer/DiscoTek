@@ -78,7 +78,7 @@ public class Packet5GrandSpAInstruction extends HeldCorePacket {
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
 
-        TileEntity tile = world.getBlockTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getBlockTileEntity(this.posX, this.posY, this.posZ);
 
         if (tile != null && tile instanceof TileEntityController) {
             IControllerInstance controller = ((TileEntityController) tile).getControllerInstance();

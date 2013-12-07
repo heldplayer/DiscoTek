@@ -65,7 +65,7 @@ public class ControllerPixel implements IController {
 
         @Override
         public void writeToNBT(NBTTagCompound compound) {
-            compound.setIntArray("levels", levels);
+            compound.setIntArray("levels", this.levels);
         }
 
         @Override
@@ -102,7 +102,7 @@ public class ControllerPixel implements IController {
 
         public void doSlider(int id, int level) {
             this.levels[id] = level;
-            tile.transmitLevelChange(id, level);
+            this.tile.transmitLevelChange(id, level);
         }
 
     }

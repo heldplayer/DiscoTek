@@ -144,7 +144,7 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
     @Override
     public void slideActionPerformed(GuiSlider slider) {
         //this.controller.tile.transmitLevelChange(slider.id, (short) (slider.sliderValue * 255));
-        FMLClientHandler.instance().sendPacket(PacketHandler.instance.createPacket(new Packet3PixelSlider(controller, slider.id, (int) (slider.sliderValue * 255))));
+        FMLClientHandler.instance().sendPacket(PacketHandler.instance.createPacket(new Packet3PixelSlider(this.controller, slider.id, (int) (slider.sliderValue * 255))));
         // FIXME: Packet 6
         // FMLClientHandler.instance().sendPacket(PacketHandler.createPacket(6, this.controller));
     }

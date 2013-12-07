@@ -111,7 +111,7 @@ public class ControllerGrandSpa implements IController {
                     else if (instruction.identifier.equals("LEV")) { // Set channel to N
                         int channel = this.popStack();
                         int value = instruction.argument;
-                        tile.transmitLevelChange(channel, value);
+                        this.tile.transmitLevelChange(channel, value);
                         this.next();
                     }
                     else if (instruction.identifier.equals("LEV2")) { // Set 2 channels
@@ -119,8 +119,8 @@ public class ControllerGrandSpa implements IController {
                         int channel2 = this.popStack();
                         int value1 = this.popStack();
                         int channel1 = this.popStack();
-                        tile.transmitLevelChange(channel1, value1);
-                        tile.transmitLevelChange(channel2, value2);
+                        this.tile.transmitLevelChange(channel1, value1);
+                        this.tile.transmitLevelChange(channel2, value2);
                         this.next();
                     }
                     else if (instruction.identifier.equals("LEV3")) { // Set 3 channels
@@ -130,9 +130,9 @@ public class ControllerGrandSpa implements IController {
                         int channel2 = this.popStack();
                         int value1 = this.popStack();
                         int channel1 = this.popStack();
-                        tile.transmitLevelChange(channel1, value1);
-                        tile.transmitLevelChange(channel2, value2);
-                        tile.transmitLevelChange(channel3, value3);
+                        this.tile.transmitLevelChange(channel1, value1);
+                        this.tile.transmitLevelChange(channel2, value2);
+                        this.tile.transmitLevelChange(channel3, value3);
                         this.next();
                     }
                     else if (instruction.identifier.equals("MOT")) { // Motion 1 channel
@@ -156,7 +156,7 @@ public class ControllerGrandSpa implements IController {
 
                         int newValue = (value * (instruction.argument - ticks) + start * ticks) / instruction.argument;
 
-                        tile.transmitLevelChange(channel, newValue);
+                        this.tile.transmitLevelChange(channel, newValue);
 
                         if (ticks < 0) {
                             this.next();
@@ -198,8 +198,8 @@ public class ControllerGrandSpa implements IController {
                         int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
                         int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
 
-                        tile.transmitLevelChange(channel2, newValue2);
-                        tile.transmitLevelChange(channel1, newValue1);
+                        this.tile.transmitLevelChange(channel2, newValue2);
+                        this.tile.transmitLevelChange(channel1, newValue1);
 
                         if (ticks <= 0) {
                             this.next();
@@ -253,9 +253,9 @@ public class ControllerGrandSpa implements IController {
                         int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
                         int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
 
-                        tile.transmitLevelChange(channel3, newValue3);
-                        tile.transmitLevelChange(channel2, newValue2);
-                        tile.transmitLevelChange(channel1, newValue1);
+                        this.tile.transmitLevelChange(channel3, newValue3);
+                        this.tile.transmitLevelChange(channel2, newValue2);
+                        this.tile.transmitLevelChange(channel1, newValue1);
 
                         if (ticks <= 0) {
                             this.next();

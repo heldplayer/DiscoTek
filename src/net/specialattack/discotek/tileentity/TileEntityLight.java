@@ -313,7 +313,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                     level.setValue(value);
 
                     if (level.channel == Channels.STRENGTH) {
-                        this.worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, this.getBlockType().blockID);
+                        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
                     }
                 }
             }
@@ -538,7 +538,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         public void setValue(int value) {
             this.value = value;
             if (this.syncable instanceof SFloat) {
-                float result = (float) value * (max - min) / 255.0F + min;
+                float result = (float) value * (this.max - this.min) / 255.0F + this.min;
                 ((SFloat) this.syncable).setValue(result);
                 return;
             }

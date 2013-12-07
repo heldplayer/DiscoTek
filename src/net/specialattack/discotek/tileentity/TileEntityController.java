@@ -25,7 +25,7 @@ public class TileEntityController extends TileEntity {
         this();
         this.blockMetadata = meta;
         this.blockType = blockType;
-        getControllerInstance();
+        this.getControllerInstance();
         if (setupServer) {
             this.controller.prepareServer();
         }
@@ -49,7 +49,7 @@ public class TileEntityController extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        lightsTag = compound.getTagList("Lights");
+        this.lightsTag = compound.getTagList("Lights");
 
         this.setBlockType(compound.getInteger("blockId"));
         this.blockMetadata = compound.getInteger("blockMetadata");
@@ -95,8 +95,8 @@ public class TileEntityController extends TileEntity {
     @Override
     public void updateEntity() {
         if (this.lightsTag != null) {
-            for (int i = 0; i < lightsTag.tagCount(); i++) {
-                NBTTagCompound tag = (NBTTagCompound) lightsTag.tagAt(i);
+            for (int i = 0; i < this.lightsTag.tagCount(); i++) {
+                NBTTagCompound tag = (NBTTagCompound) this.lightsTag.tagAt(i);
                 int x = tag.getInteger("x");
                 int y = tag.getInteger("y");
                 int z = tag.getInteger("z");

@@ -69,13 +69,13 @@ public class Packet3PixelSlider extends HeldCorePacket {
     public void onData(INetworkManager manager, EntityPlayer player) {
         World world = player.worldObj;
 
-        TileEntity tile = world.getBlockTileEntity(posX, posY, posZ);
+        TileEntity tile = world.getBlockTileEntity(this.posX, this.posY, this.posZ);
 
         if (tile != null && tile instanceof TileEntityController) {
             IControllerInstance controller = ((TileEntityController) tile).getControllerInstance();
 
             if (controller != null && controller instanceof ControllerPixel.ControllerInstance) {
-                ((ControllerPixel.ControllerInstance) controller).doSlider(id, level);
+                ((ControllerPixel.ControllerInstance) controller).doSlider(this.id, this.level);
             }
 
             tile.onInventoryChanged();

@@ -97,7 +97,7 @@ public class BlockController extends Block {
             return this.controllers.get(Integer.valueOf(meta)).getIcon(side);
         }
 
-        return missingno;
+        return this.missingno;
     }
 
     @Override

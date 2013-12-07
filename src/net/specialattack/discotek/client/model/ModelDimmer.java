@@ -13,7 +13,7 @@ public class ModelDimmer extends ModelBase {
 
     public ModelDimmer() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
-        
+
         this.base.setTextureOffset(0, 0);
         this.base.addBox(-8.0F, -8.0F, -4.0F, 16, 5, 8);
 
