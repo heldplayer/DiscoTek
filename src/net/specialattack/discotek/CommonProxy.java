@@ -15,7 +15,10 @@ import net.specialattack.discotek.block.BlockController;
 import net.specialattack.discotek.block.BlockDecoration;
 import net.specialattack.discotek.block.BlockLight;
 import net.specialattack.discotek.block.BlockTruss;
+import net.specialattack.discotek.controllers.ControllerGrandSpa;
+import net.specialattack.discotek.controllers.ControllerPixel;
 import net.specialattack.discotek.creativetabs.CreativeTabIcon;
+import net.specialattack.discotek.item.ItemBlockController;
 import net.specialattack.discotek.item.ItemBlockLight;
 import net.specialattack.discotek.item.ItemBlockMulti;
 import net.specialattack.discotek.item.ItemCrafting;
@@ -50,7 +53,7 @@ public class CommonProxy extends HeldCoreProxy {
         GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "DiscoTek.blockDecoration");
 
         Objects.blockController = new BlockController(ModDiscoTek.blockControllerId.getValue());
-        GameRegistry.registerBlock(Objects.blockController, ItemBlockMulti.class, "DiscoTek.blockController");
+        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "DiscoTek.blockController");
 
         Objects.blockColoredLampOff = new BlockColoredLamp(ModDiscoTek.blockColoredLampOffId.getValue(), false);
         GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "DiscoTek.blockColoredLampOff");
@@ -78,7 +81,7 @@ public class CommonProxy extends HeldCoreProxy {
     public void init(FMLInitializationEvent event) {
         Objects.creativeTab = new CreativeTabIcon("discotek");
 
-        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss").setUnlocalizedName("light");
+        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss2").setUnlocalizedName("light");
         Objects.blockLight.setLight(0, new LightFresnel());
         Objects.blockLight.setLight(1, new LightMap(false));
         Objects.blockLight.setLight(2, new LightMap(true));
@@ -90,6 +93,8 @@ public class CommonProxy extends HeldCoreProxy {
         Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("decoration");
 
         Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("controller");
+        Objects.blockController.setController(0, new ControllerPixel());
+        Objects.blockController.setController(1, new ControllerGrandSpa());
 
         Objects.blockColoredLampOff.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lamp");
 
@@ -196,5 +201,9 @@ public class CommonProxy extends HeldCoreProxy {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockColoredLampOff, 8, i), "LLL", "LdL", "LLL", 'L', redstoneLamp, 'd', dyes[i]));
         }
     }
+
+    public void openControllerGui(TileEntityController tile) {}
+
+    public void openLightGui(TileEntityLight tile) {}
 
 }

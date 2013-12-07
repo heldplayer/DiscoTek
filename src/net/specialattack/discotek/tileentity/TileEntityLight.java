@@ -9,7 +9,6 @@ import java.util.List;
 import me.heldplayer.util.HeldCore.sync.ISyncable;
 import me.heldplayer.util.HeldCore.sync.ISyncableObjectOwner;
 import me.heldplayer.util.HeldCore.sync.SBoolean;
-import me.heldplayer.util.HeldCore.sync.SDouble;
 import me.heldplayer.util.HeldCore.sync.SFloat;
 import me.heldplayer.util.HeldCore.sync.SInteger;
 import me.heldplayer.util.HeldCore.sync.packet.Packet4InitiateClientTracking;
@@ -49,7 +48,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     private List<ISyncable> syncables;
 
-    public ChannelLevel[] levels;
+    public ChannelLevel[] channels;
 
     public TileEntityLight() {
         this.hasLens = new SBoolean(this, true);
@@ -64,44 +63,52 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         this.syncables = Arrays.asList((ISyncable) this.hasLens, this.pitch, this.yaw, this.brightness, this.focus, this.direction, this.red, this.green, this.blue);
     }
 
-    public TileEntityLight(Block blockType, int meta) {
+    public TileEntityLight(Block blockType, int meta, boolean setupChannels) {
         this();
         this.blockMetadata = meta;
         this.blockType = blockType;
-        this.setupChannels();
+        if (setupChannels) {
+            this.setupChannels();
+        }
     }
 
-    private void setupChannels() {
+    public void setupChannels() {
         List<Channels> channels = this.getChannels();
-        this.levels = new ChannelLevel[channels.size()];
-        for (int i = 0; i < this.levels.length; i++) {
+        if (channels == null) {
+            return;
+        }
+        this.channels = new ChannelLevel[channels.size()];
+        for (int i = 0; i < this.channels.length; i++) {
             Channels channel = channels.get(i);
-            ISyncable syncable = null;
+            this.channels[i] = new ChannelLevel(channel, null);
             switch (channel.id) {
             case 0:
             case 7:
-                syncable = this.brightness;
+                this.channels[i].syncable = this.brightness;
             break;
             case 1:
-                syncable = this.pitch;
+                this.channels[i].syncable = this.pitch;
+                this.channels[i].min = -0.8F;
+                this.channels[i].max = 0.8F;
             break;
             case 2:
-                syncable = this.yaw;
+                this.channels[i].syncable = this.yaw;
+                this.channels[i].max = (float) Math.PI * 4.0F;
             break;
             case 3:
-                syncable = this.focus;
+                this.channels[i].syncable = this.focus;
+                this.channels[i].max = 20.0F;
             break;
             case 4:
-                syncable = this.red;
+                this.channels[i].syncable = this.red;
             break;
             case 5:
-                syncable = this.green;
+                this.channels[i].syncable = this.green;
             break;
             case 6:
-                syncable = this.blue;
+                this.channels[i].syncable = this.blue;
             break;
             }
-            this.levels[i] = new ChannelLevel(channel, syncable);
         }
     }
 
@@ -224,19 +231,30 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         }
     }
 
+    public void setLevelUnsafe(int id, int value) {
+        this.setLevelUnsafe(Channels.getChannel(id), value);
+    }
+
+    public void setLevelUnsafe(Channels channel, int value) {
+        if (channel == null && this.channels != null) {
+            return;
+        }
+        for (ChannelLevel level : this.channels) {
+            if (level.channel == channel) {
+                level.value = value;
+            }
+        }
+    }
+
     public void setLevel(int id, int value) {
         this.setLevel(Channels.getChannel(id), value);
     }
 
-    public void setLevel(String identifier, int value) {
-        this.setLevel(Channels.getChannel(identifier), value);
-    }
-
     public void setLevel(Channels channel, int value) {
-        if (channel == null) {
+        if (channel == null && this.channels != null) {
             return;
         }
-        for (ChannelLevel level : this.levels) {
+        for (ChannelLevel level : this.channels) {
             if (level.channel == channel) {
                 level.setValue(value);
             }
@@ -247,19 +265,59 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         return this.getLevel(Channels.getChannel(id));
     }
 
-    public int getLevel(String identifier) {
-        return this.getLevel(Channels.getChannel(identifier));
-    }
-
     public int getLevel(Channels channel) {
-        if (channel != null) {
-            for (ChannelLevel level : this.levels) {
+        if (channel != null && this.channels != null) {
+            for (ChannelLevel level : this.channels) {
                 if (level.channel == channel) {
                     return level.getValue();
                 }
             }
         }
         return 0;
+    }
+
+    public void setPort(int id, int port) {
+        this.setPort(Channels.getChannel(id), port);
+    }
+
+    public void setPort(Channels channel, int port) {
+        if (channel == null && this.channels != null) {
+            return;
+        }
+        for (ChannelLevel level : this.channels) {
+            if (level.channel == channel) {
+                level.port = port;
+            }
+        }
+    }
+
+    public int getPort(int id) {
+        return this.getPort(Channels.getChannel(id));
+    }
+
+    public int getPort(Channels channel) {
+        if (channel != null && this.channels != null) {
+            for (ChannelLevel level : this.channels) {
+                if (level.channel == channel) {
+                    return level.port;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public void setChannel(int port, int value) {
+        if (this.channels != null) {
+            for (ChannelLevel level : this.channels) {
+                if (level.port == port) {
+                    level.setValue(value);
+
+                    if (level.channel == Channels.STRENGTH) {
+                        this.worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, this.getBlockType().blockID);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -279,12 +337,21 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         this.prevFocus = this.focus.getValue();
         this.direction.setValue(compound.getInteger("direction"));
 
+        this.setBlockType(compound.getInteger("blockId"));
+        this.blockMetadata = compound.getInteger("blockMetadata");
+
+        if (this.channels == null) {
+            this.setupChannels();
+        }
+
         NBTTagList levels = compound.getTagList("levels");
         for (int i = 0; i < levels.tagCount(); i++) {
             NBTTagCompound level = (NBTTagCompound) levels.tagAt(i);
             int id = level.getInteger("id");
             int value = level.getInteger("value");
-            this.setLevel(id, value);
+            int port = level.getInteger("port");
+            this.setLevelUnsafe(id, value);
+            this.setPort(id, port);
         }
     }
 
@@ -301,12 +368,17 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         compound.setFloat("focus", this.focus.getValue());
         compound.setInteger("direction", this.direction.getValue());
 
+        compound.setInteger("blockId", this.getBlockType().blockID);
+        compound.setInteger("blockMetadata", this.getBlockMetadata());
+
         NBTTagList levels = new NBTTagList("levels");
-        for (int i = 0; i < this.levels.length; i++) {
+        for (int i = 0; i < this.channels.length; i++) {
             NBTTagCompound level = new NBTTagCompound();
-            ChannelLevel channel = this.levels[i];
+            ChannelLevel channel = this.channels[i];
             level.setInteger("id", channel.channel.id);
             level.setInteger("value", channel.getValue());
+            level.setInteger("port", channel.port);
+            levels.appendTag(level);
         }
         compound.setTag("levels", levels);
     }
@@ -354,30 +426,22 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         }
 
         if (!this.worldObj.isRemote) {
-            if (this.levels == null) {
+            if (this.channels == null) {
                 this.setupChannels();
             }
         }
     }
 
-    @Deprecated
-    public void sendUniverseData(int[] levels) {
-// @formatter:off
-        /*
-        for (int i = 0; this.channels != null && i < this.channels.length; i++) {
-            if (this.channels[i] == 0) {
-                continue;
-            }
-            if (levels[this.channels[i]] != this.cachedLevels[this.channels[i]]) {
-                this.setValue(i + 2, levels[this.channels[i]]);
-            }
+    @Override
+    public Block getBlockType() {
+        if (this.worldObj == null && this.blockType == null) {
+            return null;
         }
-        if (this.getBlockMetadata() == 3) {
-            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, ModDiscoTek.blockLightId.getValue());
-        }
-        System.arraycopy(levels, 0, this.cachedLevels, 0, levels.length);
-        */
-        // @formatter:on
+        return super.getBlockType();
+    }
+
+    public void setBlockType(int blockId) {
+        this.blockType = Block.blocksList[blockId];
     }
 
     public ILight getLight() {
@@ -460,7 +524,11 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
         public Channels channel;
         public ISyncable syncable;
-        private int value;
+        protected int value;
+        public int port;
+
+        public float min = 0.0F;
+        public float max = 1.0F;
 
         public ChannelLevel(Channels channel, ISyncable syncable) {
             this.channel = channel;
@@ -470,11 +538,8 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         public void setValue(int value) {
             this.value = value;
             if (this.syncable instanceof SFloat) {
-                ((SFloat) this.syncable).setValue((float) value / 255.0F);
-                return;
-            }
-            if (this.syncable instanceof SDouble) {
-                ((SDouble) this.syncable).setValue((double) value / 255.0D);
+                float result = (float) value * (max - min) / 255.0F + min;
+                ((SFloat) this.syncable).setValue(result);
                 return;
             }
             this.syncable.setValue(value);

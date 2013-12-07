@@ -14,10 +14,13 @@ public class ModelLightYoke extends ModelBase {
     public ModelLightYoke() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         //Left vert
+        this.base.setTextureOffset(40, 32);
         this.base.addBox(-5.0F, 0.0F, -1.0F, 1, 8, 2, 0.0F);
         //Top
+        this.base.setTextureOffset(40, 42);
         this.base.addBox(-4.0F, 7.0F, -1.0F, 8, 1, 2, 0.0F);
         //Right Vert
+        this.base.setTextureOffset(46, 32);
         this.base.addBox(4.0F, 0.0F, -1.0F, 1, 8, 2, 0.0F);
     }
 

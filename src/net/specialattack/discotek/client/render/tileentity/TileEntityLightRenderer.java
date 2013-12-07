@@ -63,38 +63,6 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             }
         }
 
-        // @formatter:off
-        /*
-        switch (light.getBlockMetadata()) {
-        case 0:
-            Minecraft.getMinecraft().mcProfiler.startSection("fresnel");
-            this.render1(light, x, y, z, partialTicks);
-            Minecraft.getMinecraft().mcProfiler.endSection();
-        break;
-        case 1:
-            Minecraft.getMinecraft().mcProfiler.startSection("spa");
-            this.render2(light, x, y, z, partialTicks);
-            Minecraft.getMinecraft().mcProfiler.endSection();
-        break;
-        case 2:
-            Minecraft.getMinecraft().mcProfiler.startSection("spaLED");
-            this.render2(light, x, y, z, partialTicks);
-            Minecraft.getMinecraft().mcProfiler.endSection();
-        break;
-        case 3:
-            Minecraft.getMinecraft().mcProfiler.startSection("dimmer");
-            this.render3(light, x, y, z, partialTicks);
-            Minecraft.getMinecraft().mcProfiler.endSection();
-        break;
-        case 4:
-            Minecraft.getMinecraft().mcProfiler.startSection("radialLaser");
-            this.render4(light, x, y, z, partialTicks);
-            Minecraft.getMinecraft().mcProfiler.endSection();
-        break;
-        }
-        */
-        // @formatter:on
-
         GL11.glPopMatrix();
 
         if (!lightOnly) {

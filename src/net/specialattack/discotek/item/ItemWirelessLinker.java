@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
@@ -79,20 +78,20 @@ public class ItemWirelessLinker extends Item {
                 int ly = compound.getInteger("y");
                 int lz = compound.getInteger("z");
 
-                ChunkCoordinates coord = new ChunkCoordinates(lx, ly, lz);
+                TileEntity lightTile = world.getBlockTileEntity(lx, ly, lz);
 
-                if (controller.link(coord)) {
-                    //controller.updateDmxNetwork();
+                if (lightTile != null && lightTile instanceof TileEntityLight) {
+                    TileEntityLight light = (TileEntityLight) lightTile;
 
-                    TileEntity light = world.getBlockTileEntity(coord.posX, coord.posY, coord.posZ);
-                    if (light != null && light instanceof TileEntityLight) {
-                        ((TileEntityLight) light).sendUniverseData(controller.levels);
+                    if (controller.link(light)) {
+                        player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
                     }
-
-                    player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
+                    else {
+                        player.addChatMessage("Link failed");
+                    }
                 }
                 else {
-                    player.addChatMessage("Link failed");
+                    player.addChatMessage("No light at linked location");
                 }
 
                 stack.stackTagCompound = null;

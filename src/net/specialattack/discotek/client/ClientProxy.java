@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
+import me.heldplayer.util.HeldCore.client.MC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -20,9 +21,7 @@ import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.discotek.CommonProxy;
 import net.specialattack.discotek.Objects;
-import net.specialattack.discotek.client.gui.GuiBasicController;
-import net.specialattack.discotek.client.gui.GuiController;
-import net.specialattack.discotek.client.gui.GuiFancyController;
+import net.specialattack.discotek.client.gui.GuiLight;
 import net.specialattack.discotek.client.lights.LightRendererDimmer;
 import net.specialattack.discotek.client.lights.LightRendererFresnel;
 import net.specialattack.discotek.client.lights.LightRendererMap;
@@ -31,6 +30,7 @@ import net.specialattack.discotek.client.render.DistanceComparator;
 import net.specialattack.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.discotek.client.render.ItemRendererLens;
 import net.specialattack.discotek.client.render.tileentity.TileEntityLightRenderer;
+import net.specialattack.discotek.controllers.IControllerInstance;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 
@@ -41,6 +41,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy {
 
@@ -72,20 +73,25 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Objects.blockLight.blockID, new ItemRendererBlockLight());
     }
 
-    private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
-    private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
-
-    public static void openControllerGui(int type, TileEntityController controller) {
-        if (type == 0) {
-            FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiBasicController(controller));
-        }
-        else if (type == 1) {
-            FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiController(controller));
-        }
-        else if (type == 2) {
-            FMLClientHandler.instance().displayGuiScreen(Minecraft.getMinecraft().thePlayer, new GuiFancyController(controller));
+    @Override
+    public void openControllerGui(TileEntityController tile) {
+        if (tile != null) {
+            IControllerInstance controller = tile.getControllerInstance();
+            if (controller != null) {
+                controller.openGui(MC.getPlayer(), Side.CLIENT);
+            }
         }
     }
+
+    @Override
+    public void openLightGui(TileEntityLight tile) {
+        if (tile != null) {
+            FMLClientHandler.instance().displayGuiScreen(MC.getPlayer(), new GuiLight(tile));
+        }
+    }
+
+    private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
+    private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
 
     public static void addTile(TileEntityLight light) {
         lights.add(light);

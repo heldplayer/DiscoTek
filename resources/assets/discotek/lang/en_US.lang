@@ -3,7 +3,13 @@ tile.light.map.name=SpA Map 250
 tile.light.mapLED.name=SpA Map 101 LED
 tile.light.dimmer.name=Single Channel Dimmer
 tile.light.radiallaser.name=SpA RGB Radial laser
-tile.light.error.name=Unknown Objects
+tile.light.error.name=Unknown Light
+
+tile.controller.pixel.name=SpA PixEl 12/24
+tile.controller.grandspa.name=SpA grandSpA2
+tile.controller.guo.name=SpA Guo (WIP)
+tile.controller.error.name=Unknown Controller
+
 tile.truss0.name=Gray Truss
 tile.truss1.name=Silver Truss
 tile.truss2.name=Black Truss
@@ -13,9 +19,7 @@ tile.decoration1.name=Dark Stone Bricks
 tile.decoration2.name=Dark Chiseled Stone Bricks
 tile.decoration3.name=Dark Chiseled Quartz Block
 tile.decoration4.name=Dark Bricks
-tile.controller0.name=SpA PixEl 12/24
-tile.controller1.name=SpA grandSpA2
-tile.controller2.name=SpA Guo (WIP)
+
 tile.lamp0.name=White Redstone Lamp
 tile.lamp1.name=Orange Redstone Lamp
 tile.lamp2.name=Magenta Redstone Lamp

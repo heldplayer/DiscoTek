@@ -3,7 +3,7 @@ package net.specialattack.discotek.client.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StatCollector;
 import net.specialattack.discotek.Assets;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -125,8 +125,8 @@ public class GuiControllerHelp extends GuiScreen {
     public void initGui() {
         this.buttonList.clear();
 
-        this.buttonList.add(this.prev = new GuiButton(0, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.getString("gui.controller.help.previous")));
-        this.buttonList.add(this.next = new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, I18n.getString("gui.controller.help.next")));
+        this.buttonList.add(this.prev = new GuiButton(0, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 50, 20, StatCollector.translateToLocal("gui.controller.help.previous")));
+        this.buttonList.add(this.next = new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, StatCollector.translateToLocal("gui.controller.help.next")));
 
         this.prev.enabled = false;
         if (this.lines.length == 1) {
@@ -173,7 +173,7 @@ public class GuiControllerHelp extends GuiScreen {
         this.drawTexturedModalRect(x, y, 0, 0, 192, this.guiHeight);
         this.drawTexturedModalRect(x, y + this.guiHeight, 0, 248, 192, 8);
 
-        String title = I18n.getString("gui.controller.help.title");
+        String title = StatCollector.translateToLocal("gui.controller.help.title");
         y += 6;
         x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
         this.fontRenderer.drawString(title, x, y, 0x4F4F4F);

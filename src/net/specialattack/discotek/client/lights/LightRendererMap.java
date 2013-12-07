@@ -53,7 +53,7 @@ public class LightRendererMap implements ILightRenderHandler {
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("model");
 
-        RenderHelper.bindTexture(Assets.LIGHT_YOKE_TEXTURE);
+        RenderHelper.bindTexture(Assets.MAP_TEXTURE);
 
         this.modelLightMoverBase.setRotations(0, 0);
         this.modelLightMoverBase.renderAll();

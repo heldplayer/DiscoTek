@@ -11,10 +11,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiChannelSlider extends ModJamSlider {
-    public GuiChannelSlider(int par1, int par2, int par3, String par5Str, float par6, GuiSliderCompat parent) {
-        super(par1, par2, par3, 16, 80, par5Str);
-        this.sliderValue = par6;
+public class GuiVerticalSlider extends GuiSlider {
+
+    public GuiVerticalSlider(int id, int posX, int posY, String displayString, float value, ISliderCompat parent) {
+        super(id, posX, posY, 16, 80, displayString);
+        this.sliderValue = value;
         this.parent = parent;
     }
 
@@ -24,7 +25,7 @@ public class GuiChannelSlider extends ModJamSlider {
      * this button.
      */
     @Override
-    protected int getHoverState(boolean par1) {
+    protected int getHoverState(boolean mouseOver) {
         return 0;
     }
 
@@ -33,7 +34,7 @@ public class GuiChannelSlider extends ModJamSlider {
      * MouseListener.mouseDragged(MouseEvent e).
      */
     @Override
-    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
+    protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
         if (this.drawButton) {
             if (this.dragging) {
                 this.sliderValue = 1.0F - (float) (mouseY - (this.yPosition + 1)) / (float) (this.height - 4);
@@ -49,7 +50,7 @@ public class GuiChannelSlider extends ModJamSlider {
                 this.displayString = "" + (this.sliderValue == 1 ? "FF" : (int) (this.sliderValue * 100));
                 this.parent.slideActionPerformed(this);
             }
-            mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
+            minecraft.getTextureManager().bindTexture(Assets.SMALL_GUI);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(this.xPosition + 1, this.yPosition + this.height - 4 - (int) (this.sliderValue * (float) (this.height - 4)), 209, 0, 17, 4);
         }
@@ -61,9 +62,9 @@ public class GuiChannelSlider extends ModJamSlider {
      * e).
      */
     @Override
-    public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
-        if (super.mousePressed(par1Minecraft, par2, par3)) {
-            this.sliderValue = (float) (par3 + (this.yPosition + 4)) / (float) (this.height - 8);
+    public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
+        if (super.mousePressed(minecraft, mouseX, mouseY)) {
+            this.sliderValue = (float) (mouseY + (this.yPosition + 4)) / (float) (this.height - 8);
 
             if (this.sliderValue < 0.0F) {
                 this.sliderValue = 0.0F;
@@ -82,22 +83,22 @@ public class GuiChannelSlider extends ModJamSlider {
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
         if (this.drawButton) {
-            FontRenderer fontrenderer = mc.fontRenderer;
-            mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
+            FontRenderer fontrenderer = minecraft.fontRenderer;
+            minecraft.getTextureManager().bindTexture(Assets.SMALL_GUI);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(this.xPosition, this.yPosition, 192, 0, this.width, this.height);
-            this.mouseDragged(mc, mouseX, mouseY);
-            int l = 14737632;
+            this.mouseDragged(minecraft, mouseX, mouseY);
+            int color = 0xFFE0E0E0;
 
             if (!this.enabled) {
-                l = -6250336;
+                color = 0xFFA0A0A0;
             }
             else if (this.field_82253_i) {
-                l = 16777120;
+                color = 0xFFFFFFA0;
             }
-            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2 + 1, this.yPosition + (this.height - 8) / 2, l);
+            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2 + 1, this.yPosition + (this.height - 8) / 2, color);
         }
     }
 
@@ -106,7 +107,7 @@ public class GuiChannelSlider extends ModJamSlider {
      * MouseListener.mouseReleased(MouseEvent e).
      */
     @Override
-    public void mouseReleased(int par1, int par2) {
+    public void mouseReleased(int mouseX, int mouseY) {
         this.dragging = false;
     }
 }

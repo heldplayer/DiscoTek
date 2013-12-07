@@ -9,7 +9,7 @@ public class LightDimmer implements ILight {
     private final List<Channels> channels;
 
     public LightDimmer() {
-        this.channels = Arrays.asList((Channels) Channels.STRENGTH);
+        this.channels = Arrays.asList(Channels.STRENGTH);
     }
 
     @Override

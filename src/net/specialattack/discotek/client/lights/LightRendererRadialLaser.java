@@ -31,7 +31,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         GL11.glRotatef(TileEntityLightRenderer.rollRotations[side], 0.0F, 0.0F, 1.0F);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("model");
-        RenderHelper.bindTexture(Assets.LIGHT_YOKE_TEXTURE);
+        RenderHelper.bindTexture(Assets.RADIAL_LASER_TEXTURE);
         this.modelLaserRound.renderAll();
 
         Minecraft.getMinecraft().mcProfiler.endSection();

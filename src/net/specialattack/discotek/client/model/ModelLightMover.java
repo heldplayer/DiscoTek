@@ -18,16 +18,22 @@ public class ModelLightMover extends ModelBase {
         //Four sides. + Back
 
         //Left
+        this.base.setTextureOffset(0, 0);
         this.base.addBox(-4.0F, -3.0F, -3.0F, 1, 6, 5, 0.0F);
         //Right
+        this.base.setTextureOffset(12, 0);
         this.base.addBox(3.0F, -3.0F, -3.0F, 1, 6, 5, 0.0F);
         //Top
+        this.base.setTextureOffset(24, 0);
         this.base.addBox(-3.0F, -4.0F, -3.0F, 6, 1, 5, 0.0F);
         //Bottom
+        this.base.setTextureOffset(24, 6);
         this.base.addBox(-3.0F, 3.0F, -3.0F, 6, 1, 5, 0.0F);
 
         //Back
+        this.base.setTextureOffset(46, 0);
         this.base.addBox(-3.0F, -3.0F, 2.0F, 6, 6, 1);
+        this.base.setTextureOffset(46, 7);
         this.base.addBox(-2.0F, -2.0F, 3.0F, 4, 4, 1);
 
         this.lens = new ModelRenderer(this, 0, 0);

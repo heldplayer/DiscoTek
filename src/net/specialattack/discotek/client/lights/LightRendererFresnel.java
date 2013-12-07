@@ -36,7 +36,7 @@ public class LightRendererFresnel implements ILightRenderHandler {
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("model");
 
-        RenderHelper.bindTexture(Assets.LIGHT_YOKE_TEXTURE);
+        RenderHelper.bindTexture(Assets.FRESNEL_TEXTURE);
 
         this.modelLightYoke.setRotations(pitch, yaw);
         this.modelLightYoke.renderAll();

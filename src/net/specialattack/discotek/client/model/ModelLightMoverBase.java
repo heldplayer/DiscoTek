@@ -14,6 +14,7 @@ public class ModelLightMoverBase extends ModelBase {
     public ModelLightMoverBase() {
         this.base = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
         //Base
+        this.base.setTextureOffset(0, 12);
         this.base.addBox(-7.0F, -8.0F, -7.0F, 14, 3, 14, 0.0F);
     }
 

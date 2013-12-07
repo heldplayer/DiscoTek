@@ -2,6 +2,7 @@
 package net.specialattack.discotek.block;
 
 import java.util.List;
+import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -9,29 +10,32 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import net.specialattack.discotek.Assets;
-import net.specialattack.discotek.client.ClientProxy;
+import net.specialattack.discotek.controllers.IController;
+import net.specialattack.discotek.controllers.IControllerInstance;
 import net.specialattack.discotek.tileentity.TileEntityController;
-import net.specialattack.discotek.tileentity.TileEntitySpAGuo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockController extends Block {
 
-    // This is the rhythm of the night
-    // http://www.youtube.com/watch?v=BfSpU0vEh4M
-
-    private Icon[] bottom;
-    private Icon[] top;
-    private Icon[] side;
+    private TreeMap<Integer, IController> controllers;
+    private Icon missingno;
 
     public BlockController(int blockId) {
         super(blockId, Material.iron);
+        this.controllers = new TreeMap<Integer, IController>();
+    }
+
+    public void setController(int id, IController controller) {
+        this.controllers.put(Integer.valueOf(id), controller);
+    }
+
+    public IController getController(int id) {
+        return this.controllers.get(Integer.valueOf(id));
     }
 
     @Override
@@ -41,26 +45,10 @@ public class BlockController extends Block {
         if (tile != null && tile instanceof TileEntityController) {
             TileEntityController controller = (TileEntityController) tile;
 
-            if (player.isSneaking()) {
-                int meta = world.getBlockMetadata(x, y, z);
-                if (meta == 1) {
-                    controller.startStop();
-                }
-            }
-            else {
-                if (world.isRemote) {
-                    int meta = world.getBlockMetadata(x, y, z);
-                    System.out.println(meta);
-                    ClientProxy.openControllerGui(meta, controller);
-                }
-                else {
-                    if (player instanceof EntityPlayerMP) {
-                        // FIXME: Packet 5
-                        // Packet packet = PacketHandler.createPacket(5, tile);
-                        // if (packet != null) {
-                        // ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(packet);
-                        // }
-                    }
+            if (!world.isRemote) {
+                IControllerInstance instance = controller.getControllerInstance();
+                if (instance != null) {
+                    instance.openGui(player, Side.SERVER);
                 }
             }
         }
@@ -83,61 +71,43 @@ public class BlockController extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
-        for (int i = 0; i < this.top.length; i++) {
-            list.add(new ItemStack(itemId, 1, i));
+        for (int i = 0; i < 16; i++) {
+            if (this.controllers.containsKey(Integer.valueOf(i))) {
+                list.add(new ItemStack(itemId, 1, i));
+            }
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister register) {
-        this.top = new Icon[3];
-        this.bottom = new Icon[3];
-        this.side = new Icon[3];
-        for (int i = 0; i < this.top.length; i++) {
-            this.top[i] = register.registerIcon(Assets.DOMAIN + "controller-top" + i);
-            this.bottom[i] = register.registerIcon(Assets.DOMAIN + "controller-bottom" + i);
-            this.side[i] = register.registerIcon(Assets.DOMAIN + "controller-side" + i);
+        this.missingno = register.registerIcon("missingno");
+
+        for (int i = 0; i < 16; i++) {
+            if (this.controllers.containsKey(Integer.valueOf(i))) {
+                this.controllers.get(Integer.valueOf(i)).registerIcons(register);
+            }
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side, int meta) {
-        Icon[] array = this.side;
-        if (side == 0) {
-            array = this.bottom;
+        if (this.controllers.containsKey(Integer.valueOf(meta))) {
+            return this.controllers.get(Integer.valueOf(meta)).getIcon(side);
         }
-        else if (side == 1) {
-            array = this.top;
-        }
-        return array[meta % array.length];
+
+        return missingno;
     }
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        if (!world.isRemote) {
-            System.out.println(metadata);
-        }
-        if (metadata == 2) {
-            return new TileEntitySpAGuo();
-        }
-        return new TileEntityController();
+        return new TileEntityController(this, metadata, !world.isRemote);
     }
 
     @Override
     public boolean hasTileEntity(int metadata) {
         return true;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
     }
 
 }

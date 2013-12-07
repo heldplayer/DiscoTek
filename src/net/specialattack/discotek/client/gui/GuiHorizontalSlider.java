@@ -2,7 +2,7 @@
 package net.specialattack.discotek.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -10,15 +10,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiHorizontalSlider extends ModJamSlider {
+public class GuiHorizontalSlider extends GuiSlider {
 
     private String baseDisplayString;
 
-    public GuiHorizontalSlider(int id, int posX, int posY, int width, int height, String display, float value, GuiSliderCompat parent) {
-        super(id, posX, posY, width, height, display);
+    public GuiHorizontalSlider(int id, int posX, int posY, int width, int height, String displayString, float value, ISliderCompat parent) {
+        super(id, posX, posY, width, height, StatCollector.translateToLocalFormatted(displayString, (int) (value * 255.0F)));
         this.sliderValue = value;
         this.parent = parent;
-        this.baseDisplayString = display;
+        this.baseDisplayString = displayString;
     }
 
     /**
@@ -27,7 +27,7 @@ public class GuiHorizontalSlider extends ModJamSlider {
      * this button.
      */
     @Override
-    protected int getHoverState(boolean par1) {
+    protected int getHoverState(boolean mouseOver) {
         return 0;
     }
 
@@ -36,10 +36,10 @@ public class GuiHorizontalSlider extends ModJamSlider {
      * MouseListener.mouseDragged(MouseEvent e).
      */
     @Override
-    protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3) {
+    protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
         if (this.drawButton) {
             if (this.dragging) {
-                this.sliderValue = (float) (par2 - (this.xPosition + 4)) / (float) (this.width - 8);
+                this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 
                 if (this.sliderValue < 0.0F) {
                     this.sliderValue = 0.0F;
@@ -49,13 +49,13 @@ public class GuiHorizontalSlider extends ModJamSlider {
                     this.sliderValue = 1.0F;
                 }
 
+                this.parent.slideActionPerformed(this);
+                this.updateText();
             }
 
-            this.displayString = I18n.getStringParams(this.baseDisplayString, (int) (this.sliderValue * 255.0F));
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (float) (this.width - 8)), this.yPosition, 0, 66, 4, 20);
             this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (float) (this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
-            this.parent.slideActionPerformed(this);
         }
     }
 
@@ -65,9 +65,9 @@ public class GuiHorizontalSlider extends ModJamSlider {
      * e).
      */
     @Override
-    public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
-        if (super.mousePressed(par1Minecraft, par2, par3)) {
-            this.sliderValue = (float) (par2 - (this.xPosition + 4)) / (float) (this.width - 8);
+    public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
+        if (super.mousePressed(minecraft, mouseX, mouseY)) {
+            this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 
             if (this.sliderValue < 0.0F) {
                 this.sliderValue = 0.0F;
@@ -90,7 +90,12 @@ public class GuiHorizontalSlider extends ModJamSlider {
      * MouseListener.mouseReleased(MouseEvent e).
      */
     @Override
-    public void mouseReleased(int par1, int par2) {
+    public void mouseReleased(int mouseX, int mouseY) {
         this.dragging = false;
     }
+
+    public void updateText() {
+        this.displayString = StatCollector.translateToLocalFormatted(this.baseDisplayString, (int) (this.sliderValue * 255.0F));
+    }
+
 }

@@ -12,10 +12,10 @@ public class LightMap implements ILight {
 
     public LightMap(boolean isLED) {
         if (isLED) {
-            this.channels = Arrays.asList((Channels) Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS);
+            this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
         }
         else {
-            this.channels = Arrays.asList((Channels) Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
+            this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS);
         }
         this.isLED = isLED;
     }

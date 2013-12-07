@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +24,8 @@ import net.specialattack.discotek.item.ItemOrienter;
 import net.specialattack.discotek.lights.Channels;
 import net.specialattack.discotek.lights.ILight;
 import net.specialattack.discotek.lights.ILightRenderHandler;
+import net.specialattack.discotek.packet.Packet2LightGui;
+import net.specialattack.discotek.packet.PacketHandler;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -110,10 +113,6 @@ public class BlockLight extends Block {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ) {
-        if (!player.isSneaking()) {
-            return false;
-        }
-
         ItemStack selected = player.getCurrentEquippedItem();
 
         if (selected != null && selected.getItem() != null && selected.getItem() instanceof ItemOrienter) {
@@ -125,27 +124,36 @@ public class BlockLight extends Block {
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
 
-            if (light.hasLens() && light.getLight().supportsLens()) {
-                if (!world.isRemote) {
-                    ItemStack is = new ItemStack(Objects.itemLens);
-                    NBTTagCompound cpnd = new NBTTagCompound("tag");
-                    cpnd.setInteger("color", light.getColor(1.0F));
-                    is.setTagCompound(cpnd);
+            if (player.isSneaking()) {
+                if (light.hasLens() && light.getLight().supportsLens()) {
+                    if (!world.isRemote) {
+                        ItemStack is = new ItemStack(Objects.itemLens);
+                        NBTTagCompound cpnd = new NBTTagCompound("tag");
+                        cpnd.setInteger("color", light.getColor(1.0F));
+                        is.setTagCompound(cpnd);
 
-                    Random rand = new Random();
-                    EntityItem ent = player.entityDropItem(is, 1.0F);
-                    ent.motionY += rand.nextFloat() * 0.05F;
-                    ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                    ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
-                    ent.delayBeforeCanPickup = 1;
+                        Random rand = new Random();
+                        EntityItem ent = player.entityDropItem(is, 1.0F);
+                        ent.motionY += rand.nextFloat() * 0.05F;
+                        ent.motionX += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                        ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                        ent.delayBeforeCanPickup = 1;
 
-                    light.setColor(0xFFFFFF);
-                    light.setHasLens(false);
-                    light.onInventoryChanged();
+                        light.setColor(0xFFFFFF);
+                        light.setHasLens(false);
+                        light.onInventoryChanged();
+                    }
+                    return true;
                 }
-                return true;
             }
 
+            if (!world.isRemote) {
+                if (player instanceof EntityPlayerMP) {
+                    ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(PacketHandler.instance.createPacket(new Packet2LightGui(light)));
+                }
+            }
+
+            return true;
         }
 
         return false;
@@ -176,16 +184,15 @@ public class BlockLight extends Block {
 
         if (this.light != null) {
             compound.setInteger("color", this.light.getColor(1.0F));
-            compound.setBoolean("hasLens", this.light.hasLens());
+            if (light.supportsLens()) {
+                compound.setBoolean("hasLens", this.light.hasLens());
+            }
             this.light = null;
         }
         else {
             compound.setInteger("color", 0xFFFFFF);
-            if (light != null) {
-                compound.setBoolean("hasLens", this.getLight(metadata).supportsLens());
-            }
-            else {
-                compound.setBoolean("hasLens", false);
+            if (light != null && light.supportsLens()) {
+                compound.setBoolean("hasLens", light.supportsLens());
             }
         }
 
@@ -207,7 +214,7 @@ public class BlockLight extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return new TileEntityLight(this, metadata);
+        return new TileEntityLight(this, metadata, !world.isRemote);
     }
 
     @Override
