@@ -36,7 +36,7 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
             for (int i = 0; i < this.light.channels.length; i++) {
                 this.buttonList.add(new GuiButton(100 + i * 2, this.width / 2 - 90, y, 20, 20, "-"));
                 this.buttonList.add(new GuiButton(101 + i * 2, this.width / 2 + 70, y, 20, 20, "+"));
-                this.buttonList.add(this.sliders[i] = new GuiHorizontalSlider(i, this.width / 2 - 70, y, 140, 20, this.light.channels[i].channel.unlocalized, (float) this.light.channels[i].port / 255.0F, this));
+                this.buttonList.add(this.sliders[i] = new GuiHorizontalSlider(i, this.width / 2 - 70, y, 140, 20, "gui.light." + this.light.channels[i].channel.identifier, (float) this.light.channels[i].port / 255.0F, this));
                 y += 24;
             }
         }

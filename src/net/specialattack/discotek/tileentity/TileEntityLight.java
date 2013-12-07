@@ -26,7 +26,13 @@ import net.specialattack.discotek.lights.ILight;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class TileEntityLight extends TileEntity implements ISyncableObjectOwner {
+import cpw.mods.fml.common.Optional.Interface;
+import dan200.computer.api.IComputerAccess;
+import dan200.computer.api.ILuaContext;
+import dan200.computer.api.IPeripheral;
+
+@Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
+public class TileEntityLight extends TileEntity implements ISyncableObjectOwner, IPeripheral {
 
     private SBoolean hasLens;
     private SInteger direction;
@@ -550,5 +556,84 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         }
 
     }
+
+    // IPeripheral
+
+    @Override
+    public String getType() {
+        return "DiscoTek.Light";
+    }
+
+    @Override
+    public String[] getMethodNames() {
+        return new String[] { "getChannel", "setChannel" };
+    }
+
+    @Override
+    public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws Exception {
+        switch (method) {
+        case 0: { // getChannel
+            if (arguments.length != 1) {
+                throw new Exception("Expected 1 parameter");
+            }
+
+            if (arguments[0] == null || !(arguments[0] instanceof Double || arguments[0] instanceof String)) {
+                throw new Exception("Expected a Number or String as the first parameter");
+            }
+
+            Channels channel = null;
+            if (arguments[0] instanceof Double) {
+                channel = Channels.getChannel((int) ((Double) arguments[0]).doubleValue());
+            }
+            else {
+                channel = Channels.getChannel((String) arguments[0]);
+            }
+
+            return new Object[] { this.getLevel(channel) };
+        }
+        case 1: { // setChannel
+            if (arguments.length != 2) {
+                throw new Exception("Expected 2 parameters");
+            }
+
+            if (arguments[0] == null || !(arguments[0] instanceof Double || arguments[0] instanceof String)) {
+                throw new Exception("Expected a Number or String as the first parameter");
+            }
+            if (arguments[1] == null || !(arguments[1] instanceof Double)) {
+                throw new Exception("Expected a Number as the second parameter");
+            }
+
+            Channels channel = null;
+            if (arguments[0] instanceof Double) {
+                channel = Channels.getChannel((int) ((Double) arguments[0]).doubleValue());
+            }
+            else {
+                channel = Channels.getChannel((String) arguments[0]);
+            }
+
+            int level = (int) ((Double) arguments[1]).doubleValue();
+
+            if (level < 0 || level > 255) {
+                throw new Exception("Second parameter must be between 0 and 255");
+            }
+
+            this.setLevel(channel, level);
+
+            return null;
+        }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean canAttachToSide(int side) {
+        return true;
+    }
+
+    @Override
+    public void attach(IComputerAccess computer) {}
+
+    @Override
+    public void detach(IComputerAccess computer) {}
 
 }

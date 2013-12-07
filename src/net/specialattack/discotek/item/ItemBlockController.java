@@ -27,4 +27,10 @@ public class ItemBlockController extends ItemBlock {
         return super.getUnlocalizedName(stack) + "." + controller.getIdentifier();
     }
 
+    // Fix for silly ItemBlock
+    @Override
+    public int getMetadata(int damage) {
+        return damage;
+    }
+
 }

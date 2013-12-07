@@ -66,4 +66,10 @@ public class ItemBlockLight extends ItemBlock {
         }
     }
 
+    // Fix for silly ItemBlock
+    @Override
+    public int getMetadata(int damage) {
+        return damage;
+    }
+
 }

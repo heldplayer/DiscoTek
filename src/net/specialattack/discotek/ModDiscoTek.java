@@ -24,7 +24,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 public class ModDiscoTek extends HeldCoreMod {
 
     @Instance(Objects.MOD_ID)
-    public ModDiscoTek instance;
+    public static ModDiscoTek instance;
     @SidedProxy(serverSide = Objects.COMMON_PROXY, clientSide = Objects.CLIENT_PROXY)
     public static CommonProxy proxy;
 
