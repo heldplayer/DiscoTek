@@ -4,6 +4,7 @@ package net.specialattack.discotek.client.lights;
 import me.heldplayer.util.HeldCore.MathHelper;
 import me.heldplayer.util.HeldCore.client.RenderHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.client.model.ModelLaserRound;
 import net.specialattack.discotek.client.render.tileentity.TileEntityLightRenderer;
@@ -88,6 +89,31 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         GL11.glEnd();
 
         Minecraft.getMinecraft().mcProfiler.endSection();
+    }
+
+    @Override
+    public boolean rendersLight() {
+        return true;
+    }
+
+    @Override
+    public boolean rendersFirst() {
+        return true;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+
+        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);
+        float pitch = light.getPitch(partialTicks);
+
+        float length = (pitch + 0.8F) * 10.0F + 6.0F;
+
+        float xz = length * MathHelper.sin(angle);
+        float y = length * MathHelper.cos(angle);
+
+        return aabb.addCoord(xz, y, xz).addCoord(-xz, 0, -xz);
     }
 
 }

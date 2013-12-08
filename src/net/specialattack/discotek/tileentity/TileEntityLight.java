@@ -23,6 +23,7 @@ import net.specialattack.discotek.block.BlockLight;
 import net.specialattack.discotek.client.ClientProxy;
 import net.specialattack.discotek.lights.Channels;
 import net.specialattack.discotek.lights.ILight;
+import net.specialattack.discotek.lights.ILightRenderHandler;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -458,6 +459,14 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
         return null;
     }
 
+    public ILightRenderHandler getRenderHandler() {
+        Block block = this.getBlockType();
+        if (block != null && block instanceof BlockLight) {
+            return ((BlockLight) block).getLightRenderer(this.getBlockMetadata());
+        }
+        return null;
+    }
+
     public List<Channels> getChannels() {
         ILight light = this.getLight();
         return light == null ? null : light.getChannels();
@@ -566,7 +575,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
 
     @Override
     public String[] getMethodNames() {
-        return new String[] { "getChannel", "setChannel" };
+        return new String[] { "getChannel", "setChannel", "getSupportedChannels", "getChannelPort", "setChannelPort" };
     }
 
     @Override
@@ -618,6 +627,68 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
             }
 
             this.setLevel(channel, level);
+
+            return null;
+        }
+        case 2: { // getSupportedChannels
+            if (arguments.length != 0) {
+                throw new Exception("Expected 0 parameters");
+            }
+
+            Object[] result = new Object[this.channels.length * 2];
+            for (int i = 0; i < this.channels.length; i++) {
+                result[i * 2] = Double.valueOf(this.channels[i].channel.id);
+                result[i * 2 + 1] = this.channels[i].channel.identifier;
+            }
+
+            return result;
+        }
+        case 3: { // getChannelPort
+            if (arguments.length != 1) {
+                throw new Exception("Expected 1 parameter");
+            }
+
+            if (arguments[0] == null || !(arguments[0] instanceof Double || arguments[0] instanceof String)) {
+                throw new Exception("Expected a Number or String as the first parameter");
+            }
+
+            Channels channel = null;
+            if (arguments[0] instanceof Double) {
+                channel = Channels.getChannel((int) ((Double) arguments[0]).doubleValue());
+            }
+            else {
+                channel = Channels.getChannel((String) arguments[0]);
+            }
+
+            return new Object[] { this.getPort(channel) };
+        }
+        case 4: { // setChannelPort
+            if (arguments.length != 2) {
+                throw new Exception("Expected 2 parameters");
+            }
+
+            if (arguments[0] == null || !(arguments[0] instanceof Double || arguments[0] instanceof String)) {
+                throw new Exception("Expected a Number or String as the first parameter");
+            }
+            if (arguments[1] == null || !(arguments[1] instanceof Double)) {
+                throw new Exception("Expected a Number as the second parameter");
+            }
+
+            Channels channel = null;
+            if (arguments[0] instanceof Double) {
+                channel = Channels.getChannel((int) ((Double) arguments[0]).doubleValue());
+            }
+            else {
+                channel = Channels.getChannel((String) arguments[0]);
+            }
+
+            int port = (int) ((Double) arguments[1]).doubleValue();
+
+            if (port < 0 || port > 255) {
+                throw new Exception("Second parameter must be between 0 and 255");
+            }
+
+            this.setPort(channel, port);
 
             return null;
         }

@@ -4,6 +4,7 @@ package net.specialattack.discotek.client.lights;
 import me.heldplayer.util.HeldCore.MathHelper;
 import me.heldplayer.util.HeldCore.client.RenderHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.client.model.ModelLightMover;
 import net.specialattack.discotek.client.model.ModelLightMoverBase;
@@ -100,8 +101,7 @@ public class LightRendererMap implements ILightRenderHandler {
         float blue = (float) (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
         float alpha = (0.5F * brightness) + 0.1F;
 
-        float lightLength = (64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F));
-        lightLength = MathHelper.min(lightLength, 128.0F);
+        float lightLength = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
 
         float lightangle = light.getFocus(partialTicks);
         float downDiff = (float) (lightLength * Math.tan(Math.toRadians(lightangle)));
@@ -193,6 +193,31 @@ public class LightRendererMap implements ILightRenderHandler {
         GL11.glEnd();
 
         Minecraft.getMinecraft().mcProfiler.endSection();
+    }
+
+    @Override
+    public boolean rendersLight() {
+        return true;
+    }
+
+    @Override
+    public boolean rendersFirst() {
+        return false;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+
+        float yaw = light.getYaw(partialTicks); // +-XZ
+        float pitch = light.getPitch(partialTicks); // +-Y
+        float lightLength = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
+
+        float x = lightLength * -net.minecraft.util.MathHelper.sin(yaw) * net.minecraft.util.MathHelper.cos(pitch);
+        float z = lightLength * -net.minecraft.util.MathHelper.cos(yaw) * net.minecraft.util.MathHelper.cos(pitch);
+        float y = lightLength * net.minecraft.util.MathHelper.sin(pitch);
+
+        return aabb.addCoord(x, y, z);
     }
 
 }

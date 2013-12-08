@@ -3,6 +3,7 @@ package net.specialattack.discotek.client.lights;
 
 import me.heldplayer.util.HeldCore.client.RenderHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.client.model.ModelDimmer;
 import net.specialattack.discotek.lights.ILightRenderHandler;
@@ -25,5 +26,20 @@ public class LightRendererDimmer implements ILightRenderHandler {
 
     @Override
     public void renderLight(TileEntityLight light, float partialTicks) {}
+
+    @Override
+    public boolean rendersLight() {
+        return false;
+    }
+
+    @Override
+    public boolean rendersFirst() {
+        return false;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
+        return null;
+    }
 
 }

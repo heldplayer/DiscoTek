@@ -31,6 +31,7 @@ import net.specialattack.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.discotek.client.render.ItemRendererLens;
 import net.specialattack.discotek.client.render.tileentity.TileEntityLightRenderer;
 import net.specialattack.discotek.controllers.IControllerInstance;
+import net.specialattack.discotek.lights.ILightRenderHandler;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 
@@ -94,7 +95,10 @@ public class ClientProxy extends CommonProxy {
     private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
 
     public static void addTile(TileEntityLight light) {
-        lights.add(light);
+        ILightRenderHandler handler = light.getRenderHandler();
+        if (handler != null && handler.rendersLight()) {
+            lights.add(light);
+        }
     }
 
     public static void removeTile(TileEntityLight light) {
