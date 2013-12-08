@@ -4,6 +4,8 @@ package net.specialattack.discotek.lights;
 import java.util.Arrays;
 import java.util.List;
 
+import net.specialattack.discotek.block.BlockLight;
+
 public class LightMap implements ILight {
 
     private final List<Channels> channels;
@@ -38,6 +40,30 @@ public class LightMap implements ILight {
     @Override
     public String getIdentifier() {
         return this.isLED ? "mapLED" : "map";
+    }
+
+    @Override
+    public void setBlockBounds(BlockLight block, int direction) {
+        switch (direction) {
+        case 0:
+            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
+        break;
+        case 1:
+            block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
+        break;
+        case 2:
+            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 1.0F);
+        break;
+        case 3:
+            block.setBlockBounds(0.0625F, 0.0625F, 0.0F, 0.9375F, 0.9375F, 0.9375F);
+        break;
+        case 4:
+            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 1.0F, 0.9375F, 0.9375F);
+        break;
+        case 5:
+            block.setBlockBounds(0.0F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
+        break;
+        }
     }
 
 }

@@ -4,6 +4,8 @@ package net.specialattack.discotek.lights;
 import java.util.Arrays;
 import java.util.List;
 
+import net.specialattack.discotek.block.BlockLight;
+
 public class LightRadialLaser implements ILight {
 
     private final List<Channels> channels;
@@ -30,6 +32,30 @@ public class LightRadialLaser implements ILight {
     @Override
     public String getIdentifier() {
         return "radiallaser";
+    }
+
+    @Override
+    public void setBlockBounds(BlockLight block, int direction) {
+        switch (direction) {
+        case 0:
+            block.setBlockBounds(0.125F, 0.5625F, 0.125F, 0.875F, 1.0F, 0.875F);
+        break;
+        case 1:
+            block.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.4375F, 0.875F);
+        break;
+        case 2:
+            block.setBlockBounds(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1.0F);
+        break;
+        case 3:
+            block.setBlockBounds(0.125F, 0.125F, 0.0F, 0.875F, 0.875F, 0.4375F);
+        break;
+        case 4:
+            block.setBlockBounds(0.5625F, 0.125F, 0.125F, 1.0F, 0.875F, 0.875F);
+        break;
+        case 5:
+            block.setBlockBounds(0.0F, 0.125F, 0.125F, 0.4375F, 0.875F, 0.875F);
+        break;
+        }
     }
 
 }

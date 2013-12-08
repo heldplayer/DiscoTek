@@ -94,4 +94,5 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             Minecraft.getMinecraft().mcProfiler.endSection();
         }
     }
+
 }

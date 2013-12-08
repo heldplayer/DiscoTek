@@ -4,6 +4,8 @@ package net.specialattack.discotek.lights;
 import java.util.Arrays;
 import java.util.List;
 
+import net.specialattack.discotek.block.BlockLight;
+
 public class LightDimmer implements ILight {
 
     private final List<Channels> channels;
@@ -30,6 +32,11 @@ public class LightDimmer implements ILight {
     @Override
     public String getIdentifier() {
         return "dimmer";
+    }
+
+    @Override
+    public void setBlockBounds(BlockLight block, int direction) {
+        block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
     }
 
 }

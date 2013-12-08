@@ -4,6 +4,8 @@ package net.specialattack.discotek.lights;
 import java.util.Arrays;
 import java.util.List;
 
+import net.specialattack.discotek.block.BlockLight;
+
 public class LightFresnel implements ILight {
 
     private final List<Channels> channels;
@@ -30,6 +32,11 @@ public class LightFresnel implements ILight {
     @Override
     public String getIdentifier() {
         return "fresnel";
+    }
+
+    @Override
+    public void setBlockBounds(BlockLight block, int direction) {
+        block.setBlockBounds(0.0625F, 0.125F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
     }
 
 }

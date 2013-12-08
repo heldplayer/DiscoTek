@@ -6,7 +6,7 @@ tile.light.radiallaser.name=SpA RGB Radial laser
 tile.light.error.name=Unknown Light
 
 tile.controller.pixel.name=SpA PixEl 12/24
-tile.controller.grandspa.name=SpA grandSpA2
+tile.controller.grandspa.name=SpA GrandSpA2
 tile.controller.guo.name=SpA Guo (WIP)
 tile.controller.error.name=Unknown Controller
 

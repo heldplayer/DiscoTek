@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.specialattack.discotek.block.BlockLight;
 import net.specialattack.discotek.client.ClientProxy;
@@ -28,6 +29,8 @@ import net.specialattack.discotek.lights.ILightRenderHandler;
 import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import dan200.computer.api.IComputerAccess;
 import dan200.computer.api.ILuaContext;
 import dan200.computer.api.IPeripheral;
@@ -445,6 +448,12 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
             return null;
         }
         return super.getBlockType();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
     }
 
     public void setBlockType(int blockId) {

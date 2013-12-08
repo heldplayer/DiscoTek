@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.specialattack.discotek.Objects;
 import net.specialattack.discotek.client.render.BlockRendererLight;
 import net.specialattack.discotek.item.ItemOrienter;
@@ -247,6 +248,24 @@ public class BlockLight extends Block {
         }
 
         return 0;
+    }
+
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+        ILight light = this.getLight(world.getBlockMetadata(x, y, z));
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+
+        if (light != null && tile != null && tile instanceof TileEntityLight) {
+            light.setBlockBounds(this, ((TileEntityLight) tile).getDirection());
+        }
+        else {
+            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        }
+    }
+
+    @Override
+    public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+        return true;
     }
 
 }
