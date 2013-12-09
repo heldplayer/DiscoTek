@@ -77,6 +77,6 @@ gui.controller.unknowninstruction=Unknown instruction at %s
 gui.controller.stackoverflow=Stack Overflow at %s
 gui.controller.stackunderflow=Stack Underflow at %s
 
-gui.controller.help.title=Controller help
-gui.controller.help.previous=Previous
-gui.controller.help.next=Next
+gui.help.title=Help Files
+gui.help.previous=Previous
+gui.help.next=Next

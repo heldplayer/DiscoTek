@@ -14,8 +14,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiControllerGrandSpA extends GuiScreen {
 
     private ControllerGrandSpa.ControllerInstance controller;
-    private boolean initialized = false;
     private int guiHeight;
+    private int guiWidth;
     private GuiInstructionsGrandSpA instructions;
 
     public GuiControllerGrandSpA(ControllerGrandSpa.ControllerInstance controller) {
@@ -26,39 +26,29 @@ public class GuiControllerGrandSpA extends GuiScreen {
     @Override
     public void initGui() {
         this.buttonList.clear();
-        if (this.initialized) {
-            this.guiHeight = 164;
 
-            if (this.instructions == null) {
-                this.instructions = new GuiInstructionsGrandSpA(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 11);
-            }
-            else {
-                this.instructions.posX = this.width / 2 - 80;
-                this.instructions.posY = (this.height - this.guiHeight) / 2 + 24;
-            }
+        this.guiHeight = 164;
+        this.guiWidth = 192;
 
-            this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, StatCollector.translateToLocal("gui.controller.done")));
-            this.buttonList.add(new GuiButton(2, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 40, 20, StatCollector.translateToLocal("gui.controller.up")));
-            this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, StatCollector.translateToLocal("gui.controller.down")));
-            this.buttonList.add(new GuiButton(4, this.width / 2 + 60, (this.height - this.guiHeight) / 2 + 2, 20, 20, "?"));
+        if (this.instructions == null) {
+            this.instructions = new GuiInstructionsGrandSpA(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 11);
         }
         else {
-            this.guiHeight = 64;
-
-            this.initialized = this.controller.instructions != null;
-
-            if (this.initialized) {
-                this.initGui();
-            }
+            this.instructions.posX = this.width / 2 - 80;
+            this.instructions.posY = (this.height - this.guiHeight) / 2 + 24;
         }
+
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, StatCollector.translateToLocal("gui.controller.done")));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 80, (this.height + this.guiHeight) / 2 - 20, 40, 20, StatCollector.translateToLocal("gui.controller.up")));
+        this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, StatCollector.translateToLocal("gui.controller.down")));
+
+        this.buttonList.add(new GuiButton(-1, (this.width + this.guiWidth) / 2 - 25, (this.height - this.guiHeight) / 2 + 5, 20, 20, "?"));
     }
 
     @Override
     protected void keyTyped(char character, int key) {
-        if (this.initialized) {
-            if (this.instructions.onKeyPressed(character, key)) {
-                return;
-            }
+        if (this.instructions.onKeyPressed(character, key)) {
+            return;
         }
 
         if (key == 1 || key == this.mc.gameSettings.keyBindInventory.keyCode) {
@@ -70,9 +60,7 @@ public class GuiControllerGrandSpA extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int button) {
         super.mouseClicked(mouseX, mouseY, button);
 
-        if (this.initialized) {
-            this.instructions.onClick(mouseX, mouseY, button);
-        }
+        this.instructions.onClick(mouseX, mouseY, button);
     }
 
     @Override
@@ -91,8 +79,9 @@ public class GuiControllerGrandSpA extends GuiScreen {
                 this.instructions.scroll++;
             }
         }
-        if (button.id == 4) {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiControllerHelp(this));
+
+        if (button.id == -1) {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiHelp(this, Assets.HELP_GRANDSPA));
         }
     }
 
@@ -100,11 +89,11 @@ public class GuiControllerGrandSpA extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
 
-        int x = (this.width - 192) / 2;
+        int x = (this.width - this.guiWidth) / 2;
         int y = (this.height - this.guiHeight) / 2;
         this.mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
-        this.drawTexturedModalRect(x, y, 0, 0, 192, this.guiHeight);
-        this.drawTexturedModalRect(x, y + this.guiHeight, 0, 248, 192, 8);
+        this.drawTexturedModalRect(x, y, 0, 0, this.guiWidth, this.guiHeight);
+        this.drawTexturedModalRect(x, y + this.guiHeight, 0, 248, this.guiWidth, 8);
 
         String title = StatCollector.translateToLocal("gui.controller.title");
         y += 6;
@@ -118,30 +107,9 @@ public class GuiControllerGrandSpA extends GuiScreen {
             this.fontRenderer.drawString(title, x, y, 0xFF4444);
         }
 
-        if (this.initialized) {
-            this.instructions.render();
-        }
-        else {
-            title = StatCollector.translateToLocal("gui.controller.loading");
-            y += 20;
-            x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
-            this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
-        }
+        this.instructions.render();
 
         super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    @Override
-    public void updateScreen() {
-        super.updateScreen();
-
-        if (!this.initialized) {
-            this.initialized = this.controller.instructions != null;
-
-            if (this.initialized) {
-                this.initGui();
-            }
-        }
     }
 
     @Override

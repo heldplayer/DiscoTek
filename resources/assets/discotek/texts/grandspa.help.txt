@@ -1,0 +1,50 @@
+Thank you for buying this device! This manual aims at teaching you how to operate the machine.
+
+The syntax used to program using this device is %9IDENTIFIER%c_%9PARAM%r. If you try to write anything that does not follow that syntax the device will not accept it!
+
+The parameter is a number that can range from 0 to 255.
+
+This device has a built-in stack that can store up to 16 entries. If more than 16 entries are put on the stack, then the device will halt with an error. If the stack is empty and something attempts to read from the stack, the machine will halt with an error as well.
+These are called stack overflow and stack underflow errors respectively.
+
+When a number is called $1 it is the last inserted number in the stack. When it is called $2 it is the second last number on the stack. This can go up to $16 due to the limitations of the stack, as that is the maximum allowed values.
+
+You can not however, use a number as a parameter. 
+
+List of identifiers:
+
+%9SLEEP_PARAM
+Sleeps for 'PARAM' ticks, there are 20 ticks in a second
+
+%9PUSH_PARAM
+Pushes the value 'PARAM' to the stack
+
+%9POP_0
+Pops a value off of the stack
+
+%9LEV_PARAM
+Sets channel $1 to 'PARAM'
+
+%9LEV2_PARAM
+Sets channel $1 to 'PARAM' and channel $3 to $2
+
+%9LEV3_PARAM
+Sets channel $1 to 'PARAM', channel $3 to $2 and channel $5 to $4
+
+%9MOT_PARAM
+Changes channel $2 to $1 over a period of 'PARAM' ticks
+
+%9MOT2_PARAM
+Changes channel $2 to $1 and channel $4 to $3 over a period of 'PARAM' ticks
+
+
+
+
+%9MOT3_PARAM
+Changes channel $2 to $1, channel $4 to $3 and channel $6 to $5 over a period of 'PARAM' ticks
+
+%9GOTO_PARAM
+Goes to the instruction specified by 'PARAM', minimum value is 1
+
+%9CLEAR_0
+Clears the stack
