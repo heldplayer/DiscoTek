@@ -6,6 +6,9 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.specialattack.discotek.Instruction;
 import net.specialattack.discotek.controllers.ControllerGrandSpa;
+import net.specialattack.discotek.packet.Packet5GrandSpAInstruction;
+import net.specialattack.discotek.packet.PacketHandler;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,7 +24,7 @@ public class GuiInstructionsGrandSpA extends Gui {
     public int rows;
     public int scroll;
     public int selected = -1;
-    public boolean editing;
+    private boolean editing;
     public String editingString;
     private ControllerGrandSpa.ControllerInstance controller;
 
@@ -109,15 +112,15 @@ public class GuiInstructionsGrandSpA extends Gui {
         this.editingString = instruction == null || instruction.identifier.equals("NOOP") ? "" : instruction.identifier + "_" + instruction.argument;
     }
 
-    public void stopEditing() {
+    public boolean stopEditing() {
         if (this.editingString.length() == 0) {
             this.controller.instructions[this.selected] = null;
             this.editing = false;
-            return;
+            return true;
         }
 
-        if (this.editingString.indexOf('_') == -1) {
-            return;
+        if (this.editingString.indexOf('_') < 1) {
+            return false;
         }
         String first = this.editingString.substring(0, this.editingString.indexOf('_')).toUpperCase();
         String last = this.editingString.substring(this.editingString.indexOf('_') + 1);
@@ -128,11 +131,11 @@ public class GuiInstructionsGrandSpA extends Gui {
             arg = Integer.parseInt(last);
         }
         catch (Exception e) {
-            return;
+            return false;
         }
 
         if (arg < 0 || arg > 255) {
-            return;
+            return false;
         }
 
         Instruction instruction = this.controller.instructions[this.selected];
@@ -144,7 +147,11 @@ public class GuiInstructionsGrandSpA extends Gui {
         instruction.identifier = first;
         instruction.argument = arg;
 
+        FMLClientHandler.instance().sendPacket(PacketHandler.instance.createPacket(new Packet5GrandSpAInstruction(controller, this.selected, instruction.identifier, instruction.argument)));
+
         this.editing = false;
+
+        return true;
     }
 
     public boolean onKeyPressed(char character, int key) {
@@ -161,14 +168,14 @@ public class GuiInstructionsGrandSpA extends Gui {
 
                 return true;
             case 28:
-                this.stopEditing();
-
-                if (this.selected < this.controller.instructions.length - 1) {
-                    this.selected++;
-                    this.beginEditing();
-                }
-                if (this.selected == this.rows + this.scroll && this.scroll < this.controller.instructions.length - this.rows) {
-                    this.scroll++;
+                if (this.stopEditing()) {
+                    if (this.selected < this.controller.instructions.length - 1) {
+                        this.selected++;
+                        this.beginEditing();
+                    }
+                    if (this.selected == this.rows + this.scroll && this.scroll < this.controller.instructions.length - this.rows) {
+                        this.scroll++;
+                    }
                 }
 
                 return true;

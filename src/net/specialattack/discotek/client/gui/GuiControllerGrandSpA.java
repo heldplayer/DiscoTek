@@ -7,6 +7,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.controllers.ControllerGrandSpa;
+
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,6 +28,7 @@ public class GuiControllerGrandSpA extends GuiScreen {
     @SuppressWarnings("unchecked")
     @Override
     public void initGui() {
+        Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
 
         this.guiHeight = 164;
@@ -43,6 +47,11 @@ public class GuiControllerGrandSpA extends GuiScreen {
         this.buttonList.add(new GuiButton(3, this.width / 2 - 30, (this.height + this.guiHeight) / 2 - 20, 40, 20, StatCollector.translateToLocal("gui.controller.down")));
 
         this.buttonList.add(new GuiButton(-1, (this.width + this.guiWidth) / 2 - 25, (this.height - this.guiHeight) / 2 + 5, 20, 20, "?"));
+    }
+
+    @Override
+    public void onGuiClosed() {
+        Keyboard.enableRepeatEvents(false);
     }
 
     @Override
