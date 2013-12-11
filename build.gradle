@@ -18,6 +18,14 @@ repositories {
         name 'Forge FS legacy'
         artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
     }
+    ivy {
+        name 'CB FS'
+        artifactPattern "http://www.chickenbones.craftsaddle.org/Files/New_Versions/1.6.4/[module]-dev%20[revision].[ext]"
+    }
+    maven {
+        name 'ForgeFS'
+        url 'http://files.minecraftforge.net/maven'
+    }
     maven {
         name 'MinecraftS3'
         url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
@@ -49,6 +57,7 @@ minecraft {
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
+    compile project(':HeldCore')
 }
 
 processResources
