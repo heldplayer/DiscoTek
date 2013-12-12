@@ -7,11 +7,12 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import me.heldplayer.util.HeldCore.client.MC;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -131,12 +132,12 @@ public class ClientProxy extends CommonProxy {
 
     @ForgeSubscribe
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        Minecraft.getMinecraft().mcProfiler.startSection("discotek");
+        MC.getMinecraft().mcProfiler.startSection("discotek");
         if (lights.isEmpty()) {
-            Minecraft.getMinecraft().mcProfiler.endSection();
+            MC.getMinecraft().mcProfiler.endSection();
             return;
         }
-        Minecraft.getMinecraft().mcProfiler.startSection("invalidation");
+        MC.getMinecraft().mcProfiler.startSection("invalidation");
         Iterator<TileEntityLight> iterator = lights.iterator();
 
         while (iterator.hasNext()) {
@@ -148,28 +149,45 @@ public class ClientProxy extends CommonProxy {
         }
 
         if (lights.isEmpty()) {
-            Minecraft.getMinecraft().mcProfiler.endSection();
-            Minecraft.getMinecraft().mcProfiler.endSection();
+            MC.getMinecraft().mcProfiler.endSection();
+            MC.getMinecraft().mcProfiler.endSection();
             return;
         }
 
-        Minecraft.getMinecraft().mcProfiler.endStartSection("sorting");
+        MC.getMinecraft().mcProfiler.endStartSection("sorting");
 
         reusableLights.addAll(lights);
 
-        Minecraft.getMinecraft().mcProfiler.endStartSection("rendering");
+        MC.getMinecraft().mcProfiler.endStartSection("culling");
 
-        TileEntityLightRenderer.lightOnly = true;
-
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        EntityClientPlayerMP player = MC.getMinecraft().thePlayer;
 
         double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) event.partialTicks;
         double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) event.partialTicks;
         double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) event.partialTicks;
 
+        Frustrum frustrum = new Frustrum();
+        frustrum.setPosition(d0, d1, d2);
+
+        iterator = reusableLights.iterator();
+
+        while (iterator.hasNext()) {
+            TileEntityLight light = iterator.next();
+
+            AxisAlignedBB aabb = light.getRenderHandler().getRenderingAABB(light, event.partialTicks).offset(d0, d1, d2);
+
+            if (!frustrum.isBoundingBoxInFrustum(aabb)) {
+                iterator.remove();
+            }
+        }
+
+        MC.getMinecraft().mcProfiler.endStartSection("rendering");
+
+        TileEntityLightRenderer.lightOnly = true;
+
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        MC.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -207,8 +225,8 @@ public class ClientProxy extends CommonProxy {
         TileEntityLightRenderer.lightOnly = false;
         reusableLights.clear();
 
-        Minecraft.getMinecraft().mcProfiler.endSection();
-        Minecraft.getMinecraft().mcProfiler.endSection();
+        MC.getMinecraft().mcProfiler.endSection();
+        MC.getMinecraft().mcProfiler.endSection();
     }
 
 }
