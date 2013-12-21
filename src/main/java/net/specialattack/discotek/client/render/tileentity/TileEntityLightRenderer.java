@@ -50,7 +50,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                 Minecraft.getMinecraft().mcProfiler.startSection(light.getIdentifier());
                 if (lightOnly) {
                     // Debug code, activate me to see render bounding boxes
-                    boolean debug = false;
+                    boolean debug = true;
                     if (debug) {
                         //GL11.glDisable(GL11.GL_DEPTH_TEST);
                         int color = tileLight.getColor(partialTicks);
