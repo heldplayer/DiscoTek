@@ -10,14 +10,14 @@ import me.heldplayer.util.HeldCore.client.MC;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.discotek.CommonProxy;
@@ -42,17 +42,10 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy {
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
     @Override
     public void init(FMLInitializationEvent event) {
@@ -71,8 +64,10 @@ public class ClientProxy extends CommonProxy {
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
 
-        MinecraftForgeClient.registerItemRenderer(Objects.itemLens.itemID, new ItemRendererLens());
-        MinecraftForgeClient.registerItemRenderer(Objects.blockLight.blockID, new ItemRendererBlockLight());
+        MinecraftForgeClient.registerItemRenderer(Objects.itemLens, new ItemRendererLens());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockLight), new ItemRendererBlockLight());
+
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -106,14 +101,14 @@ public class ClientProxy extends CommonProxy {
         lights.remove(light);
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         if (event.world.isRemote) {
             lights.clear();
         }
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onChunkUnload(ChunkEvent.Unload event) {
         if (event.world.isRemote) {
             @SuppressWarnings("unchecked")
@@ -130,7 +125,7 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         MC.getMinecraft().mcProfiler.startSection("discotek");
         if (lights.isEmpty()) {
@@ -209,7 +204,7 @@ public class ClientProxy extends CommonProxy {
             }
 
             if (d3 * d3 + d4 * d4 + d5 * d5 < 65536.0D) {
-                TileEntityRenderer.instance.renderTileEntityAt(light, d3, d4, d5, event.partialTicks);
+                TileEntityRendererDispatcher.instance.renderTileEntityAt(light, d3, d4, d5, event.partialTicks);
             }
         }
 

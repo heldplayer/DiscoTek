@@ -35,7 +35,7 @@ public class GuiVerticalSlider extends GuiSlider {
      */
     @Override
     protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
-        if (this.drawButton) {
+        if (this.visible) {
             if (this.dragging) {
                 this.sliderValue = 1.0F - (float) (mouseY - (this.yPosition + 1)) / (float) (this.height - 4);
 
@@ -84,7 +84,7 @@ public class GuiVerticalSlider extends GuiSlider {
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        if (this.drawButton) {
+        if (this.visible) {
             FontRenderer fontrenderer = minecraft.fontRenderer;
             minecraft.getTextureManager().bindTexture(Assets.SMALL_GUI);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -95,7 +95,7 @@ public class GuiVerticalSlider extends GuiSlider {
             if (!this.enabled) {
                 color = 0xFFA0A0A0;
             }
-            else if (this.field_82253_i) {
+            else if (this.field_146123_n) {
                 color = 0xFFFFFFA0;
             }
             this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2 + 1, this.yPosition + (this.height - 8) / 2, color);

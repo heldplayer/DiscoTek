@@ -37,7 +37,7 @@ public class GuiHorizontalSlider extends GuiSlider {
      */
     @Override
     protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
-        if (this.drawButton) {
+        if (this.visible) {
             if (this.dragging) {
                 this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 

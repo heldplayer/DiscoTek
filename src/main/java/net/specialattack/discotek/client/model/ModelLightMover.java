@@ -36,19 +36,17 @@ public class ModelLightMover extends ModelBase {
         this.base.setTextureOffset(46, 7);
         this.base.addBox(-2.0F, -2.0F, 3.0F, 4, 4, 1);
 
-        this.lens = new ModelRenderer(this, 0, 0);
+        this.lens = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
+        this.lens.setTextureOffset(0, 11);
         this.lens.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 1);
     }
 
     public void render() {
-
         this.base.renderWithRotation(0.0625F);
-
     }
 
     public void renderLens() {
         this.lens.renderWithRotation(0.0625F);
-
     }
 
     public void setRotations(float pitch, float yaw) {

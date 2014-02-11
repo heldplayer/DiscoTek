@@ -6,17 +6,19 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import me.heldplayer.util.HeldCore.HeldCore;
 import me.heldplayer.util.HeldCore.sync.ISyncable;
 import me.heldplayer.util.HeldCore.sync.ISyncableObjectOwner;
 import me.heldplayer.util.HeldCore.sync.SBoolean;
 import me.heldplayer.util.HeldCore.sync.SFloat;
 import me.heldplayer.util.HeldCore.sync.SInteger;
-import me.heldplayer.util.HeldCore.sync.packet.Packet4InitiateClientTracking;
-import me.heldplayer.util.HeldCore.sync.packet.PacketHandler;
+import me.heldplayer.util.HeldCore.sync.packet.Packet1TrackingStatus;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -31,12 +33,9 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import dan200.computer.api.IComputerAccess;
-import dan200.computer.api.ILuaContext;
-import dan200.computer.api.IPeripheral;
 
 @Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
-public class TileEntityLight extends TileEntity implements ISyncableObjectOwner, IPeripheral {
+public class TileEntityLight extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
 
     private SBoolean hasLens;
     private SInteger direction;
@@ -323,7 +322,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
                     level.setValue(value);
 
                     if (level.channel == Channels.STRENGTH) {
-                        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
+                        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
                     }
                 }
             }
@@ -347,16 +346,21 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
         this.prevFocus = this.focus.getValue();
         this.direction.setValue(compound.getInteger("direction"));
 
-        this.setBlockType(compound.getInteger("blockId"));
+        if (compound.hasKey("blockId")) {
+            this.setBlockType(compound.getInteger("blockId"));
+        }
+        else {
+            this.setBlockType(compound.getString("block"));
+        }
         this.blockMetadata = compound.getInteger("blockMetadata");
 
         if (this.channels == null) {
             this.setupChannels();
         }
 
-        NBTTagList levels = compound.getTagList("levels");
+        NBTTagList levels = compound.getTagList("levels", 10);
         for (int i = 0; i < levels.tagCount(); i++) {
-            NBTTagCompound level = (NBTTagCompound) levels.tagAt(i);
+            NBTTagCompound level = levels.getCompoundTagAt(i);
             int id = level.getInteger("id");
             int value = level.getInteger("value");
             int port = level.getInteger("port");
@@ -378,10 +382,10 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
         compound.setFloat("focus", this.focus.getValue());
         compound.setInteger("direction", this.direction.getValue());
 
-        compound.setInteger("blockId", this.getBlockType().blockID);
+        compound.setString("block", Block.blockRegistry.getNameForObject(this.getBlockType()));
         compound.setInteger("blockMetadata", this.getBlockMetadata());
 
-        NBTTagList levels = new NBTTagList("levels");
+        NBTTagList levels = new NBTTagList();
         for (int i = 0; i < this.channels.length; i++) {
             NBTTagCompound level = new NBTTagCompound();
             ChannelLevel channel = this.channels[i];
@@ -395,7 +399,18 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
 
     @Override
     public Packet getDescriptionPacket() {
-        return PacketHandler.instance.createPacket(new Packet4InitiateClientTracking(this));
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setBoolean("tracking", true);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager netManager, S35PacketUpdateTileEntity packet) {
+        super.onDataPacket(netManager, packet);
+
+        if (packet.func_148857_g().hasKey("tracking", 1) && packet.func_148857_g().getBoolean("tracking")) {
+            HeldCore.packetHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
+        }
     }
 
     @Override
@@ -457,7 +472,11 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
     }
 
     public void setBlockType(int blockId) {
-        this.blockType = Block.blocksList[blockId];
+        this.blockType = (Block) Block.blockRegistry.getObjectById(blockId);
+    }
+
+    public void setBlockType(String block) {
+        this.blockType = (Block) Block.blockRegistry.getObject(block);
     }
 
     public ILight getLight() {
@@ -577,6 +596,9 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
 
     // IPeripheral
 
+    // FIXME
+    // @formatter:off
+    /*
     @Override
     public String getType() {
         return "DiscoTek.Light";
@@ -715,5 +737,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner,
 
     @Override
     public void detach(IComputerAccess computer) {}
+    */
+    // @formatter:on
 
 }

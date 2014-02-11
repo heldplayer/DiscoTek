@@ -1,7 +1,8 @@
 
 package net.specialattack.discotek;
 
-import java.util.logging.Logger;
+import java.io.InputStream;
+import java.util.Properties;
 
 import me.heldplayer.util.HeldCore.ModInfo;
 import net.specialattack.discotek.block.BlockColoredLamp;
@@ -16,12 +17,34 @@ import net.specialattack.discotek.item.ItemLens;
 import net.specialattack.discotek.item.ItemOrienter;
 import net.specialattack.discotek.item.ItemWirelessLinker;
 
+import org.apache.logging.log4j.Logger;
+
 public class Objects {
+
+    public static final String MOD_VERSION;
+
+    static {
+        Properties prop = new Properties();
+
+        String version = "";
+
+        try {
+            InputStream stream = Objects.class.getClassLoader().getResourceAsStream("version.properties");
+            prop.load(stream);
+            stream.close();
+            version = prop.getProperty("version");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            version = "Error";
+        }
+        finally {
+            MOD_VERSION = version;
+        }
+    }
 
     public static final String MOD_ID = "discotek";
     public static final String MOD_NAME = "DiscoTek";
-    public static final String MOD_VERSION = "@VERSION@";
-    public static final String MOD_CHANNEL = "ModjamMod2013";
     public static final String MOD_DEPENCIES = "after:HeldCore";
 
     public static final String COMMON_PROXY = "net.specialattack.discotek.CommonProxy";

@@ -5,11 +5,12 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.client.render.BlockRendererTruss;
@@ -20,12 +21,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockTruss extends Block {
 
     @SideOnly(Side.CLIENT)
-    private Icon[] icons;
+    private IIcon[] icons;
 
     private final int renderId;
 
-    public BlockTruss(int blockId) {
-        super(blockId, Material.iron);
+    public BlockTruss() {
+        super(Material.iron);
         this.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererTruss(this.renderId));
     }
@@ -43,14 +44,14 @@ public class BlockTruss extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int meta) {
+    public IIcon getIcon(int side, int meta) {
         return this.icons[meta % this.icons.length];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register) {
-        this.icons = new Icon[3];
+    public void registerBlockIcons(IIconRegister register) {
+        this.icons = new IIcon[3];
 
         for (int i = 0; i < this.icons.length; i++) {
             this.icons[i] = register.registerIcon(Assets.DOMAIN + "truss" + i);
@@ -60,9 +61,9 @@ public class BlockTruss extends Block {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < this.icons.length; i++) {
-            list.add(new ItemStack(itemId, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 

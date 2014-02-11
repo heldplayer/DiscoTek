@@ -9,16 +9,20 @@ import me.heldplayer.util.Table;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.specialattack.discotek.ModDiscoTek;
 import net.specialattack.discotek.Objects;
 import net.specialattack.discotek.client.render.BlockRendererLight;
 import net.specialattack.discotek.item.ItemOrienter;
@@ -26,7 +30,6 @@ import net.specialattack.discotek.lights.Channels;
 import net.specialattack.discotek.lights.ILight;
 import net.specialattack.discotek.lights.ILightRenderHandler;
 import net.specialattack.discotek.packet.Packet2LightGui;
-import net.specialattack.discotek.packet.PacketHandler;
 import net.specialattack.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -38,8 +41,8 @@ public class BlockLight extends Block {
     private int temp = 0;
     private Table<Integer, ILight, ILightRenderHandler> lights;
 
-    public BlockLight(int blockId) {
-        super(blockId, Material.iron);
+    public BlockLight() {
+        super(Material.iron);
         this.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererLight(this.renderId));
         this.lights = new Table<Integer, ILight, ILightRenderHandler>();
@@ -77,7 +80,7 @@ public class BlockLight extends Block {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
 
-        TileEntityLight tile = (TileEntityLight) world.getBlockTileEntity(x, y, z);
+        TileEntityLight tile = (TileEntityLight) world.getTileEntity(x, y, z);
 
         ILight light = this.getLight(world.getBlockMetadata(x, y, z));
 
@@ -120,7 +123,7 @@ public class BlockLight extends Block {
             return false;
         }
 
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
@@ -129,7 +132,7 @@ public class BlockLight extends Block {
                 if (light.hasLens() && light.getLight().supportsLens()) {
                     if (!world.isRemote) {
                         ItemStack is = new ItemStack(Objects.itemLens);
-                        NBTTagCompound cpnd = new NBTTagCompound("tag");
+                        NBTTagCompound cpnd = new NBTTagCompound();
                         cpnd.setInteger("color", light.getColor(1.0F));
                         is.setTagCompound(cpnd);
 
@@ -142,16 +145,14 @@ public class BlockLight extends Block {
 
                         light.setColor(0xFFFFFF);
                         light.setHasLens(false);
-                        light.onInventoryChanged();
+                        light.markDirty();
                     }
                     return true;
                 }
             }
 
             if (!world.isRemote) {
-                if (player instanceof EntityPlayerMP) {
-                    ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(PacketHandler.instance.createPacket(new Packet2LightGui(light)));
-                }
+                ModDiscoTek.packetHandler.sendPacketToPlayer(new Packet2LightGui(light), player);
             }
 
             return true;
@@ -166,7 +167,7 @@ public class BlockLight extends Block {
     public void onBlockHarvested(World world, int x, int y, int z, int side, EntityPlayer player) {
         super.onBlockHarvested(world, x, y, z, side, player);
 
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile != null && tile instanceof TileEntityLight) {
             this.light = (TileEntityLight) tile;
@@ -174,14 +175,14 @@ public class BlockLight extends Block {
     }
 
     @Override
-    public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> result = new ArrayList<ItemStack>();
 
         ItemStack stack = new ItemStack(this, 1, metadata);
 
         ILight light = this.getLight(metadata);
 
-        NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound("tag");
+        NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
 
         if (this.light != null) {
             compound.setInteger("color", this.light.getColor(1.0F));
@@ -205,10 +206,10 @@ public class BlockLight extends Block {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < 16; i++) {
             if (this.lights.containsKey(Integer.valueOf(i))) {
-                list.add(new ItemStack(itemId, 1, i));
+                list.add(new ItemStack(item, 1, i));
             }
         }
     }
@@ -241,7 +242,7 @@ public class BlockLight extends Block {
     @Override
     public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
         ILight light = this.getLight(world.getBlockMetadata(x, y, z));
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (light != null && tile != null && tile instanceof TileEntityLight) {
             return light.getRedstonePower(((TileEntityLight) tile).getLevel(Channels.STRENGTH));
@@ -253,7 +254,7 @@ public class BlockLight extends Block {
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         ILight light = this.getLight(world.getBlockMetadata(x, y, z));
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (light != null && tile != null && tile instanceof TileEntityLight) {
             light.setBlockBounds(this, ((TileEntityLight) tile).getDirection());
@@ -263,9 +264,44 @@ public class BlockLight extends Block {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity) {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+
+        super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
         return true;
+    }
+
+    // FIXME
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        ItemStack stack = new ItemStack(this, 1, meta);
+
+        ILight light = this.getLight(meta);
+
+        NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
+
+        if (this.light != null) {
+            compound.setInteger("color", this.light.getColor(1.0F));
+            if (light.supportsLens()) {
+                compound.setBoolean("hasLens", this.light.hasLens());
+            }
+            this.light = null;
+        }
+        else {
+            compound.setInteger("color", 0xFFFFFF);
+            if (light != null && light.supportsLens()) {
+                compound.setBoolean("hasLens", light.supportsLens());
+            }
+        }
+
+        return super.getPickBlock(target, world, x, y, z);
     }
 
 }

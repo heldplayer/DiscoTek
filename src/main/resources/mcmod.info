@@ -3,7 +3,7 @@
 		"modid" : "discotek",
 		"name" : "DiscoTek",
 		"description" : "A mod created by Team Bleigh for ModJam 2013",
-		"version" : "@VERSION@",
+		"version" : "${version}",
 		"authors" : [
 			"heldplayer",
 			"mbl111"

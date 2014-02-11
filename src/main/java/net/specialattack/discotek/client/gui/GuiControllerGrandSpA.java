@@ -35,7 +35,7 @@ public class GuiControllerGrandSpA extends GuiScreen {
         this.guiWidth = 192;
 
         if (this.instructions == null) {
-            this.instructions = new GuiInstructionsGrandSpA(this.controller, this.fontRenderer, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 11);
+            this.instructions = new GuiInstructionsGrandSpA(this.controller, this.fontRendererObj, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 11);
         }
         else {
             this.instructions.posX = this.width / 2 - 80;
@@ -60,7 +60,7 @@ public class GuiControllerGrandSpA extends GuiScreen {
             return;
         }
 
-        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.keyCode) {
+        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
             this.mc.thePlayer.closeScreen();
         }
     }
@@ -106,14 +106,14 @@ public class GuiControllerGrandSpA extends GuiScreen {
 
         String title = StatCollector.translateToLocal("gui.controller.title");
         y += 6;
-        x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
-        this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
+        x = (this.width - this.fontRendererObj.getStringWidth(title)) / 2;
+        this.fontRendererObj.drawString(title, x, y, 0x4F4F4F);
 
         if (this.controller.error != null) {
             title = StatCollector.translateToLocalFormatted(this.controller.error, this.controller.errorIndex);
             y += 8;
-            x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
-            this.fontRenderer.drawString(title, x, y, 0xFF4444);
+            x = (this.width - this.fontRendererObj.getStringWidth(title)) / 2;
+            this.fontRendererObj.drawString(title, x, y, 0xFF4444);
         }
 
         this.instructions.render();

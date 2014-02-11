@@ -30,12 +30,13 @@ public class ModelLightParCan extends ModelBase {
         this.base.addBox(-3.0F, 3.0F, -8.0F, 6, 1, 14, 0.0F);
 
         //Back
-        this.base.setTextureOffset(40, 20);
+        this.base.setTextureOffset(0, 0);
         this.base.addBox(-3.0F, -3.0F, 6.0F, 6, 6, 1);
-        this.base.setTextureOffset(40, 27);
+        this.base.setTextureOffset(0, 7);
         this.base.addBox(-2.0F, -2.0F, 7.0F, 4, 4, 1);
 
-        this.lens = new ModelRenderer(this, 0, 0);
+        this.lens = new ModelRenderer(this, 0, 0).setTextureSize(64, 64);
+        this.lens.setTextureOffset(16, 0);
         this.lens.addBox(-3.0F, -3.0F, -8.0F, 6, 6, 1);
     }
 

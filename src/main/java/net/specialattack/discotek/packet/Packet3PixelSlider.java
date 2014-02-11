@@ -1,20 +1,18 @@
 
 package net.specialattack.discotek.packet;
 
-import java.io.DataOutputStream;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+
 import java.io.IOException;
 
 import me.heldplayer.util.HeldCore.packet.HeldCorePacket;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.discotek.controllers.ControllerPixel;
 import net.specialattack.discotek.controllers.IControllerInstance;
 import net.specialattack.discotek.tileentity.TileEntityController;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.relauncher.Side;
 
 public class Packet3PixelSlider extends HeldCorePacket {
@@ -25,12 +23,12 @@ public class Packet3PixelSlider extends HeldCorePacket {
     public int id;
     public int level;
 
-    public Packet3PixelSlider(int packetId) {
-        super(packetId, null);
+    public Packet3PixelSlider() {
+        super(null);
     }
 
     public Packet3PixelSlider(ControllerPixel.ControllerInstance controller, int id, int level) {
-        super(3, null);
+        super(controller.tile.getWorldObj());
 
         this.posX = controller.tile.xCoord;
         this.posY = controller.tile.yCoord;
@@ -46,7 +44,7 @@ public class Packet3PixelSlider extends HeldCorePacket {
     }
 
     @Override
-    public void read(ByteArrayDataInput in) throws IOException {
+    public void read(ChannelHandlerContext context, ByteBuf in) throws IOException {
         this.posX = in.readInt();
         this.posY = in.readInt();
         this.posZ = in.readInt();
@@ -56,7 +54,7 @@ public class Packet3PixelSlider extends HeldCorePacket {
     }
 
     @Override
-    public void write(DataOutputStream out) throws IOException {
+    public void write(ChannelHandlerContext context, ByteBuf out) throws IOException {
         out.writeInt(this.posX);
         out.writeInt(this.posY);
         out.writeInt(this.posZ);
@@ -66,10 +64,10 @@ public class Packet3PixelSlider extends HeldCorePacket {
     }
 
     @Override
-    public void onData(INetworkManager manager, EntityPlayer player) {
+    public void onData(ChannelHandlerContext context, EntityPlayer player) {
         World world = player.worldObj;
 
-        TileEntity tile = world.getBlockTileEntity(this.posX, this.posY, this.posZ);
+        TileEntity tile = world.getTileEntity(this.posX, this.posY, this.posZ);
 
         if (tile != null && tile instanceof TileEntityController) {
             IControllerInstance controller = ((TileEntityController) tile).getControllerInstance();
@@ -78,7 +76,7 @@ public class Packet3PixelSlider extends HeldCorePacket {
                 ((ControllerPixel.ControllerInstance) controller).doSlider(this.id, this.level);
             }
 
-            tile.onInventoryChanged();
+            tile.markDirty();
         }
     }
 

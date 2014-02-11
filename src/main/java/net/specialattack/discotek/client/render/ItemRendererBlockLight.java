@@ -2,7 +2,7 @@
 package net.specialattack.discotek.client.render;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.specialattack.discotek.client.render.tileentity.TileEntityLightRenderer;
@@ -49,10 +49,10 @@ public class ItemRendererBlockLight implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         this.renderTile.setColor(0xFFFFFF);
-        if (Block.blocksList[item.itemID] == null) {
+        if (Block.getBlockFromItem(item.getItem()) == null) {
             return;
         }
-        this.renderTile.blockType = Block.blocksList[item.itemID];
+        this.renderTile.blockType = Block.getBlockFromItem(item.getItem());
 
         if (item.stackTagCompound != null) {
             if (item.stackTagCompound.hasKey("color")) {
@@ -61,6 +61,7 @@ public class ItemRendererBlockLight implements IItemRenderer {
         }
         this.renderTile.blockMetadata = item.getItemDamage();
 
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glPushMatrix();
 
         if (type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY) {
@@ -69,9 +70,11 @@ public class ItemRendererBlockLight implements IItemRenderer {
         }
 
         TileEntityLightRenderer.renderLight = false;
-        TileEntityRenderer.instance.renderTileEntityAt(this.renderTile, 0.0D, 0.0D, 0.0D, 0.0F);
+        TileEntityRendererDispatcher.instance.renderTileEntityAt(this.renderTile, 0.0D, 0.0D, 0.0D, 0.0F);
         TileEntityLightRenderer.renderLight = true;
+        
         GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
     }
 
 }

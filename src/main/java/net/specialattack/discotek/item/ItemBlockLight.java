@@ -18,10 +18,10 @@ public class ItemBlockLight extends ItemBlock {
 
     private BlockLight block;
 
-    public ItemBlockLight(int itemId) {
-        super(itemId);
+    public ItemBlockLight(Block block) {
+        super(block);
         this.setHasSubtypes(true);
-        this.block = (BlockLight) Block.blocksList[itemId + 256];
+        this.block = (BlockLight) block;
     }
 
     @Override

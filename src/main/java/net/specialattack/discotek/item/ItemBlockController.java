@@ -11,10 +11,10 @@ public class ItemBlockController extends ItemBlock {
 
     private BlockController block;
 
-    public ItemBlockController(int itemId) {
-        super(itemId);
+    public ItemBlockController(Block block) {
+        super(block);
         this.setHasSubtypes(true);
-        this.block = (BlockController) Block.blocksList[itemId + 256];
+        this.block = (BlockController) block;
     }
 
     @Override

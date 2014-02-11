@@ -50,7 +50,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                 Minecraft.getMinecraft().mcProfiler.startSection(light.getIdentifier());
                 if (lightOnly) {
                     // Debug code, activate me to see render bounding boxes
-                    boolean debug = true;
+                    boolean debug = false;
                     if (debug) {
                         //GL11.glDisable(GL11.GL_DEPTH_TEST);
                         int color = tileLight.getColor(partialTicks);
@@ -75,7 +75,16 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                     renderer.renderLight(tileLight, partialTicks);
                 }
                 else {
+                    if (renderLight) {
+                        GL11.glDisable(GL11.GL_ALPHA_TEST);
+                        GL11.glEnable(GL11.GL_BLEND);
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    }
                     renderer.renderSolid(tileLight, partialTicks, renderLight);
+                    if (renderLight) {
+                        GL11.glDisable(GL11.GL_BLEND);
+                        GL11.glEnable(GL11.GL_ALPHA_TEST);
+                    }
                 }
                 Minecraft.getMinecraft().mcProfiler.endSection();
 

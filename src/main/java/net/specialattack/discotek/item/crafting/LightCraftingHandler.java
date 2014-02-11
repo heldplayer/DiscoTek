@@ -25,7 +25,7 @@ public class LightCraftingHandler implements ICraftingResultHandler {
         }
 
         if (result.stackTagCompound == null) {
-            result.stackTagCompound = new NBTTagCompound("tag");
+            result.stackTagCompound = new NBTTagCompound();
             result.stackTagCompound.setInteger("color", 0xFFFFFF);
         }
 

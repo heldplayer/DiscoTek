@@ -282,9 +282,9 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
     }
 
     public boolean canConnect(IBlockAccess world, int x, int y, int z, int meta, boolean strict) {
-        Block block = Block.blocksList[world.getBlockId(x, y, z)];
+        Block block = world.getBlock(x, y, z);
 
-        if (block == null || block.blockID == 0) {
+        if (block == null || block.isAir(world, x, y, z)) {
             return false;
         }
 
@@ -303,7 +303,7 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean shouldRender3DInInventory() {
+    public boolean shouldRender3DInInventory(int modelId) {
         return true;
     }
 

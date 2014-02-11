@@ -87,7 +87,7 @@ public class GuiHelp extends GuiScreen {
 
     @Override
     protected void keyTyped(char character, int key) {
-        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.keyCode) {
+        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
             this.mc.displayGuiScreen(this.parent);
         }
     }
@@ -104,14 +104,14 @@ public class GuiHelp extends GuiScreen {
 
         String title = StatCollector.translateToLocal("gui.help.title");
         y += 6;
-        x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
-        this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
+        x = (this.width - this.fontRendererObj.getStringWidth(title)) / 2;
+        this.fontRendererObj.drawString(title, x, y, 0x4F4F4F);
 
         y += 12;
         x = (this.width - 192) / 2 + 6;
 
         for (int i = this.page * 12; i < (this.page + 1) * 12 && i < this.lines.size(); i++) {
-            this.fontRenderer.drawString(this.lines.get(i), x, y, 0x4F4F4F);
+            this.fontRendererObj.drawString(this.lines.get(i), x, y, 0x4F4F4F);
             y += 10;
         }
 

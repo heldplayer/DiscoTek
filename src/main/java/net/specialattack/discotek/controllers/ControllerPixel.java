@@ -1,15 +1,14 @@
 
 package net.specialattack.discotek.controllers;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.specialattack.discotek.Assets;
+import net.specialattack.discotek.ModDiscoTek;
 import net.specialattack.discotek.client.gui.GuiControllerPixel;
 import net.specialattack.discotek.packet.Packet4PixelGui;
-import net.specialattack.discotek.packet.PacketHandler;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -17,9 +16,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ControllerPixel implements IController {
 
-    private Icon bottom;
-    private Icon top;
-    private Icon side;
+    @SideOnly(Side.CLIENT)
+    private IIcon bottom;
+    @SideOnly(Side.CLIENT)
+    private IIcon top;
+    @SideOnly(Side.CLIENT)
+    private IIcon side;
 
     @Override
     public IControllerInstance createInstance(TileEntityController tile) {
@@ -28,7 +30,7 @@ public class ControllerPixel implements IController {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register) {
+    public void registerIcons(IIconRegister register) {
         this.top = register.registerIcon(Assets.DOMAIN + "controller-top0");
         this.bottom = register.registerIcon(Assets.DOMAIN + "controller-bottom0");
         this.side = register.registerIcon(Assets.DOMAIN + "controller-side0");
@@ -36,7 +38,7 @@ public class ControllerPixel implements IController {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side) {
+    public IIcon getIcon(int side) {
         if (side == 0) {
             return this.bottom;
         }
@@ -84,9 +86,7 @@ public class ControllerPixel implements IController {
                 FMLClientHandler.instance().displayGuiScreen(player, new GuiControllerPixel(this));
             }
             else {
-                if (player instanceof EntityPlayerMP) {
-                    ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(PacketHandler.instance.createPacket(new Packet4PixelGui(this)));
-                }
+                ModDiscoTek.packetHandler.sendPacketToPlayer(new Packet4PixelGui(this), player);
             }
         }
 

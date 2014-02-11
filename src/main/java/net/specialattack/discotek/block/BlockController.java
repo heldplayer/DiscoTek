@@ -6,13 +6,14 @@ import java.util.TreeMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.specialattack.discotek.controllers.IController;
 import net.specialattack.discotek.controllers.IControllerInstance;
@@ -23,10 +24,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockController extends Block {
 
     private TreeMap<Integer, IController> controllers;
-    private Icon missingno;
+    private IIcon missingno;
 
-    public BlockController(int blockId) {
-        super(blockId, Material.iron);
+    public BlockController() {
+        super(Material.iron);
         this.controllers = new TreeMap<Integer, IController>();
     }
 
@@ -40,7 +41,7 @@ public class BlockController extends Block {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ) {
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile != null && tile instanceof TileEntityController) {
             TileEntityController controller = (TileEntityController) tile;
@@ -70,17 +71,17 @@ public class BlockController extends Block {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(int itemId, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < 16; i++) {
             if (this.controllers.containsKey(Integer.valueOf(i))) {
-                list.add(new ItemStack(itemId, 1, i));
+                list.add(new ItemStack(item, 1, i));
             }
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register) {
+    public void registerBlockIcons(IIconRegister register) {
         this.missingno = register.registerIcon("missingno");
 
         for (int i = 0; i < 16; i++) {
@@ -92,7 +93,7 @@ public class BlockController extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int meta) {
+    public IIcon getIcon(int side, int meta) {
         if (this.controllers.containsKey(Integer.valueOf(meta))) {
             return this.controllers.get(Integer.valueOf(meta)).getIcon(side);
         }

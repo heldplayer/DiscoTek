@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.specialattack.discotek.tileentity.TileEntityController;
 import net.specialattack.discotek.tileentity.TileEntityLight;
@@ -16,8 +17,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemWirelessLinker extends Item {
 
-    public ItemWirelessLinker(int itemId) {
-        super(itemId);
+    public ItemWirelessLinker() {
+        super();
         this.setFull3D();
         this.setMaxStackSize(1);
     }
@@ -43,16 +44,16 @@ public class ItemWirelessLinker extends Item {
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float posX, float posY, float posZ) {
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile != null && tile instanceof TileEntityLight) {
             if (world.isRemote) {
                 return true;
             }
 
-            player.addChatMessage("Created link to light (" + x + ", " + y + ", " + z + ")");
+            player.addChatMessage(new ChatComponentText("Created link to light (" + x + ", " + y + ", " + z + ")"));
 
-            NBTTagCompound compound = new NBTTagCompound("tag");
+            NBTTagCompound compound = new NBTTagCompound();
             compound.setInteger("x", x);
             compound.setInteger("y", y);
             compound.setInteger("z", z);
@@ -67,7 +68,7 @@ public class ItemWirelessLinker extends Item {
             }
 
             if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("x") || !stack.stackTagCompound.hasKey("y") || !stack.stackTagCompound.hasKey("z")) {
-                player.addChatMessage("No light has been selected yet");
+                player.addChatMessage(new ChatComponentText("No light has been selected yet"));
             }
             else {
                 TileEntityController controller = (TileEntityController) tile;
@@ -78,20 +79,20 @@ public class ItemWirelessLinker extends Item {
                 int ly = compound.getInteger("y");
                 int lz = compound.getInteger("z");
 
-                TileEntity lightTile = world.getBlockTileEntity(lx, ly, lz);
+                TileEntity lightTile = world.getTileEntity(lx, ly, lz);
 
                 if (lightTile != null && lightTile instanceof TileEntityLight) {
                     TileEntityLight light = (TileEntityLight) lightTile;
 
                     if (controller.link(light)) {
-                        player.addChatMessage("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller");
+                        player.addChatMessage(new ChatComponentText("Added light @ (" + lx + ", " + ly + ", " + lz + ") to the controller"));
                     }
                     else {
-                        player.addChatMessage("Link failed");
+                        player.addChatMessage(new ChatComponentText("Link failed"));
                     }
                 }
                 else {
-                    player.addChatMessage("No light at linked location");
+                    player.addChatMessage(new ChatComponentText("No light at linked location"));
                 }
 
                 stack.stackTagCompound = null;

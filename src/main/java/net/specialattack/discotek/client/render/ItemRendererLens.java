@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
@@ -51,7 +51,6 @@ public class ItemRendererLens implements IItemRenderer {
         double blue = (float) (color & 0xFF) / 255.0F;
         GL11.glColor3d(red, green, blue);
         this.renderIcon(item, item.getItem().getIcon(item, 0), type);
-        GL11.glDisable(GL11.GL_BLEND);
 
         color = item.getItem().getColorFromItemStack(item, 1);
         red = (float) ((color >> 16) & 0xFF) / 255.0F;
@@ -59,11 +58,12 @@ public class ItemRendererLens implements IItemRenderer {
         blue = (float) (color & 0xFF) / 255.0F;
         GL11.glColor3d(red, green, blue);
         this.renderIcon(item, item.getItem().getIcon(item, 1), type);
+        GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glPopMatrix();
     }
 
-    private void renderIcon(ItemStack item, Icon icon, ItemRenderType type) {
+    private void renderIcon(ItemStack item, IIcon icon, ItemRenderType type) {
         if (type == ItemRenderType.INVENTORY) {
             Tessellator tes = Tessellator.instance;
             tes.startDrawingQuads();

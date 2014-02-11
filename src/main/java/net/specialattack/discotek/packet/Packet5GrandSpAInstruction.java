@@ -1,21 +1,19 @@
 
 package net.specialattack.discotek.packet;
 
-import java.io.DataOutputStream;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+
 import java.io.IOException;
 
 import me.heldplayer.util.HeldCore.packet.HeldCorePacket;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Instruction;
 import net.specialattack.discotek.controllers.ControllerGrandSpa;
 import net.specialattack.discotek.controllers.IControllerInstance;
 import net.specialattack.discotek.tileentity.TileEntityController;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.relauncher.Side;
 
 public class Packet5GrandSpAInstruction extends HeldCorePacket {
@@ -27,12 +25,12 @@ public class Packet5GrandSpAInstruction extends HeldCorePacket {
     public String instruction;
     public int argument;
 
-    public Packet5GrandSpAInstruction(int packetId) {
-        super(packetId, null);
+    public Packet5GrandSpAInstruction() {
+        super(null);
     }
 
     public Packet5GrandSpAInstruction(ControllerGrandSpa.ControllerInstance controller, int line, String value, int argument) {
-        super(5, null);
+        super(controller.tile.getWorldObj());
 
         this.posX = controller.tile.xCoord;
         this.posY = controller.tile.yCoord;
@@ -49,20 +47,20 @@ public class Packet5GrandSpAInstruction extends HeldCorePacket {
     }
 
     @Override
-    public void read(ByteArrayDataInput in) throws IOException {
+    public void read(ChannelHandlerContext context, ByteBuf in) throws IOException {
         this.posX = in.readInt();
         this.posY = in.readInt();
         this.posZ = in.readInt();
 
         this.line = in.readInt();
         byte[] data = new byte[in.readInt()];
-        in.readFully(data);
+        in.readBytes(data);
         this.instruction = new String(data);
         this.argument = in.readInt();
     }
 
     @Override
-    public void write(DataOutputStream out) throws IOException {
+    public void write(ChannelHandlerContext context, ByteBuf out) throws IOException {
         out.writeInt(this.posX);
         out.writeInt(this.posY);
         out.writeInt(this.posZ);
@@ -70,15 +68,15 @@ public class Packet5GrandSpAInstruction extends HeldCorePacket {
         out.writeInt(this.line);
         byte[] data = this.instruction.getBytes();
         out.writeInt(data.length);
-        out.write(data);
+        out.writeBytes(data);
         out.writeInt(this.argument);
     }
 
     @Override
-    public void onData(INetworkManager manager, EntityPlayer player) {
+    public void onData(ChannelHandlerContext context, EntityPlayer player) {
         World world = player.worldObj;
 
-        TileEntity tile = world.getBlockTileEntity(this.posX, this.posY, this.posZ);
+        TileEntity tile = world.getTileEntity(this.posX, this.posY, this.posZ);
 
         if (tile != null && tile instanceof TileEntityController) {
             IControllerInstance controller = ((TileEntityController) tile).getControllerInstance();
@@ -91,7 +89,7 @@ public class Packet5GrandSpAInstruction extends HeldCorePacket {
                 grandSpA.instructions[this.line].argument = this.argument;
             }
 
-            tile.onInventoryChanged();
+            tile.markDirty();
         }
     }
 

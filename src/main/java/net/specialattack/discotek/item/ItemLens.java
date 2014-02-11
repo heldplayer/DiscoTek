@@ -4,7 +4,7 @@ package net.specialattack.discotek.item;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Objects;
@@ -24,10 +24,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemLens extends Item {
 
     @SideOnly(Side.CLIENT)
-    public Icon overlay;
+    public IIcon overlay;
 
-    public ItemLens(int itemId) {
-        super(itemId);
+    public ItemLens() {
+        super();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ItemLens extends Item {
     }
 
     @Override
-    public Icon getIcon(ItemStack stack, int pass) {
+    public IIcon getIcon(ItemStack stack, int pass) {
         if (pass == 1) {
             return this.overlay;
         }
@@ -81,7 +81,7 @@ public class ItemLens extends Item {
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         //Dont need that... Silly me :p
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
             if (light.getBlockMetadata() == 2) {
@@ -90,7 +90,7 @@ public class ItemLens extends Item {
             if (light.hasLens()) {
                 if (!world.isRemote) {
                     ItemStack is = new ItemStack(Objects.itemLens);
-                    NBTTagCompound cpnd = new NBTTagCompound("tag");
+                    NBTTagCompound cpnd = new NBTTagCompound();
                     cpnd.setInteger("color", light.getColor(1.0F));
                     is.setTagCompound(cpnd);
 
@@ -129,7 +129,7 @@ public class ItemLens extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register) {
+    public void registerIcons(IIconRegister register) {
         super.registerIcons(register);
         this.overlay = register.registerIcon(this.iconString + "_overlay");
     }
@@ -137,8 +137,8 @@ public class ItemLens extends Item {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(int itemId, CreativeTabs tab, List list) {
-        list.add(new ItemStack(itemId, 1, 0));
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0));
 
         for (float[] colorArray : RecipesLens.dyeColors) {
             int red = (int) (colorArray[0] * 255.0F);
@@ -146,8 +146,8 @@ public class ItemLens extends Item {
             int blue = (int) (colorArray[2] * 255.0F);
             int color = red << 16 | green << 8 | blue;
 
-            ItemStack stack = new ItemStack(itemId, 1, 0);
-            NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound("tag");
+            ItemStack stack = new ItemStack(item, 1, 0);
+            NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
             compound.setInteger("color", color);
 
             list.add(stack);

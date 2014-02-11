@@ -6,10 +6,9 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.specialattack.discotek.Assets;
+import net.specialattack.discotek.ModDiscoTek;
 import net.specialattack.discotek.packet.Packet1LightPort;
-import net.specialattack.discotek.packet.PacketHandler;
 import net.specialattack.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -47,7 +46,7 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
 
     @Override
     protected void keyTyped(char character, int key) {
-        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.keyCode) {
+        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
             this.mc.thePlayer.closeScreen();
         }
     }
@@ -82,7 +81,7 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
                 this.sliders[id].sliderValue = (float) this.light.channels[id].port / 255.0F;
                 this.sliders[id].updateText();
 
-                FMLClientHandler.instance().sendPacket(PacketHandler.instance.createPacket(new Packet1LightPort(this.light, id, this.light.channels[id].port)));
+                ModDiscoTek.packetHandler.sendPacketToServer(new Packet1LightPort(this.light, id, this.light.channels[id].port));
             }
         }
 
@@ -103,9 +102,9 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
 
         String title = StatCollector.translateToLocal("gui.light.title");
         y += 6;
-        x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
+        x = (this.width - this.fontRendererObj.getStringWidth(title)) / 2;
 
-        this.fontRenderer.drawString(title, x, y, 0x4F4F4F);
+        this.fontRendererObj.drawString(title, x, y, 0x4F4F4F);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -119,6 +118,6 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
     public void slideActionPerformed(GuiSlider slider) {
         int port = (int) ((float) slider.sliderValue * 255.0F);
         this.light.channels[slider.id].port = port;
-        FMLClientHandler.instance().sendPacket(PacketHandler.instance.createPacket(new Packet1LightPort(this.light, slider.id, port)));
+        ModDiscoTek.packetHandler.sendPacketToServer(new Packet1LightPort(this.light, slider.id, port));
     }
 }

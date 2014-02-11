@@ -70,14 +70,10 @@ public class LightRendererMap implements ILightRenderHandler {
                 Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
             }
 
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-
             float lensBrightness = brightness + 0.1F;
             GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
 
             this.modelLightMover.renderLens();
-
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
 
             if (disableLightmap) {
                 Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);

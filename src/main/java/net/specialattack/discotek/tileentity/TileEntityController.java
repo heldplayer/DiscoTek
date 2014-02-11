@@ -49,9 +49,14 @@ public class TileEntityController extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.lightsTag = compound.getTagList("Lights");
+        this.lightsTag = compound.getTagList("Lights", 10);
 
-        this.setBlockType(compound.getInteger("blockId"));
+        if (compound.hasKey("blockId")) {
+            this.setBlockType(compound.getInteger("blockId"));
+        }
+        else {
+            this.setBlockType(compound.getString("block"));
+        }
         this.blockMetadata = compound.getInteger("blockMetadata");
 
         if (this.controller == null) {
@@ -78,7 +83,7 @@ public class TileEntityController extends TileEntity {
         }
         compound.setTag("Lights", lightsLinked);
 
-        compound.setInteger("blockId", this.getBlockType().blockID);
+        compound.setString("block", Block.blockRegistry.getNameForObject(this.getBlockType()));
         compound.setInteger("blockMetadata", this.getBlockMetadata());
 
         if (this.controller == null) {
@@ -86,9 +91,9 @@ public class TileEntityController extends TileEntity {
         }
 
         if (this.controller != null) {
-            NBTTagCompound controller = new NBTTagCompound("controller");
+            NBTTagCompound controller = new NBTTagCompound();
             this.controller.writeToNBT(controller);
-            compound.setCompoundTag("controller", controller);
+            compound.setTag("controller", controller);
         }
     }
 
@@ -96,13 +101,13 @@ public class TileEntityController extends TileEntity {
     public void updateEntity() {
         if (this.lightsTag != null) {
             for (int i = 0; i < this.lightsTag.tagCount(); i++) {
-                NBTTagCompound tag = (NBTTagCompound) this.lightsTag.tagAt(i);
+                NBTTagCompound tag = this.lightsTag.getCompoundTagAt(i);
                 int x = tag.getInteger("x");
                 int y = tag.getInteger("y");
                 int z = tag.getInteger("z");
-                TileEntity tile = this.worldObj.getBlockTileEntity(x, y, z);
+                TileEntity tile = this.worldObj.getTileEntity(x, y, z);
                 if (tile != null && tile instanceof TileEntityLight) {
-                    this.link((TileEntityLight) this.worldObj.getBlockTileEntity(x, y, z));
+                    this.link((TileEntityLight) this.worldObj.getTileEntity(x, y, z));
                 }
             }
 
@@ -128,7 +133,11 @@ public class TileEntityController extends TileEntity {
     }
 
     public void setBlockType(int blockId) {
-        this.blockType = Block.blocksList[blockId];
+        this.blockType = (Block) Block.blockRegistry.getObjectById(blockId);
+    }
+
+    public void setBlockType(String block) {
+        this.blockType = (Block) Block.blockRegistry.getObject(block);
     }
 
     public boolean link(TileEntityLight light) {

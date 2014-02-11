@@ -1,18 +1,16 @@
 
 package net.specialattack.discotek.packet;
 
-import java.io.DataOutputStream;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+
 import java.io.IOException;
 
 import me.heldplayer.util.HeldCore.packet.HeldCorePacket;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.discotek.tileentity.TileEntityLight;
-
-import com.google.common.io.ByteArrayDataInput;
-
 import cpw.mods.fml.relauncher.Side;
 
 public class Packet1LightPort extends HeldCorePacket {
@@ -23,12 +21,12 @@ public class Packet1LightPort extends HeldCorePacket {
     public int channelId;
     public int port;
 
-    public Packet1LightPort(int packetId) {
-        super(packetId, null);
+    public Packet1LightPort() {
+        super(null);
     }
 
     public Packet1LightPort(TileEntityLight tile, int channelId, int port) {
-        super(1, null);
+        super(tile.getWorldObj());
 
         this.posX = tile.xCoord;
         this.posY = tile.yCoord;
@@ -44,7 +42,7 @@ public class Packet1LightPort extends HeldCorePacket {
     }
 
     @Override
-    public void read(ByteArrayDataInput in) throws IOException {
+    public void read(ChannelHandlerContext context, ByteBuf in) throws IOException {
         this.posX = in.readInt();
         this.posY = in.readInt();
         this.posZ = in.readInt();
@@ -54,7 +52,7 @@ public class Packet1LightPort extends HeldCorePacket {
     }
 
     @Override
-    public void write(DataOutputStream out) throws IOException {
+    public void write(ChannelHandlerContext context, ByteBuf out) throws IOException {
         out.writeInt(this.posX);
         out.writeInt(this.posY);
         out.writeInt(this.posZ);
@@ -64,17 +62,17 @@ public class Packet1LightPort extends HeldCorePacket {
     }
 
     @Override
-    public void onData(INetworkManager manager, EntityPlayer player) {
+    public void onData(ChannelHandlerContext context, EntityPlayer player) {
         World world = player.worldObj;
 
-        TileEntity tile = world.getBlockTileEntity(this.posX, this.posY, this.posZ);
+        TileEntity tile = world.getTileEntity(this.posX, this.posY, this.posZ);
 
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
 
             light.channels[this.channelId].port = this.port;
 
-            light.onInventoryChanged();
+            light.markDirty();
         }
     }
 

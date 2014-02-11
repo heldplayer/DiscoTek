@@ -4,8 +4,8 @@ package net.specialattack.discotek.item.crafting;
 import java.util.ArrayList;
 
 import net.minecraft.block.BlockColored;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +31,7 @@ public class RecipesLens implements IRecipe {
                     }
                     lens = stack;
                 }
-                else if (stack.itemID == Item.dyePowder.itemID) {
+                else if (stack.getItem() == Items.dye) {
                     dyes.add(stack);
                 }
                 else {
@@ -75,8 +75,8 @@ public class RecipesLens implements IRecipe {
                         dyeCount++;
                     }
                 }
-                else if (stack.itemID == Item.dyePowder.itemID) {
-                    float[] dyeColors = RecipesLens.dyeColors[BlockColored.getBlockFromDye(stack.getItemDamage())];
+                else if (stack.getItem() == Items.dye) {
+                    float[] dyeColors = RecipesLens.dyeColors[BlockColored.func_150032_b(stack.getItemDamage())];
                     int red = (int) (dyeColors[0] * 255.0F);
                     int green = (int) (dyeColors[1] * 255.0F);
                     int blue = (int) (dyeColors[2] * 255.0F);
@@ -108,7 +108,7 @@ public class RecipesLens implements IRecipe {
 
             NBTTagCompound compound = lens.stackTagCompound;
             if (compound == null) {
-                compound = new NBTTagCompound("tag");
+                compound = new NBTTagCompound();
                 lens.stackTagCompound = compound;
             }
             compound.setInteger("color", color);

@@ -5,10 +5,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.specialattack.discotek.Instruction;
+import net.specialattack.discotek.ModDiscoTek;
 import net.specialattack.discotek.controllers.ControllerGrandSpa;
 import net.specialattack.discotek.packet.Packet5GrandSpAInstruction;
-import net.specialattack.discotek.packet.PacketHandler;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -147,7 +146,7 @@ public class GuiInstructionsGrandSpA extends Gui {
         instruction.identifier = first;
         instruction.argument = arg;
 
-        FMLClientHandler.instance().sendPacket(PacketHandler.instance.createPacket(new Packet5GrandSpAInstruction(controller, this.selected, instruction.identifier, instruction.argument)));
+        ModDiscoTek.packetHandler.sendPacketToServer(new Packet5GrandSpAInstruction(controller, this.selected, instruction.identifier, instruction.argument));
 
         this.editing = false;
 

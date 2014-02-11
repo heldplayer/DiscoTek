@@ -6,10 +6,9 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.specialattack.discotek.Assets;
+import net.specialattack.discotek.ModDiscoTek;
 import net.specialattack.discotek.controllers.ControllerPixel;
 import net.specialattack.discotek.packet.Packet3PixelSlider;
-import net.specialattack.discotek.packet.PacketHandler;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -55,7 +54,7 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
 
     @Override
     protected void keyTyped(char character, int key) {
-        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.keyCode) {
+        if (key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
             this.mc.thePlayer.closeScreen();
         }
     }
@@ -84,19 +83,19 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
 
         String title = StatCollector.translateToLocal("gui.controller.title");
         y += 6;
-        x = (this.width - this.fontRenderer.getStringWidth(title)) / 2;
-        this.fontRenderer.drawString(title, x, y, 0x000000);
+        x = (this.width - this.fontRendererObj.getStringWidth(title)) / 2;
+        this.fontRendererObj.drawString(title, x, y, 0x000000);
 
         for (int i = 0; i < 2; i++) {
             for (int j = 1; j <= 12; j++) {
                 int xp = this.width / 2 - (6 * 18) + ((j - 1) * 18);
                 int yp = (this.height) / 2 + (i * 100) + 5;
                 String txt = (j + (i * 12)) + "";
-                this.fontRenderer.drawString(txt, xp + (16 - this.fontRenderer.getStringWidth(txt)) / 2, yp - 16, 0x000000);
+                this.fontRendererObj.drawString(txt, xp + (16 - this.fontRendererObj.getStringWidth(txt)) / 2, yp - 16, 0x000000);
             }
         }
 
-        this.fontRenderer.drawString("SpA \u00a74\u00a7l\u00a7oPixEl\u00a7r12/24", x - 60, this.guiHeight + y - 20, 0x000000);
+        this.fontRendererObj.drawString("SpA \u00a74\u00a7l\u00a7oPixEl\u00a7r12/24", x - 60, this.guiHeight + y - 20, 0x000000);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -108,7 +107,7 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
 
     @Override
     public void slideActionPerformed(GuiSlider slider) {
-        FMLClientHandler.instance().sendPacket(PacketHandler.instance.createPacket(new Packet3PixelSlider(this.controller, slider.id, (int) (slider.sliderValue * 255))));
+        ModDiscoTek.packetHandler.sendPacketToServer(new Packet3PixelSlider(this.controller, slider.id, (int) (slider.sliderValue * 255)));
     }
 
 }

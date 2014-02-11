@@ -4,13 +4,13 @@ package net.specialattack.discotek.item;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.specialattack.discotek.Assets;
 import net.specialattack.discotek.tileentity.TileEntityLight;
@@ -20,12 +20,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemOrienter extends Item {
 
     @SideOnly(Side.CLIENT)
-    private Icon[] icons;
+    private IIcon[] icons;
     @SideOnly(Side.CLIENT)
-    private Icon[] iconsCont;
+    private IIcon[] iconsCont;
 
-    public ItemOrienter(int itemId) {
-        super(itemId);
+    public ItemOrienter() {
+        super();
         this.setFull3D();
         this.setMaxStackSize(1);
         this.setHasSubtypes(true);
@@ -47,7 +47,7 @@ public class ItemOrienter extends Item {
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float posX, float posY, float posZ) {
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile instanceof TileEntityLight) {
             if (world.isRemote) {
@@ -95,9 +95,9 @@ public class ItemOrienter extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister register) {
-        this.icons = new Icon[3];
-        this.iconsCont = new Icon[3];
+    public void registerIcons(IIconRegister register) {
+        this.icons = new IIcon[3];
+        this.iconsCont = new IIcon[3];
         for (int i = 0; i < this.icons.length; i++) {
             this.icons[i] = register.registerIcon(Assets.DOMAIN + "orienter" + i);
             this.iconsCont[i] = register.registerIcon(Assets.DOMAIN + "orienter-cont" + i);
@@ -108,7 +108,7 @@ public class ItemOrienter extends Item {
     }
 
     @Override
-    public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         if (player.isSneaking()) {
             return this.iconsCont[stack.getItemDamage() % this.icons.length];
         }
@@ -118,13 +118,13 @@ public class ItemOrienter extends Item {
     }
 
     @Override
-    public Icon getIcon(ItemStack stack, int pass) {
+    public IIcon getIcon(ItemStack stack, int pass) {
         return this.icons[stack.getItemDamage() % this.icons.length];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int meta) {
+    public IIcon getIconFromDamage(int meta) {
         if (Minecraft.getMinecraft().thePlayer.isSneaking()) {
             return this.iconsCont[meta % this.icons.length];
         }
@@ -136,9 +136,9 @@ public class ItemOrienter extends Item {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(int itemId, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < this.icons.length; i++) {
-            list.add(new ItemStack(itemId, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 

@@ -5,7 +5,8 @@ import me.heldplayer.util.HeldCore.HeldCoreProxy;
 import me.heldplayer.util.HeldCore.crafting.ICraftingResultHandler;
 import me.heldplayer.util.HeldCore.crafting.ShapedHeldCoreRecipe;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.oredict.OreDictionary;
@@ -43,62 +44,62 @@ public class CommonProxy extends HeldCoreProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        Objects.blockLight = new BlockLight(ModDiscoTek.blockLightId.getValue());
-        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "DiscoTek.blockLight");
+        Objects.blockLight = new BlockLight();
+        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
-        Objects.blockTruss = new BlockTruss(ModDiscoTek.blockTrussId.getValue());
-        GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "DiscoTek.blockTruss");
+        Objects.blockTruss = new BlockTruss();
+        GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "truss");
 
-        Objects.blockDecoration = new BlockDecoration(ModDiscoTek.blockDecorationId.getValue());
-        GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "DiscoTek.blockDecoration");
+        Objects.blockDecoration = new BlockDecoration();
+        GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "decoration");
 
-        Objects.blockController = new BlockController(ModDiscoTek.blockControllerId.getValue());
-        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "DiscoTek.blockController");
+        Objects.blockController = new BlockController();
+        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "controller");
 
-        Objects.blockColoredLampOff = new BlockColoredLamp(ModDiscoTek.blockColoredLampOffId.getValue(), false);
-        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "DiscoTek.blockColoredLampOff");
+        Objects.blockColoredLampOff = new BlockColoredLamp(false);
+        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "colored_lamp_off");
 
-        Objects.blockColoredLampOn = new BlockColoredLamp(ModDiscoTek.blockColoredLampOnId.getValue(), true);
-        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "DiscoTek.blockColoredLampOn");
+        Objects.blockColoredLampOn = new BlockColoredLamp(true);
+        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "colored_lamp_on");
 
-        Objects.itemDebug = new ItemDebug(ModDiscoTek.itemDebugId.getValue());
-        GameRegistry.registerItem(Objects.itemDebug, "DiscoTek.itemDebug");
+        Objects.itemDebug = new ItemDebug();
+        GameRegistry.registerItem(Objects.itemDebug, "debug");
 
-        Objects.itemLens = new ItemLens(ModDiscoTek.itemLensId.getValue());
-        GameRegistry.registerItem(Objects.itemDebug, "DiscoTek.itemLens");
+        Objects.itemLens = new ItemLens();
+        GameRegistry.registerItem(Objects.itemLens, "lens");
 
-        Objects.itemWirelessLinker = new ItemWirelessLinker(ModDiscoTek.itemWirelessLinkerId.getValue());
-        GameRegistry.registerItem(Objects.itemWirelessLinker, "DiscoTek.itemWirelessLinker");
+        Objects.itemWirelessLinker = new ItemWirelessLinker();
+        GameRegistry.registerItem(Objects.itemWirelessLinker, "wireless_linker");
 
-        Objects.itemOrienter = new ItemOrienter(ModDiscoTek.itemOrienterId.getValue());
-        GameRegistry.registerItem(Objects.itemOrienter, "DiscoTek.itemOrienter");
+        Objects.itemOrienter = new ItemOrienter();
+        GameRegistry.registerItem(Objects.itemOrienter, "orienter");
 
-        Objects.itemCrafting = new ItemCrafting(ModDiscoTek.itemCraftingId.getValue());
-        GameRegistry.registerItem(Objects.itemCrafting, "DiscoTek.itemCrafting");
+        Objects.itemCrafting = new ItemCrafting();
+        GameRegistry.registerItem(Objects.itemCrafting, "crafting");
     }
 
     @Override
     public void init(FMLInitializationEvent event) {
         Objects.creativeTab = new CreativeTabIcon("discotek");
 
-        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss2").setUnlocalizedName("light");
+        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockTextureName(Assets.DOMAIN + "truss2").setBlockName("light");
         Objects.blockLight.setLight(0, new LightFresnel());
         Objects.blockLight.setLight(1, new LightMap(false));
         Objects.blockLight.setLight(2, new LightMap(true));
         Objects.blockLight.setLight(3, new LightDimmer());
         Objects.blockLight.setLight(4, new LightRadialLaser());
 
-        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setTextureName(Assets.DOMAIN + "truss").setUnlocalizedName("truss");
+        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockTextureName(Assets.DOMAIN + "truss").setBlockName("truss");
 
-        Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("decoration");
+        Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("decoration");
 
-        Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("controller");
+        Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("controller");
         Objects.blockController.setController(0, new ControllerPixel());
         Objects.blockController.setController(1, new ControllerGrandSpa());
 
-        Objects.blockColoredLampOff.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lamp");
+        Objects.blockColoredLampOff.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
 
-        Objects.blockColoredLampOn.setHardness(0.3F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("lamp");
+        Objects.blockColoredLampOn.setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
 
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "debug").setUnlocalizedName("debug");
 
@@ -122,25 +123,25 @@ public class CommonProxy extends HeldCoreProxy {
     public void postInit(FMLPostInitializationEvent event) {
         ItemStack hull = new ItemStack(Objects.blockDecoration, 1, 0);
         ItemStack lens = new ItemStack(Objects.itemLens, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack glass = new ItemStack(Block.glass, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack glassPane = new ItemStack(Block.thinGlass, 1, 0);
+        ItemStack glass = new ItemStack(Blocks.glass, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack glassPane = new ItemStack(Blocks.glass_pane, 1, 0);
         ItemStack bulb = new ItemStack(Objects.itemCrafting, 1, 0);
         ItemStack led = new ItemStack(Objects.itemCrafting, 1, 1);
         ItemStack servo = new ItemStack(Objects.itemCrafting, 1, 2);
-        ItemStack iron = new ItemStack(Item.ingotIron, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack redstone = new ItemStack(Item.redstone, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack quartz = new ItemStack(Item.netherQuartz, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack glassBottle = new ItemStack(Item.glassBottle, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack glowstone = new ItemStack(Item.glowstone, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack piston = new ItemStack(Block.pistonBase, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack stick = new ItemStack(Item.stick, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack brick = new ItemStack(Item.brick, 1, OreDictionary.WILDCARD_VALUE);
-        ItemStack netherBrick = new ItemStack(Item.netherrackBrick, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack iron = new ItemStack(Items.iron_ingot, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack redstone = new ItemStack(Items.redstone, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack quartz = new ItemStack(Items.quartz, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack glassBottle = new ItemStack(Items.glass_bottle, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack glowstone = new ItemStack(Items.glowstone_dust, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack piston = new ItemStack(Blocks.piston, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack stick = new ItemStack(Items.stick, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack brick = new ItemStack(Items.brick, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack netherBrick = new ItemStack(Items.netherbrick, 1, OreDictionary.WILDCARD_VALUE);
         ItemStack darkBrick = new ItemStack(Objects.itemCrafting, 1, 3);
-        ItemStack stoneBricks = new ItemStack(Block.stoneBrick, 1, 0);
-        ItemStack chiseledStoneBricks = new ItemStack(Block.stoneBrick, 1, 3);
-        ItemStack chiseledQuartz = new ItemStack(Block.blockNetherQuartz, 1, 1);
-        ItemStack redstoneLamp = new ItemStack(Block.redstoneLampIdle, 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack stoneBricks = new ItemStack(Blocks.stonebrick, 1, 0);
+        ItemStack chiseledStoneBricks = new ItemStack(Blocks.stonebrick, 1, 3);
+        ItemStack chiseledQuartz = new ItemStack(Blocks.quartz_block, 1, 1);
+        ItemStack redstoneLamp = new ItemStack(Blocks.redstone_lamp, 1, OreDictionary.WILDCARD_VALUE);
 
         // Basic Controller
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 0), "sss", "dqd", "HrH", 's', stick, 'd', "dyeBlue", 'q', quartz, 'H', hull, 'r', redstone));
