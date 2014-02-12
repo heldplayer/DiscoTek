@@ -1,13 +1,13 @@
 [
-	{
-		"modid" : "discotek",
-		"name" : "DiscoTek",
-		"description" : "A mod created by Team Bleigh for ModJam 2013",
-		"version" : "${version}",
-		"authors" : [
-			"heldplayer",
-			"mbl111"
-		],
-		"url" : "http://www.specialattack.net/"
-	}
+    {
+        "modid" : "discotek",
+        "name" : "DiscoTek",
+        "description" : "A mod created by Team Bleigh for ModJam 2013",
+        "version" : "${version}",
+        "authors" : [
+            "heldplayer",
+            "mbl111"
+        ],
+        "url" : "http://dsiwars.specialattack.net/forums/viewtopic.php?t=7"
+    }
 ]
