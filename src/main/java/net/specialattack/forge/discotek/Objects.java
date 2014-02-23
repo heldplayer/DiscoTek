@@ -47,8 +47,8 @@ public class Objects {
     public static final String MOD_NAME = "DiscoTek";
     public static final String MOD_DEPENCIES = "after:SpACore";
 
-    public static final String COMMON_PROXY = "net.specialattack.discotek.CommonProxy";
-    public static final String CLIENT_PROXY = "net.specialattack.discotek.client.ClientProxy";
+    public static final String COMMON_PROXY = "net.specialattack.forge.discotek.CommonProxy";
+    public static final String CLIENT_PROXY = "net.specialattack.forge.discotek.client.ClientProxy";
 
     public static final ModInfo MOD_INFO = new ModInfo(Objects.MOD_ID, Objects.MOD_NAME, Objects.MOD_VERSION);
 
