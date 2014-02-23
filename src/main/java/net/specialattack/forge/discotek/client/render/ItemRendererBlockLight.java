@@ -72,7 +72,7 @@ public class ItemRendererBlockLight implements IItemRenderer {
         TileEntityLightRenderer.renderLight = false;
         TileEntityRendererDispatcher.instance.renderTileEntityAt(this.renderTile, 0.0D, 0.0D, 0.0D, 0.0F);
         TileEntityLightRenderer.renderLight = true;
-        
+
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_BLEND);
     }

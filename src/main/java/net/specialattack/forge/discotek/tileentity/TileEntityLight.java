@@ -3,7 +3,8 @@ package net.specialattack.forge.discotek.tileentity;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -19,11 +20,14 @@ import net.specialattack.forge.core.SpACore;
 import net.specialattack.forge.core.sync.ISyncable;
 import net.specialattack.forge.core.sync.ISyncableObjectOwner;
 import net.specialattack.forge.core.sync.SBoolean;
+import net.specialattack.forge.core.sync.SDouble;
 import net.specialattack.forge.core.sync.SFloat;
 import net.specialattack.forge.core.sync.SInteger;
+import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.core.sync.packet.Packet1TrackingStatus;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.client.ClientProxy;
+import net.specialattack.forge.discotek.lights.ChannelSyncablePair;
 import net.specialattack.forge.discotek.lights.Channels;
 import net.specialattack.forge.discotek.lights.ILight;
 import net.specialattack.forge.discotek.lights.ILightRenderHandler;
@@ -37,39 +41,40 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
 public class TileEntityLight extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
 
-    private SBoolean hasLens;
-    private SInteger direction;
+    //    private SBoolean hasLens;
+    //    private SInteger direction;
+    //
+    //    private SFloat pitch;
+    //    private SFloat yaw;
+    //    private SFloat brightness;
+    //    private SFloat focus;
+    //    private SInteger red;
+    //    private SInteger green;
+    //    private SInteger blue;
+    //    private float prevPitch = 0.0F;
+    //    private float prevYaw = 0.0F;
+    //    private float prevBrightness = 1.0F;
+    //    private float prevFocus = 1.0F;
+    //    private int prevRed = 0xFF;
+    //    private int prevGreen = 0xFF;
+    //    private int prevBlue = 0xFF;
 
-    private SFloat pitch;
-    private SFloat yaw;
-    private SFloat brightness;
-    private SFloat focus;
-    private SInteger red;
-    private SInteger green;
-    private SInteger blue;
-    private float prevPitch = 0.0F;
-    private float prevYaw = 0.0F;
-    private float prevBrightness = 1.0F;
-    private float prevFocus = 1.0F;
-    private int prevRed = 0xFF;
-    private int prevGreen = 0xFF;
-    private int prevBlue = 0xFF;
-
+    private List<ChannelSyncablePair> syncablePairs;
     private List<ISyncable> syncables;
 
-    public ChannelLevel[] channels;
+    public List<ChannelLevel> channels;
 
     public TileEntityLight() {
-        this.hasLens = new SBoolean(this, true);
-        this.pitch = new SFloat(this, 0.0F);
-        this.yaw = new SFloat(this, 0.0F);
-        this.brightness = new SFloat(this, 1.0F);
-        this.focus = new SFloat(this, 1.0F);
-        this.direction = new SInteger(this, 0);
-        this.red = new SInteger(this, 0xFF);
-        this.green = new SInteger(this, 0xFF);
-        this.blue = new SInteger(this, 0xFF);
-        this.syncables = Arrays.asList((ISyncable) this.hasLens, this.pitch, this.yaw, this.brightness, this.focus, this.direction, this.red, this.green, this.blue);
+        //        this.hasLens = new SBoolean(this, true);
+        //        this.pitch = new SFloat(this, 0.0F);
+        //        this.yaw = new SFloat(this, 0.0F);
+        //        this.brightness = new SFloat(this, 1.0F);
+        //        this.focus = new SFloat(this, 1.0F);
+        //        this.direction = new SInteger(this, 0);
+        //        this.red = new SInteger(this, 0xFF);
+        //        this.green = new SInteger(this, 0xFF);
+        //        this.blue = new SInteger(this, 0xFF);
+        //        this.syncables = Arrays.asList((ISyncable) this.hasLens, this.pitch, this.yaw, this.brightness, this.focus, this.direction, this.red, this.green, this.blue);
     }
 
     public TileEntityLight(Block blockType, int meta, boolean setupChannels) {
@@ -82,47 +87,34 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     }
 
     public void setupChannels() {
-        List<Channels> channels = this.getChannels();
-        if (channels == null) {
+        this.syncablePairs = this.createSyncablePairs();
+        if (this.syncablePairs == null) {
             return;
         }
-        this.channels = new ChannelLevel[channels.size()];
-        for (int i = 0; i < this.channels.length; i++) {
-            Channels channel = channels.get(i);
-            this.channels[i] = new ChannelLevel(channel, null);
-            switch (channel.id) {
-            case 0:
-            case 7:
-                this.channels[i].syncable = this.brightness;
-            break;
-            case 1:
-                this.channels[i].syncable = this.pitch;
-                this.channels[i].min = -0.8F;
-                this.channels[i].max = 0.8F;
-            break;
-            case 2:
-                this.channels[i].syncable = this.yaw;
-                this.channels[i].max = (float) Math.PI * 4.0F;
-            break;
-            case 3:
-                this.channels[i].syncable = this.focus;
-                this.channels[i].max = 20.0F;
-            break;
-            case 4:
-                this.channels[i].syncable = this.red;
-            break;
-            case 5:
-                this.channels[i].syncable = this.green;
-            break;
-            case 6:
-                this.channels[i].syncable = this.blue;
-            break;
+        ArrayList<ISyncable> syncables = new ArrayList<ISyncable>();
+        this.channels = new ArrayList<TileEntityLight.ChannelLevel>();
+        for (ChannelSyncablePair pair : this.syncablePairs) {
+            if (pair.channel != null) {
+                this.channels.add(new ChannelLevel(pair.channel, pair.syncable));
+            }
+            syncables.add(pair.syncable);
+            if (pair.syncable instanceof SInteger) {
+                pair.prevValue = ((SInteger) pair.syncable).getValue();
+            }
+            else if (pair.syncable instanceof SBoolean) {
+                pair.prevValue = ((SBoolean) pair.syncable).getValue();
+            }
+            else if (pair.syncable instanceof SFloat) {
+                pair.prevValue = ((SFloat) pair.syncable).getValue();
+            }
+            else if (pair.syncable instanceof SDouble) {
+                pair.prevValue = ((SDouble) pair.syncable).getValue();
+            }
+            else if (pair.syncable instanceof SString) {
+                pair.prevValue = ((SString) pair.syncable).getValue();
             }
         }
-    }
-
-    public void setDirection(int side) {
-        this.direction.setValue(side);
+        this.syncables = Collections.unmodifiableList(syncables);
     }
 
     @Override
@@ -143,100 +135,157 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         }
     }
 
+    public ChannelSyncablePair getSyncablePair(String identifier) {
+        if (this.syncablePairs == null) {
+            return null;
+        }
+        for (ChannelSyncablePair pair : this.syncablePairs) {
+            if (pair.name.equals(identifier)) {
+                return pair;
+            }
+        }
+        return null;
+    }
+
     public int getDirection() {
-        return this.direction.getValue();
+        ChannelSyncablePair pair = this.getSyncablePair("direction");
+        return pair != null ? ((SInteger) pair.syncable).getValue() : 0;
+    }
+
+    public void setDirection(int side) {
+        ChannelSyncablePair pair = this.getSyncablePair("direction");
+        if (pair != null)
+            pair.syncable.setValue(side);
     }
 
     public int getColor(float partialTicks) {
-        int red = (int) (this.prevRed + (this.red.getValue() - this.prevRed) * partialTicks);
-        int green = (int) (this.prevGreen + (this.green.getValue() - this.prevGreen) * partialTicks);
-        int blue = (int) (this.prevBlue + (this.blue.getValue() - this.prevBlue) * partialTicks);
-        return red << 16 | green << 8 | blue;
+        ChannelSyncablePair red = this.getSyncablePair("red");
+        ChannelSyncablePair green = this.getSyncablePair("green");
+        ChannelSyncablePair blue = this.getSyncablePair("blue");
+        if (red == null || green == null || blue == null)
+            return 0;
+
+        int iRed = (int) (((Integer) red.prevValue) + (((SInteger) red.syncable).getValue() - ((Integer) red.prevValue)) * partialTicks);
+        int iGreen = (int) (((Integer) green.prevValue) + (((SInteger) green.syncable).getValue() - ((Integer) green.prevValue)) * partialTicks);
+        int iBlue = (int) (((Integer) blue.prevValue) + (((SInteger) blue.syncable).getValue() - ((Integer) blue.prevValue)) * partialTicks);
+
+        return iRed << 16 | iGreen << 8 | iBlue;
     }
 
     public void setColor(int color) {
-        int red = (color & 0xFF0000) >> 16;
-        int green = (color & 0xFF00) >> 8;
-        int blue = (color & 0xFF);
-        this.prevRed = red;
-        this.prevGreen = green;
-        this.prevBlue = blue;
-        this.red.setValue(red);
-        this.green.setValue(green);
-        this.blue.setValue(blue);
+        ChannelSyncablePair red = this.getSyncablePair("red");
+        ChannelSyncablePair green = this.getSyncablePair("green");
+        ChannelSyncablePair blue = this.getSyncablePair("blue");
+
+        if (red == null || green == null || blue == null)
+            return;
+
+        int iRed = (color & 0xFF0000) >> 16;
+        int iGreen = (color & 0xFF00) >> 8;
+        int iBlue = (color & 0xFF);
+
+        red.prevValue = iRed;
+        red.syncable.setValue(iRed);
+
+        green.prevValue = iGreen;
+        green.syncable.setValue(iGreen);
+
+        blue.prevValue = iBlue;
+        blue.syncable.setValue(iBlue);
     }
 
     public boolean hasLens() {
-        return this.hasLens.getValue();
+        ChannelSyncablePair pair = this.getSyncablePair("hasLens");
+        return pair != null && ((SBoolean) pair.syncable).getValue();
     }
 
     public void setHasLens(boolean hasLens) {
-        this.hasLens.setValue(hasLens);
+        ChannelSyncablePair pair = this.getSyncablePair("direction");
+        if (pair != null)
+            pair.syncable.setValue(hasLens);
     }
 
     public float getPitch(float partialTicks) {
-        return this.prevPitch + (this.pitch.getValue() - this.prevPitch) * partialTicks;
+        ChannelSyncablePair pair = this.getSyncablePair("tilt");
+        return pair != null ? (((Float) pair.prevValue) + (((SFloat) pair.syncable).getValue() - ((Float) pair.prevValue)) * partialTicks) : 0.0F;
     }
 
     public void setPitch(float pitch) {
+        ChannelSyncablePair pair = this.getSyncablePair("tilt");
+        if (pair == null)
+            return;
+
         if (pitch > 0.8F) {
-            this.prevPitch = 0.8F;
-            this.pitch.setValue(0.8F);
+            pair.prevValue = 0.8F;
+            pair.syncable.setValue(0.8F);
         }
         else if (pitch < -0.8F) {
-            this.prevPitch = -0.8F;
-            this.pitch.setValue(-0.8F);
+            pair.prevValue = -0.8F;
+            pair.syncable.setValue(-0.8F);
         }
         else {
-            this.prevPitch = pitch;
-            this.pitch.setValue(pitch);
+            pair.prevValue = pitch;
+            pair.syncable.setValue(pitch);
         }
     }
 
     public float getYaw(float partialTicks) {
-        return this.prevYaw + (this.yaw.getValue() - this.prevYaw) * partialTicks;
+        ChannelSyncablePair pair = this.getSyncablePair("pan");
+        return pair != null ? (((Float) pair.prevValue) + (((SFloat) pair.syncable).getValue() - ((Float) pair.prevValue)) * partialTicks) : 0.0F;
     }
 
     public void setYaw(float yaw) {
-        this.prevYaw = yaw;
-        this.yaw.setValue(yaw);
+        ChannelSyncablePair pair = this.getSyncablePair("pan");
+        if (pair == null)
+            return;
+
+        pair.prevValue = yaw;
+        pair.syncable.setValue(yaw);
     }
 
     public float getBrightness(float partialTicks) {
-        return this.prevBrightness + (this.brightness.getValue() - this.prevBrightness) * partialTicks;
+        ChannelSyncablePair pair = this.getSyncablePair("brightness");
+        return pair != null ? (((Float) pair.prevValue) + (((SFloat) pair.syncable).getValue() - ((Float) pair.prevValue)) * partialTicks) : 0.0F;
     }
 
     public void setBrightness(float brightness) {
+        ChannelSyncablePair pair = this.getSyncablePair("brightness");
+        if (pair == null)
+            return;
         if (brightness > 1.0F) {
-            this.prevBrightness = 1.0F;
-            this.brightness.setValue(1.0F);
+            pair.prevValue = 1.0F;
+            pair.syncable.setValue(1.0F);
         }
         else if (brightness < 0.0F) {
-            this.prevBrightness = 0.0F;
-            this.brightness.setValue(0.0F);
+            pair.prevValue = 0.0F;
+            pair.syncable.setValue(0.0F);
         }
         else {
-            this.prevBrightness = brightness;
-            this.brightness.setValue(brightness);
+            pair.prevValue = brightness;
+            pair.syncable.setValue(brightness);
         }
     }
 
     public float getFocus(float partialTicks) {
-        return this.prevFocus + (this.focus.getValue() - this.prevFocus) * partialTicks;
+        ChannelSyncablePair pair = this.getSyncablePair("focus");
+        return pair != null ? (((Float) pair.prevValue) + (((SFloat) pair.syncable).getValue() - ((Float) pair.prevValue)) * partialTicks) : 0.0F;
     }
 
     public void setFocus(float focus) {
+        ChannelSyncablePair pair = this.getSyncablePair("focus");
+        if (pair == null)
+            return;
         if (focus > 20.0F) {
-            this.prevFocus = 20.0F;
-            this.focus.setValue(20.0F);
+            pair.prevValue = 20.0F;
+            pair.syncable.setValue(20.0F);
         }
         else if (focus < 0.0F) {
-            this.prevFocus = 0.0F;
-            this.focus.setValue(0.0F);
+            pair.prevValue = 0.0F;
+            pair.syncable.setValue(0.0F);
         }
         else {
-            this.prevFocus = focus;
-            this.focus.setValue(focus);
+            pair.prevValue = focus;
+            pair.syncable.setValue(focus);
         }
     }
 
@@ -332,19 +381,31 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.red.setValue(compound.getInteger("red"));
-        this.green.setValue(compound.getInteger("green"));
-        this.blue.setValue(compound.getInteger("blue"));
-        this.hasLens.setValue(compound.getBoolean("hasLens"));
-        this.pitch.setValue(compound.getFloat("pitch"));
-        this.prevPitch = this.pitch.getValue();
-        this.yaw.setValue(compound.getFloat("yaw"));
-        this.prevYaw = this.yaw.getValue();
-        this.brightness.setValue(compound.getFloat("brightness"));
-        this.prevBrightness = this.brightness.getValue();
-        this.focus.setValue(compound.getFloat("focus"));
-        this.prevFocus = this.focus.getValue();
-        this.direction.setValue(compound.getInteger("direction"));
+        NBTTagList syncables = compound.getTagList("syncables", 10);
+        for (int i = 0; i < syncables.tagCount(); i++) {
+            NBTTagCompound pairCompound = syncables.getCompoundTagAt(i);
+            ChannelSyncablePair pair = this.getSyncablePair(pairCompound.getString("name"));
+            if (pair.syncable instanceof SInteger) {
+                pair.syncable.setValue(pairCompound.getInteger("value"));
+                pair.prevValue = pairCompound.getInteger("value");
+            }
+            else if (pair.syncable instanceof SBoolean) {
+                pair.syncable.setValue(pairCompound.getBoolean("value"));
+                pair.prevValue = pairCompound.getBoolean("value");
+            }
+            else if (pair.syncable instanceof SFloat) {
+                pair.syncable.setValue(pairCompound.getFloat("value"));
+                pair.prevValue = pairCompound.getFloat("value");
+            }
+            else if (pair.syncable instanceof SDouble) {
+                pair.syncable.setValue(pairCompound.getDouble("value"));
+                pair.prevValue = pairCompound.getDouble("value");
+            }
+            else if (pair.syncable instanceof SString) {
+                pair.syncable.setValue(pairCompound.getString("value"));
+                pair.prevValue = pairCompound.getString("value");
+            }
+        }
 
         if (compound.hasKey("blockId")) {
             this.setBlockType(compound.getInteger("blockId"));
@@ -372,23 +433,35 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("red", this.red.getValue());
-        compound.setInteger("green", this.green.getValue());
-        compound.setInteger("blue", this.blue.getValue());
-        compound.setBoolean("hasLens", this.hasLens.getValue());
-        compound.setFloat("pitch", this.pitch.getValue());
-        compound.setFloat("yaw", this.yaw.getValue());
-        compound.setFloat("brightness", this.brightness.getValue());
-        compound.setFloat("focus", this.focus.getValue());
-        compound.setInteger("direction", this.direction.getValue());
+        NBTTagList syncables = new NBTTagList();
+        for (ChannelSyncablePair pair : this.syncablePairs) {
+            NBTTagCompound pairCompound = new NBTTagCompound();
+            pairCompound.setString("name", pair.name);
+            if (pair.syncable instanceof SInteger) {
+                pairCompound.setInteger("value", ((SInteger) pair.syncable).getValue());
+            }
+            else if (pair.syncable instanceof SBoolean) {
+                pairCompound.setBoolean("value", ((SBoolean) pair.syncable).getValue());
+            }
+            else if (pair.syncable instanceof SFloat) {
+                pairCompound.setFloat("value", ((SFloat) pair.syncable).getValue());
+            }
+            else if (pair.syncable instanceof SDouble) {
+                pairCompound.setDouble("value", ((SDouble) pair.syncable).getValue());
+            }
+            else if (pair.syncable instanceof SString) {
+                pairCompound.setString("value", ((SString) pair.syncable).getValue());
+            }
+        }
+        compound.setTag("syncables", syncables);
 
         compound.setString("block", Block.blockRegistry.getNameForObject(this.getBlockType()));
         compound.setInteger("blockMetadata", this.getBlockMetadata());
 
         NBTTagList levels = new NBTTagList();
-        for (int i = 0; i < this.channels.length; i++) {
+        for (int i = 0; i < this.channels.size(); i++) {
             NBTTagCompound level = new NBTTagCompound();
-            ChannelLevel channel = this.channels[i];
+            ChannelLevel channel = this.channels.get(i);
             level.setInteger("id", channel.channel.id);
             level.setInteger("value", channel.getValue());
             level.setInteger("port", channel.port);
@@ -401,7 +474,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     public Packet getDescriptionPacket() {
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("tracking", true);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, compound);
     }
 
     @Override
@@ -415,39 +488,63 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     @Override
     public void updateEntity() {
-        this.prevPitch = this.pitch.getValue();
-        this.prevYaw = this.yaw.getValue();
-        this.prevBrightness = this.brightness.getValue();
-        this.prevFocus = this.focus.getValue();
-        this.prevRed = this.red.getValue();
-        this.prevGreen = this.green.getValue();
-        this.prevBlue = this.blue.getValue();
-
-        if (this.pitch.getValue() > 0.8F) {
-            this.prevPitch = 0.8F;
-            this.pitch.setValue(0.8F);
-        }
-        else if (this.pitch.getValue() < -0.8F) {
-            this.prevPitch = -0.8F;
-            this.pitch.setValue(-0.8F);
+        ChannelSyncablePair pair = this.getSyncablePair("tilt");
+        if (pair != null) {
+            pair.prevValue = ((SFloat) pair.syncable).getValue();
         }
 
-        if (this.brightness.getValue() > 1.0F) {
-            this.prevBrightness = 1.0F;
-            this.brightness.setValue(1.0F);
-        }
-        else if (this.brightness.getValue() < 0.0F) {
-            this.prevBrightness = 0.0F;
-            this.brightness.setValue(0.0F);
+        pair = this.getSyncablePair("pan");
+        if (pair != null) {
+            pair.prevValue = ((SFloat) pair.syncable).getValue();
+            if (((SFloat) pair.syncable).getValue() > 0.8F) {
+                pair.prevValue = 0.8F;
+                ((SFloat) pair.syncable).setValue(0.8F);
+            }
+            else if (((SFloat) pair.syncable).getValue() < -0.8F) {
+                pair.prevValue = -0.8F;
+                ((SFloat) pair.syncable).setValue(-0.8F);
+            }
         }
 
-        if (this.focus.getValue() > 20.0F) {
-            this.prevFocus = 20.0F;
-            this.focus.setValue(20.0F);
+        pair = this.getSyncablePair("brightness");
+        if (pair != null) {
+            pair.prevValue = ((SFloat) pair.syncable).getValue();
+            if (((SFloat) pair.syncable).getValue() > 1.0F) {
+                pair.prevValue = 1.0F;
+                ((SFloat) pair.syncable).setValue(1.0F);
+            }
+            else if (((SFloat) pair.syncable).getValue() < 0.0F) {
+                pair.prevValue = 0.0F;
+                ((SFloat) pair.syncable).setValue(0.0F);
+            }
         }
-        else if (this.focus.getValue() < 0.0F) {
-            this.prevFocus = 0.0F;
-            this.focus.setValue(0.0F);
+
+        pair = this.getSyncablePair("focus");
+        if (pair != null) {
+            pair.prevValue = ((SFloat) pair.syncable).getValue();
+            if (((SFloat) pair.syncable).getValue() > 20.0F) {
+                pair.prevValue = 20.0F;
+                ((SFloat) pair.syncable).setValue(20.0F);
+            }
+            else if (((SFloat) pair.syncable).getValue() < 0.0F) {
+                pair.prevValue = 0.0F;
+                ((SFloat) pair.syncable).setValue(0.0F);
+            }
+        }
+
+        pair = this.getSyncablePair("red");
+        if (pair != null) {
+            pair.prevValue = ((SInteger) pair.syncable).getValue();
+        }
+
+        pair = this.getSyncablePair("green");
+        if (pair != null) {
+            pair.prevValue = ((SInteger) pair.syncable).getValue();
+        }
+
+        pair = this.getSyncablePair("blue");
+        if (pair != null) {
+            pair.prevValue = ((SInteger) pair.syncable).getValue();
         }
 
         if (!this.worldObj.isRemote) {
@@ -468,7 +565,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
     }
 
     public void setBlockType(int blockId) {
@@ -500,6 +597,11 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         return light == null ? null : light.getChannels();
     }
 
+    public List<ChannelSyncablePair> createSyncablePairs() {
+        ILight light = this.getLight();
+        return light == null ? null : light.createSyncables(this);
+    }
+
     // ISyncableObjectOwner
 
     @Override
@@ -514,6 +616,9 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     @Override
     public void readSetup(ByteArrayDataInput in) throws IOException {
+        if (this.syncables == null) {
+            this.setupChannels();
+        }
         for (int i = 0; i < this.syncables.size(); i++) {
             ISyncable syncable = this.syncables.get(i);
             syncable.setId(in.readInt());
@@ -581,7 +686,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         public void setValue(int value) {
             this.value = value;
             if (this.syncable instanceof SFloat) {
-                float result = (float) value * (this.max - this.min) / 255.0F + this.min;
+                float result = value * (this.max - this.min) / 255.0F + this.min;
                 ((SFloat) this.syncable).setValue(result);
                 return;
             }

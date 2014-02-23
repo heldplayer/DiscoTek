@@ -257,7 +257,7 @@ public class BlockLight extends Block {
         TileEntity tile = world.getTileEntity(x, y, z);
 
         if (light != null && tile != null && tile instanceof TileEntityLight) {
-            light.setBlockBounds(this, ((TileEntityLight) tile).getDirection());
+            light.setBlockBounds(this, (TileEntityLight) tile);
         }
         else {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

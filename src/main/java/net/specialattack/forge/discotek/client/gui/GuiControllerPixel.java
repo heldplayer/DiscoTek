@@ -2,6 +2,7 @@
 package net.specialattack.forge.discotek.client.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
@@ -40,7 +41,7 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < chans; j++) {
-                float val = ((float) this.controller.levels[j + (i * chans)] / 255.0F);
+                float val = (this.controller.levels[j + (i * chans)] / 255.0F);
 
                 int x = this.width / 2 - ((chans / 2) * 18) + (j * 18);
                 int yp = (this.height) / 2 - 95 + (i * 100);
@@ -79,7 +80,7 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
         int y = (this.height - this.guiHeight) / 2;
         this.mc.getTextureManager().bindTexture(Assets.SMALL_GUI);
 
-        drawRect(x, y, x + this.guiWidth, y + this.guiHeight, 0xFF8888CC);
+        Gui.drawRect(x, y, x + this.guiWidth, y + this.guiHeight, 0xFF8888CC);
 
         String title = StatCollector.translateToLocal("gui.controller.title");
         y += 6;

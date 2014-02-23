@@ -1,9 +1,9 @@
 
 package net.specialattack.forge.discotek;
 
+import net.specialattack.forge.core.ModInfo;
 import net.specialattack.forge.core.SpACoreMod;
 import net.specialattack.forge.core.SpACoreProxy;
-import net.specialattack.forge.core.ModInfo;
 import net.specialattack.forge.core.config.Config;
 import net.specialattack.forge.core.packet.PacketHandler;
 import net.specialattack.forge.discotek.packet.Packet1LightPort;
@@ -100,7 +100,7 @@ public class ModDiscoTek extends SpACoreMod {
 
     @Override
     public SpACoreProxy getProxy() {
-        return proxy;
+        return ModDiscoTek.proxy;
     }
 
 }

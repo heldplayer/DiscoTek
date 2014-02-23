@@ -7,30 +7,21 @@ import java.util.Collections;
 import java.util.List;
 
 import net.specialattack.forge.core.sync.ISyncableObjectOwner;
-import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SInteger;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
-public class LightMap implements ILight {
+public class LightHologram implements ILight {
 
     private final List<Channels> channels;
 
-    private boolean isLED;
-
-    public LightMap(boolean isLED) {
-        if (isLED) {
-            this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
-        }
-        else {
-            this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS);
-        }
-        this.isLED = isLED;
+    public LightHologram() {
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.RED, Channels.GREEN, Channels.BLUE);
     }
 
     @Override
     public boolean supportsLens() {
-        return !this.isLED;
+        return false;
     }
 
     @Override
@@ -38,9 +29,6 @@ public class LightMap implements ILight {
         ArrayList<ChannelSyncablePair> result = new ArrayList<ChannelSyncablePair>();
         for (Channels channel : this.channels) {
             result.add(new ChannelSyncablePair(channel.identifier, channel, channel.createSyncable(owner)));
-        }
-        if (!this.isLED) {
-            result.add(new ChannelSyncablePair("hasLens", null, new SBoolean(owner)));
         }
         result.add(new ChannelSyncablePair("direction", null, new SInteger(owner)));
         return Collections.unmodifiableList(result);
@@ -58,29 +46,29 @@ public class LightMap implements ILight {
 
     @Override
     public String getIdentifier() {
-        return this.isLED ? "mapLED" : "map";
+        return "hologram";
     }
 
     @Override
     public void setBlockBounds(BlockLight block, TileEntityLight tile) {
         switch (tile.getDirection()) {
         case 0:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
+            block.setBlockBounds(0.125F, 0.5625F, 0.125F, 0.875F, 1.0F, 0.875F);
         break;
         case 1:
-            block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
+            block.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.4375F, 0.875F);
         break;
         case 2:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 1.0F);
+            block.setBlockBounds(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1.0F);
         break;
         case 3:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0F, 0.9375F, 0.9375F, 0.9375F);
+            block.setBlockBounds(0.125F, 0.125F, 0.0F, 0.875F, 0.875F, 0.4375F);
         break;
         case 4:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 1.0F, 0.9375F, 0.9375F);
+            block.setBlockBounds(0.5625F, 0.125F, 0.125F, 1.0F, 0.875F, 0.875F);
         break;
         case 5:
-            block.setBlockBounds(0.0F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
+            block.setBlockBounds(0.0F, 0.125F, 0.125F, 0.4375F, 0.875F, 0.875F);
         break;
         }
     }

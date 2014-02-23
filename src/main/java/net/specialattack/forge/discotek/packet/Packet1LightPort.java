@@ -70,7 +70,7 @@ public class Packet1LightPort extends SpACorePacket {
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
 
-            light.channels[this.channelId].port = this.port;
+            light.channels.get(this.channelId).port = this.port;
 
             light.markDirty();
         }

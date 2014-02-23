@@ -33,12 +33,12 @@ public class Packet2LightGui extends SpACorePacket {
         this.posY = tile.yCoord;
         this.posZ = tile.zCoord;
 
-        this.channels = new int[tile.channels.length];
-        this.ports = new int[tile.channels.length];
+        this.channels = new int[tile.channels.size()];
+        this.ports = new int[tile.channels.size()];
 
-        for (int i = 0; i < tile.channels.length; i++) {
-            this.channels[i] = tile.channels[i].channel.id;
-            this.ports[i] = tile.channels[i].port;
+        for (int i = 0; i < tile.channels.size(); i++) {
+            this.channels[i] = tile.channels.get(i).channel.id;
+            this.ports[i] = tile.channels.get(i).port;
         }
     }
 

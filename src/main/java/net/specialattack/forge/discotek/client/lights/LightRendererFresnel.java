@@ -30,9 +30,9 @@ public class LightRendererFresnel implements ILightRenderHandler {
         float yaw = light.getYaw(partialTicks);
 
         int color = light.getColor(partialTicks);
-        float red = (float) ((color >> 16) & 0xFF) / 255.0F;
-        float green = (float) ((color >> 8) & 0xFF) / 255.0F;
-        float blue = (float) (color & 0xFF) / 255.0F;
+        float red = ((color >> 16) & 0xFF) / 255.0F;
+        float green = ((color >> 8) & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
         float brightness = light.getBrightness(partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("model");
@@ -71,9 +71,9 @@ public class LightRendererFresnel implements ILightRenderHandler {
 
         int color = light.getColor(partialTicks);
         float brightness = light.getBrightness(partialTicks);
-        float red = (float) ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float green = (float) ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float blue = (float) (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float red = ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float green = ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float blue = (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
         float alpha = (0.5F * brightness) + 0.1F;
 
         float lightLength = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);

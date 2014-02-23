@@ -46,16 +46,16 @@ public class ItemRendererLens implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         int color = item.getItem().getColorFromItemStack(item, 0);
-        double red = (float) ((color >> 16) & 0xFF) / 255.0F;
-        double green = (float) ((color >> 8) & 0xFF) / 255.0F;
-        double blue = (float) (color & 0xFF) / 255.0F;
+        double red = ((color >> 16) & 0xFF) / 255.0F;
+        double green = ((color >> 8) & 0xFF) / 255.0F;
+        double blue = (color & 0xFF) / 255.0F;
         GL11.glColor3d(red, green, blue);
         this.renderIcon(item, item.getItem().getIcon(item, 0), type);
 
         color = item.getItem().getColorFromItemStack(item, 1);
-        red = (float) ((color >> 16) & 0xFF) / 255.0F;
-        green = (float) ((color >> 8) & 0xFF) / 255.0F;
-        blue = (float) (color & 0xFF) / 255.0F;
+        red = ((color >> 16) & 0xFF) / 255.0F;
+        green = ((color >> 8) & 0xFF) / 255.0F;
+        blue = (color & 0xFF) / 255.0F;
         GL11.glColor3d(red, green, blue);
         this.renderIcon(item, item.getItem().getIcon(item, 1), type);
         GL11.glDisable(GL11.GL_BLEND);
@@ -96,20 +96,20 @@ public class ItemRendererLens implements IItemRenderer {
     private void renderItemIn3D(Tessellator tess, float maxU, float minV, float minU, float maxV, int originX, int originY, float scale) {
         tess.startDrawingQuads();
         tess.setNormal(0.0F, 0.0F, 1.0F);
-        tess.addVertexWithUV(0.0D, 0.0D, 0.0D, (double) maxU, (double) maxV);
-        tess.addVertexWithUV(1.0D, 0.0D, 0.0D, (double) minU, (double) maxV);
-        tess.addVertexWithUV(1.0D, 1.0D, 0.0D, (double) minU, (double) minV);
-        tess.addVertexWithUV(0.0D, 1.0D, 0.0D, (double) maxU, (double) minV);
+        tess.addVertexWithUV(0.0D, 0.0D, 0.0D, maxU, maxV);
+        tess.addVertexWithUV(1.0D, 0.0D, 0.0D, minU, maxV);
+        tess.addVertexWithUV(1.0D, 1.0D, 0.0D, minU, minV);
+        tess.addVertexWithUV(0.0D, 1.0D, 0.0D, maxU, minV);
         tess.draw();
         tess.startDrawingQuads();
         tess.setNormal(0.0F, 0.0F, -1.0F);
-        tess.addVertexWithUV(0.0D, 1.0D, (double) (0.0F - scale), (double) maxU, (double) minV);
-        tess.addVertexWithUV(1.0D, 1.0D, (double) (0.0F - scale), (double) minU, (double) minV);
-        tess.addVertexWithUV(1.0D, 0.0D, (double) (0.0F - scale), (double) minU, (double) maxV);
-        tess.addVertexWithUV(0.0D, 0.0D, (double) (0.0F - scale), (double) maxU, (double) maxV);
+        tess.addVertexWithUV(0.0D, 1.0D, 0.0F - scale, maxU, minV);
+        tess.addVertexWithUV(1.0D, 1.0D, 0.0F - scale, minU, minV);
+        tess.addVertexWithUV(1.0D, 0.0D, 0.0F - scale, minU, maxV);
+        tess.addVertexWithUV(0.0D, 0.0D, 0.0F - scale, maxU, maxV);
         tess.draw();
-        float f5 = 0.5F * (maxU - minU) / (float) originX;
-        float f6 = 0.5F * (maxV - minV) / (float) originY;
+        float f5 = 0.5F * (maxU - minU) / originX;
+        float f6 = 0.5F * (maxV - minV) / originY;
         tess.startDrawingQuads();
         tess.setNormal(-1.0F, 0.0F, 0.0F);
         int k;
@@ -119,10 +119,10 @@ public class ItemRendererLens implements IItemRenderer {
         for (k = 0; k < originX; ++k) {
             f7 = (float) k / (float) originX;
             f8 = maxU + (minU - maxU) * f7 - f5;
-            tess.addVertexWithUV((double) f7, 0.0D, (double) (0.0F - scale), (double) f8, (double) maxV);
-            tess.addVertexWithUV((double) f7, 0.0D, 0.0D, (double) f8, (double) maxV);
-            tess.addVertexWithUV((double) f7, 1.0D, 0.0D, (double) f8, (double) minV);
-            tess.addVertexWithUV((double) f7, 1.0D, (double) (0.0F - scale), (double) f8, (double) minV);
+            tess.addVertexWithUV(f7, 0.0D, 0.0F - scale, f8, maxV);
+            tess.addVertexWithUV(f7, 0.0D, 0.0D, f8, maxV);
+            tess.addVertexWithUV(f7, 1.0D, 0.0D, f8, minV);
+            tess.addVertexWithUV(f7, 1.0D, 0.0F - scale, f8, minV);
         }
 
         tess.draw();
@@ -133,11 +133,11 @@ public class ItemRendererLens implements IItemRenderer {
         for (k = 0; k < originX; ++k) {
             f7 = (float) k / (float) originX;
             f8 = maxU + (minU - maxU) * f7 - f5;
-            f9 = f7 + 1.0F / (float) originX;
-            tess.addVertexWithUV((double) f9, 1.0D, (double) (0.0F - scale), (double) f8, (double) minV);
-            tess.addVertexWithUV((double) f9, 1.0D, 0.0D, (double) f8, (double) minV);
-            tess.addVertexWithUV((double) f9, 0.0D, 0.0D, (double) f8, (double) maxV);
-            tess.addVertexWithUV((double) f9, 0.0D, (double) (0.0F - scale), (double) f8, (double) maxV);
+            f9 = f7 + 1.0F / originX;
+            tess.addVertexWithUV(f9, 1.0D, 0.0F - scale, f8, minV);
+            tess.addVertexWithUV(f9, 1.0D, 0.0D, f8, minV);
+            tess.addVertexWithUV(f9, 0.0D, 0.0D, f8, maxV);
+            tess.addVertexWithUV(f9, 0.0D, 0.0F - scale, f8, maxV);
         }
 
         tess.draw();
@@ -147,11 +147,11 @@ public class ItemRendererLens implements IItemRenderer {
         for (k = 0; k < originY; ++k) {
             f7 = (float) k / (float) originY;
             f8 = maxV + (minV - maxV) * f7 - f6;
-            f9 = f7 + 1.0F / (float) originY;
-            tess.addVertexWithUV(0.0D, (double) f9, 0.0D, (double) maxU, (double) f8);
-            tess.addVertexWithUV(1.0D, (double) f9, 0.0D, (double) minU, (double) f8);
-            tess.addVertexWithUV(1.0D, (double) f9, (double) (0.0F - scale), (double) minU, (double) f8);
-            tess.addVertexWithUV(0.0D, (double) f9, (double) (0.0F - scale), (double) maxU, (double) f8);
+            f9 = f7 + 1.0F / originY;
+            tess.addVertexWithUV(0.0D, f9, 0.0D, maxU, f8);
+            tess.addVertexWithUV(1.0D, f9, 0.0D, minU, f8);
+            tess.addVertexWithUV(1.0D, f9, 0.0F - scale, minU, f8);
+            tess.addVertexWithUV(0.0D, f9, 0.0F - scale, maxU, f8);
         }
 
         tess.draw();
@@ -161,10 +161,10 @@ public class ItemRendererLens implements IItemRenderer {
         for (k = 0; k < originY; ++k) {
             f7 = (float) k / (float) originY;
             f8 = maxV + (minV - maxV) * f7 - f6;
-            tess.addVertexWithUV(1.0D, (double) f7, 0.0D, (double) minU, (double) f8);
-            tess.addVertexWithUV(0.0D, (double) f7, 0.0D, (double) maxU, (double) f8);
-            tess.addVertexWithUV(0.0D, (double) f7, (double) (0.0F - scale), (double) maxU, (double) f8);
-            tess.addVertexWithUV(1.0D, (double) f7, (double) (0.0F - scale), (double) minU, (double) f8);
+            tess.addVertexWithUV(1.0D, f7, 0.0D, minU, f8);
+            tess.addVertexWithUV(0.0D, f7, 0.0D, maxU, f8);
+            tess.addVertexWithUV(0.0D, f7, 0.0F - scale, maxU, f8);
+            tess.addVertexWithUV(1.0D, f7, 0.0F - scale, minU, f8);
         }
 
         tess.draw();
