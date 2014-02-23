@@ -26,8 +26,8 @@ public final class Channels {
         this.id = id;
         this.identifier = identifier;
 
-        idMap.put(Integer.valueOf(id), this);
-        identifierMap.put(identifier, this);
+        Channels.idMap.put(Integer.valueOf(id), this);
+        Channels.identifierMap.put(identifier, this);
     }
 
     public String translateValue(int value) {
@@ -35,11 +35,11 @@ public final class Channels {
     }
 
     public static Channels getChannel(int id) {
-        return idMap.get(Integer.valueOf(id));
+        return Channels.idMap.get(Integer.valueOf(id));
     }
 
     public static Channels getChannel(String identifier) {
-        return identifierMap.get(identifier);
+        return Channels.identifierMap.get(identifier);
     }
 
 }

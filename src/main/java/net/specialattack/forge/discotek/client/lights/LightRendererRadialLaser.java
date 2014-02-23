@@ -44,9 +44,9 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
 
         int color = light.getColor(partialTicks);
         float brightness = light.getBrightness(partialTicks);
-        float red = (float) ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float green = (float) ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float blue = (float) (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float red = ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float green = ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float blue = (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
         float alpha = (0.9F * brightness) + 0.1F;
 
         float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);

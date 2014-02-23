@@ -45,9 +45,16 @@ public class CommonProxy extends SpACoreProxy {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         Objects.blockLight = new BlockLight();
+        Objects.blockLight.setBlockTextureName(Assets.DOMAIN + "truss2");
+        Objects.blockLight.setLight(0, new LightFresnel());
+        Objects.blockLight.setLight(1, new LightMap(false));
+        Objects.blockLight.setLight(2, new LightMap(true));
+        Objects.blockLight.setLight(3, new LightDimmer());
+        Objects.blockLight.setLight(4, new LightRadialLaser());
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         Objects.blockTruss = new BlockTruss();
+        Objects.blockTruss.setBlockTextureName(Assets.DOMAIN + "truss");
         GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "truss");
 
         Objects.blockDecoration = new BlockDecoration();
@@ -55,6 +62,8 @@ public class CommonProxy extends SpACoreProxy {
 
         Objects.blockController = new BlockController();
         GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "controller");
+        Objects.blockController.setController(0, new ControllerPixel());
+        Objects.blockController.setController(1, new ControllerGrandSpa());
 
         Objects.blockColoredLampOff = new BlockColoredLamp(false);
         GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "colored_lamp_off");
@@ -63,12 +72,15 @@ public class CommonProxy extends SpACoreProxy {
         GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "colored_lamp_on");
 
         Objects.itemDebug = new ItemDebug();
+        Objects.itemDebug.setTextureName(Assets.DOMAIN + "debug");
         GameRegistry.registerItem(Objects.itemDebug, "debug");
 
         Objects.itemLens = new ItemLens();
+        Objects.itemLens.setTextureName(Assets.DOMAIN + "lens");
         GameRegistry.registerItem(Objects.itemLens, "lens");
 
         Objects.itemWirelessLinker = new ItemWirelessLinker();
+        Objects.itemWirelessLinker.setTextureName(Assets.DOMAIN + "wirelessLinker");
         GameRegistry.registerItem(Objects.itemWirelessLinker, "wireless_linker");
 
         Objects.itemOrienter = new ItemOrienter();
@@ -82,30 +94,23 @@ public class CommonProxy extends SpACoreProxy {
     public void init(FMLInitializationEvent event) {
         Objects.creativeTab = new CreativeTabIcon("discotek");
 
-        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockTextureName(Assets.DOMAIN + "truss2").setBlockName("light");
-        Objects.blockLight.setLight(0, new LightFresnel());
-        Objects.blockLight.setLight(1, new LightMap(false));
-        Objects.blockLight.setLight(2, new LightMap(true));
-        Objects.blockLight.setLight(3, new LightDimmer());
-        Objects.blockLight.setLight(4, new LightRadialLaser());
+        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("light");
 
-        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockTextureName(Assets.DOMAIN + "truss").setBlockName("truss");
+        Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("truss");
 
         Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("decoration");
 
         Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("controller");
-        Objects.blockController.setController(0, new ControllerPixel());
-        Objects.blockController.setController(1, new ControllerGrandSpa());
 
         Objects.blockColoredLampOff.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
 
         Objects.blockColoredLampOn.setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
 
-        Objects.itemDebug.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "debug").setUnlocalizedName("debug");
+        Objects.itemDebug.setCreativeTab(Objects.creativeTab).setUnlocalizedName("debug");
 
-        Objects.itemLens.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "lens").setUnlocalizedName("lens");
+        Objects.itemLens.setCreativeTab(Objects.creativeTab).setUnlocalizedName("lens");
 
-        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).setTextureName(Assets.DOMAIN + "wirelessLinker").setUnlocalizedName("wirelesslinker");
+        Objects.itemWirelessLinker.setCreativeTab(Objects.creativeTab).setUnlocalizedName("wirelesslinker");
 
         Objects.itemOrienter.setCreativeTab(Objects.creativeTab).setUnlocalizedName("orienter");
 

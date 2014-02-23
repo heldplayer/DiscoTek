@@ -32,7 +32,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
         if (!(tile instanceof TileEntityLight)) {
             return;
         }
-        if (!lightOnly) {
+        if (!TileEntityLightRenderer.lightOnly) {
             Minecraft.getMinecraft().mcProfiler.startSection("discotek");
         }
 
@@ -48,15 +48,15 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
             ILightRenderHandler renderer = ((BlockLight) block).getLightRenderer(tileLight.getBlockMetadata());
             if (light != null && renderer != null) {
                 Minecraft.getMinecraft().mcProfiler.startSection(light.getIdentifier());
-                if (lightOnly) {
+                if (TileEntityLightRenderer.lightOnly) {
                     // Debug code, activate me to see render bounding boxes
                     boolean debug = false;
                     if (debug) {
                         //GL11.glDisable(GL11.GL_DEPTH_TEST);
                         int color = tileLight.getColor(partialTicks);
-                        float red = (float) ((color & 0xFF0000) >> 16) / 255.0F;
-                        float green = (float) ((color & 0xFF00) >> 8) / 255.0F;
-                        float blue = (float) (color & 0xFF) / 255.0F;
+                        float red = ((color & 0xFF0000) >> 16) / 255.0F;
+                        float green = ((color & 0xFF00) >> 8) / 255.0F;
+                        float blue = (color & 0xFF) / 255.0F;
                         GL11.glColor4f(red, green, blue, 0.5F);
                         AxisAlignedBB aabb = renderer.getRenderingAABB(tileLight, partialTicks);
                         aabb.offset(-0.5D, -0.5D, -0.5D);
@@ -75,13 +75,13 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                     renderer.renderLight(tileLight, partialTicks);
                 }
                 else {
-                    if (renderLight) {
+                    if (TileEntityLightRenderer.renderLight) {
                         GL11.glDisable(GL11.GL_ALPHA_TEST);
                         GL11.glEnable(GL11.GL_BLEND);
                         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                     }
-                    renderer.renderSolid(tileLight, partialTicks, renderLight);
-                    if (renderLight) {
+                    renderer.renderSolid(tileLight, partialTicks, TileEntityLightRenderer.renderLight);
+                    if (TileEntityLightRenderer.renderLight) {
                         GL11.glDisable(GL11.GL_BLEND);
                         GL11.glEnable(GL11.GL_ALPHA_TEST);
                     }
@@ -90,7 +90,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
                 GL11.glPopMatrix();
 
-                if (!lightOnly) {
+                if (!TileEntityLightRenderer.lightOnly) {
                     Minecraft.getMinecraft().mcProfiler.endSection();
                 }
                 return;
@@ -99,7 +99,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
 
         GL11.glPopMatrix();
 
-        if (!lightOnly) {
+        if (!TileEntityLightRenderer.lightOnly) {
             Minecraft.getMinecraft().mcProfiler.endSection();
         }
     }

@@ -26,7 +26,7 @@ public class LightDimmer implements ILight {
 
     @Override
     public int getRedstonePower(int channelValue) {
-        return (int) ((float) channelValue / 16.0F);
+        return (int) (channelValue / 16.0F);
     }
 
     @Override

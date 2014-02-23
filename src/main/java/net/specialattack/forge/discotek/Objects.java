@@ -50,7 +50,7 @@ public class Objects {
     public static final String COMMON_PROXY = "net.specialattack.discotek.CommonProxy";
     public static final String CLIENT_PROXY = "net.specialattack.discotek.client.ClientProxy";
 
-    public static final ModInfo MOD_INFO = new ModInfo(MOD_ID, MOD_NAME, MOD_VERSION);
+    public static final ModInfo MOD_INFO = new ModInfo(Objects.MOD_ID, Objects.MOD_NAME, Objects.MOD_VERSION);
 
     public static Logger log;
 

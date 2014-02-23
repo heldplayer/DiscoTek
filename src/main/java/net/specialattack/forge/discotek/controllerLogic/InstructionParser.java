@@ -240,10 +240,10 @@ public class InstructionParser {
     public static InstructionParser parser = new InstructionParser();
 
     public static void main(String[] args) throws IOException {
-        in = new BufferedReader(new InputStreamReader(System.in));
+        InstructionParser.in = new BufferedReader(new InputStreamReader(System.in));
         String line = "";
-        while (!(line = in.readLine()).equalsIgnoreCase("stop")) {
-            Instruction inst = parser.validateCommand(line);
+        while (!(line = InstructionParser.in.readLine()).equalsIgnoreCase("stop")) {
+            Instruction inst = InstructionParser.parser.validateCommand(line);
             if (inst.getAction() == 0) {
                 System.out.println("Clearing Cache");
             }

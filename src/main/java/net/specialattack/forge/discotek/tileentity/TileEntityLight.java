@@ -401,7 +401,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     public Packet getDescriptionPacket() {
         NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("tracking", true);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, compound);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, compound);
     }
 
     @Override
@@ -468,7 +468,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
     }
 
     public void setBlockType(int blockId) {
@@ -581,7 +581,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         public void setValue(int value) {
             this.value = value;
             if (this.syncable instanceof SFloat) {
-                float result = (float) value * (this.max - this.min) / 255.0F + this.min;
+                float result = value * (this.max - this.min) / 255.0F + this.min;
                 ((SFloat) this.syncable).setValue(result);
                 return;
             }

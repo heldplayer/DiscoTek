@@ -38,18 +38,18 @@ public class GuiInstructionsGrandSpA extends Gui {
     }
 
     public void render() {
-        drawRect(this.posX - 1, this.posY - 1, this.posX + this.width + 1, this.posY + this.height + 1, 0xFFA0A0A0);
-        drawRect(this.posX, this.posY, this.posX + this.width, this.posY + this.height, 0xFF000000);
+        Gui.drawRect(this.posX - 1, this.posY - 1, this.posX + this.width + 1, this.posY + this.height + 1, 0xFFA0A0A0);
+        Gui.drawRect(this.posX, this.posY, this.posX + this.width, this.posY + this.height, 0xFF000000);
 
         if (this.rows > this.rows) {
-            drawRect(this.posX + this.width - 9, this.posY, this.posX + this.width, this.posY + this.height, 0xFFA0A0A0);
+            Gui.drawRect(this.posX + this.width - 9, this.posY, this.posX + this.width, this.posY + this.height, 0xFFA0A0A0);
 
             float percent = (float) this.rows / (float) this.controller.instructions.length;
             int height = (int) (percent * this.height);
 
-            int offset = (int) (((float) this.height / (float) this.controller.instructions.length) * (float) this.scroll);
+            int offset = (int) (((float) this.height / (float) this.controller.instructions.length) * this.scroll);
 
-            drawRect(this.posX + this.width - 8, this.posY + offset, this.posX + this.width, this.posY + height + offset, 0xFFE0E0E0);
+            Gui.drawRect(this.posX + this.width - 8, this.posY + offset, this.posX + this.width, this.posY + height + offset, 0xFFE0E0E0);
         }
 
         for (int i = this.scroll; i < this.controller.instructions.length && i < this.rows + this.scroll; i++) {
@@ -146,7 +146,7 @@ public class GuiInstructionsGrandSpA extends Gui {
         instruction.identifier = first;
         instruction.argument = arg;
 
-        ModDiscoTek.packetHandler.sendPacketToServer(new Packet5GrandSpAInstruction(controller, this.selected, instruction.identifier, instruction.argument));
+        ModDiscoTek.packetHandler.sendPacketToServer(new Packet5GrandSpAInstruction(this.controller, this.selected, instruction.identifier, instruction.argument));
 
         this.editing = false;
 

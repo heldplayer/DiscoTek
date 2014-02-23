@@ -97,6 +97,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     //        return Objects.blockColoredLampOff.blockID;
     //    }
 
+    @Override
     public Item getItemDropped(int meta, Random rand, int fortune) {
         return Item.getItemFromBlock(Objects.blockColoredLampOff);
     }
@@ -107,6 +108,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     //        return Objects.blockColoredLampOff.blockID;
     //    }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public Item getItem(World world, int x, int y, int z) {
         return Item.getItemFromBlock(Objects.blockColoredLampOff);

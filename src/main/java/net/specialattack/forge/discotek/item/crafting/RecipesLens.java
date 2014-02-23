@@ -65,13 +65,13 @@ public class RecipesLens implements IRecipe {
 
                     if (compound != null && compound.hasKey("color")) {
                         int color = compound.getInteger("color");
-                        float red = (float) (color >> 16 & 255) / 255.0F;
-                        float green = (float) (color >> 8 & 255) / 255.0F;
-                        float blue = (float) (color & 255) / 255.0F;
-                        totalHue = (int) ((float) totalHue + Math.max(red, Math.max(green, blue)) * 255.0F);
-                        colors[0] = (int) ((float) colors[0] + red * 255.0F);
-                        colors[1] = (int) ((float) colors[1] + green * 255.0F);
-                        colors[2] = (int) ((float) colors[2] + blue * 255.0F);
+                        float red = (color >> 16 & 255) / 255.0F;
+                        float green = (color >> 8 & 255) / 255.0F;
+                        float blue = (color & 255) / 255.0F;
+                        totalHue = (int) (totalHue + Math.max(red, Math.max(green, blue)) * 255.0F);
+                        colors[0] = (int) (colors[0] + red * 255.0F);
+                        colors[1] = (int) (colors[1] + green * 255.0F);
+                        colors[2] = (int) (colors[2] + blue * 255.0F);
                         dyeCount++;
                     }
                 }
@@ -100,10 +100,10 @@ public class RecipesLens implements IRecipe {
             int green = colors[1] / dyeCount;
             int blue = colors[2] / dyeCount;
             float hue = (float) totalHue / (float) dyeCount;
-            float correctedHue = (float) Math.max(red, Math.max(green, blue));
-            red = (int) ((float) red * hue / correctedHue);
-            green = (int) ((float) green * hue / correctedHue);
-            blue = (int) ((float) blue * hue / correctedHue);
+            float correctedHue = Math.max(red, Math.max(green, blue));
+            red = (int) (red * hue / correctedHue);
+            green = (int) (green * hue / correctedHue);
+            blue = (int) (blue * hue / correctedHue);
             int color = (red << 16) | (green << 8) | blue;
 
             NBTTagCompound compound = lens.stackTagCompound;

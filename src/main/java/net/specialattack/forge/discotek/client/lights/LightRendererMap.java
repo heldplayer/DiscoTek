@@ -36,9 +36,9 @@ public class LightRendererMap implements ILightRenderHandler {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
         int color = light.getColor(partialTicks);
-        float red = (float) ((color >> 16) & 0xFF) / 255.0F;
-        float green = (float) ((color >> 8) & 0xFF) / 255.0F;
-        float blue = (float) (color & 0xFF) / 255.0F;
+        float red = ((color >> 16) & 0xFF) / 255.0F;
+        float green = ((color >> 8) & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
         float brightness = light.getBrightness(partialTicks);
 
         float pitch = light.getPitch(partialTicks);
@@ -61,7 +61,7 @@ public class LightRendererMap implements ILightRenderHandler {
         this.modelLightTiltArms.setRotations(0, yaw);
         this.modelLightTiltArms.renderAll();
 
-        GL11.glTranslatef((float) 0, (float) 0.15F, (float) 0);
+        GL11.glTranslatef(0, 0.15F, 0);
         this.modelLightMover.setRotations(pitch, yaw);
         this.modelLightMover.render();
 
@@ -92,9 +92,9 @@ public class LightRendererMap implements ILightRenderHandler {
 
         int color = light.getColor(partialTicks);
         float brightness = light.getBrightness(partialTicks);
-        float red = (float) ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float green = (float) ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float blue = (float) (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float red = ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float green = ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float blue = (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
         float alpha = (0.5F * brightness) + 0.1F;
 
         float lightLength = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
