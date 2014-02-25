@@ -19,7 +19,9 @@ public class Packet1LightPort extends SpACorePacket {
     public int posY;
     public int posZ;
     public int channelId;
+    public boolean isString;
     public int port;
+    public String value;
 
     public Packet1LightPort() {
         super(null);
@@ -33,7 +35,20 @@ public class Packet1LightPort extends SpACorePacket {
         this.posZ = tile.zCoord;
 
         this.channelId = channelId;
+        this.isString = false;
         this.port = port;
+    }
+
+    public Packet1LightPort(TileEntityLight tile, int channelId, String value) {
+        super(tile.getWorldObj());
+
+        this.posX = tile.xCoord;
+        this.posY = tile.yCoord;
+        this.posZ = tile.zCoord;
+
+        this.channelId = channelId;
+        this.isString = true;
+        this.value = value;
     }
 
     @Override
@@ -48,7 +63,13 @@ public class Packet1LightPort extends SpACorePacket {
         this.posZ = in.readInt();
 
         this.channelId = in.readInt();
+        this.isString = in.readBoolean();
         this.port = in.readInt();
+        if (this.isString) {
+            byte[] data = new byte[this.port];
+            in.readBytes(data);
+            this.value = new String(data);
+        }
     }
 
     @Override
@@ -58,7 +79,15 @@ public class Packet1LightPort extends SpACorePacket {
         out.writeInt(this.posZ);
 
         out.writeInt(this.channelId);
-        out.writeInt(this.port);
+        out.writeBoolean(this.isString);
+        if (this.isString) {
+            byte[] data = this.value.getBytes();
+            out.writeInt(data.length);
+            out.writeBytes(data);
+        }
+        else {
+            out.writeInt(this.port);
+        }
     }
 
     @Override
@@ -70,7 +99,12 @@ public class Packet1LightPort extends SpACorePacket {
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
 
-            light.channels[this.channelId].port = this.port;
+            if (this.isString) {
+                light.channels[this.channelId].setValue(this.value);
+            }
+            else {
+                light.channels[this.channelId].port = this.port;
+            }
 
             light.markDirty();
         }

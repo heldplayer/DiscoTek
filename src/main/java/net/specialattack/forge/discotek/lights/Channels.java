@@ -18,13 +18,25 @@ public final class Channels {
     public static Channels GREEN = new Channels(5, "green");
     public static Channels BLUE = new Channels(6, "blue");
     public static Channels STRENGTH = new Channels(7, "strength");
+    public static Channels NAME = new Channels(8, "name", true);
 
     public final String identifier;
     public final int id;
+    public final boolean isString;
 
     private Channels(int id, String identifier) {
         this.id = id;
         this.identifier = identifier;
+        this.isString = false;
+
+        Channels.idMap.put(Integer.valueOf(id), this);
+        Channels.identifierMap.put(identifier, this);
+    }
+
+    private Channels(int id, String identifier, boolean isString) {
+        this.id = id;
+        this.identifier = identifier;
+        this.isString = isString;
 
         Channels.idMap.put(Integer.valueOf(id), this);
         Channels.identifierMap.put(identifier, this);

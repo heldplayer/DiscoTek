@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.controllers.IController;
 import net.specialattack.forge.discotek.controllers.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
@@ -82,7 +83,7 @@ public class BlockController extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.missingno = register.registerIcon("missingno");
+        this.missingno = register.registerIcon(Assets.DOMAIN + "missingno");
 
         for (int i = 0; i < 16; i++) {
             if (this.controllers.containsKey(Integer.valueOf(i))) {

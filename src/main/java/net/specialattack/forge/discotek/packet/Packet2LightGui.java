@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
+import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.relauncher.Side;
@@ -21,6 +22,8 @@ public class Packet2LightGui extends SpACorePacket {
     public int posZ;
     public int[] channels;
     public int[] ports;
+    public boolean[] areString;
+    public String[] values;
 
     public Packet2LightGui() {
         super(null);
@@ -35,10 +38,19 @@ public class Packet2LightGui extends SpACorePacket {
 
         this.channels = new int[tile.channels.length];
         this.ports = new int[tile.channels.length];
+        this.areString = new boolean[tile.channels.length];
+        this.values = new String[tile.channels.length];
 
         for (int i = 0; i < tile.channels.length; i++) {
             this.channels[i] = tile.channels[i].channel.id;
-            this.ports[i] = tile.channels[i].port;
+            if (tile.channels[i].channel.isString) {
+                this.areString[i] = true;
+                this.values[i] = ((SString) tile.channels[i].syncable).getValue();
+            }
+            else {
+                this.areString[i] = false;
+                this.ports[i] = tile.channels[i].port;
+            }
         }
     }
 
@@ -56,10 +68,18 @@ public class Packet2LightGui extends SpACorePacket {
         int length = in.readInt();
         this.channels = new int[length];
         this.ports = new int[length];
+        this.areString = new boolean[length];
+        this.values = new String[length];
 
         for (int i = 0; i < length; i++) {
             this.channels[i] = in.readInt();
+            this.areString[i] = in.readBoolean();
             this.ports[i] = in.readInt();
+            if (this.areString[i]) {
+                byte[] data = new byte[this.ports[i]];
+                in.readBytes(data);
+                this.values[i] = new String(data);
+            }
         }
     }
 
@@ -72,7 +92,15 @@ public class Packet2LightGui extends SpACorePacket {
         out.writeInt(this.channels.length);
         for (int i = 0; i < this.channels.length; i++) {
             out.writeInt(this.channels[i]);
-            out.writeInt(this.ports[i]);
+            out.writeBoolean(this.areString[i]);
+            if (this.areString[i]) {
+                byte[] data = this.values[i].getBytes();
+                out.writeInt(data.length);
+                out.writeBytes(data);
+            }
+            else {
+                out.writeInt(this.ports[i]);
+            }
         }
     }
 
@@ -90,7 +118,12 @@ public class Packet2LightGui extends SpACorePacket {
             }
 
             for (int i = 0; i < this.channels.length; i++) {
-                light.setPort(this.channels[i], this.ports[i]);
+                if (this.areString[i]) {
+                    light.channels[i].setValue(this.values);
+                }
+                else {
+                    light.setPort(this.channels[i], this.ports[i]);
+                }
             }
 
             ModDiscoTek.proxy.openLightGui(light);

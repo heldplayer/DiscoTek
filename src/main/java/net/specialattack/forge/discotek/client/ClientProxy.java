@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.culling.Frustrum;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -23,14 +22,15 @@ import net.specialattack.forge.core.client.MC;
 import net.specialattack.forge.discotek.CommonProxy;
 import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.gui.GuiLight;
-import net.specialattack.forge.discotek.client.lights.LightRendererDimmer;
-import net.specialattack.forge.discotek.client.lights.LightRendererFresnel;
-import net.specialattack.forge.discotek.client.lights.LightRendererMap;
-import net.specialattack.forge.discotek.client.lights.LightRendererRadialLaser;
 import net.specialattack.forge.discotek.client.render.DistanceComparator;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.forge.discotek.client.render.ItemRendererLens;
-import net.specialattack.forge.discotek.client.render.tileentity.TileEntityLightRenderer;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererDimmer;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererFresnel;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererHologram;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererMap;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererRadialLaser;
+import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.controllers.IControllerInstance;
 import net.specialattack.forge.discotek.lights.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
@@ -45,7 +45,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
     @Override
@@ -57,6 +59,7 @@ public class ClientProxy extends CommonProxy {
         Objects.blockLight.setLightRenderer(2, new LightRendererMap(true));
         Objects.blockLight.setLightRenderer(3, new LightRendererDimmer());
         Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
+        Objects.blockLight.setLightRenderer(5, new LightRendererHologram());
     }
 
     @Override
@@ -188,12 +191,12 @@ public class ClientProxy extends CommonProxy {
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        MC.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        //MC.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glPolygonOffset(-3.0F, -3.0F);
+        //GL11.glPolygonOffset(-3.0F, -3.0F);
         GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         iterator = ClientProxy.reusableLights.iterator();
@@ -216,7 +219,7 @@ public class ClientProxy extends CommonProxy {
 
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glPolygonOffset(0.0F, 0.0F);
+        //GL11.glPolygonOffset(0.0F, 0.0F);
         GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);

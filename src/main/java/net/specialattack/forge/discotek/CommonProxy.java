@@ -31,6 +31,7 @@ import net.specialattack.forge.discotek.item.crafting.LightCraftingHandler;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
 import net.specialattack.forge.discotek.lights.LightDimmer;
 import net.specialattack.forge.discotek.lights.LightFresnel;
+import net.specialattack.forge.discotek.lights.LightHologram;
 import net.specialattack.forge.discotek.lights.LightMap;
 import net.specialattack.forge.discotek.lights.LightRadialLaser;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
@@ -51,7 +52,10 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockLight.setLight(2, new LightMap(true));
         Objects.blockLight.setLight(3, new LightDimmer());
         Objects.blockLight.setLight(4, new LightRadialLaser());
+        Objects.blockLight.setLight(5, new LightHologram());
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
+        
+        // TODO: create emitters
 
         Objects.blockTruss = new BlockTruss();
         Objects.blockTruss.setBlockTextureName(Assets.DOMAIN + "truss");

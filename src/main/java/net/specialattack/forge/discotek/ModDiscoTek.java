@@ -30,17 +30,7 @@ public class ModDiscoTek extends SpACoreMod {
     public static PacketHandler packetHandler;
 
     // SpACore Objects
-    //    public static ConfigValue<Integer> blockLightId;
-    //    public static ConfigValue<Integer> blockTrussId;
-    //    public static ConfigValue<Integer> blockDecorationId;
-    //    public static ConfigValue<Integer> blockControllerId;
-    //    public static ConfigValue<Integer> blockColoredLampOnId;
-    //    public static ConfigValue<Integer> blockColoredLampOffId;
-    //    public static ConfigValue<Integer> itemDebugId;
-    //    public static ConfigValue<Integer> itemLensId;
-    //    public static ConfigValue<Integer> itemWirelessLinkerId;
-    //    public static ConfigValue<Integer> itemOrienterId;
-    //    public static ConfigValue<Integer> itemCraftingId;
+    // public static ConfigValue<Integer> blockLightId;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -52,31 +42,11 @@ public class ModDiscoTek extends SpACoreMod {
         ModDiscoTek.packetHandler = new PacketHandler("DiscoTek", Packet1LightPort.class, Packet2LightGui.class, Packet3PixelSlider.class, Packet4PixelGui.class, Packet5GrandSpAInstruction.class, Packet6GrandSpAGui.class);
 
         // Config
-        //        blockLightId = new ConfigValue<Integer>("blockLightId", Configuration.CATEGORY_BLOCK, null, 2080, "");
-        //        blockTrussId = new ConfigValue<Integer>("blockTrussId", Configuration.CATEGORY_BLOCK, null, 2081, "");
-        //        blockDecorationId = new ConfigValue<Integer>("blockDecorationId", Configuration.CATEGORY_BLOCK, null, 2082, "");
-        //        blockControllerId = new ConfigValue<Integer>("blockControllerId", Configuration.CATEGORY_BLOCK, null, 2083, "");
-        //        blockColoredLampOnId = new ConfigValue<Integer>("blockColoredLampOnId", Configuration.CATEGORY_BLOCK, null, 2084, "");
-        //        blockColoredLampOffId = new ConfigValue<Integer>("blockColoredLampOffId", Configuration.CATEGORY_BLOCK, null, 2085, "");
-        //        itemDebugId = new ConfigValue<Integer>("itemDebugId", Configuration.CATEGORY_ITEM, null, 5070, "");
-        //        itemLensId = new ConfigValue<Integer>("itemLensId", Configuration.CATEGORY_ITEM, null, 5071, "");
-        //        itemWirelessLinkerId = new ConfigValue<Integer>("itemWirelessLinkerId", Configuration.CATEGORY_ITEM, null, 5072, "");
-        //        itemOrienterId = new ConfigValue<Integer>("itemOrienterId", Configuration.CATEGORY_ITEM, null, 5073, "");
-        //        itemCraftingId = new ConfigValue<Integer>("itemCraftingId", Configuration.CATEGORY_ITEM, null, 5074, "");
+        // blockLightId = new ConfigValue<Integer>("blockLightId", Configuration.CATEGORY_BLOCK, null, 2080, "");
 
         this.config = new Config(event.getSuggestedConfigurationFile());
 
-        //        this.config.addConfigKey(blockLightId);
-        //        this.config.addConfigKey(blockTrussId);
-        //        this.config.addConfigKey(blockDecorationId);
-        //        this.config.addConfigKey(blockControllerId);
-        //        this.config.addConfigKey(blockColoredLampOnId);
-        //        this.config.addConfigKey(blockColoredLampOffId);
-        //        this.config.addConfigKey(itemDebugId);
-        //        this.config.addConfigKey(itemLensId);
-        //        this.config.addConfigKey(itemWirelessLinkerId);
-        //        this.config.addConfigKey(itemOrienterId);
-        //        this.config.addConfigKey(itemCraftingId);
+        // this.config.addConfigKey(blockLightId);
 
         super.preInit(event);
     }

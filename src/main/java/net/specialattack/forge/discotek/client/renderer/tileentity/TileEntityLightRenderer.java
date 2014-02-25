@@ -1,5 +1,5 @@
 
-package net.specialattack.forge.discotek.client.render.tileentity;
+package net.specialattack.forge.discotek.client.renderer.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

@@ -1,25 +1,35 @@
 
-package net.specialattack.forge.discotek.client.lights;
+package net.specialattack.forge.discotek.client.renderer.light;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.AxisAlignedBB;
-import net.specialattack.forge.core.MathHelper;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLaserRound;
-import net.specialattack.forge.discotek.client.render.tileentity.TileEntityLightRenderer;
+import net.specialattack.forge.discotek.client.renderer.entity.RenderPlayerCustom;
+import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.lights.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
 
+import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LightRendererRadialLaser implements ILightRenderHandler {
+public class LightRendererHologram implements ILightRenderHandler {
 
     private ModelLaserRound modelLaserRound = new ModelLaserRound();
+
+    private static RenderPlayerCustom render = new RenderPlayerCustom();
+    static {
+        render.setRenderManager(RenderManager.instance);
+    }
 
     @Override
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
@@ -49,13 +59,9 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         float blue = (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
         float alpha = (0.9F * brightness) + 0.1F;
 
-        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);
-        float length1 = (light.getPitch(partialTicks) + 0.8F) * 10.0F + 1.0F;
-        float length2 = (light.getPitch(partialTicks) + 0.8F) * 10.0F + 6.0F;
-        float height1 = MathHelper.cos(angle) * length1;
-        float height2 = MathHelper.cos(angle) * length2;
-        float distance1 = MathHelper.sin(angle) * length1;
-        float distance2 = MathHelper.sin(angle) * length2;
+        float yaw = light.getYaw(partialTicks) * (90F / (float) Math.PI);
+        float pitch = light.getPitch(partialTicks) * 100.0F;
+        float scale = light.getFocus(partialTicks) / 10.0F + 0.5F;
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
@@ -65,28 +71,45 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         GL11.glRotatef(TileEntityLightRenderer.yawRotations[side], 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(TileEntityLightRenderer.rollRotations[side], 0.0F, 0.0F, 1.0F);
 
-        Minecraft.getMinecraft().mcProfiler.endStartSection("rendering");
+        GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
+        GL11.glScalef(scale, scale, scale);
 
-        GL11.glShadeModel(GL11.GL_SMOOTH);
+        Minecraft.getMinecraft().mcProfiler.endStartSection("entity");
 
-        GL11.glBegin(GL11.GL_LINES);
-        int max = 32;
-        for (int i = 0; i < max; i++) {
-            float currentAngle = (float) i / (float) max * 4.0F;
-            float startX = MathHelper.cos(currentAngle) * 0.2F;
-            float startZ = MathHelper.sin(currentAngle) * 0.2F;
-            float posX1 = MathHelper.cos(currentAngle) * (distance1 + 0.2F);
-            float posZ1 = MathHelper.sin(currentAngle) * (distance1 + 0.2F);
-            float posX2 = MathHelper.cos(currentAngle) * (distance2 + 0.2F);
-            float posZ2 = MathHelper.sin(currentAngle) * (distance2 + 0.2F);
-            GL11.glColor4f(red, green, blue, alpha);
-            GL11.glVertex3f(startX, 0.0F, startZ);
-            GL11.glVertex3f(posX1, height1, posZ1);
-            GL11.glVertex3f(posX1, height1, posZ1);
-            GL11.glColor4f(red, green, blue, 0.0F);
-            GL11.glVertex3f(posX2, height2, posZ2);
+        GL11.glColor4f(red, green, blue, alpha);
+
+        if (light.getSpecialString() != null && !light.getSpecialString().isEmpty()) {
+            if (light.lightObj == null || !(light.lightObj instanceof EntityOtherPlayerMP)) {
+                light.lightObj = new EntityOtherPlayerMP(light.getWorld(), new GameProfile(null, light.getSpecialString()));
+            }
+            if (light.lightObj instanceof EntityOtherPlayerMP) {
+                EntityOtherPlayerMP player = (EntityOtherPlayerMP) light.lightObj;
+
+                if (!player.getCommandSenderName().equals(light.getSpecialString())) {
+                    light.lightObj = new EntityOtherPlayerMP(light.getWorld(), new GameProfile(null, light.getSpecialString()));
+                }
+
+                if (RenderManager.instance.livingPlayer != null) {
+                    player.worldObj = light.getWorld();
+                    player.rotationPitch = player.prevRotationPitch = pitch;
+
+                    GL11.glPushMatrix();
+                    GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    GL11.glEnable(GL11.GL_BLEND);
+
+                    LightRendererHologram.render.doRender(player, 0, 0, 0, 0, 0);
+
+                    GL11.glDisable(GL11.GL_TEXTURE_2D);
+                    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+                    GL11.glDisable(GL11.GL_TEXTURE_2D);
+                    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+                    GL11.glPopMatrix();
+                }
+            }
         }
-        GL11.glEnd();
+        else {
+            light.lightObj = null;
+        }
 
         Minecraft.getMinecraft().mcProfiler.endSection();
     }
@@ -105,15 +128,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
     public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);
-        float pitch = light.getPitch(partialTicks);
-
-        float length = (pitch + 0.8F) * 10.0F + 6.0F;
-
-        float xz = length * MathHelper.sin(angle);
-        float y = length * MathHelper.cos(angle);
-
-        return aabb.addCoord(xz, y, xz).addCoord(-xz, 0, -xz);
+        return aabb.getOffsetBoundingBox(0.0D, 1.0D, 0.0D).expand(0.0D, 1.0D, 0.0D);
     }
 
 }

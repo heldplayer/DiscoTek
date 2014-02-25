@@ -4,7 +4,9 @@ package net.specialattack.forge.discotek.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.util.StatCollector;
+import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.packet.Packet1LightPort;
@@ -19,6 +21,7 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
     private int guiHeight;
     private int guiWidth;
     private GuiHorizontalSlider[] sliders;
+    private GuiTextField[] textFields;
 
     public GuiLight(TileEntityLight light) {
         this.light = light;
@@ -34,10 +37,17 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
 
         int y = (this.height - this.guiHeight) / 2 + 29;
         this.sliders = new GuiHorizontalSlider[this.light.channels.length];
+        this.textFields = new GuiTextField[this.light.channels.length];
         for (int i = 0; i < this.light.channels.length; i++) {
-            this.buttonList.add(new GuiButton(100 + i * 2, this.width / 2 - 90, y, 20, 20, "-"));
-            this.buttonList.add(new GuiButton(101 + i * 2, this.width / 2 + 70, y, 20, 20, "+"));
-            this.buttonList.add(this.sliders[i] = new GuiHorizontalSlider(i, this.width / 2 - 70, y, 140, 20, "gui.light." + this.light.channels[i].channel.identifier, this.light.channels[i].port / 255.0F, this));
+            if (this.light.channels[i].channel.isString) {
+                this.textFields[i] = new GuiTextField(this.fontRendererObj, this.width / 2 - 90, y, 180, 20);
+                this.textFields[i].setText(((SString) this.light.channels[i].syncable).getValue());
+            }
+            else {
+                this.buttonList.add(new GuiButton(100 + i * 2, this.width / 2 - 90, y, 20, 20, "-"));
+                this.buttonList.add(new GuiButton(101 + i * 2, this.width / 2 + 70, y, 20, 20, "+"));
+                this.buttonList.add(this.sliders[i] = new GuiHorizontalSlider(i, this.width / 2 - 70, y, 140, 20, "gui.light." + this.light.channels[i].channel.identifier, this.light.channels[i].port / 255.0F, this));
+            }
             y += 24;
         }
 
@@ -46,8 +56,35 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
 
     @Override
     protected void keyTyped(char character, int key) {
+        for (int i = 0; i < this.textFields.length; i++) {
+            GuiTextField field = this.textFields[i];
+            if (field != null) {
+                if (field.isFocused()) {
+                    if (key == 1) {
+                        field.setFocused(false);
+                    }
+                    else {
+                        field.textboxKeyTyped(character, key);
+                        ModDiscoTek.packetHandler.sendPacketToServer(new Packet1LightPort(this.light, i, field.getText()));
+                    }
+                    return;
+                }
+            }
+        }
+
         if (key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
             this.mc.thePlayer.closeScreen();
+        }
+    }
+
+    @Override
+    protected void mouseClicked(int par1, int par2, int par3) {
+        super.mouseClicked(par1, par2, par3);
+
+        for (GuiTextField field : this.textFields) {
+            if (field != null) {
+                field.mouseClicked(par1, par2, par3);
+            }
         }
     }
 
@@ -91,6 +128,17 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
     }
 
     @Override
+    public void updateScreen() {
+        super.updateScreen();
+
+        for (GuiTextField field : this.textFields) {
+            if (field != null) {
+                field.updateCursorCounter();
+            }
+        }
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
 
@@ -105,6 +153,12 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
         x = (this.width - this.fontRendererObj.getStringWidth(title)) / 2;
 
         this.fontRendererObj.drawString(title, x, y, 0x4F4F4F);
+
+        for (GuiTextField field : this.textFields) {
+            if (field != null) {
+                field.drawTextBox();
+            }
+        }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
