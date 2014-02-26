@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
-import net.specialattack.forge.discotek.client.model.ModelLaserRound;
+import net.specialattack.forge.discotek.client.model.ModelHologramPad;
 import net.specialattack.forge.discotek.client.renderer.entity.RenderPlayerCustom;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.lights.ILightRenderHandler;
@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LightRendererHologram implements ILightRenderHandler {
 
-    private ModelLaserRound modelLaserRound = new ModelLaserRound();
+    private ModelHologramPad modelHologramPad = new ModelHologramPad();
 
     private static RenderPlayerCustom render = new RenderPlayerCustom();
     static {
@@ -42,8 +42,8 @@ public class LightRendererHologram implements ILightRenderHandler {
         GL11.glRotatef(TileEntityLightRenderer.rollRotations[side], 0.0F, 0.0F, 1.0F);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("model");
-        RenderHelper.bindTexture(Assets.RADIAL_LASER_TEXTURE);
-        this.modelLaserRound.renderAll();
+        RenderHelper.bindTexture(Assets.HOLOGRAM_TEXTURE);
+        this.modelHologramPad.renderAll();
 
         Minecraft.getMinecraft().mcProfiler.endSection();
     }

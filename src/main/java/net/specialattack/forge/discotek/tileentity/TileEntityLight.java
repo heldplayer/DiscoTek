@@ -111,6 +111,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 this.channels[i].max = (float) Math.PI * 4.0F;
             break;
             case 3:
+            case 9:
                 this.channels[i].syncable = this.focus;
                 this.channels[i].max = 20.0F;
             break;
@@ -524,7 +525,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     @Override
     public boolean isNotValid() {
-        return super.isInvalid();
+        return this.isInvalid();
     }
 
     @Override

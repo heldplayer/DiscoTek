@@ -19,6 +19,7 @@ public final class Channels {
     public static Channels BLUE = new Channels(6, "blue");
     public static Channels STRENGTH = new Channels(7, "strength");
     public static Channels NAME = new Channels(8, "name", true);
+    public static Channels SIZE = new Channels(9, "size");
 
     public final String identifier;
     public final int id;
