@@ -1,5 +1,5 @@
 
-package net.specialattack.forge.discotek.lights;
+package net.specialattack.forge.discotek.light;
 
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;

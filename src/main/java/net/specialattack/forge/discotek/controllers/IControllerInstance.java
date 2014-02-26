@@ -19,4 +19,6 @@ public interface IControllerInstance {
 
     void prepareServer();
 
+    boolean onRightClick(EntityPlayer player, boolean sneaking);
+
 }

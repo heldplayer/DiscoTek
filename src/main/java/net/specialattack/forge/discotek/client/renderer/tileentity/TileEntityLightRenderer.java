@@ -8,8 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.block.BlockLight;
-import net.specialattack.forge.discotek.lights.ILight;
-import net.specialattack.forge.discotek.lights.ILightRenderHandler;
+import net.specialattack.forge.discotek.light.ILight;
+import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;

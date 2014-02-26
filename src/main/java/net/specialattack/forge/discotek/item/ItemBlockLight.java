@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.specialattack.forge.discotek.block.BlockLight;
-import net.specialattack.forge.discotek.lights.ILight;
+import net.specialattack.forge.discotek.light.ILight;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

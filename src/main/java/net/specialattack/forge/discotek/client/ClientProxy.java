@@ -32,7 +32,7 @@ import net.specialattack.forge.discotek.client.renderer.light.LightRendererMap;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererRadialLaser;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.controllers.IControllerInstance;
-import net.specialattack.forge.discotek.lights.ILightRenderHandler;
+import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 

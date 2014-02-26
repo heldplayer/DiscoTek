@@ -68,9 +68,15 @@ public class ControllerGrandSpa implements IController {
         private boolean running;
         public String error;
         public int errorIndex;
+        public int[] levels;
 
         public ControllerInstance(TileEntityController tile) {
             this.tile = tile;
+        }
+
+        private void setLevel(int channel, int value) {
+            this.tile.transmitLevelChange(channel, value);
+            this.levels[channel] = value;
         }
 
         @Override
@@ -113,7 +119,7 @@ public class ControllerGrandSpa implements IController {
                     else if (instruction.identifier.equals("LEV")) { // Set channel to N
                         int channel = this.popStack();
                         int value = instruction.argument;
-                        this.tile.transmitLevelChange(channel, value);
+                        this.setLevel(channel, value);
                         this.next();
                     }
                     else if (instruction.identifier.equals("LEV2")) { // Set 2 channels
@@ -121,8 +127,8 @@ public class ControllerGrandSpa implements IController {
                         int channel2 = this.popStack();
                         int value1 = this.popStack();
                         int channel1 = this.popStack();
-                        this.tile.transmitLevelChange(channel1, value1);
-                        this.tile.transmitLevelChange(channel2, value2);
+                        this.setLevel(channel1, value1);
+                        this.setLevel(channel2, value2);
                         this.next();
                     }
                     else if (instruction.identifier.equals("LEV3")) { // Set 3 channels
@@ -132,9 +138,9 @@ public class ControllerGrandSpa implements IController {
                         int channel2 = this.popStack();
                         int value1 = this.popStack();
                         int channel1 = this.popStack();
-                        this.tile.transmitLevelChange(channel1, value1);
-                        this.tile.transmitLevelChange(channel2, value2);
-                        this.tile.transmitLevelChange(channel3, value3);
+                        this.setLevel(channel1, value1);
+                        this.setLevel(channel2, value2);
+                        this.setLevel(channel3, value3);
                         this.next();
                     }
                     else if (instruction.identifier.equals("MOT")) { // Motion 1 channel
@@ -146,7 +152,7 @@ public class ControllerGrandSpa implements IController {
                             int channel = this.popStack();
                             this.pushStack(channel);
                             this.pushStack(value);
-                            this.pushStack(0);//(tile.levels[channel]);
+                            this.pushStack(this.levels[channel]);
                             this.pushStack(ticks);
                         }
                         int ticks = this.popStack();
@@ -158,7 +164,7 @@ public class ControllerGrandSpa implements IController {
 
                         int newValue = (value * (instruction.argument - ticks) + start * ticks) / instruction.argument;
 
-                        this.tile.transmitLevelChange(channel, newValue);
+                        this.setLevel(channel, newValue);
 
                         if (ticks < 0) {
                             this.next();
@@ -181,10 +187,10 @@ public class ControllerGrandSpa implements IController {
                             int channel1 = this.popStack();
                             this.pushStack(channel1);
                             this.pushStack(value1);
-                            this.pushStack(0);//(tile.levels[channel1]);
+                            this.pushStack(this.levels[channel1]);
                             this.pushStack(channel2);
                             this.pushStack(value2);
-                            this.pushStack(0);//(tile.levels[channel2]);
+                            this.pushStack(this.levels[channel2]);
                             this.pushStack(ticks);
                         }
                         int ticks = this.popStack();
@@ -200,8 +206,8 @@ public class ControllerGrandSpa implements IController {
                         int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
                         int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
 
-                        this.tile.transmitLevelChange(channel2, newValue2);
-                        this.tile.transmitLevelChange(channel1, newValue1);
+                        this.setLevel(channel2, newValue2);
+                        this.setLevel(channel1, newValue1);
 
                         if (ticks <= 0) {
                             this.next();
@@ -229,13 +235,13 @@ public class ControllerGrandSpa implements IController {
                             int channel1 = this.popStack();
                             this.pushStack(channel1);
                             this.pushStack(value1);
-                            this.pushStack(0);//(tile.levels[channel1]);
+                            this.pushStack(this.levels[channel1]);
                             this.pushStack(channel2);
                             this.pushStack(value2);
-                            this.pushStack(0);//(tile.levels[channel2]);
+                            this.pushStack(this.levels[channel2]);
                             this.pushStack(channel3);
                             this.pushStack(value3);
-                            this.pushStack(0);//(tile.levels[channel3]);
+                            this.pushStack(this.levels[channel3]);
                             this.pushStack(ticks);
                         }
                         int ticks = this.popStack();
@@ -255,9 +261,9 @@ public class ControllerGrandSpa implements IController {
                         int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
                         int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
 
-                        this.tile.transmitLevelChange(channel3, newValue3);
-                        this.tile.transmitLevelChange(channel2, newValue2);
-                        this.tile.transmitLevelChange(channel1, newValue1);
+                        this.setLevel(channel3, newValue3);
+                        this.setLevel(channel2, newValue2);
+                        this.setLevel(channel1, newValue1);
 
                         if (ticks <= 0) {
                             this.next();
@@ -326,6 +332,7 @@ public class ControllerGrandSpa implements IController {
             compound.setInteger("StackPointer", this.stackPointer);
             compound.setBoolean("InterpretFirst", this.interpretFirst);
             compound.setBoolean("Running", this.running);
+            compound.setIntArray("levels", this.levels);
         }
 
         @Override
@@ -346,6 +353,7 @@ public class ControllerGrandSpa implements IController {
             this.stackPointer = compound.getInteger("StackPointer");
             this.interpretFirst = compound.getBoolean("Interpret");
             this.running = compound.getBoolean("Running");
+            this.levels = compound.getIntArray("levels");
         }
 
         @Override
@@ -364,7 +372,14 @@ public class ControllerGrandSpa implements IController {
         }
 
         @Override
-        public void prepareServer() {}
+        public void prepareServer() {
+            if (this.levels != null && this.levels.length != 256) {
+                this.levels = new int[256];
+            }
+            else if (this.levels == null) {
+                this.levels = new int[256];
+            }
+        }
 
         public void changeTo(int index) {
             this.instructionPointer = index;
@@ -408,6 +423,15 @@ public class ControllerGrandSpa implements IController {
                 this.error = null;
                 this.errorIndex = 0;
             }
+        }
+
+        @Override
+        public boolean onRightClick(EntityPlayer player, boolean sneaking) {
+            if (sneaking) {
+                this.startStop();
+                return true;
+            }
+            return false;
         }
 
     }

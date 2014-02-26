@@ -29,11 +29,11 @@ import net.specialattack.forge.discotek.item.ItemOrienter;
 import net.specialattack.forge.discotek.item.ItemWirelessLinker;
 import net.specialattack.forge.discotek.item.crafting.LightCraftingHandler;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
-import net.specialattack.forge.discotek.lights.LightDimmer;
-import net.specialattack.forge.discotek.lights.LightFresnel;
-import net.specialattack.forge.discotek.lights.LightHologram;
-import net.specialattack.forge.discotek.lights.LightMap;
-import net.specialattack.forge.discotek.lights.LightRadialLaser;
+import net.specialattack.forge.discotek.light.LightDimmer;
+import net.specialattack.forge.discotek.light.LightFresnel;
+import net.specialattack.forge.discotek.light.LightHologram;
+import net.specialattack.forge.discotek.light.LightMap;
+import net.specialattack.forge.discotek.light.LightRadialLaser;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -54,7 +54,7 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockLight.setLight(4, new LightRadialLaser());
         Objects.blockLight.setLight(5, new LightHologram());
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
-        
+
         // TODO: create emitters
 
         Objects.blockTruss = new BlockTruss();
@@ -203,6 +203,9 @@ public class CommonProxy extends SpACoreProxy {
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 3), "HrH", "rqr", "HrH", 'H', hull, 'r', redstone, 'q', quartz);
         // Radial Laser Emitter
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 4), "HlH", "lsl", "HlH", 'H', hull, 'l', led, 's', servo);
+        // Hologram Emitter
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HlH", "qGq", "HlH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HqH", "lGl", "HqH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
 
         String[] dyes = { "dyeWhite", "dyeOrange", "dyeMagenta", "dyeLightBlue", "dyeYellow", "dyeLime", "dyePink", "dyeGray", "dyeLightGray", "dyeCyan", "dyePurple", "dyeBlue", "dyeBrown", "dyeGreen", "dyeRed", "dyeBlack", };
 

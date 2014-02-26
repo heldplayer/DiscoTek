@@ -10,7 +10,7 @@ import net.specialattack.forge.discotek.client.model.ModelLightMover;
 import net.specialattack.forge.discotek.client.model.ModelLightMoverBase;
 import net.specialattack.forge.discotek.client.model.ModelLightTiltArms;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
-import net.specialattack.forge.discotek.lights.ILightRenderHandler;
+import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;

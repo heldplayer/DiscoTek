@@ -1,17 +1,17 @@
 
-package net.specialattack.forge.discotek.lights;
+package net.specialattack.forge.discotek.light;
 
 import java.util.Arrays;
 import java.util.List;
 
 import net.specialattack.forge.discotek.block.BlockLight;
 
-public class LightFresnel implements ILight {
+public class LightDimmer implements ILight {
 
     private final List<Channels> channels;
 
-    public LightFresnel() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS);
+    public LightDimmer() {
+        this.channels = Arrays.asList(Channels.STRENGTH);
     }
 
     @Override
@@ -21,22 +21,22 @@ public class LightFresnel implements ILight {
 
     @Override
     public boolean supportsLens() {
-        return true;
+        return false;
     }
 
     @Override
     public int getRedstonePower(int channelValue) {
-        return 0;
+        return (int) (channelValue / 16.0F);
     }
 
     @Override
     public String getIdentifier() {
-        return "fresnel";
+        return "dimmer";
     }
 
     @Override
     public void setBlockBounds(BlockLight block, int direction) {
-        block.setBlockBounds(0.0625F, 0.125F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
+        block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
     }
 
 }

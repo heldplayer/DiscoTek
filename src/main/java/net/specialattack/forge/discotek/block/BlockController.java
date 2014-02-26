@@ -50,7 +50,9 @@ public class BlockController extends Block {
             if (!world.isRemote) {
                 IControllerInstance instance = controller.getControllerInstance();
                 if (instance != null) {
-                    instance.openGui(player, Side.SERVER);
+                    if (!instance.onRightClick(player, player.isSneaking())) {
+                        instance.openGui(player, Side.SERVER);
+                    }
                 }
             }
         }

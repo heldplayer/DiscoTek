@@ -11,7 +11,7 @@ import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelHologramPad;
 import net.specialattack.forge.discotek.client.renderer.entity.RenderPlayerCustom;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
-import net.specialattack.forge.discotek.lights.ILightRenderHandler;
+import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -72,6 +72,7 @@ public class LightRendererHologram implements ILightRenderHandler {
         GL11.glRotatef(TileEntityLightRenderer.rollRotations[side], 0.0F, 0.0F, 1.0F);
 
         GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(0.0F, 0.5F, 0.0F);
         GL11.glScalef(scale, scale, scale);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("entity");
@@ -121,14 +122,17 @@ public class LightRendererHologram implements ILightRenderHandler {
 
     @Override
     public boolean rendersFirst() {
-        return true;
+        return false;
     }
 
     @Override
     public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-        return aabb.getOffsetBoundingBox(0.0D, 1.0D, 0.0D).expand(0.0D, 1.0D, 0.0D);
+        double point = light.getFocus(partialTicks) / 20.0D;
+        double height = light.getFocus(partialTicks) / 10.0D + 0.5D;
+
+        return aabb.addCoord(point, height, point).addCoord(-point, height, -point);
     }
 
 }

@@ -1,5 +1,5 @@
 
-package net.specialattack.forge.discotek.lights;
+package net.specialattack.forge.discotek.light;
 
 import java.util.HashMap;
 

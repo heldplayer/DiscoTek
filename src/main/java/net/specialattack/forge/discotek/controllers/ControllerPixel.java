@@ -105,6 +105,11 @@ public class ControllerPixel implements IController {
             this.tile.transmitLevelChange(id, level);
         }
 
+        @Override
+        public boolean onRightClick(EntityPlayer player, boolean sneaking) {
+            return false;
+        }
+
     }
 
 }

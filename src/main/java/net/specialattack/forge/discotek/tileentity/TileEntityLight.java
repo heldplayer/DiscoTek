@@ -25,9 +25,9 @@ import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.core.sync.packet.Packet1TrackingStatus;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.client.ClientProxy;
-import net.specialattack.forge.discotek.lights.Channels;
-import net.specialattack.forge.discotek.lights.ILight;
-import net.specialattack.forge.discotek.lights.ILightRenderHandler;
+import net.specialattack.forge.discotek.light.Channels;
+import net.specialattack.forge.discotek.light.ILight;
+import net.specialattack.forge.discotek.light.ILightRenderHandler;
 
 import com.google.common.io.ByteArrayDataInput;
 
