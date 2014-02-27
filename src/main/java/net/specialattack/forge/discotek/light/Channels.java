@@ -20,6 +20,7 @@ public final class Channels {
     public static Channels STRENGTH = new Channels(7, "strength");
     public static Channels NAME = new Channels(8, "name", true);
     public static Channels SIZE = new Channels(9, "size");
+    public static Channels LENGTH = new Channels(10, "length");
 
     public final String identifier;
     public final int id;

@@ -68,6 +68,7 @@ gui.light.blue=Blue Channel: %s
 gui.light.strength=Strength Channel: %s
 gui.light.name=Name
 gui.light.size=Size Channel: %s
+gui.light.length=Length Channel: %s
 
 gui.controller.title=Configuring Controller
 gui.controller.loading=Loading...

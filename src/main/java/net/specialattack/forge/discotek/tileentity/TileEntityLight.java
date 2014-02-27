@@ -48,6 +48,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     private SFloat yaw;
     private SFloat brightness;
     private SFloat focus;
+    private SFloat length;
     private SInteger red;
     private SInteger green;
     private SInteger blue;
@@ -56,6 +57,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     private float prevYaw = 0.0F;
     private float prevBrightness = 1.0F;
     private float prevFocus = 1.0F;
+    private float prevLength = 0.5F;
     private int prevRed = 0xFF;
     private int prevGreen = 0xFF;
     private int prevBlue = 0xFF;
@@ -70,12 +72,13 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         this.yaw = new SFloat(this, 0.0F);
         this.brightness = new SFloat(this, 1.0F);
         this.focus = new SFloat(this, 1.0F);
+        this.length = new SFloat(this, 0.5F);
         this.direction = new SInteger(this, 0);
         this.red = new SInteger(this, 0xFF);
         this.green = new SInteger(this, 0xFF);
         this.blue = new SInteger(this, 0xFF);
         this.specialString = new SString(this, "");
-        this.syncables = Arrays.asList((ISyncable) this.hasLens, this.pitch, this.yaw, this.brightness, this.focus, this.direction, this.red, this.green, this.blue, this.specialString);
+        this.syncables = Arrays.asList((ISyncable) this.hasLens, this.pitch, this.yaw, this.brightness, this.focus, this.length, this.direction, this.red, this.green, this.blue, this.specialString);
     }
 
     public TileEntityLight(Block blockType, int meta, boolean setupChannels) {
@@ -126,6 +129,11 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             break;
             case 8:
                 this.channels[i].syncable = this.specialString;
+            break;
+            case 10:
+                this.channels[i].syncable = this.length;
+                this.channels[i].min = -0.8F;
+                this.channels[i].max = 0.8F;
             break;
             }
         }
@@ -244,17 +252,36 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     }
 
     public void setFocus(float focus) {
-        if (focus > 20.0F) {
-            this.prevFocus = 20.0F;
-            this.focus.setValue(20.0F);
+        if (focus > 0.8F) {
+            this.prevFocus = 0.8F;
+            this.focus.setValue(0.8F);
         }
-        else if (focus < 0.0F) {
-            this.prevFocus = 0.0F;
-            this.focus.setValue(0.0F);
+        else if (focus < -0.8F) {
+            this.prevFocus = -0.8F;
+            this.focus.setValue(-0.8F);
         }
         else {
             this.prevFocus = focus;
             this.focus.setValue(focus);
+        }
+    }
+
+    public float getLength(float partialTicks) {
+        return this.prevLength + (this.length.getValue() - this.prevLength) * partialTicks;
+    }
+
+    public void setLength(float length) {
+        if (length > 20.0F) {
+            this.prevLength = 20.0F;
+            this.length.setValue(20.0F);
+        }
+        else if (length < 0.0F) {
+            this.prevLength = 0.0F;
+            this.length.setValue(0.0F);
+        }
+        else {
+            this.prevLength = length;
+            this.length.setValue(length);
         }
     }
 
@@ -362,6 +389,8 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         this.prevBrightness = this.brightness.getValue();
         this.focus.setValue(compound.getFloat("focus"));
         this.prevFocus = this.focus.getValue();
+        this.length.setValue(compound.getFloat("length"));
+        this.prevLength = this.length.getValue();
         this.direction.setValue(compound.getInteger("direction"));
         this.specialString.setValue(compound.getString("specialString"));
 
@@ -399,6 +428,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         compound.setFloat("yaw", this.yaw.getValue());
         compound.setFloat("brightness", this.brightness.getValue());
         compound.setFloat("focus", this.focus.getValue());
+        compound.setFloat("length", this.length.getValue());
         compound.setInteger("direction", this.direction.getValue());
         compound.setString("specialString", this.specialString.getValue());
 
@@ -440,6 +470,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             this.prevYaw = this.yaw.getValue();
             this.prevBrightness = this.brightness.getValue();
             this.prevFocus = this.focus.getValue();
+            this.prevLength = this.length.getValue();
             this.prevRed = this.red.getValue();
             this.prevGreen = this.green.getValue();
             this.prevBlue = this.blue.getValue();
@@ -469,6 +500,15 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             else if (this.focus.getValue() < 0.0F) {
                 this.prevFocus = 0.0F;
                 this.focus.setValue(0.0F);
+            }
+
+            if (this.length.getValue() > 0.8F) {
+                this.prevLength = 0.8F;
+                this.length.setValue(0.8F);
+            }
+            else if (this.length.getValue() < -0.8F) {
+                this.prevLength = -0.8F;
+                this.length.setValue(-0.8F);
             }
         }
         else {

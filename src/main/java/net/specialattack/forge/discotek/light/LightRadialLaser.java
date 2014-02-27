@@ -11,7 +11,7 @@ public class LightRadialLaser implements ILight {
     private final List<Channels> channels;
 
     public LightRadialLaser() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.LENGTH, Channels.PAN, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
     }
 
     @Override
