@@ -100,7 +100,7 @@ public class LightRendererHologram implements ILightRenderHandler {
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                     GL11.glEnable(GL11.GL_BLEND);
 
-                    LightRendererHologram.render.doRender(player, 0, 0, 0, 0, 0);
+                    LightRendererHologram.render.doRender(player, 0, 0, 0, 0, 1);
 
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
