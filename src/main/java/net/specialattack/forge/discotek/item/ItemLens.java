@@ -17,6 +17,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
+import net.specialattack.forge.discotek.light.ILight;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -84,7 +85,8 @@ public class ItemLens extends Item {
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
-            if (light.getBlockMetadata() == 2) {
+            ILight lightType = light.getLight();
+            if (lightType == null || !lightType.supportsLens()) {
                 return false;
             }
             if (light.hasLens()) {
@@ -104,7 +106,7 @@ public class ItemLens extends Item {
             }
             NBTTagCompound compound = itemStack.stackTagCompound;
             int color = 0xFFFFFF;
-            if (compound.hasKey("color")) {
+            if (compound != null && compound.hasKey("color")) {
                 color = compound.getInteger("color");
             }
 
