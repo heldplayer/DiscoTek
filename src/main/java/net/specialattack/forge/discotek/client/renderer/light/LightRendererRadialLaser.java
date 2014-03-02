@@ -50,8 +50,8 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         float alpha = (0.9F * brightness) + 0.1F;
 
         float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);
-        float length1 = (light.getLength(partialTicks) + 0.8F) * 10.0F + 1.0F;
-        float length2 = (light.getLength(partialTicks) + 0.8F) * 10.0F + 6.0F;
+        float length1 = (light.getLength(partialTicks) + 0.8F) * 2.0F + 1.0F;
+        float length2 = length1 + 5.0F;
         float height1 = MathHelper.cos(angle) * length1;
         float height2 = MathHelper.cos(angle) * length2;
         float distance1 = MathHelper.sin(angle) * length1;
@@ -109,7 +109,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
         float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);
-        float length = (light.getLength(partialTicks) + 0.8F) * 10.0F + 6.0F;
+        float length = (light.getLength(partialTicks) + 0.8F) * 2.0F + 6.0F;
 
         float xz = length * MathHelper.sin(angle);
         float y = length * MathHelper.cos(angle);

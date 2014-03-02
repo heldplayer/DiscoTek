@@ -68,8 +68,8 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         float alpha = (0.9F * brightness) + 0.1F;
 
         float angle = (float) (light.getFocus(partialTicks) * Math.PI / 128.0F);
-        float length1 = (light.getLength(partialTicks) + 0.8F) * 10.0F + 1.0F;
-        float length2 = (light.getLength(partialTicks) + 0.8F) * 10.0F + 6.0F;
+        float length1 = (light.getLength(partialTicks) + 0.8F) * 2.0F + 1.0F;
+        float length2 = length1 + 6.0F;
         float length1b = MathHelper.cos(angle) * length1;
         float length2b = MathHelper.cos(angle) * length2;
         float distance1 = MathHelper.sin(angle) * length1;
@@ -132,7 +132,7 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         float yaw = light.getYaw(partialTicks); // +-XZ
         float pitch = light.getPitch(partialTicks); // +-Y
         float angle = (float) (light.getFocus(partialTicks) * Math.PI / 128.0F);
-        float length = (light.getLength(partialTicks) + 0.8F) * 10.0F + 6.0F;
+        float length = (light.getLength(partialTicks) + 0.8F) * 2.0F + 6.0F;
         float lightLength = MathHelper.cos(angle) * length;
         float distance = MathHelper.sin(angle) * length;
 
