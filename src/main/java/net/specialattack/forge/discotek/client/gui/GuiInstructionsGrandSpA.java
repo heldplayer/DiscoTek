@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.specialattack.forge.discotek.Instruction;
 import net.specialattack.forge.discotek.ModDiscoTek;
-import net.specialattack.forge.discotek.controllers.ControllerGrandSpa;
+import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
 import net.specialattack.forge.discotek.packet.Packet5GrandSpAInstruction;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

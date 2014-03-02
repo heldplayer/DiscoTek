@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.specialattack.forge.discotek.Assets;
-import net.specialattack.forge.discotek.controllers.ControllerGrandSpa;
+import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
 
 import org.lwjgl.input.Keyboard;
 

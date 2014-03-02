@@ -21,6 +21,7 @@ public final class Channels {
     public static Channels NAME = new Channels(8, "name", true);
     public static Channels SIZE = new Channels(9, "size");
     public static Channels LENGTH = new Channels(10, "length");
+    public static Channels HEAD_ROTATION = new Channels(11, "head-rotation");
 
     public final String identifier;
     public final int id;

@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.ModDiscoTek;
-import net.specialattack.forge.discotek.controllers.ControllerPixel;
+import net.specialattack.forge.discotek.controller.ControllerPixel;
 import net.specialattack.forge.discotek.packet.Packet3PixelSlider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

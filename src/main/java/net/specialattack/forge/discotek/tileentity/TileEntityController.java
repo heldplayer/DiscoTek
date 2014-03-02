@@ -9,8 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.specialattack.forge.discotek.block.BlockController;
-import net.specialattack.forge.discotek.controllers.IController;
-import net.specialattack.forge.discotek.controllers.IControllerInstance;
+import net.specialattack.forge.discotek.controller.IController;
+import net.specialattack.forge.discotek.controller.IControllerInstance;
 
 public class TileEntityController extends TileEntity {
 
@@ -42,6 +42,7 @@ public class TileEntityController extends TileEntity {
     public IControllerInstance getControllerInstance() {
         if (this.controller == null) {
             this.controller = this.getController().createInstance(this);
+            this.markDirty();
         }
         return this.controller;
     }
@@ -152,6 +153,8 @@ public class TileEntityController extends TileEntity {
 
         if (distance < reach) {
             this.lightsLinked.add(light);
+
+            this.markDirty();
 
             return true;
         }

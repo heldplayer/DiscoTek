@@ -62,6 +62,7 @@ public class LightRendererHologram implements ILightRenderHandler {
         float yaw = light.getYaw(partialTicks) * (90F / (float) Math.PI);
         float pitch = light.getPitch(partialTicks) * 100.0F;
         float scale = light.getFocus(partialTicks) / 10.0F + 0.5F;
+        float yawHead = light.getLength(partialTicks) * 9.0F - 90.0F;
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
@@ -93,6 +94,7 @@ public class LightRendererHologram implements ILightRenderHandler {
                 if (RenderManager.instance.livingPlayer != null) {
                     player.worldObj = light.getWorld();
                     player.rotationPitch = player.prevRotationPitch = pitch;
+                    player.rotationYawHead = player.prevRotationYawHead = yawHead;
 
                     GL11.glPushMatrix();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);

@@ -97,10 +97,11 @@ public class LightRendererMap implements ILightRenderHandler {
         float blue = (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
         float alpha = (0.5F * brightness) + 0.1F;
 
-        float lightLength = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
+        float length = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
 
-        float lightangle = light.getFocus(partialTicks);
-        float downDiff = (float) (lightLength * Math.tan(Math.toRadians(lightangle)));
+        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 200.0F);
+        float lengthb = MathHelper.cos(angle) * length;
+        float distance = MathHelper.sin(angle) * length;
 
         float rend = red * 0.3F;
         float gend = green * 0.3F;
@@ -130,28 +131,28 @@ public class LightRendererMap implements ILightRenderHandler {
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(0.15F, -0.15F, -0.5F);
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
-        GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
+        GL11.glVertex3f(0.15F + distance, -0.15F - distance, -lengthb);
+        GL11.glVertex3f(-0.15F - distance, -0.15F - distance, -lengthb);
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
 
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
-        GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
+        GL11.glVertex3f(-0.15F - distance, 0.15F + distance, -lengthb);
+        GL11.glVertex3f(0.15F + distance, 0.15F + distance, -lengthb);
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(0.15F, 0.15F, -0.5F);
         GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
 
         GL11.glVertex3f(0.15F, 0.15F, -0.5F);
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
-        GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
+        GL11.glVertex3f(0.15F + distance, 0.15F + distance, -lengthb);
+        GL11.glVertex3f(0.15F + distance, -0.15F - distance, -lengthb);
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(0.15F, -0.15F, -0.5F);
 
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
-        GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
+        GL11.glVertex3f(-0.15F - distance, -0.15F - distance, -lengthb);
+        GL11.glVertex3f(-0.15F - distance, 0.15F + distance, -lengthb);
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
         GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
@@ -161,30 +162,30 @@ public class LightRendererMap implements ILightRenderHandler {
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
-        GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
+        GL11.glVertex3f(-0.15F - distance, -0.15F - distance, -lengthb);
+        GL11.glVertex3f(0.15F + distance, -0.15F - distance, -lengthb);
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(0.15F, -0.15F, -0.5F);
 
         GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
         GL11.glVertex3f(0.15F, 0.15F, -0.5F);
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
-        GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
+        GL11.glVertex3f(0.15F + distance, 0.15F + distance, -lengthb);
+        GL11.glVertex3f(-0.15F - distance, 0.15F + distance, -lengthb);
 
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(0.15F, -0.15F, -0.5F);
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(0.15F + downDiff, -0.15F - downDiff, -lightLength);
-        GL11.glVertex3f(0.15F + downDiff, 0.15F + downDiff, -lightLength);
+        GL11.glVertex3f(0.15F + distance, -0.15F - distance, -lengthb);
+        GL11.glVertex3f(0.15F + distance, 0.15F + distance, -lengthb);
         GL11.glColor4f(red, green, blue, alpha); // Origin
         GL11.glVertex3f(0.15F, 0.15F, -0.5F);
 
         GL11.glVertex3f(-0.15F, -0.15F, -0.5F);
         GL11.glVertex3f(-0.15F, 0.15F, -0.5F);
         GL11.glColor4f(rend, gend, bend, 0.0F); // End
-        GL11.glVertex3f(-0.15F - downDiff, 0.15F + downDiff, -lightLength);
-        GL11.glVertex3f(-0.15F - downDiff, -0.15F - downDiff, -lightLength);
+        GL11.glVertex3f(-0.15F - distance, 0.15F + distance, -lengthb);
+        GL11.glVertex3f(-0.15F - distance, -0.15F - distance, -lengthb);
 
         GL11.glEnd();
 
@@ -207,13 +208,24 @@ public class LightRendererMap implements ILightRenderHandler {
 
         float yaw = light.getYaw(partialTicks); // +-XZ
         float pitch = light.getPitch(partialTicks); // +-Y
-        float lightLength = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
+        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 200.0F);
+        float length = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
+        float lightLength = MathHelper.cos(angle) * length / 2.0F + 1.0F;
+        float distance = MathHelper.sin(angle) * length;
 
         float x = lightLength * -net.minecraft.util.MathHelper.sin(yaw) * net.minecraft.util.MathHelper.cos(pitch);
         float z = lightLength * -net.minecraft.util.MathHelper.cos(yaw) * net.minecraft.util.MathHelper.cos(pitch);
         float y = lightLength * net.minecraft.util.MathHelper.sin(pitch);
 
-        return aabb.addCoord(x, y, z);
+        float x1 = x + distance;
+        float z1 = z + distance;
+        float y1 = y + distance;
+
+        float x2 = x - distance;
+        float z2 = z - distance;
+        float y2 = y - distance;
+
+        return aabb.addCoord(x1, y1, z1).addCoord(x2, y2, z2);
     }
 
 }

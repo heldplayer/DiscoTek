@@ -11,8 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
 import net.specialattack.forge.discotek.ModDiscoTek;
-import net.specialattack.forge.discotek.controllers.ControllerPixel;
-import net.specialattack.forge.discotek.controllers.IControllerInstance;
+import net.specialattack.forge.discotek.controller.ControllerPixel;
+import net.specialattack.forge.discotek.controller.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.relauncher.Side;
 

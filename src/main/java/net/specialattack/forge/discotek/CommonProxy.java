@@ -16,8 +16,8 @@ import net.specialattack.forge.discotek.block.BlockController;
 import net.specialattack.forge.discotek.block.BlockDecoration;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.block.BlockTruss;
-import net.specialattack.forge.discotek.controllers.ControllerGrandSpa;
-import net.specialattack.forge.discotek.controllers.ControllerPixel;
+import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
+import net.specialattack.forge.discotek.controller.ControllerPixel;
 import net.specialattack.forge.discotek.creativetabs.CreativeTabIcon;
 import net.specialattack.forge.discotek.item.ItemBlockController;
 import net.specialattack.forge.discotek.item.ItemBlockLight;
@@ -33,6 +33,7 @@ import net.specialattack.forge.discotek.light.LightDimmer;
 import net.specialattack.forge.discotek.light.LightFresnel;
 import net.specialattack.forge.discotek.light.LightHologram;
 import net.specialattack.forge.discotek.light.LightMap;
+import net.specialattack.forge.discotek.light.LightPositionableLaser;
 import net.specialattack.forge.discotek.light.LightRadialLaser;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
@@ -53,6 +54,7 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockLight.setLight(3, new LightDimmer());
         Objects.blockLight.setLight(4, new LightRadialLaser());
         Objects.blockLight.setLight(5, new LightHologram());
+        Objects.blockLight.setLight(6, new LightPositionableLaser());
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         // TODO: create emitters

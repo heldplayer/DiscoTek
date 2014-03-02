@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.specialattack.forge.discotek.block.BlockController;
-import net.specialattack.forge.discotek.controllers.IController;
+import net.specialattack.forge.discotek.controller.IController;
 
 public class ItemBlockController extends ItemBlock {
 

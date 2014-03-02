@@ -60,10 +60,10 @@ public class ItemOrienter extends Item {
             case 0:
                 float yaw = light.getYaw(1.0F);
                 if (player.isSneaking()) {
-                    yaw += 0.01F;
+                    yaw += 0.1F;
                 }
                 else {
-                    yaw -= 0.01F;
+                    yaw -= 0.1F;
                 }
                 light.setYaw(yaw);
             break;

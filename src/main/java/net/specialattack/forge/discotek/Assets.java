@@ -12,6 +12,8 @@ public class Assets {
     public static final ResourceLocation MAP_TEXTURE = new ResourceLocation(Assets.DOMAIN + "textures/entity/map.png");
     public static final ResourceLocation RADIAL_LASER_TEXTURE = new ResourceLocation(Assets.DOMAIN + "textures/entity/radial-laser.png");
     public static final ResourceLocation HOLOGRAM_TEXTURE = new ResourceLocation(Assets.DOMAIN + "textures/entity/hologram.png");
+    public static final ResourceLocation POSITIONAL_LASER_TEXTURE = new ResourceLocation(Assets.DOMAIN + "textures/entity/positional-laser.png");
+    public static final ResourceLocation LIGHT_SHADOW_TEXTURE = new ResourceLocation(Assets.DOMAIN + "textures/entity/shadow.png");
 
     public static final ResourceLocation SMALL_GUI = new ResourceLocation(Assets.DOMAIN + "textures/gui/controller.png");
 

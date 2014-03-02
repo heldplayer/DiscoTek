@@ -1,5 +1,5 @@
 
-package net.specialattack.forge.discotek.controllers;
+package net.specialattack.forge.discotek.controller;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -77,223 +77,229 @@ public class ControllerGrandSpa implements IController {
         private void setLevel(int channel, int value) {
             this.tile.transmitLevelChange(channel, value);
             this.levels[channel] = value;
+            tile.markDirty();
         }
 
         @Override
         public void doTick() {
             if (this.instructions == null) {
                 this.instructions = new Instruction[50];
+                tile.markDirty();
             }
             else if (this.instructions.length != 50) {
                 Instruction[] temp = this.instructions;
                 this.instructions = new Instruction[50];
                 System.arraycopy(temp, 0, this.instructions, 0, temp.length < this.instructions.length ? temp.length : this.instructions.length);
+                tile.markDirty();
             }
 
             try {
-                if (this.running && this.instructions[this.instructionPointer] != null) {
-                    Instruction instruction = this.instructions[this.instructionPointer];
+                if (this.running) {
+                    if (this.instructions[this.instructionPointer] != null) {
+                        Instruction instruction = this.instructions[this.instructionPointer];
 
-                    if (instruction.identifier.equals("SLEEP")) { // Sleep for N ticks
-                        if (this.interpretFirst) {
-                            this.interpretFirst = false;
-                            this.pushStack(instruction.argument);
-                        }
-                        int value = this.popStack();
-                        value--;
-                        if (value <= 0) {
-                            this.next();
-                        }
-                        else {
-                            this.pushStack(value);
-                        }
-                    }
-                    else if (instruction.identifier.equals("PUSH")) { // Push N to the stack
-                        this.pushStack(instruction.argument);
-                        this.next();
-                    }
-                    else if (instruction.identifier.equals("POP")) { // Pop the stack
-                        this.popStack();
-                        this.next();
-                    }
-                    else if (instruction.identifier.equals("LEV")) { // Set channel to N
-                        int channel = this.popStack();
-                        int value = instruction.argument;
-                        this.setLevel(channel, value);
-                        this.next();
-                    }
-                    else if (instruction.identifier.equals("LEV2")) { // Set 2 channels
-                        int value2 = instruction.argument;
-                        int channel2 = this.popStack();
-                        int value1 = this.popStack();
-                        int channel1 = this.popStack();
-                        this.setLevel(channel1, value1);
-                        this.setLevel(channel2, value2);
-                        this.next();
-                    }
-                    else if (instruction.identifier.equals("LEV3")) { // Set 3 channels
-                        int value3 = instruction.argument;
-                        int channel3 = this.popStack();
-                        int value2 = this.popStack();
-                        int channel2 = this.popStack();
-                        int value1 = this.popStack();
-                        int channel1 = this.popStack();
-                        this.setLevel(channel1, value1);
-                        this.setLevel(channel2, value2);
-                        this.setLevel(channel3, value3);
-                        this.next();
-                    }
-                    else if (instruction.identifier.equals("MOT")) { // Motion 1 channel
-                        if (this.interpretFirst) {
-                            this.interpretFirst = false;
-
-                            int ticks = instruction.argument;
+                        if (instruction.identifier.equals("SLEEP")) { // Sleep for N ticks
+                            if (this.interpretFirst) {
+                                this.interpretFirst = false;
+                                this.pushStack(instruction.argument);
+                            }
                             int value = this.popStack();
-                            int channel = this.popStack();
-                            this.pushStack(channel);
-                            this.pushStack(value);
-                            this.pushStack(this.levels[channel]);
-                            this.pushStack(ticks);
+                            value--;
+                            if (value <= 0) {
+                                this.next();
+                            }
+                            else {
+                                this.pushStack(value);
+                            }
                         }
-                        int ticks = this.popStack();
-                        ticks--;
-
-                        int start = this.popStack();
-                        int value = this.popStack();
-                        int channel = this.popStack();
-
-                        int newValue = (value * (instruction.argument - ticks) + start * ticks) / instruction.argument;
-
-                        this.setLevel(channel, newValue);
-
-                        if (ticks < 0) {
+                        else if (instruction.identifier.equals("PUSH")) { // Push N to the stack
+                            this.pushStack(instruction.argument);
                             this.next();
                         }
-                        else {
-                            this.pushStack(channel);
-                            this.pushStack(value);
-                            this.pushStack(start);
-                            this.pushStack(ticks);
+                        else if (instruction.identifier.equals("POP")) { // Pop the stack
+                            this.popStack();
+                            this.next();
                         }
-                    }
-                    else if (instruction.identifier.equals("MOT2")) { // Motion 2 channels
-                        if (this.interpretFirst) {
-                            this.interpretFirst = false;
-
-                            int ticks = instruction.argument;
-                            int value2 = this.popStack();
+                        else if (instruction.identifier.equals("LEV")) { // Set channel to N
+                            int channel = this.popStack();
+                            int value = instruction.argument;
+                            this.setLevel(channel, value);
+                            this.next();
+                        }
+                        else if (instruction.identifier.equals("LEV2")) { // Set 2 channels
+                            int value2 = instruction.argument;
                             int channel2 = this.popStack();
                             int value1 = this.popStack();
                             int channel1 = this.popStack();
-                            this.pushStack(channel1);
-                            this.pushStack(value1);
-                            this.pushStack(this.levels[channel1]);
-                            this.pushStack(channel2);
-                            this.pushStack(value2);
-                            this.pushStack(this.levels[channel2]);
-                            this.pushStack(ticks);
-                        }
-                        int ticks = this.popStack();
-                        ticks--;
-
-                        int start2 = this.popStack();
-                        int value2 = this.popStack();
-                        int channel2 = this.popStack();
-                        int start1 = this.popStack();
-                        int value1 = this.popStack();
-                        int channel1 = this.popStack();
-
-                        int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
-                        int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
-
-                        this.setLevel(channel2, newValue2);
-                        this.setLevel(channel1, newValue1);
-
-                        if (ticks <= 0) {
+                            this.setLevel(channel1, value1);
+                            this.setLevel(channel2, value2);
                             this.next();
                         }
-                        else {
-                            this.pushStack(channel1);
-                            this.pushStack(value1);
-                            this.pushStack(start1);
-                            this.pushStack(channel2);
-                            this.pushStack(value2);
-                            this.pushStack(start2);
-                            this.pushStack(ticks);
-                        }
-                    }
-                    else if (instruction.identifier.equals("MOT3")) { // Motion 3 channels
-                        if (this.interpretFirst) {
-                            this.interpretFirst = false;
-
-                            int ticks = instruction.argument;
-                            int value3 = this.popStack();
+                        else if (instruction.identifier.equals("LEV3")) { // Set 3 channels
+                            int value3 = instruction.argument;
                             int channel3 = this.popStack();
                             int value2 = this.popStack();
                             int channel2 = this.popStack();
                             int value1 = this.popStack();
                             int channel1 = this.popStack();
-                            this.pushStack(channel1);
-                            this.pushStack(value1);
-                            this.pushStack(this.levels[channel1]);
-                            this.pushStack(channel2);
-                            this.pushStack(value2);
-                            this.pushStack(this.levels[channel2]);
-                            this.pushStack(channel3);
-                            this.pushStack(value3);
-                            this.pushStack(this.levels[channel3]);
-                            this.pushStack(ticks);
+                            this.setLevel(channel1, value1);
+                            this.setLevel(channel2, value2);
+                            this.setLevel(channel3, value3);
+                            this.next();
                         }
-                        int ticks = this.popStack();
-                        ticks--;
+                        else if (instruction.identifier.equals("MOT")) { // Motion 1 channel
+                            if (this.interpretFirst) {
+                                this.interpretFirst = false;
 
-                        int start3 = this.popStack();
-                        int value3 = this.popStack();
-                        int channel3 = this.popStack();
-                        int start2 = this.popStack();
-                        int value2 = this.popStack();
-                        int channel2 = this.popStack();
-                        int start1 = this.popStack();
-                        int value1 = this.popStack();
-                        int channel1 = this.popStack();
+                                int ticks = instruction.argument;
+                                int value = this.popStack();
+                                int channel = this.popStack();
+                                this.pushStack(channel);
+                                this.pushStack(value);
+                                this.pushStack(this.levels[channel]);
+                                this.pushStack(ticks);
+                            }
+                            int ticks = this.popStack();
+                            ticks--;
 
-                        int newValue3 = (value3 * (instruction.argument - ticks) + start3 * ticks) / instruction.argument;
-                        int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
-                        int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
+                            int start = this.popStack();
+                            int value = this.popStack();
+                            int channel = this.popStack();
 
-                        this.setLevel(channel3, newValue3);
-                        this.setLevel(channel2, newValue2);
-                        this.setLevel(channel1, newValue1);
+                            int newValue = (value * (instruction.argument - ticks) + start * ticks) / instruction.argument;
 
-                        if (ticks <= 0) {
+                            this.setLevel(channel, newValue);
+
+                            if (ticks < 0) {
+                                this.next();
+                            }
+                            else {
+                                this.pushStack(channel);
+                                this.pushStack(value);
+                                this.pushStack(start);
+                                this.pushStack(ticks);
+                            }
+                        }
+                        else if (instruction.identifier.equals("MOT2")) { // Motion 2 channels
+                            if (this.interpretFirst) {
+                                this.interpretFirst = false;
+
+                                int ticks = instruction.argument;
+                                int value2 = this.popStack();
+                                int channel2 = this.popStack();
+                                int value1 = this.popStack();
+                                int channel1 = this.popStack();
+                                this.pushStack(channel1);
+                                this.pushStack(value1);
+                                this.pushStack(this.levels[channel1]);
+                                this.pushStack(channel2);
+                                this.pushStack(value2);
+                                this.pushStack(this.levels[channel2]);
+                                this.pushStack(ticks);
+                            }
+                            int ticks = this.popStack();
+                            ticks--;
+
+                            int start2 = this.popStack();
+                            int value2 = this.popStack();
+                            int channel2 = this.popStack();
+                            int start1 = this.popStack();
+                            int value1 = this.popStack();
+                            int channel1 = this.popStack();
+
+                            int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
+                            int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
+
+                            this.setLevel(channel2, newValue2);
+                            this.setLevel(channel1, newValue1);
+
+                            if (ticks <= 0) {
+                                this.next();
+                            }
+                            else {
+                                this.pushStack(channel1);
+                                this.pushStack(value1);
+                                this.pushStack(start1);
+                                this.pushStack(channel2);
+                                this.pushStack(value2);
+                                this.pushStack(start2);
+                                this.pushStack(ticks);
+                            }
+                        }
+                        else if (instruction.identifier.equals("MOT3")) { // Motion 3 channels
+                            if (this.interpretFirst) {
+                                this.interpretFirst = false;
+
+                                int ticks = instruction.argument;
+                                int value3 = this.popStack();
+                                int channel3 = this.popStack();
+                                int value2 = this.popStack();
+                                int channel2 = this.popStack();
+                                int value1 = this.popStack();
+                                int channel1 = this.popStack();
+                                this.pushStack(channel1);
+                                this.pushStack(value1);
+                                this.pushStack(this.levels[channel1]);
+                                this.pushStack(channel2);
+                                this.pushStack(value2);
+                                this.pushStack(this.levels[channel2]);
+                                this.pushStack(channel3);
+                                this.pushStack(value3);
+                                this.pushStack(this.levels[channel3]);
+                                this.pushStack(ticks);
+                            }
+                            int ticks = this.popStack();
+                            ticks--;
+
+                            int start3 = this.popStack();
+                            int value3 = this.popStack();
+                            int channel3 = this.popStack();
+                            int start2 = this.popStack();
+                            int value2 = this.popStack();
+                            int channel2 = this.popStack();
+                            int start1 = this.popStack();
+                            int value1 = this.popStack();
+                            int channel1 = this.popStack();
+
+                            int newValue3 = (value3 * (instruction.argument - ticks) + start3 * ticks) / instruction.argument;
+                            int newValue2 = (value2 * (instruction.argument - ticks) + start2 * ticks) / instruction.argument;
+                            int newValue1 = (value1 * (instruction.argument - ticks) + start1 * ticks) / instruction.argument;
+
+                            this.setLevel(channel3, newValue3);
+                            this.setLevel(channel2, newValue2);
+                            this.setLevel(channel1, newValue1);
+
+                            if (ticks <= 0) {
+                                this.next();
+                            }
+                            else {
+                                this.pushStack(channel1);
+                                this.pushStack(value1);
+                                this.pushStack(start1);
+                                this.pushStack(channel2);
+                                this.pushStack(value2);
+                                this.pushStack(start2);
+                                this.pushStack(channel3);
+                                this.pushStack(value3);
+                                this.pushStack(start3);
+                                this.pushStack(ticks);
+                            }
+                        }
+                        else if (instruction.identifier.equals("GOTO")) { // Go to instruction at index N
+                            this.changeTo(instruction.argument - 1);
+                        }
+                        else if (instruction.identifier.equals("CLEAR")) { // Clear the stack
+                            this.stackPointer = 0;
                             this.next();
                         }
                         else {
-                            this.pushStack(channel1);
-                            this.pushStack(value1);
-                            this.pushStack(start1);
-                            this.pushStack(channel2);
-                            this.pushStack(value2);
-                            this.pushStack(start2);
-                            this.pushStack(channel3);
-                            this.pushStack(value3);
-                            this.pushStack(start3);
-                            this.pushStack(ticks);
+                            throw new ControllerException("gui.controller.unknowninstruction", this.instructionPointer + 1);
                         }
                     }
-                    else if (instruction.identifier.equals("GOTO")) { // Go to instruction at index N
-                        this.changeTo(instruction.argument - 1);
-                    }
-                    else if (instruction.identifier.equals("CLEAR")) { // Clear the stack
-                        this.stackPointer = 0;
+                    else {
                         this.next();
                     }
-                    else {
-                        throw new ControllerException("gui.controller.unknowninstruction", this.instructionPointer + 1);
-                    }
-                }
-                else {
-                    this.next();
+                    tile.markDirty();
                 }
             }
             catch (ControllerException e) {
@@ -375,9 +381,11 @@ public class ControllerGrandSpa implements IController {
         public void prepareServer() {
             if (this.levels != null && this.levels.length != 256) {
                 this.levels = new int[256];
+                tile.markDirty();
             }
             else if (this.levels == null) {
                 this.levels = new int[256];
+                tile.markDirty();
             }
         }
 

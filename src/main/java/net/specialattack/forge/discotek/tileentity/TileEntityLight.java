@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -72,7 +73,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         this.yaw = new SFloat(this, 0.0F);
         this.brightness = new SFloat(this, 1.0F);
         this.focus = new SFloat(this, 1.0F);
-        this.length = new SFloat(this, 0.5F);
+        this.length = new SFloat(this, 10.0F);
         this.direction = new SInteger(this, 0);
         this.red = new SInteger(this, 0xFF);
         this.green = new SInteger(this, 0xFF);
@@ -131,12 +132,14 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 this.channels[i].syncable = this.specialString;
             break;
             case 10:
+            case 11:
                 this.channels[i].syncable = this.length;
-                this.channels[i].min = -0.8F;
-                this.channels[i].max = 0.8F;
+                this.channels[i].min = 20.0F;
+                this.channels[i].max = 0.0F;
             break;
             }
         }
+        this.markDirty();
     }
 
     @Override
@@ -163,14 +166,16 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     public void setSpecialString(String value) {
         this.specialString.setValue(value);
+        this.markDirty();
     }
 
     public int getDirection() {
-        return this.direction.getValue();
+        return this.direction.getValue() % 6;
     }
 
     public void setDirection(int side) {
         this.direction.setValue(side);
+        this.markDirty();
     }
 
     public int getColor(float partialTicks) {
@@ -190,6 +195,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         this.red.setValue(red);
         this.green.setValue(green);
         this.blue.setValue(blue);
+        this.markDirty();
     }
 
     public boolean hasLens() {
@@ -198,6 +204,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     public void setHasLens(boolean hasLens) {
         this.hasLens.setValue(hasLens);
+        this.markDirty();
     }
 
     public float getPitch(float partialTicks) {
@@ -217,6 +224,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             this.prevPitch = pitch;
             this.pitch.setValue(pitch);
         }
+        this.markDirty();
     }
 
     public float getYaw(float partialTicks) {
@@ -226,6 +234,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     public void setYaw(float yaw) {
         this.prevYaw = yaw;
         this.yaw.setValue(yaw);
+        this.markDirty();
     }
 
     public float getBrightness(float partialTicks) {
@@ -245,6 +254,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             this.prevBrightness = brightness;
             this.brightness.setValue(brightness);
         }
+        this.markDirty();
     }
 
     public float getFocus(float partialTicks) {
@@ -252,18 +262,19 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     }
 
     public void setFocus(float focus) {
-        if (focus > 0.8F) {
-            this.prevFocus = 0.8F;
-            this.focus.setValue(0.8F);
+        if (focus > 20.0F) {
+            this.prevFocus = 2.0F;
+            this.focus.setValue(20.F);
         }
-        else if (focus < -0.8F) {
-            this.prevFocus = -0.8F;
-            this.focus.setValue(-0.8F);
+        else if (focus < 0.0F) {
+            this.prevFocus = 0.0F;
+            this.focus.setValue(0.0F);
         }
         else {
             this.prevFocus = focus;
             this.focus.setValue(focus);
         }
+        this.markDirty();
     }
 
     public float getLength(float partialTicks) {
@@ -283,6 +294,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             this.prevLength = length;
             this.length.setValue(length);
         }
+        this.markDirty();
     }
 
     public void setLevelUnsafe(int id, int value) {
@@ -298,6 +310,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 level.value = value;
             }
         }
+        this.markDirty();
     }
 
     public void setLevel(int id, int value) {
@@ -313,6 +326,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 level.setValue(value);
             }
         }
+        this.markDirty();
     }
 
     public int getLevel(int id) {
@@ -343,6 +357,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 level.port = port;
             }
         }
+        this.markDirty();
     }
 
     public int getPort(int id) {
@@ -371,6 +386,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                     }
                 }
             }
+            this.markDirty();
         }
     }
 
@@ -502,13 +518,17 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 this.focus.setValue(0.0F);
             }
 
-            if (this.length.getValue() > 0.8F) {
-                this.prevLength = 0.8F;
-                this.length.setValue(0.8F);
+            if (this.length.getValue() > 20.0F) {
+                this.prevLength = 20.0F;
+                this.length.setValue(20.0F);
             }
-            else if (this.length.getValue() < -0.8F) {
-                this.prevLength = -0.8F;
-                this.length.setValue(-0.8F);
+            else if (this.length.getValue() < 0.0F) {
+                this.prevLength = 0.0F;
+                this.length.setValue(0.0F);
+            }
+
+            if (this.lightObj instanceof Entity) {
+                ((Entity) this.lightObj).onUpdate();
             }
         }
         else {

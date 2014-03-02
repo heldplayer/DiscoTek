@@ -29,9 +29,10 @@ import net.specialattack.forge.discotek.client.renderer.light.LightRendererDimme
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererFresnel;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererHologram;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererMap;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererPositionableLaser;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererRadialLaser;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
-import net.specialattack.forge.discotek.controllers.IControllerInstance;
+import net.specialattack.forge.discotek.controller.IControllerInstance;
 import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
@@ -60,6 +61,7 @@ public class ClientProxy extends CommonProxy {
         Objects.blockLight.setLightRenderer(3, new LightRendererDimmer());
         Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
         Objects.blockLight.setLightRenderer(5, new LightRendererHologram());
+        Objects.blockLight.setLightRenderer(6, new LightRendererPositionableLaser());
     }
 
     @Override
@@ -178,9 +180,16 @@ public class ClientProxy extends CommonProxy {
         while (iterator.hasNext()) {
             TileEntityLight light = iterator.next();
 
-            AxisAlignedBB aabb = light.getRenderHandler().getRenderingAABB(light, event.partialTicks).offset(d0, d1, d2);
+            ILightRenderHandler handler = light.getRenderHandler();
 
-            if (!frustrum.isBoundingBoxInFrustum(aabb)) {
+            if (handler != null) {
+                AxisAlignedBB aabb = handler.getRenderingAABB(light, event.partialTicks).offset(d0, d1, d2);
+
+                if (!frustrum.isBoundingBoxInFrustum(aabb)) {
+                    iterator.remove();
+                }
+            }
+            else {
                 iterator.remove();
             }
         }
