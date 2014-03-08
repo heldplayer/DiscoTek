@@ -69,6 +69,10 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         return this.light;
     }
 
+    public void setLightInstance(ILightInstance instance) {
+        this.light = instance;
+    }
+
     @Override
     public Block getBlockType() {
         if (this.worldObj == null && this.blockType == null) {
@@ -158,6 +162,10 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 this.setupChannels();
             }
         }
+
+        if (this.light != null) {
+            this.light.doTick();
+        }
     }
 
     public void setupChannels() {
@@ -240,6 +248,9 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     public int getInteger(String identifier, float partialTicks) {
         ILightInstance instance = this.getLightInstance();
         if (instance == null) {
+            if (identifier.equals("direction")) {
+                return 1;
+            }
             return 0;
         }
 

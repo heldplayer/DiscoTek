@@ -28,17 +28,21 @@ public class LightHologramInstance implements ILightInstance {
     private SInteger green;
     private SInteger blue;
     private SFloat brightness;
-    private SFloat length;
+    private SFloat size;
+    private SFloat pitch;
     private SFloat yaw;
     private SFloat focus;
+    private SFloat headRotation;
     private SString playerName;
     private int prevRed = 0xFF;
     private int prevGreen = 0xFF;
     private int prevBlue = 0xFF;
     private float prevBrightness = 1.0F;
-    private float prevLength = 0.0F;
+    private float prevSize = 0.0F;
+    private float prevPitch = 0.0F;
     private float prevYaw = 0.0F;
     private float prevFocus = 1.0F;
+    private float prevHeadRotation = 0.0F;
 
     @SideOnly(Side.CLIENT)
     public EntityOtherPlayerMP player;
@@ -52,11 +56,13 @@ public class LightHologramInstance implements ILightInstance {
         this.green = new SInteger(tile, 0xFF);
         this.blue = new SInteger(tile, 0xFF);
         this.brightness = new SFloat(tile, 1.0F);
-        this.length = new SFloat(tile, 0.0F);
+        this.size = new SFloat(tile, 0.0F);
+        this.pitch = new SFloat(tile, 0.0F);
         this.yaw = new SFloat(tile, 0.0F);
         this.focus = new SFloat(tile, 1.0F);
+        this.headRotation = new SFloat(tile, 0.0F);
         this.playerName = new SString(tile, "");
-        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.length, this.yaw, this.focus);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.size, this.pitch, this.yaw, this.focus, this.headRotation, this.playerName);
     }
 
     @Override
@@ -71,9 +77,20 @@ public class LightHologramInstance implements ILightInstance {
             this.prevGreen = this.green.getValue();
             this.prevBlue = this.blue.getValue();
             this.prevBrightness = this.brightness.getValue();
-            this.prevLength = this.length.getValue();
+            this.prevSize = this.size.getValue();
+            this.prevPitch = this.pitch.getValue();
             this.prevYaw = this.yaw.getValue();
             this.prevFocus = this.focus.getValue();
+            this.prevHeadRotation = this.headRotation.getValue();
+
+            if (this.pitch.getValue() > 0.8F) {
+                this.prevPitch = 0.8F;
+                this.pitch.setValue(0.8F);
+            }
+            else if (this.pitch.getValue() < -0.8F) {
+                this.prevPitch = -0.8F;
+                this.pitch.setValue(-0.8F);
+            }
 
             if (this.brightness.getValue() > 1.0F) {
                 this.prevBrightness = 1.0F;
@@ -93,13 +110,13 @@ public class LightHologramInstance implements ILightInstance {
                 this.focus.setValue(0.0F);
             }
 
-            if (this.length.getValue() > 20.0F) {
-                this.prevLength = 20.0F;
-                this.length.setValue(20.0F);
+            if (this.size.getValue() > 20.0F) {
+                this.prevSize = 20.0F;
+                this.size.setValue(20.0F);
             }
-            else if (this.length.getValue() < 0.0F) {
-                this.prevLength = 0.0F;
-                this.length.setValue(0.0F);
+            else if (this.size.getValue() < 0.0F) {
+                this.prevSize = 0.0F;
+                this.size.setValue(0.0F);
             }
 
             String playerName = this.playerName.getValue();
@@ -157,12 +174,18 @@ public class LightHologramInstance implements ILightInstance {
             return this.blue;
         if (identifier.equals("brightness"))
             return this.brightness;
-        if (identifier.equals("length"))
-            return this.length;
+        if (identifier.equals("size"))
+            return this.size;
+        if (identifier.equals("pitch"))
+            return this.pitch;
         if (identifier.equals("yaw"))
             return this.yaw;
         if (identifier.equals("focus"))
             return this.focus;
+        if (identifier.equals("headRotation"))
+            return this.headRotation;
+        if (identifier.equals("name"))
+            return this.playerName;
 
         return null;
     }
@@ -177,12 +200,16 @@ public class LightHologramInstance implements ILightInstance {
     public void setValue(String identifier, float value) {
         if (identifier.equals("brightness"))
             this.brightness.setValue(value);
-        if (identifier.equals("length"))
-            this.length.setValue(value);
+        if (identifier.equals("size"))
+            this.size.setValue(value);
+        if (identifier.equals("pitch"))
+            this.pitch.setValue(value);
         if (identifier.equals("yaw"))
             this.yaw.setValue(value);
         if (identifier.equals("focus"))
             this.focus.setValue(value);
+        if (identifier.equals("headRotation"))
+            this.headRotation.setValue(value);
     }
 
     @Override
@@ -210,12 +237,16 @@ public class LightHologramInstance implements ILightInstance {
     public float getFloat(String identifier, float partialTicks) {
         if (identifier.equals("brightness"))
             return MathHelper.partial(this.brightness.getValue(), this.prevBrightness, partialTicks);
-        if (identifier.equals("length"))
-            return MathHelper.partial(this.length.getValue(), this.prevLength, partialTicks);
+        if (identifier.equals("size"))
+            return MathHelper.partial(this.size.getValue(), this.prevSize, partialTicks);
+        if (identifier.equals("pitch"))
+            return MathHelper.partial(this.pitch.getValue(), this.prevPitch, partialTicks);
         if (identifier.equals("yaw"))
             return MathHelper.partial(this.yaw.getValue(), this.prevYaw, partialTicks);
         if (identifier.equals("focus"))
             return MathHelper.partial(this.focus.getValue(), this.prevFocus, partialTicks);
+        if (identifier.equals("headRotation"))
+            return MathHelper.partial(this.headRotation.getValue(), this.prevHeadRotation, partialTicks);
 
         return 0.0F;
     }
@@ -249,11 +280,13 @@ public class LightHologramInstance implements ILightInstance {
         this.prevBlue = this.blue.getValue();
         this.brightness.setValue(compound.getFloat("brightness"));
         this.prevBrightness = this.brightness.getValue();
-        this.length.setValue(compound.getFloat("length"));
-        this.prevLength = this.length.getValue();
+        this.size.setValue(compound.getFloat("size"));
+        this.prevSize = this.size.getValue();
         this.yaw.setValue(compound.getFloat("yaw"));
         this.prevYaw = this.yaw.getValue();
         this.focus.setValue(compound.getFloat("focus"));
+        this.headRotation.setValue(compound.getFloat("headRotation"));
+        this.prevHeadRotation = this.headRotation.getValue();
         this.prevFocus = this.focus.getValue();
         this.playerName.setValue(compound.getString("playerName"));
     }
@@ -264,9 +297,10 @@ public class LightHologramInstance implements ILightInstance {
         compound.setInteger("green", this.green.getValue());
         compound.setInteger("blue", this.blue.getValue());
         compound.setFloat("brightness", this.brightness.getValue());
-        compound.setFloat("length", this.length.getValue());
+        compound.setFloat("size", this.size.getValue());
         compound.setFloat("yaw", this.yaw.getValue());
         compound.setFloat("focus", this.focus.getValue());
+        compound.setFloat("headRotation", this.headRotation.getValue());
         compound.setString("playerName", this.playerName.getValue());
     }
 

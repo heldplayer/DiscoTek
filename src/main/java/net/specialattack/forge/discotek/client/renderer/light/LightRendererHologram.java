@@ -24,6 +24,8 @@ public class LightRendererHologram implements ILightRenderHandler {
 
     private ModelHologramPad modelHologramPad = new ModelHologramPad();
 
+    private ILightInstance instance = new LightHologramInstance(null);
+
     private static RenderPlayerCustom render = new RenderPlayerCustom();
     static {
         render.setRenderManager(RenderManager.instance);
@@ -129,6 +131,11 @@ public class LightRendererHologram implements ILightRenderHandler {
         double height = focus / 10.0D + 0.5D;
 
         return aabb.addCoord(point, height, point).addCoord(-point, height, -point);
+    }
+
+    @Override
+    public ILightInstance getRenderInstance() {
+        return this.instance;
     }
 
 }

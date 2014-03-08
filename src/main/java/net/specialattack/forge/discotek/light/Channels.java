@@ -11,8 +11,8 @@ public final class Channels {
     private static HashMap<String, Channels> identifierMap = new HashMap<String, Channels>();
 
     public static Channels BRIGHTNESS = new Channels(0, "brightness");
-    public static Channels TILT = new Channels(1, "pitch", -0.8F, 0.8F);
-    public static Channels PAN = new Channels(2, "yaw", 0.0F, (float) Math.PI * 4.0F);
+    public static Channels PITCH = new Channels(1, "pitch", -0.8F, 0.8F);
+    public static Channels YAW = new Channels(2, "yaw", 0.0F, (float) Math.PI * 4.0F);
     public static Channels FOCUS = new Channels(3, "focus", 0.0F, 20.0F);
     public static Channels RED = new Channels(4, "red");
     public static Channels GREEN = new Channels(5, "green");

@@ -123,6 +123,25 @@ public class LightFresnelInstance implements ILightInstance {
     public void setValue(String identifier, int value) {
         if (identifier.equals("color"))
             this.color.setValue(value);
+
+        if (identifier.equals("red")) {
+            int color = this.color.getValue();
+            color = color & 0x00FFFF;
+            color = color | ((value & 0xFF) << 16);
+            this.color.setValue(color);
+        }
+        if (identifier.equals("green")) {
+            int color = this.color.getValue();
+            color = color & 0xFF00FF;
+            color = color | ((value & 0xFF) << 8);
+            this.color.setValue(color);
+        }
+        if (identifier.equals("blue")) {
+            int color = this.color.getValue();
+            color = color & 0xFFFF00;
+            color = color | (value & 0xFF);
+            this.color.setValue(color);
+        }
     }
 
     @Override
@@ -154,6 +173,19 @@ public class LightFresnelInstance implements ILightInstance {
     public int getInteger(String identifier, float partialTicks) {
         if (identifier.equals("color"))
             return this.color.getValue();
+
+        if (identifier.equals("red")) {
+            int color = this.color.getValue();
+            return (color & 0xFF0000) >> 16;
+        }
+        if (identifier.equals("green")) {
+            int color = this.color.getValue();
+            return (color & 0xFF00) >> 8;
+        }
+        if (identifier.equals("blue")) {
+            int color = this.color.getValue();
+            return color & 0xFF;
+        }
 
         return 0;
     }

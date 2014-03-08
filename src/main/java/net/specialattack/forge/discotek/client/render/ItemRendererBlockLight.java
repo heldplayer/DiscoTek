@@ -5,6 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+import net.specialattack.forge.discotek.block.BlockLight;
+import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
@@ -47,12 +49,16 @@ public class ItemRendererBlockLight implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        Block block = Block.getBlockFromItem(item.getItem());
+        if (block == null || !(block instanceof BlockLight)) {
+            return;
+        }
+        BlockLight blockLight = (BlockLight) block;
+        ILightRenderHandler renderHandler = blockLight.getLightRenderer(item.getItemDamage());
+        this.renderTile.setLightInstance(renderHandler.getRenderInstance());
         this.renderTile.setValue("color", 0xFFFFFF);
         this.renderTile.setBlockType(Block.getBlockFromItem(item.getItem()));
         this.renderTile.blockMetadata = item.getItemDamage();
-        if (Block.getBlockFromItem(item.getItem()) == null) {
-            return;
-        }
         this.renderTile.blockType = Block.getBlockFromItem(item.getItem());
 
         if (item.stackTagCompound != null) {

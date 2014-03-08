@@ -2,6 +2,7 @@
 package net.specialattack.forge.discotek.client.renderer.light;
 
 import net.minecraft.util.AxisAlignedBB;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public interface ILightRenderHandler {
@@ -15,5 +16,7 @@ public interface ILightRenderHandler {
     boolean rendersFirst();
 
     AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks);
+
+    ILightInstance getRenderInstance();
 
 }

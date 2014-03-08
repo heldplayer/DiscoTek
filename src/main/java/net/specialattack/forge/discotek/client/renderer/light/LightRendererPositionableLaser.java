@@ -10,6 +10,8 @@ import net.specialattack.forge.discotek.client.model.ModelLightMoverBase;
 import net.specialattack.forge.discotek.client.model.ModelLightMoverLaser;
 import net.specialattack.forge.discotek.client.model.ModelLightTiltArms;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
+import net.specialattack.forge.discotek.light.instance.LightPositionableLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -23,6 +25,8 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
     private ModelLightMoverLaser modelLightMoverLaser = new ModelLightMoverLaser();
     private ModelLightMoverBase modelLightMoverBase = new ModelLightMoverBase();
     private ModelLightTiltArms modelLightTiltArms = new ModelLightTiltArms();
+
+    private ILightInstance instance = new LightPositionableLaserInstance(null);
 
     @Override
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
@@ -62,7 +66,7 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
         float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
         float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F;
-        float brightness = light.getInteger("brightness", partialTicks);
+        float brightness = light.getFloat("brightness", partialTicks);
         float alpha = (0.9F * brightness) + 0.1F;
 
         float focus = light.getFloat("focus", partialTicks);
@@ -148,6 +152,11 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         float y2 = y - distance;
 
         return aabb.addCoord(x1, y1, z1).addCoord(x2, y2, z2);
+    }
+
+    @Override
+    public ILightInstance getRenderInstance() {
+        return this.instance;
     }
 
 }

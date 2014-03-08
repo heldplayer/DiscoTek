@@ -8,6 +8,8 @@ import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLaserRound;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
+import net.specialattack.forge.discotek.light.instance.LightRadialLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -19,6 +21,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class LightRendererRadialLaser implements ILightRenderHandler {
 
     private ModelLaserRound modelLaserRound = new ModelLaserRound();
+
+    private ILightInstance instance = new LightRadialLaserInstance(null);
 
     @Override
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
@@ -44,7 +48,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
         float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
         float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F;
-        float brightness = light.getInteger("brightness", partialTicks);
+        float brightness = light.getFloat("brightness", partialTicks);
         float alpha = (0.9F * brightness) + 0.1F;
 
         float focus = light.getFloat("focus", partialTicks);
@@ -115,6 +119,11 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         float y = length * MathHelper.cos(angle);
 
         return aabb.addCoord(xz, y, xz).addCoord(-xz, 0, -xz);
+    }
+
+    @Override
+    public ILightInstance getRenderInstance() {
+        return this.instance;
     }
 
 }

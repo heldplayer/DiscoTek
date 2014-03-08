@@ -6,6 +6,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelDimmer;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
+import net.specialattack.forge.discotek.light.instance.LightDimmerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,6 +16,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class LightRendererDimmer implements ILightRenderHandler {
 
     private ModelDimmer modelDimmer = new ModelDimmer();
+
+    private ILightInstance instance = new LightDimmerInstance(null);
 
     @Override
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
@@ -39,6 +43,11 @@ public class LightRendererDimmer implements ILightRenderHandler {
     @Override
     public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
         return null;
+    }
+
+    @Override
+    public ILightInstance getRenderInstance() {
+        return this.instance;
     }
 
 }

@@ -8,6 +8,8 @@ import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLightParCan;
 import net.specialattack.forge.discotek.client.model.ModelLightYoke;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
+import net.specialattack.forge.discotek.light.instance.LightFresnelInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -21,6 +23,8 @@ public class LightRendererFresnel implements ILightRenderHandler {
     private ModelLightParCan modelLightParCan = new ModelLightParCan();
     private ModelLightYoke modelLightYoke = new ModelLightYoke();
 
+    private ILightInstance instance = new LightFresnelInstance(null);
+
     @Override
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
@@ -31,7 +35,7 @@ public class LightRendererFresnel implements ILightRenderHandler {
         float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
         float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
         float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F;
-        float brightness = light.getInteger("brightness", partialTicks);
+        float brightness = light.getFloat("brightness", partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("model");
 
@@ -67,10 +71,10 @@ public class LightRendererFresnel implements ILightRenderHandler {
         float pitch = light.getFloat("pitch", partialTicks);
         float yaw = light.getFloat("yaw", partialTicks);
 
-        float brightness = light.getInteger("brightness", partialTicks);
-        float red = ((light.getInteger("red", partialTicks) >> 16) & 0xFF) / 255.0F;
-        float green = ((light.getInteger("green", partialTicks) >> 8) & 0xFF) / 255.0F;
+        float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
+        float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
         float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F;
+        float brightness = light.getFloat("brightness", partialTicks);
         float alpha = (0.5F * brightness) + 0.1F;
 
         float focus = light.getFloat("focus", partialTicks);
@@ -194,6 +198,11 @@ public class LightRendererFresnel implements ILightRenderHandler {
         float y2 = y - distance;
 
         return aabb.addCoord(x1, y1, z1).addCoord(x2, y2, z2);
+    }
+
+    @Override
+    public ILightInstance getRenderInstance() {
+        return this.instance;
     }
 
 }
