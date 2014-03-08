@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LightRendererMap implements ILightRenderHandler {
+public class LightRendererMapLED implements ILightRenderHandler {
 
     private ModelLightMover modelLightMover = new ModelLightMover();
     private ModelLightMoverBase modelLightMoverBase = new ModelLightMoverBase();
@@ -57,19 +57,17 @@ public class LightRendererMap implements ILightRenderHandler {
         this.modelLightMover.setRotations(pitch, yaw);
         this.modelLightMover.render();
 
-        if (light.getBoolean("hasLens", partialTicks)) {
-            if (disableLightmap) {
-                Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
-            }
+        if (disableLightmap) {
+            Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
+        }
 
-            float lensBrightness = brightness + 0.1F;
-            GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
+        float lensBrightness = brightness + 0.1F;
+        GL11.glColor4f(red * lensBrightness, green * lensBrightness, blue * lensBrightness, 0.4F);
 
-            this.modelLightMover.renderLens();
+        this.modelLightMover.renderLens();
 
-            if (disableLightmap) {
-                Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
-            }
+        if (disableLightmap) {
+            Minecraft.getMinecraft().entityRenderer.enableLightmap(0.0D);
         }
 
         Minecraft.getMinecraft().mcProfiler.endSection();

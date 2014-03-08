@@ -89,11 +89,11 @@ public class ItemLens extends Item {
             if (lightType == null || !lightType.supportsLens()) {
                 return false;
             }
-            if (light.hasLens()) {
+            if (light.getBoolean("hasLens", 1.0F)) {
                 if (!world.isRemote) {
                     ItemStack is = new ItemStack(Objects.itemLens);
                     NBTTagCompound cpnd = new NBTTagCompound();
-                    cpnd.setInteger("color", light.getColor(1.0F));
+                    cpnd.setInteger("color", light.getInteger("color", 1.0F));
                     is.setTagCompound(cpnd);
 
                     Random rand = new Random();
@@ -111,8 +111,8 @@ public class ItemLens extends Item {
             }
 
             if (!world.isRemote) {
-                light.setColor(color);
-                light.setHasLens(true);
+                light.setValue("color", color);
+                light.setValue("hasLens", true);
             }
 
             if (!player.capabilities.isCreativeMode) {

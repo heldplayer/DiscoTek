@@ -4,22 +4,21 @@ package net.specialattack.forge.discotek.light;
 import java.util.Arrays;
 import java.util.List;
 
-import net.specialattack.forge.discotek.block.BlockLight;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
+import net.specialattack.forge.discotek.light.instance.LightMapInstance;
+import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class LightMap implements ILight {
 
     private final List<Channels> channels;
 
-    private boolean isLED;
+    public LightMap() {
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS);
+    }
 
-    public LightMap(boolean isLED) {
-        if (isLED) {
-            this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
-        }
-        else {
-            this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS);
-        }
-        this.isLED = isLED;
+    @Override
+    public ILightInstance createInstance(TileEntityLight tile) {
+        return new LightMapInstance(tile);
     }
 
     @Override
@@ -29,41 +28,12 @@ public class LightMap implements ILight {
 
     @Override
     public boolean supportsLens() {
-        return !this.isLED;
-    }
-
-    @Override
-    public int getRedstonePower(int channelValue) {
-        return 0;
+        return true;
     }
 
     @Override
     public String getIdentifier() {
-        return this.isLED ? "mapLED" : "map";
-    }
-
-    @Override
-    public void setBlockBounds(BlockLight block, int direction) {
-        switch (direction) {
-        case 0:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
-        break;
-        case 1:
-            block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
-        break;
-        case 2:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 1.0F);
-        break;
-        case 3:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0F, 0.9375F, 0.9375F, 0.9375F);
-        break;
-        case 4:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 1.0F, 0.9375F, 0.9375F);
-        break;
-        case 5:
-            block.setBlockBounds(0.0F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
-        break;
-        }
+        return "map";
     }
 
 }

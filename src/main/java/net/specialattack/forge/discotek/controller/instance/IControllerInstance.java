@@ -1,5 +1,5 @@
 
-package net.specialattack.forge.discotek.controller;
+package net.specialattack.forge.discotek.controller.instance;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

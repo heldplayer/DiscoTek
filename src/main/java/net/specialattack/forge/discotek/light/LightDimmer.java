@@ -4,14 +4,21 @@ package net.specialattack.forge.discotek.light;
 import java.util.Arrays;
 import java.util.List;
 
-import net.specialattack.forge.discotek.block.BlockLight;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
+import net.specialattack.forge.discotek.light.instance.LightDimmerInstance;
+import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class LightDimmer implements ILight {
 
     private final List<Channels> channels;
 
     public LightDimmer() {
-        this.channels = Arrays.asList(Channels.STRENGTH);
+        this.channels = Arrays.asList(Channels.REDSTONE);
+    }
+
+    @Override
+    public ILightInstance createInstance(TileEntityLight tile) {
+        return new LightDimmerInstance(tile);
     }
 
     @Override
@@ -25,18 +32,8 @@ public class LightDimmer implements ILight {
     }
 
     @Override
-    public int getRedstonePower(int channelValue) {
-        return (int) (channelValue / 16.0F);
-    }
-
-    @Override
     public String getIdentifier() {
         return "dimmer";
-    }
-
-    @Override
-    public void setBlockBounds(BlockLight block, int direction) {
-        block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
     }
 
 }

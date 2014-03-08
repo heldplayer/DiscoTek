@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.specialattack.forge.discotek.Instruction;
 import net.specialattack.forge.discotek.ModDiscoTek;
-import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
+import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
 import net.specialattack.forge.discotek.packet.Packet5GrandSpAInstruction;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,9 +25,9 @@ public class GuiInstructionsGrandSpA extends Gui {
     public int selected = -1;
     private boolean editing;
     public String editingString;
-    private ControllerGrandSpa.ControllerInstance controller;
+    private ControllerGrandSpAInstance controller;
 
-    public GuiInstructionsGrandSpA(ControllerGrandSpa.ControllerInstance controller, FontRenderer font, int posX, int posY, int width, int rows) {
+    public GuiInstructionsGrandSpA(ControllerGrandSpAInstance controller, FontRenderer font, int posX, int posY, int width, int rows) {
         this.font = font;
         this.posX = posX;
         this.posY = posY;

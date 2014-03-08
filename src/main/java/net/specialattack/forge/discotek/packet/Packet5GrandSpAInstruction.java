@@ -11,8 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
 import net.specialattack.forge.discotek.Instruction;
-import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
-import net.specialattack.forge.discotek.controller.IControllerInstance;
+import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
+import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.relauncher.Side;
 
@@ -29,7 +29,7 @@ public class Packet5GrandSpAInstruction extends SpACorePacket {
         super(null);
     }
 
-    public Packet5GrandSpAInstruction(ControllerGrandSpa.ControllerInstance controller, int line, String value, int argument) {
+    public Packet5GrandSpAInstruction(ControllerGrandSpAInstance controller, int line, String value, int argument) {
         super(controller.tile.getWorldObj());
 
         this.posX = controller.tile.xCoord;
@@ -81,8 +81,8 @@ public class Packet5GrandSpAInstruction extends SpACorePacket {
         if (tile != null && tile instanceof TileEntityController) {
             IControllerInstance controller = ((TileEntityController) tile).getControllerInstance();
 
-            if (controller != null && controller instanceof ControllerGrandSpa.ControllerInstance) {
-                ControllerGrandSpa.ControllerInstance grandSpA = (ControllerGrandSpa.ControllerInstance) controller;
+            if (controller != null && controller instanceof ControllerGrandSpAInstance) {
+                ControllerGrandSpAInstance grandSpA = (ControllerGrandSpAInstance) controller;
 
                 grandSpA.instructions[this.line] = new Instruction();
                 grandSpA.instructions[this.line].identifier = this.instruction;

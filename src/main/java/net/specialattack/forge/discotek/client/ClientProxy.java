@@ -25,15 +25,16 @@ import net.specialattack.forge.discotek.client.gui.GuiLight;
 import net.specialattack.forge.discotek.client.render.DistanceComparator;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.forge.discotek.client.render.ItemRendererLens;
+import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererDimmer;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererFresnel;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererHologram;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererMap;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererMapLED;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererPositionableLaser;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererRadialLaser;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
-import net.specialattack.forge.discotek.controller.IControllerInstance;
-import net.specialattack.forge.discotek.light.ILightRenderHandler;
+import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
@@ -56,8 +57,8 @@ public class ClientProxy extends CommonProxy {
         super.preInit(event);
 
         Objects.blockLight.setLightRenderer(0, new LightRendererFresnel());
-        Objects.blockLight.setLightRenderer(1, new LightRendererMap(false));
-        Objects.blockLight.setLightRenderer(2, new LightRendererMap(true));
+        Objects.blockLight.setLightRenderer(1, new LightRendererMap());
+        Objects.blockLight.setLightRenderer(2, new LightRendererMapLED());
         Objects.blockLight.setLightRenderer(3, new LightRendererDimmer());
         Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
         Objects.blockLight.setLightRenderer(5, new LightRendererHologram());

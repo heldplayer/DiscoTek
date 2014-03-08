@@ -8,7 +8,6 @@ import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLightParCan;
 import net.specialattack.forge.discotek.client.model.ModelLightYoke;
-import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -26,14 +25,13 @@ public class LightRendererFresnel implements ILightRenderHandler {
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
-        float pitch = light.getPitch(partialTicks);
-        float yaw = light.getYaw(partialTicks);
+        float pitch = light.getFloat("pitch", partialTicks);
+        float yaw = light.getFloat("yaw", partialTicks);
 
-        int color = light.getColor(partialTicks);
-        float red = ((color >> 16) & 0xFF) / 255.0F;
-        float green = ((color >> 8) & 0xFF) / 255.0F;
-        float blue = (color & 0xFF) / 255.0F;
-        float brightness = light.getBrightness(partialTicks);
+        float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
+        float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
+        float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F;
+        float brightness = light.getInteger("brightness", partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("model");
 
@@ -44,7 +42,7 @@ public class LightRendererFresnel implements ILightRenderHandler {
         this.modelLightParCan.setRotations(pitch, yaw);
         this.modelLightParCan.render();
 
-        if (light.hasLens()) {
+        if (light.getBoolean("hasLens", partialTicks)) {
             if (disableLightmap) {
                 Minecraft.getMinecraft().entityRenderer.disableLightmap(0.0D);
             }
@@ -66,19 +64,19 @@ public class LightRendererFresnel implements ILightRenderHandler {
     public void renderLight(TileEntityLight light, float partialTicks) {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
-        float pitch = light.getPitch(partialTicks);
-        float yaw = light.getYaw(partialTicks);
+        float pitch = light.getFloat("pitch", partialTicks);
+        float yaw = light.getFloat("yaw", partialTicks);
 
-        int color = light.getColor(partialTicks);
-        float brightness = light.getBrightness(partialTicks);
-        float red = ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float green = ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float blue = (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float brightness = light.getInteger("brightness", partialTicks);
+        float red = ((light.getInteger("red", partialTicks) >> 16) & 0xFF) / 255.0F;
+        float green = ((light.getInteger("green", partialTicks) >> 8) & 0xFF) / 255.0F;
+        float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F;
         float alpha = (0.5F * brightness) + 0.1F;
 
-        float length = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
+        float focus = light.getFloat("focus", partialTicks);
+        float length = MathHelper.min((64.0F / ((focus + 0.01F) * 0.7F)), 128.0F);
 
-        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 200.0F);
+        float angle = (float) (focus * Math.PI / 200.0F);
         float lengthb = MathHelper.cos(angle) * length;
         float distance = MathHelper.sin(angle) * length;
 
@@ -175,10 +173,11 @@ public class LightRendererFresnel implements ILightRenderHandler {
     public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-        float yaw = light.getYaw(partialTicks); // +-XZ
-        float pitch = light.getPitch(partialTicks); // +-Y
-        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 200.0F);
-        float length = MathHelper.min((64.0F / ((light.getFocus(partialTicks) + 0.01F) * 0.7F)), 128.0F);
+        float pitch = light.getFloat("pitch", partialTicks); // +-Y
+        float yaw = light.getFloat("yaw", partialTicks); // +-XZ
+        float focus = light.getFloat("focus", partialTicks);
+        float length = MathHelper.min((64.0F / ((focus + 0.01F) * 0.7F)), 128.0F);
+        float angle = (float) (focus * Math.PI / 200.0F);
         float lightLength = MathHelper.cos(angle) * length / 2.0F + 1.0F;
         float distance = MathHelper.sin(angle) * length;
 

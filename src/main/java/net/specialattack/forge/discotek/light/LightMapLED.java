@@ -5,20 +5,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
-import net.specialattack.forge.discotek.light.instance.LightHologramInstance;
+import net.specialattack.forge.discotek.light.instance.LightMapLEDInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
-public class LightHologram implements ILight {
+public class LightMapLED implements ILight {
 
     private final List<Channels> channels;
 
-    public LightHologram() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.HEAD_ROTATION, Channels.PAN, Channels.SIZE, Channels.RED, Channels.GREEN, Channels.BLUE, Channels.NAME);
+    public LightMapLED() {
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.TILT, Channels.PAN, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
     }
 
     @Override
     public ILightInstance createInstance(TileEntityLight tile) {
-        return new LightHologramInstance(tile);
+        return new LightMapLEDInstance(tile);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class LightHologram implements ILight {
 
     @Override
     public String getIdentifier() {
-        return "hologram";
+        return "mapLED";
     }
 
 }

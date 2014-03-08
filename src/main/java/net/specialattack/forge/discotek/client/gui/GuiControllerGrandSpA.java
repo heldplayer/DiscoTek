@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.specialattack.forge.discotek.Assets;
-import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
+import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
 
 import org.lwjgl.input.Keyboard;
 
@@ -16,12 +16,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiControllerGrandSpA extends GuiScreen {
 
-    private ControllerGrandSpa.ControllerInstance controller;
+    private ControllerGrandSpAInstance controller;
     private int guiHeight;
     private int guiWidth;
     private GuiInstructionsGrandSpA instructions;
 
-    public GuiControllerGrandSpA(ControllerGrandSpa.ControllerInstance controller) {
+    public GuiControllerGrandSpA(ControllerGrandSpAInstance controller) {
         this.controller = controller;
     }
 

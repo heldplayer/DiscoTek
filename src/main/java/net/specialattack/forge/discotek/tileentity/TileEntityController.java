@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.specialattack.forge.discotek.block.BlockController;
 import net.specialattack.forge.discotek.controller.IController;
-import net.specialattack.forge.discotek.controller.IControllerInstance;
+import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 
 public class TileEntityController extends TileEntity {
 
@@ -45,6 +45,22 @@ public class TileEntityController extends TileEntity {
             this.markDirty();
         }
         return this.controller;
+    }
+
+    @Override
+    public Block getBlockType() {
+        if (this.worldObj == null && this.blockType == null) {
+            return null;
+        }
+        return super.getBlockType();
+    }
+
+    public void setBlockType(int blockId) {
+        this.blockType = (Block) Block.blockRegistry.getObjectById(blockId);
+    }
+
+    public void setBlockType(String block) {
+        this.blockType = (Block) Block.blockRegistry.getObject(block);
     }
 
     @Override
@@ -123,22 +139,6 @@ public class TileEntityController extends TileEntity {
                 this.controller.doTick();
             }
         }
-    }
-
-    @Override
-    public Block getBlockType() {
-        if (this.worldObj == null && this.blockType == null) {
-            return null;
-        }
-        return super.getBlockType();
-    }
-
-    public void setBlockType(int blockId) {
-        this.blockType = (Block) Block.blockRegistry.getObjectById(blockId);
-    }
-
-    public void setBlockType(String block) {
-        this.blockType = (Block) Block.blockRegistry.getObject(block);
     }
 
     public boolean link(TileEntityLight light) {

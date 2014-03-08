@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class ItemDebug extends Item {
 
@@ -33,14 +32,6 @@ public class ItemDebug extends Item {
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null) {
             player.addChatMessage(new ChatComponentText(tile.toString()));
-            if (tile instanceof TileEntityLight) {
-                player.addChatMessage(new ChatComponentText("Level: " + ((TileEntityLight) tile).getBrightness(1.0F)));
-                String color = Integer.toHexString(((TileEntityLight) tile).getColor(1.0F)).toUpperCase();
-                while (color.length() < 6) {
-                    color = "0" + color;
-                }
-                player.addChatMessage(new ChatComponentText("Color: " + color));
-            }
         }
 
         return true;

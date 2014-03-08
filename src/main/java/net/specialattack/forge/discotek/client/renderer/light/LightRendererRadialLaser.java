@@ -8,7 +8,6 @@ import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLaserRound;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
-import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -25,7 +24,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
         Minecraft.getMinecraft().mcProfiler.startSection("transformations");
 
-        int side = light.getDirection();
+        int side = light.getInteger("direction", partialTicks);
 
         GL11.glRotatef(TileEntityLightRenderer.pitchRotations[side], 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(TileEntityLightRenderer.yawRotations[side], 0.0F, 1.0F, 0.0F);
@@ -42,25 +41,25 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
     public void renderLight(TileEntityLight light, float partialTicks) {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
-        int color = light.getColor(partialTicks);
-        float brightness = light.getBrightness(partialTicks);
-        float red = ((color >> 16) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float green = ((color >> 8) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
-        float blue = (color & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
+        float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
+        float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
+        float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F;
+        float brightness = light.getInteger("brightness", partialTicks);
         float alpha = (0.9F * brightness) + 0.1F;
 
-        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);
-        float length1 = (light.getLength(partialTicks) + 0.8F) * 2.0F + 1.0F;
+        float focus = light.getFloat("focus", partialTicks);
+        float angle = (float) (focus * Math.PI / 64.0F);
+        float length1 = (focus + 0.8F) * 2.0F + 1.0F;
         float length2 = length1 + 5.0F;
         float height1 = MathHelper.cos(angle) * length1;
         float height2 = MathHelper.cos(angle) * length2;
         float distance1 = MathHelper.sin(angle) * length1;
         float distance2 = MathHelper.sin(angle) * length2;
-        float yaw = light.getYaw(partialTicks);
+        float yaw = light.getFloat("yaw", partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
-        int side = light.getDirection();
+        int side = light.getInteger("direction", partialTicks);
 
         GL11.glRotatef(TileEntityLightRenderer.pitchRotations[side], 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(TileEntityLightRenderer.yawRotations[side], 0.0F, 1.0F, 0.0F);
@@ -108,8 +107,9 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
     public AxisAlignedBB getRenderingAABB(TileEntityLight light, float partialTicks) {
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-        float angle = (float) (light.getFocus(partialTicks) * Math.PI / 64.0F);
-        float length = (light.getLength(partialTicks) + 0.8F) * 2.0F + 6.0F;
+        float focus = light.getFloat("focus", partialTicks);
+        float angle = (float) (focus * Math.PI / 64.0F);
+        float length = (focus + 0.8F) * 2.0F + 6.0F;
 
         float xz = length * MathHelper.sin(angle);
         float y = length * MathHelper.cos(angle);

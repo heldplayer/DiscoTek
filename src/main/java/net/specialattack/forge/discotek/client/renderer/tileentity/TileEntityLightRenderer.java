@@ -8,8 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.block.BlockLight;
+import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.light.ILight;
-import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -53,7 +53,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                     boolean debug = false;
                     if (debug) {
                         //GL11.glDisable(GL11.GL_DEPTH_TEST);
-                        int color = tileLight.getColor(partialTicks);
+                        int color = tileLight.getInteger("color", partialTicks);
                         float red = ((color & 0xFF0000) >> 16) / 255.0F;
                         float green = ((color & 0xFF00) >> 8) / 255.0F;
                         float blue = (color & 0xFF) / 255.0F;

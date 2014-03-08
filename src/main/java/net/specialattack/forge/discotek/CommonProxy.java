@@ -33,6 +33,7 @@ import net.specialattack.forge.discotek.light.LightDimmer;
 import net.specialattack.forge.discotek.light.LightFresnel;
 import net.specialattack.forge.discotek.light.LightHologram;
 import net.specialattack.forge.discotek.light.LightMap;
+import net.specialattack.forge.discotek.light.LightMapLED;
 import net.specialattack.forge.discotek.light.LightPositionableLaser;
 import net.specialattack.forge.discotek.light.LightRadialLaser;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
@@ -49,8 +50,8 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockLight = new BlockLight();
         Objects.blockLight.setBlockTextureName(Assets.DOMAIN + "truss2");
         Objects.blockLight.setLight(0, new LightFresnel());
-        Objects.blockLight.setLight(1, new LightMap(false));
-        Objects.blockLight.setLight(2, new LightMap(true));
+        Objects.blockLight.setLight(1, new LightMap());
+        Objects.blockLight.setLight(2, new LightMapLED());
         Objects.blockLight.setLight(3, new LightDimmer());
         Objects.blockLight.setLight(4, new LightRadialLaser());
         Objects.blockLight.setLight(5, new LightHologram());

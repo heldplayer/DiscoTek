@@ -10,8 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
-import net.specialattack.forge.discotek.controller.ControllerPixel;
-import net.specialattack.forge.discotek.controller.IControllerInstance;
+import net.specialattack.forge.discotek.controller.instance.ControllerPixelInstance;
+import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.relauncher.Side;
 
@@ -27,7 +27,7 @@ public class Packet3PixelSlider extends SpACorePacket {
         super(null);
     }
 
-    public Packet3PixelSlider(ControllerPixel.ControllerInstance controller, int id, int level) {
+    public Packet3PixelSlider(ControllerPixelInstance controller, int id, int level) {
         super(controller.tile.getWorldObj());
 
         this.posX = controller.tile.xCoord;
@@ -72,8 +72,8 @@ public class Packet3PixelSlider extends SpACorePacket {
         if (tile != null && tile instanceof TileEntityController) {
             IControllerInstance controller = ((TileEntityController) tile).getControllerInstance();
 
-            if (controller != null && controller instanceof ControllerPixel.ControllerInstance) {
-                ((ControllerPixel.ControllerInstance) controller).doSlider(this.id, this.level);
+            if (controller != null && controller instanceof ControllerPixelInstance) {
+                ((ControllerPixelInstance) controller).doSlider(this.id, this.level);
             }
 
             tile.markDirty();

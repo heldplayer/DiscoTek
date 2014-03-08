@@ -17,7 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.controller.IController;
-import net.specialattack.forge.discotek.controller.IControllerInstance;
+import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

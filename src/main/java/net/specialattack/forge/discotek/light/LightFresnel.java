@@ -4,7 +4,9 @@ package net.specialattack.forge.discotek.light;
 import java.util.Arrays;
 import java.util.List;
 
-import net.specialattack.forge.discotek.block.BlockLight;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
+import net.specialattack.forge.discotek.light.instance.LightFresnelInstance;
+import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class LightFresnel implements ILight {
 
@@ -12,6 +14,11 @@ public class LightFresnel implements ILight {
 
     public LightFresnel() {
         this.channels = Arrays.asList(Channels.BRIGHTNESS);
+    }
+
+    @Override
+    public ILightInstance createInstance(TileEntityLight tile) {
+        return new LightFresnelInstance(tile);
     }
 
     @Override
@@ -25,18 +32,8 @@ public class LightFresnel implements ILight {
     }
 
     @Override
-    public int getRedstonePower(int channelValue) {
-        return 0;
-    }
-
-    @Override
     public String getIdentifier() {
         return "fresnel";
-    }
-
-    @Override
-    public void setBlockBounds(BlockLight block, int direction) {
-        block.setBlockBounds(0.0625F, 0.125F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
     }
 
 }

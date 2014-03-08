@@ -24,10 +24,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.render.BlockRendererLight;
+import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.item.ItemOrienter;
-import net.specialattack.forge.discotek.light.Channels;
 import net.specialattack.forge.discotek.light.ILight;
-import net.specialattack.forge.discotek.light.ILightRenderHandler;
+import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.packet.Packet2LightGui;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import net.specialattack.util.Table;
@@ -86,10 +86,10 @@ public class BlockLight extends Block {
 
         if (stack.stackTagCompound != null) {
             if (stack.stackTagCompound.hasKey("color")) {
-                tile.setColor(stack.stackTagCompound.getInteger("color"));
+                tile.setValue("color", stack.stackTagCompound.getInteger("color"));
             }
             if (light != null && light.supportsLens() && stack.stackTagCompound.hasKey("hasLens")) {
-                tile.setHasLens(stack.stackTagCompound.getBoolean("hasLens"));
+                tile.setValue("hasLens", stack.stackTagCompound.getBoolean("hasLens"));
             }
         }
 
@@ -109,9 +109,9 @@ public class BlockLight extends Block {
             yaw = -yaw;
         }
 
-        tile.setYaw((float) (yaw * Math.PI / 180.0D));
-        tile.setPitch((float) (pitch * Math.PI / 180.0D));
-        tile.setDirection(this.temp);
+        tile.setValue("yaw", (float) (yaw * Math.PI / 180.0D));
+        tile.setValue("pitch", (float) (pitch * Math.PI / 180.0D));
+        tile.setValue("direction", this.temp);
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
     }
 
@@ -129,11 +129,11 @@ public class BlockLight extends Block {
             TileEntityLight light = (TileEntityLight) tile;
 
             if (player.isSneaking()) {
-                if (light.hasLens() && light.getLight().supportsLens()) {
+                if (light.getBoolean("hasLens", 1.0F) && light.getLight().supportsLens()) {
                     if (!world.isRemote) {
                         ItemStack is = new ItemStack(Objects.itemLens);
                         NBTTagCompound cpnd = new NBTTagCompound();
-                        cpnd.setInteger("color", light.getColor(1.0F));
+                        cpnd.setInteger("color", light.getInteger("color", 1.0F));
                         is.setTagCompound(cpnd);
 
                         Random rand = new Random();
@@ -143,8 +143,8 @@ public class BlockLight extends Block {
                         ent.motionZ += (rand.nextFloat() - rand.nextFloat()) * 0.1F;
                         ent.delayBeforeCanPickup = 1;
 
-                        light.setColor(0xFFFFFF);
-                        light.setHasLens(false);
+                        light.setValue("color", 0xFFFFFF);
+                        light.setValue("hasLens", false);
                         light.markDirty();
                     }
                     return true;
@@ -185,9 +185,9 @@ public class BlockLight extends Block {
         NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
 
         if (this.light != null) {
-            compound.setInteger("color", this.light.getColor(1.0F));
+            compound.setInteger("color", this.light.getInteger("color", 1.0F));
             if (light.supportsLens()) {
-                compound.setBoolean("hasLens", this.light.hasLens());
+                compound.setBoolean("hasLens", this.light.getBoolean("hasLens", 1.0F));
             }
             this.light = null;
         }
@@ -245,7 +245,7 @@ public class BlockLight extends Block {
         TileEntity tile = world.getTileEntity(x, y, z);
 
         if (light != null && tile != null && tile instanceof TileEntityLight) {
-            return light.getRedstonePower(((TileEntityLight) tile).getLevel(Channels.STRENGTH));
+            return ((TileEntityLight) tile).getInteger("redstone", 1.0F);
         }
 
         return 0;
@@ -257,7 +257,10 @@ public class BlockLight extends Block {
         TileEntity tile = world.getTileEntity(x, y, z);
 
         if (light != null && tile != null && tile instanceof TileEntityLight) {
-            light.setBlockBounds(this, ((TileEntityLight) tile).getDirection());
+            ILightInstance instance = ((TileEntityLight) tile).getLightInstance();
+            if (instance != null) {
+                instance.setBlockBounds(this);
+            }
         }
         else {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -288,9 +291,9 @@ public class BlockLight extends Block {
         NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
 
         if (this.light != null) {
-            compound.setInteger("color", this.light.getColor(1.0F));
+            compound.setInteger("color", this.light.getInteger("color", 1.0F));
             if (light.supportsLens()) {
-                compound.setBoolean("hasLens", this.light.hasLens());
+                compound.setBoolean("hasLens", this.light.getBoolean("hasLens", 1.0F));
             }
             this.light = null;
         }

@@ -6,7 +6,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelDimmer;
-import net.specialattack.forge.discotek.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

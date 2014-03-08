@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
 import net.specialattack.forge.discotek.Instruction;
 import net.specialattack.forge.discotek.ModDiscoTek;
-import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
-import net.specialattack.forge.discotek.controller.IControllerInstance;
+import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
+import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.relauncher.Side;
 
@@ -29,7 +29,7 @@ public class Packet6GrandSpAGui extends SpACorePacket {
         super(null);
     }
 
-    public Packet6GrandSpAGui(ControllerGrandSpa.ControllerInstance controller) {
+    public Packet6GrandSpAGui(ControllerGrandSpAInstance controller) {
         super(controller.tile.getWorldObj());
 
         this.posX = controller.tile.xCoord;
@@ -100,8 +100,8 @@ public class Packet6GrandSpAGui extends SpACorePacket {
             TileEntityController controller = (TileEntityController) tile;
             IControllerInstance instance = controller.getControllerInstance();
 
-            if (instance != null && instance instanceof ControllerGrandSpa.ControllerInstance) {
-                ControllerGrandSpa.ControllerInstance grandSpA = (ControllerGrandSpa.ControllerInstance) instance;
+            if (instance != null && instance instanceof ControllerGrandSpAInstance) {
+                ControllerGrandSpAInstance grandSpA = (ControllerGrandSpAInstance) instance;
 
                 grandSpA.instructions = new Instruction[this.instructions.length];
                 for (int i = 0; i < this.instructions.length; i++) {

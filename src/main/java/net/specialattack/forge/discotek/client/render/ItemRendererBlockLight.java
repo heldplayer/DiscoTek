@@ -20,7 +20,6 @@ public class ItemRendererBlockLight implements IItemRenderer {
 
     public ItemRendererBlockLight() {
         this.renderTile = new TileEntityLight();
-        this.renderTile.setDirection(1);
     }
 
     @Override
@@ -48,7 +47,9 @@ public class ItemRendererBlockLight implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        this.renderTile.setColor(0xFFFFFF);
+        this.renderTile.setValue("color", 0xFFFFFF);
+        this.renderTile.setBlockType(Block.getBlockFromItem(item.getItem()));
+        this.renderTile.blockMetadata = item.getItemDamage();
         if (Block.getBlockFromItem(item.getItem()) == null) {
             return;
         }
@@ -56,7 +57,7 @@ public class ItemRendererBlockLight implements IItemRenderer {
 
         if (item.stackTagCompound != null) {
             if (item.stackTagCompound.hasKey("color")) {
-                this.renderTile.setColor(item.stackTagCompound.getInteger("color"));
+                this.renderTile.setValue("color", item.stackTagCompound.getInteger("color"));
             }
         }
         this.renderTile.blockMetadata = item.getItemDamage();

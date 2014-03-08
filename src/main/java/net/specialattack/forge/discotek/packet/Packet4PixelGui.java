@@ -11,8 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
 import net.specialattack.forge.discotek.ModDiscoTek;
-import net.specialattack.forge.discotek.controller.ControllerPixel;
-import net.specialattack.forge.discotek.controller.IControllerInstance;
+import net.specialattack.forge.discotek.controller.instance.ControllerPixelInstance;
+import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import cpw.mods.fml.relauncher.Side;
 
@@ -27,7 +27,7 @@ public class Packet4PixelGui extends SpACorePacket {
         super(null);
     }
 
-    public Packet4PixelGui(ControllerPixel.ControllerInstance controller) {
+    public Packet4PixelGui(ControllerPixelInstance controller) {
         super(controller.tile.getWorldObj());
 
         this.posX = controller.tile.xCoord;
@@ -78,8 +78,8 @@ public class Packet4PixelGui extends SpACorePacket {
             TileEntityController controller = (TileEntityController) tile;
             IControllerInstance instance = controller.getControllerInstance();
 
-            if (instance != null && instance instanceof ControllerPixel.ControllerInstance) {
-                ((ControllerPixel.ControllerInstance) instance).levels = this.levels;
+            if (instance != null && instance instanceof ControllerPixelInstance) {
+                ((ControllerPixelInstance) instance).levels = this.levels;
             }
 
             ModDiscoTek.proxy.openControllerGui(controller);
