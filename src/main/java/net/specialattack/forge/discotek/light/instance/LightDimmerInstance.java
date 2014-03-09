@@ -81,12 +81,12 @@ public class LightDimmerInstance implements ILightInstance {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound) {
         this.redstone.setValue(compound.getInteger("redstone"));
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void writeToNBT(NBTTagCompound compound) {
         compound.setInteger("redstone", this.redstone.getValue());
     }
 

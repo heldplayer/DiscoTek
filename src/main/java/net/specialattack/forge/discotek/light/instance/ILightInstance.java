@@ -33,8 +33,8 @@ public interface ILightInstance {
 
     boolean getBoolean(String identifier, float partialTicks);
 
-    void writeToNBT(NBTTagCompound compound);
-
     void readFromNBT(NBTTagCompound compound);
+
+    void writeToNBT(NBTTagCompound compound);
 
 }

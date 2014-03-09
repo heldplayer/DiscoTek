@@ -199,7 +199,7 @@ public class LightFresnelInstance implements ILightInstance {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound) {
         this.hasLens.setValue(compound.getBoolean("hasLens"));
         this.color.setValue(compound.getInteger("color"));
         this.brightness.setValue(compound.getFloat("brightness"));
@@ -213,7 +213,7 @@ public class LightFresnelInstance implements ILightInstance {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void writeToNBT(NBTTagCompound compound) {
         compound.setBoolean("hasLens", this.hasLens.getValue());
         compound.setInteger("color", this.color.getValue());
         compound.setFloat("brightness", this.brightness.getValue());
