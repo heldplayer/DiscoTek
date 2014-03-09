@@ -13,7 +13,7 @@ public class LightMapLED implements ILight {
     private final List<Channels> channels;
 
     public LightMapLED() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.PITCH, Channels.YAW, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.PITCH, Channels.ROTATION, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
     }
 
     @Override

@@ -12,16 +12,16 @@ public final class Channels {
 
     public static Channels BRIGHTNESS = new Channels(0, "brightness");
     public static Channels PITCH = new Channels(1, "pitch", -0.8F, 0.8F);
-    public static Channels YAW = new Channels(2, "yaw", 0.0F, (float) Math.PI * 4.0F);
+    public static Channels ROTATION = new Channels(2, "rotation", 0.0F, (float) Math.PI * 4.0F);
     public static Channels FOCUS = new Channels(3, "focus", 0.0F, 20.0F);
     public static Channels RED = new Channels(4, "red");
     public static Channels GREEN = new Channels(5, "green");
     public static Channels BLUE = new Channels(6, "blue");
     public static Channels REDSTONE = new Channels(7, "redstone", 0.0F, 0.15F);
     public static Channels NAME = new Channels(8, "name", true);
-    public static Channels SIZE = new Channels(9, "size");
+    public static Channels SIZE = new Channels(9, "size", 0.0F, 20.0F);
     public static Channels LENGTH = new Channels(10, "length", 0.0F, 20.0F);
-    public static Channels HEAD_ROTATION = new Channels(11, "headRotation", -0.8F, 0.8F);
+    public static Channels HEAD_ROTATION = new Channels(11, "headRotation", -72.0F, 72.0F);
 
     public final String identifier;
     public final int id;

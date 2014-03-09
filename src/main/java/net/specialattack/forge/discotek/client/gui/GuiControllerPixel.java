@@ -88,8 +88,8 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
         this.fontRendererObj.drawString(title, x, y, 0x000000);
 
         for (int i = 0; i < 2; i++) {
-            for (int j = 1; j <= 12; j++) {
-                int xp = this.width / 2 - (6 * 18) + ((j - 1) * 18);
+            for (int j = 0; j < 12; j++) {
+                int xp = this.width / 2 - (6 * 18) + (j * 18);
                 int yp = (this.height) / 2 + (i * 100) + 5;
                 String txt = (j + (i * 12)) + "";
                 this.fontRendererObj.drawString(txt, xp + (16 - this.fontRendererObj.getStringWidth(txt)) / 2, yp - 16, 0x000000);

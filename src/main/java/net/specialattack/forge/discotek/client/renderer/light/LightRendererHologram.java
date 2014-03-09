@@ -58,11 +58,11 @@ public class LightRendererHologram implements ILightRenderHandler {
         float blue = (light.getInteger("blue", partialTicks) & 0xFF) / 255.0F * (brightness * 0.5F + 0.5F);
         float alpha = (0.9F * brightness) + 0.1F;
 
-        float pitch = light.getFloat("pitch", partialTicks);
-        float yaw = light.getFloat("yaw", partialTicks);
-        float focus = light.getFloat("focus", partialTicks);
-        float scale = focus / 10.0F + 0.5F;
-        float yawHead = focus * 9.0F - 90.0F;
+        float pitch = light.getFloat("pitch", partialTicks) * 90.0F;
+        float yaw = light.getFloat("yaw", partialTicks) * 90.0F;
+        float size = light.getFloat("size", partialTicks);
+        float scale = size / 10.0F + 0.5F;
+        float yawHead = light.getFloat("headRotation", partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 

@@ -13,7 +13,7 @@ public class LightHologram implements ILight {
     private final List<Channels> channels;
 
     public LightHologram() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.PITCH, Channels.HEAD_ROTATION, Channels.YAW, Channels.SIZE, Channels.RED, Channels.GREEN, Channels.BLUE, Channels.NAME);
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.HEAD_ROTATION, Channels.PITCH, Channels.ROTATION, Channels.SIZE, Channels.RED, Channels.GREEN, Channels.BLUE, Channels.NAME);
     }
 
     @Override

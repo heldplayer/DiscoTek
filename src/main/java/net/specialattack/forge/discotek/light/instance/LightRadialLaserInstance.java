@@ -22,14 +22,14 @@ public class LightRadialLaserInstance implements ILightInstance {
     private SInteger blue;
     private SFloat brightness;
     private SFloat length;
-    private SFloat yaw;
+    private SFloat rotation;
     private SFloat focus;
     private int prevRed = 0xFF;
     private int prevGreen = 0xFF;
     private int prevBlue = 0xFF;
     private float prevBrightness = 1.0F;
     private float prevLength = 0.0F;
-    private float prevYaw = 0.0F;
+    private float prevRotation = 0.0F;
     private float prevFocus = 1.0F;
 
     private List<ISyncable> syncables;
@@ -42,9 +42,9 @@ public class LightRadialLaserInstance implements ILightInstance {
         this.blue = new SInteger(tile, 0xFF);
         this.brightness = new SFloat(tile, 1.0F);
         this.length = new SFloat(tile, 0.0F);
-        this.yaw = new SFloat(tile, 0.0F);
+        this.rotation = new SFloat(tile, 0.0F);
         this.focus = new SFloat(tile, 1.0F);
-        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.length, this.yaw, this.focus);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.length, this.rotation, this.focus);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LightRadialLaserInstance implements ILightInstance {
             this.prevBlue = this.blue.getValue();
             this.prevBrightness = this.brightness.getValue();
             this.prevLength = this.length.getValue();
-            this.prevYaw = this.yaw.getValue();
+            this.prevRotation = this.rotation.getValue();
             this.prevFocus = this.focus.getValue();
 
             if (this.brightness.getValue() > 1.0F) {
@@ -130,8 +130,8 @@ public class LightRadialLaserInstance implements ILightInstance {
             return this.brightness;
         if (identifier.equals("length"))
             return this.length;
-        if (identifier.equals("yaw"))
-            return this.yaw;
+        if (identifier.equals("rotation"))
+            return this.rotation;
         if (identifier.equals("focus"))
             return this.focus;
 
@@ -147,8 +147,8 @@ public class LightRadialLaserInstance implements ILightInstance {
             this.brightness.setValue(value);
         if (identifier.equals("length"))
             this.length.setValue(value);
-        if (identifier.equals("yaw"))
-            this.yaw.setValue(value);
+        if (identifier.equals("rotation"))
+            this.rotation.setValue(value);
         if (identifier.equals("focus"))
             this.focus.setValue(value);
     }
@@ -176,13 +176,13 @@ public class LightRadialLaserInstance implements ILightInstance {
     @Override
     public float getFloat(String identifier, float partialTicks) {
         if (identifier.equals("brightness"))
-            return MathHelper.partial(this.brightness.getValue(), this.prevBrightness, partialTicks);
+            return MathHelper.partial(this.prevBrightness, this.brightness.getValue(), partialTicks);
         if (identifier.equals("length"))
-            return MathHelper.partial(this.length.getValue(), this.prevLength, partialTicks);
-        if (identifier.equals("yaw"))
-            return MathHelper.partial(this.yaw.getValue(), this.prevYaw, partialTicks);
+            return MathHelper.partial(this.prevLength, this.length.getValue(), partialTicks);
+        if (identifier.equals("rotation"))
+            return MathHelper.partial(this.prevRotation, this.rotation.getValue(), partialTicks);
         if (identifier.equals("focus"))
-            return MathHelper.partial(this.focus.getValue(), this.prevFocus, partialTicks);
+            return MathHelper.partial(this.prevFocus, this.focus.getValue(), partialTicks);
 
         return 0.0F;
     }
@@ -192,11 +192,11 @@ public class LightRadialLaserInstance implements ILightInstance {
         if (identifier.equals("direction"))
             return this.direction.getValue();
         if (identifier.equals("red"))
-            return MathHelper.partial(this.red.getValue(), this.prevRed, partialTicks);
+            return MathHelper.partial(this.prevRed, this.red.getValue(), partialTicks);
         if (identifier.equals("green"))
-            return MathHelper.partial(this.green.getValue(), this.prevGreen, partialTicks);
+            return MathHelper.partial(this.prevGreen, this.green.getValue(), partialTicks);
         if (identifier.equals("blue"))
-            return MathHelper.partial(this.blue.getValue(), this.prevBlue, partialTicks);
+            return MathHelper.partial(this.prevBlue, this.blue.getValue(), partialTicks);
 
         return 0;
     }
@@ -218,8 +218,8 @@ public class LightRadialLaserInstance implements ILightInstance {
         this.prevBrightness = this.brightness.getValue();
         this.length.setValue(compound.getFloat("length"));
         this.prevLength = this.length.getValue();
-        this.yaw.setValue(compound.getFloat("yaw"));
-        this.prevYaw = this.yaw.getValue();
+        this.rotation.setValue(compound.getFloat("rotation"));
+        this.prevRotation = this.rotation.getValue();
         this.focus.setValue(compound.getFloat("focus"));
         this.prevFocus = this.focus.getValue();
     }
@@ -231,7 +231,7 @@ public class LightRadialLaserInstance implements ILightInstance {
         compound.setInteger("blue", this.blue.getValue());
         compound.setFloat("brightness", this.brightness.getValue());
         compound.setFloat("length", this.length.getValue());
-        compound.setFloat("yaw", this.yaw.getValue());
+        compound.setFloat("rotation", this.rotation.getValue());
         compound.setFloat("focus", this.focus.getValue());
     }
 

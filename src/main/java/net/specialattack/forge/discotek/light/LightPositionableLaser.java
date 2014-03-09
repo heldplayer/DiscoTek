@@ -13,7 +13,7 @@ public class LightPositionableLaser implements ILight {
     private final List<Channels> channels;
 
     public LightPositionableLaser() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.LENGTH, Channels.PITCH, Channels.YAW, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.LENGTH, Channels.PITCH, Channels.ROTATION, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
     }
 
     @Override

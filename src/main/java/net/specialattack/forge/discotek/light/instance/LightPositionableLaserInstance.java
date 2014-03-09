@@ -23,7 +23,7 @@ public class LightPositionableLaserInstance implements ILightInstance {
     private SFloat brightness;
     private SFloat length;
     private SFloat pitch;
-    private SFloat yaw;
+    private SFloat rotation;
     private SFloat focus;
     private int prevRed = 0xFF;
     private int prevGreen = 0xFF;
@@ -31,7 +31,7 @@ public class LightPositionableLaserInstance implements ILightInstance {
     private float prevBrightness = 1.0F;
     private float prevLength = 0.0F;
     private float prevPitch = 0.0F;
-    private float prevYaw = 0.0F;
+    private float prevRotation = 0.0F;
     private float prevFocus = 1.0F;
 
     private List<ISyncable> syncables;
@@ -45,9 +45,9 @@ public class LightPositionableLaserInstance implements ILightInstance {
         this.brightness = new SFloat(tile, 1.0F);
         this.length = new SFloat(tile, 0.0F);
         this.pitch = new SFloat(tile, 0.0F);
-        this.yaw = new SFloat(tile, 0.0F);
+        this.rotation = new SFloat(tile, 0.0F);
         this.focus = new SFloat(tile, 1.0F);
-        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.length, this.pitch, this.yaw, this.focus);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.length, this.pitch, this.rotation, this.focus);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class LightPositionableLaserInstance implements ILightInstance {
             this.prevBrightness = this.brightness.getValue();
             this.prevLength = this.length.getValue();
             this.prevPitch = this.pitch.getValue();
-            this.prevYaw = this.yaw.getValue();
+            this.prevRotation = this.rotation.getValue();
             this.prevFocus = this.focus.getValue();
             if (this.pitch.getValue() > 0.8F) {
                 this.prevPitch = 0.8F;
@@ -144,8 +144,8 @@ public class LightPositionableLaserInstance implements ILightInstance {
             return this.length;
         if (identifier.equals("pitch"))
             return this.pitch;
-        if (identifier.equals("yaw"))
-            return this.yaw;
+        if (identifier.equals("rotation"))
+            return this.rotation;
         if (identifier.equals("focus"))
             return this.focus;
 
@@ -163,8 +163,8 @@ public class LightPositionableLaserInstance implements ILightInstance {
             this.length.setValue(value);
         if (identifier.equals("pitch"))
             this.pitch.setValue(value);
-        if (identifier.equals("yaw"))
-            this.yaw.setValue(value);
+        if (identifier.equals("rotation"))
+            this.rotation.setValue(value);
         if (identifier.equals("focus"))
             this.focus.setValue(value);
     }
@@ -192,15 +192,15 @@ public class LightPositionableLaserInstance implements ILightInstance {
     @Override
     public float getFloat(String identifier, float partialTicks) {
         if (identifier.equals("brightness"))
-            return MathHelper.partial(this.brightness.getValue(), this.prevBrightness, partialTicks);
+            return MathHelper.partial(this.prevBrightness, this.brightness.getValue(), partialTicks);
         if (identifier.equals("length"))
-            return MathHelper.partial(this.length.getValue(), this.prevLength, partialTicks);
+            return MathHelper.partial(this.prevLength, this.length.getValue(), partialTicks);
         if (identifier.equals("pitch"))
-            return MathHelper.partial(this.pitch.getValue(), this.prevPitch, partialTicks);
-        if (identifier.equals("yaw"))
-            return MathHelper.partial(this.yaw.getValue(), this.prevYaw, partialTicks);
+            return MathHelper.partial(this.prevPitch, this.pitch.getValue(), partialTicks);
+        if (identifier.equals("rotation"))
+            return MathHelper.partial(this.prevRotation, this.rotation.getValue(), partialTicks);
         if (identifier.equals("focus"))
-            return MathHelper.partial(this.focus.getValue(), this.prevFocus, partialTicks);
+            return MathHelper.partial(this.prevFocus, this.focus.getValue(), partialTicks);
 
         return 0.0F;
     }
@@ -210,11 +210,11 @@ public class LightPositionableLaserInstance implements ILightInstance {
         if (identifier.equals("direction"))
             return this.direction.getValue();
         if (identifier.equals("red"))
-            return MathHelper.partial(this.red.getValue(), this.prevRed, partialTicks);
+            return MathHelper.partial(this.prevRed, this.red.getValue(), partialTicks);
         if (identifier.equals("green"))
-            return MathHelper.partial(this.green.getValue(), this.prevGreen, partialTicks);
+            return MathHelper.partial(this.prevGreen, this.green.getValue(), partialTicks);
         if (identifier.equals("blue"))
-            return MathHelper.partial(this.blue.getValue(), this.prevBlue, partialTicks);
+            return MathHelper.partial(this.prevBlue, this.blue.getValue(), partialTicks);
 
         return 0;
     }
@@ -238,8 +238,8 @@ public class LightPositionableLaserInstance implements ILightInstance {
         this.prevLength = this.length.getValue();
         this.pitch.setValue(compound.getFloat("pitch"));
         this.prevPitch = this.pitch.getValue();
-        this.yaw.setValue(compound.getFloat("yaw"));
-        this.prevYaw = this.yaw.getValue();
+        this.rotation.setValue(compound.getFloat("rotation"));
+        this.prevRotation = this.rotation.getValue();
         this.focus.setValue(compound.getFloat("focus"));
         this.prevFocus = this.focus.getValue();
     }
@@ -252,7 +252,7 @@ public class LightPositionableLaserInstance implements ILightInstance {
         compound.setFloat("brightness", this.brightness.getValue());
         compound.setFloat("length", this.length.getValue());
         compound.setFloat("pitch", this.pitch.getValue());
-        compound.setFloat("yaw", this.yaw.getValue());
+        compound.setFloat("rotation", this.rotation.getValue());
         compound.setFloat("focus", this.focus.getValue());
     }
 

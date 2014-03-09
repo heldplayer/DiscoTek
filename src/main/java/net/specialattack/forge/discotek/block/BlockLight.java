@@ -93,7 +93,7 @@ public class BlockLight extends Block {
             }
         }
 
-        float yaw = -entity.rotationYawHead;
+        float rotation = -entity.rotationYawHead;
         float pitch = entity.rotationPitch;
         if (pitch > 46.0F) {
             pitch = 46.0F;
@@ -103,13 +103,13 @@ public class BlockLight extends Block {
         }
 
         if (this.temp == 0) {
-            yaw = -yaw;
+            rotation = -rotation;
         }
         if (this.temp == 4 || this.temp == 5) {
-            yaw = -yaw;
+            rotation = -rotation;
         }
 
-        tile.setValue("yaw", (float) (yaw * Math.PI / 180.0D));
+        tile.setValue("rotation", (float) (rotation * Math.PI / 180.0D));
         tile.setValue("pitch", (float) (pitch * Math.PI / 180.0D));
         tile.setValue("direction", this.temp);
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
