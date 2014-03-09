@@ -30,7 +30,7 @@ public class LightRendererFresnel implements ILightRenderHandler {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
         float pitch = light.getFloat("pitch", partialTicks);
-        float yaw = light.getFloat("yaw", partialTicks);
+        float rotation = light.getFloat("rotation", partialTicks);
 
         float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
         float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
@@ -41,9 +41,9 @@ public class LightRendererFresnel implements ILightRenderHandler {
 
         RenderHelper.bindTexture(Assets.FRESNEL_TEXTURE);
 
-        this.modelLightYoke.setRotations(pitch, yaw);
+        this.modelLightYoke.setRotations(pitch, rotation);
         this.modelLightYoke.renderAll();
-        this.modelLightParCan.setRotations(pitch, yaw);
+        this.modelLightParCan.setRotations(pitch, rotation);
         this.modelLightParCan.render();
 
         if (light.getBoolean("hasLens", partialTicks)) {
@@ -69,7 +69,7 @@ public class LightRendererFresnel implements ILightRenderHandler {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
         float pitch = light.getFloat("pitch", partialTicks);
-        float yaw = light.getFloat("yaw", partialTicks);
+        float rotation = light.getFloat("rotation", partialTicks);
 
         float red = (light.getInteger("red", partialTicks) & 0xFF) / 255.0F;
         float green = (light.getInteger("green", partialTicks) & 0xFF) / 255.0F;
@@ -92,7 +92,7 @@ public class LightRendererFresnel implements ILightRenderHandler {
 
         GL11.glShadeModel(GL11.GL_SMOOTH);
 
-        GL11.glRotatef(yaw * (180.0F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(rotation * (180.0F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(pitch * (180.0F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
 
         GL11.glBegin(GL11.GL_QUADS);
@@ -178,15 +178,15 @@ public class LightRendererFresnel implements ILightRenderHandler {
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
         float pitch = light.getFloat("pitch", partialTicks); // +-Y
-        float yaw = light.getFloat("yaw", partialTicks); // +-XZ
+        float rotation = light.getFloat("rotation", partialTicks); // +-XZ
         float focus = light.getFloat("focus", partialTicks);
         float length = MathHelper.min((64.0F / ((focus + 0.01F) * 0.7F)), 128.0F);
         float angle = (float) (focus * Math.PI / 200.0F);
         float lightLength = MathHelper.cos(angle) * length / 2.0F + 1.0F;
         float distance = MathHelper.sin(angle) * length;
 
-        float x = lightLength * -net.minecraft.util.MathHelper.sin(yaw) * net.minecraft.util.MathHelper.cos(pitch);
-        float z = lightLength * -net.minecraft.util.MathHelper.cos(yaw) * net.minecraft.util.MathHelper.cos(pitch);
+        float x = lightLength * -net.minecraft.util.MathHelper.sin(rotation) * net.minecraft.util.MathHelper.cos(pitch);
+        float z = lightLength * -net.minecraft.util.MathHelper.cos(rotation) * net.minecraft.util.MathHelper.cos(pitch);
         float y = lightLength * net.minecraft.util.MathHelper.sin(pitch);
 
         float x1 = x + distance;

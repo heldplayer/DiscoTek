@@ -33,7 +33,7 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         Minecraft.getMinecraft().mcProfiler.startSection("calculations");
 
         float pitch = light.getFloat("pitch", partialTicks);
-        float yaw = light.getFloat("yaw", partialTicks);
+        float rotation = light.getFloat("rotation", partialTicks);
 
         int side = light.getInteger("direction", partialTicks);
 
@@ -49,11 +49,11 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
 
         this.modelLightMoverBase.setRotations(0, 0);
         this.modelLightMoverBase.renderAll();
-        this.modelLightTiltArms.setRotations(0, yaw);
+        this.modelLightTiltArms.setRotations(0, rotation);
         this.modelLightTiltArms.renderAll();
 
         GL11.glTranslatef(0, 0.15F, 0);
-        this.modelLightMoverLaser.setRotations(pitch, yaw);
+        this.modelLightMoverLaser.setRotations(pitch, rotation);
         this.modelLightMoverLaser.render();
 
         Minecraft.getMinecraft().mcProfiler.endSection();
@@ -78,7 +78,7 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         float distance1 = MathHelper.sin(angle) * length1;
         float distance2 = MathHelper.sin(angle) * length2;
         float pitch = light.getFloat("pitch", partialTicks);
-        float yaw = light.getFloat("yaw", partialTicks);
+        float rotation = light.getFloat("rotation", partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
@@ -93,7 +93,7 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         GL11.glShadeModel(GL11.GL_SMOOTH);
 
         GL11.glTranslatef(0.0F, 0.15F, 0.0F);
-        GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(rotation * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(pitch * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
 
         GL11.glBegin(GL11.GL_LINES);
@@ -133,14 +133,14 @@ public class LightRendererPositionableLaser implements ILightRenderHandler {
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
         float pitch = light.getFloat("pitch", partialTicks); // +-Y
-        float yaw = light.getFloat("yaw", partialTicks); // +-XZ
+        float rotation = light.getFloat("rotation", partialTicks); // +-XZ
         float angle = (float) (light.getFloat("focus", partialTicks) * Math.PI / 128.0F);
         float length = (light.getFloat("length", partialTicks) + 0.8F) * 2.0F + 6.0F;
         float lightLength = MathHelper.cos(angle) * length;
         float distance = MathHelper.sin(angle) * length;
 
-        float x = lightLength * -net.minecraft.util.MathHelper.sin(yaw) * net.minecraft.util.MathHelper.cos(pitch);
-        float z = lightLength * -net.minecraft.util.MathHelper.cos(yaw) * net.minecraft.util.MathHelper.cos(pitch);
+        float x = lightLength * -net.minecraft.util.MathHelper.sin(rotation) * net.minecraft.util.MathHelper.cos(pitch);
+        float z = lightLength * -net.minecraft.util.MathHelper.cos(rotation) * net.minecraft.util.MathHelper.cos(pitch);
         float y = lightLength * net.minecraft.util.MathHelper.sin(pitch);
 
         float x1 = x + distance;

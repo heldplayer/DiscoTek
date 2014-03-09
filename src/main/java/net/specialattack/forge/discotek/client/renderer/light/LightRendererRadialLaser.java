@@ -59,7 +59,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         float height2 = MathHelper.cos(angle) * length2;
         float distance1 = MathHelper.sin(angle) * length1;
         float distance2 = MathHelper.sin(angle) * length2;
-        float yaw = light.getFloat("yaw", partialTicks);
+        float rotation = light.getFloat("rotation", partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
@@ -73,7 +73,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
 
         GL11.glShadeModel(GL11.GL_SMOOTH);
 
-        GL11.glRotatef(yaw * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(rotation * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
 
         GL11.glBegin(GL11.GL_LINES);
         int max = 32;

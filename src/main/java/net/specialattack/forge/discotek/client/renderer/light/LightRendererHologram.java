@@ -59,10 +59,10 @@ public class LightRendererHologram implements ILightRenderHandler {
         float alpha = (0.9F * brightness) + 0.1F;
 
         float pitch = light.getFloat("pitch", partialTicks) * 90.0F;
-        float yaw = light.getFloat("yaw", partialTicks) * 90.0F;
+        float rotation = light.getFloat("rotation", partialTicks) * 90.0F;
         float size = light.getFloat("size", partialTicks);
         float scale = size / 10.0F + 0.5F;
-        float yawHead = light.getFloat("headRotation", partialTicks);
+        float rotationHead = light.getFloat("headRotation", partialTicks);
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
@@ -72,7 +72,7 @@ public class LightRendererHologram implements ILightRenderHandler {
         GL11.glRotatef(TileEntityLightRenderer.yawRotations[side], 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(TileEntityLightRenderer.rollRotations[side], 0.0F, 0.0F, 1.0F);
 
-        GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(0.0F, 0.5F, 0.0F);
         GL11.glScalef(scale, scale, scale);
 
@@ -93,7 +93,7 @@ public class LightRendererHologram implements ILightRenderHandler {
             if (RenderManager.instance.livingPlayer != null) {
                 hologram.player.worldObj = light.getWorld();
                 hologram.player.rotationPitch = hologram.player.prevRotationPitch = pitch;
-                hologram.player.rotationYawHead = hologram.player.prevRotationYawHead = yawHead;
+                hologram.player.rotationYawHead = hologram.player.prevRotationYawHead = rotationHead;
 
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_TEXTURE_2D);

@@ -58,14 +58,14 @@ public class ItemOrienter extends Item {
 
             switch (stack.getItemDamage()) {
             case 0:
-                float yaw = light.getFloat("yaw", 1.0F);
+                float rotation = light.getFloat("rotation", 1.0F);
                 if (player.isSneaking()) {
-                    yaw += 0.1F;
+                    rotation += 0.1F;
                 }
                 else {
-                    yaw -= 0.1F;
+                    rotation -= 0.1F;
                 }
-                light.setValue("yaw", yaw);
+                light.setValue("rotation", rotation);
             break;
             case 1:
                 float pitch = light.getFloat("pitch", 1.0F);
