@@ -130,24 +130,33 @@ public class LightPositionableLaserInstance implements ILightInstance {
 
     @Override
     public ISyncable getSyncable(String identifier) {
-        if (identifier.equals("direction"))
+        if (identifier.equals("direction")) {
             return this.direction;
-        if (identifier.equals("red"))
+        }
+        if (identifier.equals("red")) {
             return this.red;
-        if (identifier.equals("green"))
+        }
+        if (identifier.equals("green")) {
             return this.green;
-        if (identifier.equals("blue"))
+        }
+        if (identifier.equals("blue")) {
             return this.blue;
-        if (identifier.equals("brightness"))
+        }
+        if (identifier.equals("brightness")) {
             return this.brightness;
-        if (identifier.equals("length"))
+        }
+        if (identifier.equals("length")) {
             return this.length;
-        if (identifier.equals("pitch"))
+        }
+        if (identifier.equals("pitch")) {
             return this.pitch;
-        if (identifier.equals("rotation"))
+        }
+        if (identifier.equals("rotation")) {
             return this.rotation;
-        if (identifier.equals("focus"))
+        }
+        if (identifier.equals("focus")) {
             return this.focus;
+        }
 
         return null;
     }
@@ -157,28 +166,37 @@ public class LightPositionableLaserInstance implements ILightInstance {
 
     @Override
     public void setValue(String identifier, float value) {
-        if (identifier.equals("brightness"))
+        if (identifier.equals("brightness")) {
             this.brightness.setValue(value);
-        if (identifier.equals("length"))
+        }
+        if (identifier.equals("length")) {
             this.length.setValue(value);
-        if (identifier.equals("pitch"))
+        }
+        if (identifier.equals("pitch")) {
             this.pitch.setValue(value);
-        if (identifier.equals("rotation"))
+        }
+        if (identifier.equals("rotation")) {
             this.rotation.setValue(value);
-        if (identifier.equals("focus"))
+        }
+        if (identifier.equals("focus")) {
             this.focus.setValue(value);
+        }
     }
 
     @Override
     public void setValue(String identifier, int value) {
-        if (identifier.equals("direction"))
+        if (identifier.equals("direction")) {
             this.direction.setValue(value);
-        if (identifier.equals("red"))
+        }
+        if (identifier.equals("red")) {
             this.red.setValue(value);
-        if (identifier.equals("green"))
+        }
+        if (identifier.equals("green")) {
             this.green.setValue(value);
-        if (identifier.equals("blue"))
+        }
+        if (identifier.equals("blue")) {
             this.blue.setValue(value);
+        }
     }
 
     @Override
@@ -191,30 +209,39 @@ public class LightPositionableLaserInstance implements ILightInstance {
 
     @Override
     public float getFloat(String identifier, float partialTicks) {
-        if (identifier.equals("brightness"))
+        if (identifier.equals("brightness")) {
             return MathHelper.partial(this.prevBrightness, this.brightness.getValue(), partialTicks);
-        if (identifier.equals("length"))
+        }
+        if (identifier.equals("length")) {
             return MathHelper.partial(this.prevLength, this.length.getValue(), partialTicks);
-        if (identifier.equals("pitch"))
+        }
+        if (identifier.equals("pitch")) {
             return MathHelper.partial(this.prevPitch, this.pitch.getValue(), partialTicks);
-        if (identifier.equals("rotation"))
+        }
+        if (identifier.equals("rotation")) {
             return MathHelper.partial(this.prevRotation, this.rotation.getValue(), partialTicks);
-        if (identifier.equals("focus"))
+        }
+        if (identifier.equals("focus")) {
             return MathHelper.partial(this.prevFocus, this.focus.getValue(), partialTicks);
+        }
 
         return 0.0F;
     }
 
     @Override
     public int getInteger(String identifier, float partialTicks) {
-        if (identifier.equals("direction"))
+        if (identifier.equals("direction")) {
             return this.direction.getValue();
-        if (identifier.equals("red"))
+        }
+        if (identifier.equals("red")) {
             return MathHelper.partial(this.prevRed, this.red.getValue(), partialTicks);
-        if (identifier.equals("green"))
+        }
+        if (identifier.equals("green")) {
             return MathHelper.partial(this.prevGreen, this.green.getValue(), partialTicks);
-        if (identifier.equals("blue"))
+        }
+        if (identifier.equals("blue")) {
             return MathHelper.partial(this.prevBlue, this.blue.getValue(), partialTicks);
+        }
 
         return 0;
     }

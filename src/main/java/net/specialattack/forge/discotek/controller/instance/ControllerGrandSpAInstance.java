@@ -35,20 +35,20 @@ public class ControllerGrandSpAInstance implements IControllerInstance {
     private void setLevel(int channel, int value) {
         this.tile.transmitLevelChange(channel, value);
         this.levels[channel] = value;
-        tile.markDirty();
+        this.tile.markDirty();
     }
 
     @Override
     public void doTick() {
         if (this.instructions == null) {
             this.instructions = new Instruction[50];
-            tile.markDirty();
+            this.tile.markDirty();
         }
         else if (this.instructions.length != 50) {
             Instruction[] temp = this.instructions;
             this.instructions = new Instruction[50];
             System.arraycopy(temp, 0, this.instructions, 0, temp.length < this.instructions.length ? temp.length : this.instructions.length);
-            tile.markDirty();
+            this.tile.markDirty();
         }
 
         try {
@@ -257,7 +257,7 @@ public class ControllerGrandSpAInstance implements IControllerInstance {
                 else {
                     this.next();
                 }
-                tile.markDirty();
+                this.tile.markDirty();
             }
         }
         catch (ControllerException e) {
@@ -339,11 +339,11 @@ public class ControllerGrandSpAInstance implements IControllerInstance {
     public void prepareServer() {
         if (this.levels != null && this.levels.length != 256) {
             this.levels = new int[256];
-            tile.markDirty();
+            this.tile.markDirty();
         }
         else if (this.levels == null) {
             this.levels = new int[256];
-            tile.markDirty();
+            this.tile.markDirty();
         }
     }
 

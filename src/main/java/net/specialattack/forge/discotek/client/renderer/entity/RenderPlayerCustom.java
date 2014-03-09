@@ -51,9 +51,9 @@ public class RenderPlayerCustom extends RendererLivingEntity {
     }
 
     public void doRender(AbstractClientPlayer player, double posX, double posY, double posZ, float pitch, float partialTicks) {
-        double d3 = posY - (double) player.yOffset;
+        double d3 = posY - player.yOffset;
 
-        super.doRender((EntityLivingBase) player, posX, d3, posZ, pitch, partialTicks);
+        super.doRender(player, posX, d3, posZ, pitch, partialTicks);
         this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
         this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
         this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = 0;
@@ -75,7 +75,7 @@ public class RenderPlayerCustom extends RendererLivingEntity {
                 GL11.glPushMatrix();
                 GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.375F * (float) (i * 2 - 1), 0.0F, 0.0F);
+                GL11.glTranslatef(0.375F * (i * 2 - 1), 0.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -0.375F, 0.0F);
                 GL11.glRotatef(-pitch, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
@@ -92,12 +92,12 @@ public class RenderPlayerCustom extends RendererLivingEntity {
             this.bindTexture(player.getLocationCape());
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-            double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * (double) partialTicks - (player.prevPosX + (player.posX - player.prevPosX) * (double) partialTicks);
-            double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * (double) partialTicks - (player.prevPosY + (player.posY - player.prevPosY) * (double) partialTicks);
-            double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * (double) partialTicks - (player.prevPosZ + (player.posZ - player.prevPosZ) * (double) partialTicks);
+            double d3 = player.field_71091_bM + (player.field_71094_bP - player.field_71091_bM) * partialTicks - (player.prevPosX + (player.posX - player.prevPosX) * partialTicks);
+            double d4 = player.field_71096_bN + (player.field_71095_bQ - player.field_71096_bN) * partialTicks - (player.prevPosY + (player.posY - player.prevPosY) * partialTicks);
+            double d0 = player.field_71097_bO + (player.field_71085_bR - player.field_71097_bO) * partialTicks - (player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks);
             float f5 = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks;
-            double d1 = (double) MathHelper.sin(f5 * (float) Math.PI / 180.0F);
-            double d2 = (double) (-MathHelper.cos(f5 * (float) Math.PI / 180.0F));
+            double d1 = MathHelper.sin(f5 * (float) Math.PI / 180.0F);
+            double d2 = (-MathHelper.cos(f5 * (float) Math.PI / 180.0F));
             float f6 = (float) d4 * 10.0F;
 
             if (f6 < -6.0F) {
@@ -152,42 +152,52 @@ public class RenderPlayerCustom extends RendererLivingEntity {
         super.rotateCorpse(player, par2, par3, par4);
     }
 
+    @Override
     protected void func_96449_a(EntityLivingBase player, double posX, double posY, double posZ, String name, float par9, double distance) {
         this.func_96449_a((AbstractClientPlayer) player, posX, posY, posZ, name, par9, distance);
     }
 
+    @Override
     protected void preRenderCallback(EntityLivingBase player, float partialTicks) {
         this.preRenderCallback((AbstractClientPlayer) player, partialTicks);
     }
 
+    @Override
     protected void func_82408_c(EntityLivingBase player, int par2, float partialTicks) {
         this.func_82408_c((AbstractClientPlayer) player, par2, partialTicks);
     }
 
+    @Override
     protected int shouldRenderPass(EntityLivingBase player, int pass, float partialTicks) {
         return this.shouldRenderPass((AbstractClientPlayer) player, pass, partialTicks);
     }
 
+    @Override
     protected void renderEquippedItems(EntityLivingBase player, float partialTicks) {
         this.renderEquippedItems((AbstractClientPlayer) player, partialTicks);
     }
 
+    @Override
     protected void rotateCorpse(EntityLivingBase player, float par2, float par3, float partialTicks) {
         this.rotateCorpse((AbstractClientPlayer) player, par2, par3, partialTicks);
     }
 
+    @Override
     protected void renderLivingAt(EntityLivingBase player, double posX, double posY, double posZ) {
         this.renderLivingAt((AbstractClientPlayer) player, posX, posY, posZ);
     }
 
+    @Override
     public void doRender(EntityLivingBase player, double posX, double posY, double posZ, float par8, float partialTicks) {
         this.doRender((AbstractClientPlayer) player, posX, posY, posZ, par8, partialTicks);
     }
 
+    @Override
     protected ResourceLocation getEntityTexture(Entity player) {
         return this.getEntityTexture((AbstractClientPlayer) player);
     }
 
+    @Override
     public void doRender(Entity player, double posX, double posY, double posZ, float par8, float partialTicks) {
         this.doRender((AbstractClientPlayer) player, posX, posY, posZ, par8, partialTicks);
     }

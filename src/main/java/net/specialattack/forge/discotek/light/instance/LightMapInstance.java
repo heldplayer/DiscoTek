@@ -111,18 +111,24 @@ public class LightMapInstance implements ILightInstance {
 
     @Override
     public ISyncable getSyncable(String identifier) {
-        if (identifier.equals("direction"))
+        if (identifier.equals("direction")) {
             return this.direction;
-        if (identifier.equals("color"))
+        }
+        if (identifier.equals("color")) {
             return this.color;
-        if (identifier.equals("brightness"))
+        }
+        if (identifier.equals("brightness")) {
             return this.brightness;
-        if (identifier.equals("pitch"))
+        }
+        if (identifier.equals("pitch")) {
             return this.pitch;
-        if (identifier.equals("rotation"))
+        }
+        if (identifier.equals("rotation")) {
             return this.rotation;
-        if (identifier.equals("focus"))
+        }
+        if (identifier.equals("focus")) {
             return this.focus;
+        }
 
         return null;
     }
@@ -132,22 +138,28 @@ public class LightMapInstance implements ILightInstance {
 
     @Override
     public void setValue(String identifier, float value) {
-        if (identifier.equals("brightness"))
+        if (identifier.equals("brightness")) {
             this.brightness.setValue(value);
-        if (identifier.equals("pitch"))
+        }
+        if (identifier.equals("pitch")) {
             this.pitch.setValue(value);
-        if (identifier.equals("rotation"))
+        }
+        if (identifier.equals("rotation")) {
             this.rotation.setValue(value);
-        if (identifier.equals("focus"))
+        }
+        if (identifier.equals("focus")) {
             this.focus.setValue(value);
+        }
     }
 
     @Override
     public void setValue(String identifier, int value) {
-        if (identifier.equals("direction"))
+        if (identifier.equals("direction")) {
             this.direction.setValue(value);
-        if (identifier.equals("color"))
+        }
+        if (identifier.equals("color")) {
             this.color.setValue(value);
+        }
 
         if (identifier.equals("red")) {
             int color = this.color.getValue();
@@ -179,24 +191,30 @@ public class LightMapInstance implements ILightInstance {
 
     @Override
     public float getFloat(String identifier, float partialTicks) {
-        if (identifier.equals("brightness"))
+        if (identifier.equals("brightness")) {
             return MathHelper.partial(this.prevBrightness, this.brightness.getValue(), partialTicks);
-        if (identifier.equals("pitch"))
+        }
+        if (identifier.equals("pitch")) {
             return MathHelper.partial(this.prevPitch, this.pitch.getValue(), partialTicks);
-        if (identifier.equals("rotation"))
+        }
+        if (identifier.equals("rotation")) {
             return MathHelper.partial(this.prevRotation, this.rotation.getValue(), partialTicks);
-        if (identifier.equals("focus"))
+        }
+        if (identifier.equals("focus")) {
             return MathHelper.partial(this.prevFocus, this.focus.getValue(), partialTicks);
+        }
 
         return 0.0F;
     }
 
     @Override
     public int getInteger(String identifier, float partialTicks) {
-        if (identifier.equals("direction"))
+        if (identifier.equals("direction")) {
             return this.direction.getValue();
-        if (identifier.equals("color"))
+        }
+        if (identifier.equals("color")) {
             return this.color.getValue();
+        }
 
         if (identifier.equals("red")) {
             int color = this.color.getValue();
@@ -216,8 +234,9 @@ public class LightMapInstance implements ILightInstance {
 
     @Override
     public boolean getBoolean(String identifier, float partialTicks) {
-        if (identifier.equals("hasLens"))
+        if (identifier.equals("hasLens")) {
             return this.hasLens.getValue();
+        }
 
         return false;
     }

@@ -36,8 +36,9 @@ public class LightDimmerInstance implements ILightInstance {
 
     @Override
     public ISyncable getSyncable(String identifier) {
-        if (identifier.equals("redstone"))
+        if (identifier.equals("redstone")) {
             return this.redstone;
+        }
 
         return null;
     }
@@ -50,8 +51,9 @@ public class LightDimmerInstance implements ILightInstance {
 
     @Override
     public void setValue(String identifier, int value) {
-        if (identifier.equals("redstone"))
+        if (identifier.equals("redstone")) {
             this.redstone.setValue(value);
+        }
     }
 
     @Override
@@ -69,8 +71,9 @@ public class LightDimmerInstance implements ILightInstance {
 
     @Override
     public int getInteger(String identifier, float partialTicks) {
-        if (identifier.equals("redstone"))
+        if (identifier.equals("redstone")) {
             return this.redstone.getValue();
+        }
 
         return 0;
     }

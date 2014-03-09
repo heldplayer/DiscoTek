@@ -28,7 +28,7 @@ public class LightRendererHologram implements ILightRenderHandler {
 
     private static RenderPlayerCustom render = new RenderPlayerCustom();
     static {
-        render.setRenderManager(RenderManager.instance);
+        LightRendererHologram.render.setRenderManager(RenderManager.instance);
     }
 
     @Override

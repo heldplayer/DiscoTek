@@ -1,3 +1,4 @@
+
 package net.specialattack.forge.discotek.controller.instance;
 
 import net.minecraft.entity.player.EntityPlayer;
