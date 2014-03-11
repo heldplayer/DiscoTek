@@ -5,20 +5,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
-import net.specialattack.forge.discotek.light.instance.LightPositionableLaserInstance;
+import net.specialattack.forge.discotek.light.instance.LightPositionableRadialLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
-public class LightPositionableLaser implements ILight {
+public class LightPositionableRadialLaser implements ILight {
 
     private final List<Channels> channels;
 
-    public LightPositionableLaser() {
+    public LightPositionableRadialLaser() {
         this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.LENGTH, Channels.PITCH, Channels.ROTATION, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
     }
 
     @Override
     public ILightInstance createInstance(TileEntityLight tile) {
-        return new LightPositionableLaserInstance(tile);
+        return new LightPositionableRadialLaserInstance(tile);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class LightPositionableLaser implements ILight {
 
     @Override
     public String getIdentifier() {
-        return "radiallaser";
+        return "positionableradiallaser";
     }
 
 }

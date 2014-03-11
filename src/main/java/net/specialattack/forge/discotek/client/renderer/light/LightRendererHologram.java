@@ -59,7 +59,7 @@ public class LightRendererHologram implements ILightRenderHandler {
         float alpha = (0.9F * brightness) + 0.1F;
 
         float pitch = light.getFloat("pitch", partialTicks) * 90.0F;
-        float rotation = light.getFloat("rotation", partialTicks) * 90.0F;
+        float rotation = light.getFloat("rotation", partialTicks) * 180.0F / (float) Math.PI;
         float size = light.getFloat("size", partialTicks);
         float scale = size / 10.0F + 0.5F;
         float rotationHead = light.getFloat("headRotation", partialTicks);

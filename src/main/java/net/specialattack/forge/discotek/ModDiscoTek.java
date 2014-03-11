@@ -12,6 +12,7 @@ import net.specialattack.forge.discotek.packet.Packet3PixelSlider;
 import net.specialattack.forge.discotek.packet.Packet4PixelGui;
 import net.specialattack.forge.discotek.packet.Packet5GrandSpAInstruction;
 import net.specialattack.forge.discotek.packet.Packet6GrandSpAGui;
+import net.specialattack.forge.discotek.packet.Packet7PixelButton;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -39,7 +40,7 @@ public class ModDiscoTek extends SpACoreMod {
         Objects.log = event.getModLog();
         event.getModMetadata().version = Objects.MOD_VERSION;
 
-        ModDiscoTek.packetHandler = new PacketHandler("DiscoTek", Packet1LightPort.class, Packet2LightGui.class, Packet3PixelSlider.class, Packet4PixelGui.class, Packet5GrandSpAInstruction.class, Packet6GrandSpAGui.class);
+        ModDiscoTek.packetHandler = new PacketHandler("DiscoTek", Packet1LightPort.class, Packet2LightGui.class, Packet3PixelSlider.class, Packet4PixelGui.class, Packet5GrandSpAInstruction.class, Packet6GrandSpAGui.class, Packet7PixelButton.class);
 
         // Config
         // blockLightId = new ConfigValue<Integer>("blockLightId", Configuration.CATEGORY_BLOCK, null, 2080, "");

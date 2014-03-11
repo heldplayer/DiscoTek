@@ -31,7 +31,7 @@ import net.specialattack.forge.discotek.client.renderer.light.LightRendererFresn
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererHologram;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererMap;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererMapLED;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererPositionableLaser;
+import net.specialattack.forge.discotek.client.renderer.light.LightRendererPositionableRadialLaser;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererRadialLaser;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
@@ -62,7 +62,7 @@ public class ClientProxy extends CommonProxy {
         Objects.blockLight.setLightRenderer(3, new LightRendererDimmer());
         Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
         Objects.blockLight.setLightRenderer(5, new LightRendererHologram());
-        Objects.blockLight.setLightRenderer(6, new LightRendererPositionableLaser());
+        Objects.blockLight.setLightRenderer(6, new LightRendererPositionableRadialLaser());
     }
 
     @Override

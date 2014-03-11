@@ -11,7 +11,7 @@ import net.specialattack.forge.discotek.client.model.ModelLightMoverLaser;
 import net.specialattack.forge.discotek.client.model.ModelLightTiltArms;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
-import net.specialattack.forge.discotek.light.instance.LightPositionableLaserInstance;
+import net.specialattack.forge.discotek.light.instance.LightPositionableRadialLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
@@ -20,13 +20,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LightRendererPositionableLaser implements ILightRenderHandler {
+public class LightRendererPositionableRadialLaser implements ILightRenderHandler {
 
     private ModelLightMoverLaser modelLightMoverLaser = new ModelLightMoverLaser();
     private ModelLightMoverBase modelLightMoverBase = new ModelLightMoverBase();
     private ModelLightTiltArms modelLightTiltArms = new ModelLightTiltArms();
 
-    private ILightInstance instance = new LightPositionableLaserInstance(null);
+    private ILightInstance instance = new LightPositionableRadialLaserInstance(null);
 
     @Override
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {

@@ -34,7 +34,7 @@ import net.specialattack.forge.discotek.light.LightFresnel;
 import net.specialattack.forge.discotek.light.LightHologram;
 import net.specialattack.forge.discotek.light.LightMap;
 import net.specialattack.forge.discotek.light.LightMapLED;
-import net.specialattack.forge.discotek.light.LightPositionableLaser;
+import net.specialattack.forge.discotek.light.LightPositionableRadialLaser;
 import net.specialattack.forge.discotek.light.LightRadialLaser;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
@@ -55,7 +55,7 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockLight.setLight(3, new LightDimmer());
         Objects.blockLight.setLight(4, new LightRadialLaser());
         Objects.blockLight.setLight(5, new LightHologram());
-        Objects.blockLight.setLight(6, new LightPositionableLaser());
+        Objects.blockLight.setLight(6, new LightPositionableRadialLaser());
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         // TODO: create emitters

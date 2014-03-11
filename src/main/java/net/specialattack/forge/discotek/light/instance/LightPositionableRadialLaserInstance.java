@@ -12,7 +12,7 @@ import net.specialattack.forge.core.sync.SInteger;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
-public class LightPositionableLaserInstance implements ILightInstance {
+public class LightPositionableRadialLaserInstance implements ILightInstance {
 
     private TileEntityLight tile;
 
@@ -36,7 +36,7 @@ public class LightPositionableLaserInstance implements ILightInstance {
 
     private List<ISyncable> syncables;
 
-    public LightPositionableLaserInstance(TileEntityLight tile) {
+    public LightPositionableRadialLaserInstance(TileEntityLight tile) {
         this.tile = tile;
         this.direction = new SInteger(tile, 1);
         this.red = new SInteger(tile, 0xFF);

@@ -10,6 +10,7 @@ import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.controller.instance.ControllerPixelInstance;
 import net.specialattack.forge.discotek.packet.Packet3PixelSlider;
+import net.specialattack.forge.discotek.packet.Packet7PixelButton;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -51,6 +52,7 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
         }
 
         this.buttonList.add(new GuiButton(-1, (this.width + this.guiWidth) / 2 - 22, (this.height - this.guiHeight) / 2 + 2, 20, 20, "?"));
+        this.buttonList.add(new GuiButton(-2, (this.width - this.guiWidth) / 2 + 2, (this.height - this.guiHeight) / 2 + 2, 70, 20, "Update All"));
     }
 
     @Override
@@ -70,6 +72,9 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
         if (button.id == -1) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiHelp(this, Assets.HELP_PIXEL));
         }
+        if (button.id == -2) {
+            ModDiscoTek.packetHandler.sendPacketToServer(new Packet7PixelButton(this.controller));
+        }
     }
 
     @Override
@@ -85,6 +90,9 @@ public class GuiControllerPixel extends GuiScreen implements ISliderCompat {
         String title = StatCollector.translateToLocal("gui.controller.title");
         y += 6;
         x = (this.width - this.fontRendererObj.getStringWidth(title)) / 2;
+        // Centralize a bit
+        x += 24;
+        y += 3;
         this.fontRendererObj.drawString(title, x, y, 0x000000);
 
         for (int i = 0; i < 2; i++) {

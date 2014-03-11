@@ -400,4 +400,11 @@ public class ControllerGrandSpAInstance implements IControllerInstance {
         return false;
     }
 
+    @Override
+    public void resendChannels() {
+        for (int i = 0; i < this.levels.length; i++) {
+            this.tile.transmitLevelChange(i, this.levels[i]);
+        }
+    }
+
 }

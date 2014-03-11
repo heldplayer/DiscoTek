@@ -184,9 +184,9 @@ public class BlockLight extends Block {
 
         NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
 
-        if (this.light != null) {
-            compound.setInteger("color", this.light.getInteger("color", 1.0F));
+        if (this.light != null && light != null) {
             if (light.supportsLens()) {
+                compound.setInteger("color", this.light.getInteger("color", 1.0F));
                 compound.setBoolean("hasLens", this.light.getBoolean("hasLens", 1.0F));
             }
             this.light = null;
@@ -285,26 +285,28 @@ public class BlockLight extends Block {
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
         ItemStack stack = new ItemStack(this, 1, meta);
-
-        ILight light = this.getLight(meta);
-
         NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
 
-        if (this.light != null) {
-            compound.setInteger("color", this.light.getInteger("color", 1.0F));
-            if (light.supportsLens()) {
-                compound.setBoolean("hasLens", this.light.getBoolean("hasLens", 1.0F));
-            }
-            this.light = null;
-        }
-        else {
+        ILight lightType = this.getLight(meta);
+
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile == null || !(tile instanceof TileEntityLight)) {
             compound.setInteger("color", 0xFFFFFF);
-            if (light != null && light.supportsLens()) {
-                compound.setBoolean("hasLens", light.supportsLens());
+            if (lightType != null && lightType.supportsLens()) {
+                compound.setBoolean("hasLens", lightType.supportsLens());
             }
+            return stack;
         }
 
-        return super.getPickBlock(target, world, x, y, z);
+        TileEntityLight light = (TileEntityLight) tile;
+
+        compound.setInteger("color", light.getInteger("color", 1.0F));
+        if (lightType.supportsLens()) {
+            compound.setBoolean("hasLens", light.getBoolean("hasLens", 1.0F));
+        }
+        light = null;
+
+        return stack;
     }
 
 }

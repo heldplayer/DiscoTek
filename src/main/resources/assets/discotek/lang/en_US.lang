@@ -3,6 +3,7 @@ tile.light.map.name=SpA Map 250
 tile.light.mapLED.name=SpA Map 101 LED
 tile.light.dimmer.name=Single Channel Dimmer
 tile.light.radiallaser.name=SpA RGB Radial laser
+tile.light.hologram.name=SpA FHP 5k
 tile.light.error.name=Unknown Light
 
 tile.controller.pixel.name=SpA PixEl 12/24

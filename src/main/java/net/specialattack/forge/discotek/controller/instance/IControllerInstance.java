@@ -21,4 +21,6 @@ public interface IControllerInstance {
 
     boolean onRightClick(EntityPlayer player, boolean sneaking);
 
+    void resendChannels();
+
 }
