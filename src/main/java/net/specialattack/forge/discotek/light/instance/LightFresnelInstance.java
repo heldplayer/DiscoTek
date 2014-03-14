@@ -239,4 +239,22 @@ public class LightFresnelInstance implements ILightInstance {
         compound.setFloat("focus", this.focus.getValue());
     }
 
+    @Override
+    public void readLosely(NBTTagCompound compound) {
+        this.hasLens.setValue(compound.getBoolean("hasLens"));
+        this.color.setValue(compound.getInteger("color"));
+        this.brightness.setValue(compound.getFloat("brightness"));
+        this.prevBrightness = this.brightness.getValue();
+        this.focus.setValue(compound.getFloat("focus"));
+        this.prevFocus = this.focus.getValue();
+    }
+
+    @Override
+    public void writeLosely(NBTTagCompound compound) {
+        compound.setBoolean("hasLens", this.hasLens.getValue());
+        compound.setInteger("color", this.color.getValue());
+        compound.setFloat("brightness", this.brightness.getValue());
+        compound.setFloat("focus", this.focus.getValue());
+    }
+
 }

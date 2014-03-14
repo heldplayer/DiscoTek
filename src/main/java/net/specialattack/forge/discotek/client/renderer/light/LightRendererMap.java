@@ -40,7 +40,7 @@ public class LightRendererMap implements ILightRenderHandler {
         float pitch = light.getFloat("pitch", partialTicks);
         float rotation = light.getFloat("rotation", partialTicks);
 
-        int side = light.getInteger("direction", partialTicks);
+        int side = light.getInteger("direction", partialTicks) % 6;
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
@@ -105,7 +105,7 @@ public class LightRendererMap implements ILightRenderHandler {
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
-        int side = light.getInteger("direction", partialTicks);
+        int side = light.getInteger("direction", partialTicks) % 6;
 
         GL11.glRotatef(TileEntityLightRenderer.pitchRotations[side], 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(TileEntityLightRenderer.yawRotations[side], 0.0F, 1.0F, 0.0F);

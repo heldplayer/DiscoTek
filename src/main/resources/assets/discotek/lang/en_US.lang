@@ -56,6 +56,12 @@ itemGroup.discotek=DiscoTek
 gui.tooltip.lens.color=Color: %s
 gui.tooltip.lens.nocolor=Undyed
 gui.tooltip.light.color=Color: %s
+gui.tooltip.light.brightness=Brightness: %s
+gui.tooltip.light.focus=Focus: %s
+gui.tooltip.light.length=Length: %s
+gui.tooltip.light.size=Size: %s
+gui.tooltip.light.playerName=Player: %s
+gui.tooltip.light.playerName.none=No player
 gui.tooltip.light.lens.true=Has lens
 gui.tooltip.light.lens.false=Doesn't have lens
 

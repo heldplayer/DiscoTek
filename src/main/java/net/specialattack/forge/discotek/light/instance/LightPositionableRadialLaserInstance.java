@@ -283,4 +283,37 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
         compound.setFloat("focus", this.focus.getValue());
     }
 
+    @Override
+    public void readLosely(NBTTagCompound compound) {
+        int color = compound.getInteger("color");
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+
+        this.red.setValue(red);
+        this.prevRed = red;
+        this.green.setValue(green);
+        this.prevGreen = green;
+        this.blue.setValue(blue);
+        this.prevBlue = blue;
+        this.brightness.setValue(compound.getFloat("brightness"));
+        this.prevBrightness = this.brightness.getValue();
+        this.length.setValue(compound.getFloat("length"));
+        this.prevLength = this.length.getValue();
+        this.focus.setValue(compound.getFloat("focus"));
+        this.prevFocus = this.focus.getValue();
+    }
+
+    @Override
+    public void writeLosely(NBTTagCompound compound) {
+        int red = this.red.getValue();
+        int green = this.green.getValue();
+        int blue = this.blue.getValue();
+        int color = (red << 16) | (green << 8) | blue;
+        compound.setInteger("color", color);
+        compound.setFloat("brightness", this.brightness.getValue());
+        compound.setFloat("length", this.length.getValue());
+        compound.setFloat("focus", this.focus.getValue());
+    }
+
 }

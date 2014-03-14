@@ -31,17 +31,15 @@ public class LightHologramInstance implements ILightInstance {
     private SFloat size;
     private SFloat pitch;
     private SFloat rotation;
-    private SFloat focus;
     private SFloat headRotation;
     private SString playerName;
     private int prevRed = 0xFF;
     private int prevGreen = 0xFF;
     private int prevBlue = 0xFF;
     private float prevBrightness = 1.0F;
-    private float prevSize = 0.0F;
+    private float prevSize = 1.0F;
     private float prevPitch = 0.0F;
     private float prevRotation = 0.0F;
-    private float prevFocus = 1.0F;
     private float prevHeadRotation = 0.0F;
 
     @SideOnly(Side.CLIENT)
@@ -56,13 +54,12 @@ public class LightHologramInstance implements ILightInstance {
         this.green = new SInteger(tile, 0xFF);
         this.blue = new SInteger(tile, 0xFF);
         this.brightness = new SFloat(tile, 1.0F);
-        this.size = new SFloat(tile, 0.0F);
+        this.size = new SFloat(tile, 1.0F);
         this.pitch = new SFloat(tile, 0.0F);
         this.rotation = new SFloat(tile, 0.0F);
-        this.focus = new SFloat(tile, 1.0F);
         this.headRotation = new SFloat(tile, 0.0F);
         this.playerName = new SString(tile, "");
-        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.size, this.pitch, this.rotation, this.focus, this.headRotation, this.playerName);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.size, this.pitch, this.rotation, this.headRotation, this.playerName);
     }
 
     @Override
@@ -80,7 +77,6 @@ public class LightHologramInstance implements ILightInstance {
             this.prevSize = this.size.getValue();
             this.prevPitch = this.pitch.getValue();
             this.prevRotation = this.rotation.getValue();
-            this.prevFocus = this.focus.getValue();
             this.prevHeadRotation = this.headRotation.getValue();
 
             if (this.pitch.getValue() > 0.8F) {
@@ -99,15 +95,6 @@ public class LightHologramInstance implements ILightInstance {
             else if (this.brightness.getValue() < 0.0F) {
                 this.prevBrightness = 0.0F;
                 this.brightness.setValue(0.0F);
-            }
-
-            if (this.focus.getValue() > 20.0F) {
-                this.prevFocus = 20.0F;
-                this.focus.setValue(20.0F);
-            }
-            else if (this.focus.getValue() < 0.0F) {
-                this.prevFocus = 0.0F;
-                this.focus.setValue(0.0F);
             }
 
             if (this.size.getValue() > 20.0F) {
@@ -188,9 +175,6 @@ public class LightHologramInstance implements ILightInstance {
         if (identifier.equals("rotation")) {
             return this.rotation;
         }
-        if (identifier.equals("focus")) {
-            return this.focus;
-        }
         if (identifier.equals("headRotation")) {
             return this.headRotation;
         }
@@ -221,9 +205,6 @@ public class LightHologramInstance implements ILightInstance {
         }
         if (identifier.equals("rotation")) {
             this.rotation.setValue(value);
-        }
-        if (identifier.equals("focus")) {
-            this.focus.setValue(value);
         }
         if (identifier.equals("headRotation")) {
             this.headRotation.setValue(value);
@@ -269,9 +250,6 @@ public class LightHologramInstance implements ILightInstance {
         if (identifier.equals("rotation")) {
             return MathHelper.partial(this.prevRotation, this.rotation.getValue(), partialTicks);
         }
-        if (identifier.equals("focus")) {
-            return MathHelper.partial(this.prevFocus, this.focus.getValue(), partialTicks);
-        }
         if (identifier.equals("headRotation")) {
             return MathHelper.partial(this.prevHeadRotation, this.headRotation.getValue(), partialTicks);
         }
@@ -316,10 +294,8 @@ public class LightHologramInstance implements ILightInstance {
         this.prevSize = this.size.getValue();
         this.rotation.setValue(compound.getFloat("rotation"));
         this.prevRotation = this.rotation.getValue();
-        this.focus.setValue(compound.getFloat("focus"));
         this.headRotation.setValue(compound.getFloat("headRotation"));
         this.prevHeadRotation = this.headRotation.getValue();
-        this.prevFocus = this.focus.getValue();
         this.playerName.setValue(compound.getString("playerName"));
     }
 
@@ -331,8 +307,39 @@ public class LightHologramInstance implements ILightInstance {
         compound.setFloat("brightness", this.brightness.getValue());
         compound.setFloat("size", this.size.getValue());
         compound.setFloat("rotation", this.rotation.getValue());
-        compound.setFloat("focus", this.focus.getValue());
         compound.setFloat("headRotation", this.headRotation.getValue());
+        compound.setString("playerName", this.playerName.getValue());
+    }
+
+    @Override
+    public void readLosely(NBTTagCompound compound) {
+        int color = compound.getInteger("color");
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+
+        this.red.setValue(red);
+        this.prevRed = red;
+        this.green.setValue(green);
+        this.prevGreen = green;
+        this.blue.setValue(blue);
+        this.prevBlue = blue;
+        this.brightness.setValue(compound.getFloat("brightness"));
+        this.prevBrightness = this.brightness.getValue();
+        this.size.setValue(compound.getFloat("size"));
+        this.prevSize = this.size.getValue();
+        this.playerName.setValue(compound.getString("playerName"));
+    }
+
+    @Override
+    public void writeLosely(NBTTagCompound compound) {
+        int red = this.red.getValue();
+        int green = this.green.getValue();
+        int blue = this.blue.getValue();
+        int color = (red << 16) | (green << 8) | blue;
+        compound.setInteger("color", color);
+        compound.setFloat("brightness", this.brightness.getValue());
+        compound.setFloat("size", this.size.getValue());
         compound.setString("playerName", this.playerName.getValue());
     }
 

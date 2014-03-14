@@ -93,4 +93,10 @@ public class LightDimmerInstance implements ILightInstance {
         compound.setInteger("redstone", this.redstone.getValue());
     }
 
+    @Override
+    public void readLosely(NBTTagCompound compound) {}
+
+    @Override
+    public void writeLosely(NBTTagCompound compound) {}
+
 }

@@ -37,4 +37,8 @@ public interface ILightInstance {
 
     void writeToNBT(NBTTagCompound compound);
 
+    void readLosely(NBTTagCompound compound);
+
+    void writeLosely(NBTTagCompound compound);
+
 }

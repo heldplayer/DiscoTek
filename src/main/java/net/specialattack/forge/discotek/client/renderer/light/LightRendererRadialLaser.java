@@ -28,7 +28,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {
         Minecraft.getMinecraft().mcProfiler.startSection("transformations");
 
-        int side = light.getInteger("direction", partialTicks);
+        int side = light.getInteger("direction", partialTicks) % 6;
 
         GL11.glRotatef(TileEntityLightRenderer.pitchRotations[side], 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(TileEntityLightRenderer.yawRotations[side], 0.0F, 1.0F, 0.0F);
@@ -63,7 +63,7 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
 
         Minecraft.getMinecraft().mcProfiler.endStartSection("transformations");
 
-        int side = light.getInteger("direction", partialTicks);
+        int side = light.getInteger("direction", partialTicks) % 6;
 
         GL11.glRotatef(TileEntityLightRenderer.pitchRotations[side], 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(TileEntityLightRenderer.yawRotations[side], 0.0F, 1.0F, 0.0F);

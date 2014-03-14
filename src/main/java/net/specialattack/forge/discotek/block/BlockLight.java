@@ -82,15 +82,10 @@ public class BlockLight extends Block {
 
         TileEntityLight tile = (TileEntityLight) world.getTileEntity(x, y, z);
 
-        ILight light = this.getLight(world.getBlockMetadata(x, y, z));
+        ILightInstance instance = tile.getLightInstance();
 
-        if (stack.stackTagCompound != null) {
-            if (stack.stackTagCompound.hasKey("color")) {
-                tile.setValue("color", stack.stackTagCompound.getInteger("color"));
-            }
-            if (light != null && light.supportsLens() && stack.stackTagCompound.hasKey("hasLens")) {
-                tile.setValue("hasLens", stack.stackTagCompound.getBoolean("hasLens"));
-            }
+        if (instance != null && stack.stackTagCompound != null) {
+            instance.readLosely(stack.stackTagCompound);
         }
 
         float rotation = -entity.rotationYawHead;
@@ -180,22 +175,14 @@ public class BlockLight extends Block {
 
         ItemStack stack = new ItemStack(this, 1, metadata);
 
-        ILight light = this.getLight(metadata);
-
         NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
 
-        if (this.light != null && light != null) {
-            if (light.supportsLens()) {
-                compound.setInteger("color", this.light.getInteger("color", 1.0F));
-                compound.setBoolean("hasLens", this.light.getBoolean("hasLens", 1.0F));
+        if (this.light != null) {
+            ILightInstance instance = this.light.getLightInstance();
+            if (instance != null) {
+                instance.writeLosely(compound);
             }
             this.light = null;
-        }
-        else {
-            compound.setInteger("color", 0xFFFFFF);
-            if (light != null && light.supportsLens()) {
-                compound.setBoolean("hasLens", light.supportsLens());
-            }
         }
 
         result.add(stack);
@@ -280,7 +267,6 @@ public class BlockLight extends Block {
         return true;
     }
 
-    // FIXME
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
@@ -299,12 +285,11 @@ public class BlockLight extends Block {
         }
 
         TileEntityLight light = (TileEntityLight) tile;
+        ILightInstance instance = light.getLightInstance();
 
-        compound.setInteger("color", light.getInteger("color", 1.0F));
-        if (lightType.supportsLens()) {
-            compound.setBoolean("hasLens", light.getBoolean("hasLens", 1.0F));
+        if (instance != null) {
+            instance.writeLosely(compound);
         }
-        light = null;
 
         return stack;
     }
