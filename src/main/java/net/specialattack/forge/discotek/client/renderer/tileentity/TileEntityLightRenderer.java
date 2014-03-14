@@ -53,10 +53,9 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                     boolean debug = false;
                     if (debug) {
                         //GL11.glDisable(GL11.GL_DEPTH_TEST);
-                        int color = tileLight.getInteger("color", partialTicks);
-                        float red = ((color & 0xFF0000) >> 16) / 255.0F;
-                        float green = ((color & 0xFF00) >> 8) / 255.0F;
-                        float blue = (color & 0xFF) / 255.0F;
+                        float red = tileLight.getInteger("red", partialTicks) / 255.0F;
+                        float green = tileLight.getInteger("green", partialTicks) / 255.0F;
+                        float blue = tileLight.getInteger("blue", partialTicks) / 255.0F;
                         AxisAlignedBB aabb = renderer.getRenderingAABB(tileLight, partialTicks).offset(-0.5D, -0.5D, -0.5D).expand(0.01D, 0.01D, 0.01D);
                         GL11.glDisable(GL11.GL_DEPTH_TEST);
                         GL11.glColor4f(red, green, blue, 0.2F);
