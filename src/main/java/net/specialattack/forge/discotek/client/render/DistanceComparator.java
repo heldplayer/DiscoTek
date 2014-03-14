@@ -55,15 +55,25 @@ public class DistanceComparator implements Comparator<TileEntityLight> {
         double distY2 = arg2.yCoord - player.posY;
         double distZ2 = arg2.zCoord - player.posZ;
 
+        //      double dist1 = distX1 * distX1 + distY1 * distY1 + distZ1 * distZ1;
+        //      double dist2 = distX2 * distX2 + distY2 * distY2 + distZ2 * distZ2;
+        //
+        //      if (dist1 < dist2) {
+        //          return 1;
+        //      }
+        //      else if (dist1 > dist2) {
+        //          return -1;
+        //      }
+        //      else {
+        //          return 0;
+        //      }
+
         double distOffX1 = distX1 + offsetX1;
         double distOffY1 = distY1 + offsetY1;
         double distOffZ1 = distZ1 + offsetZ1;
         double distOffX2 = distX2 + offsetX2;
         double distOffY2 = distY2 + offsetY2;
         double distOffZ2 = distZ2 + offsetZ2;
-
-        //double dist1 = distX1 * distX1 + distY1 * distY1 + distZ1 * distZ1;
-        //double dist2 = distX2 * distX2 + distY2 * distY2 + distZ2 * distZ2;
 
         double distOff1 = distOffX1 * distOffX1 + distOffY1 * distOffY1 + distOffZ1 * distOffZ1;
         double distOff2 = distOffX2 * distOffX2 + distOffY2 * distOffY2 + distOffZ2 * distOffZ2;
