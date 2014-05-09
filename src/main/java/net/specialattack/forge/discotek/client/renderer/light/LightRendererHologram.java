@@ -119,7 +119,7 @@ public class LightRendererHologram implements ILightRenderHandler {
 
     @Override
     public boolean rendersFirst() {
-        return false;
+        return true;
     }
 
     @Override
