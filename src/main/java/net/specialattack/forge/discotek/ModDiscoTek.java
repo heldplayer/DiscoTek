@@ -38,7 +38,6 @@ public class ModDiscoTek extends SpACoreMod {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         Objects.log = event.getModLog();
-        event.getModMetadata().version = Objects.MOD_VERSION;
 
         ModDiscoTek.packetHandler = new PacketHandler("DiscoTek", Packet1LightPort.class, Packet2LightGui.class, Packet3PixelSlider.class, Packet4PixelGui.class, Packet5GrandSpAInstruction.class, Packet6GrandSpAGui.class, Packet7PixelButton.class);
 
