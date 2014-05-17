@@ -56,45 +56,45 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockLight.setLight(4, new LightRadialLaser());
         Objects.blockLight.setLight(5, new LightHologram());
         Objects.blockLight.setLight(6, new LightPositionableRadialLaser());
-        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, Assets.DOMAIN + "light");
+        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         // TODO: create emitters
 
         Objects.blockTruss = new BlockTruss();
         Objects.blockTruss.setBlockTextureName(Assets.DOMAIN + "truss");
-        GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, Assets.DOMAIN + "truss");
+        GameRegistry.registerBlock(Objects.blockTruss, ItemBlockMulti.class, "truss");
 
         Objects.blockDecoration = new BlockDecoration();
-        GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, Assets.DOMAIN + "decoration");
+        GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "decoration");
 
         Objects.blockController = new BlockController();
-        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, Assets.DOMAIN + "controller");
+        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "controller");
         Objects.blockController.setController(0, new ControllerPixel());
         Objects.blockController.setController(1, new ControllerGrandSpa());
 
         Objects.blockColoredLampOff = new BlockColoredLamp(false);
-        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, Assets.DOMAIN + "colored_lamp_off");
+        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "colored_lamp_off");
 
         Objects.blockColoredLampOn = new BlockColoredLamp(true);
-        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, Assets.DOMAIN + "colored_lamp_on");
+        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "colored_lamp_on");
 
         Objects.itemDebug = new ItemDebug();
         Objects.itemDebug.setTextureName(Assets.DOMAIN + "debug");
-        GameRegistry.registerItem(Objects.itemDebug, Assets.DOMAIN + "debug");
+        GameRegistry.registerItem(Objects.itemDebug, "debug");
 
         Objects.itemLens = new ItemLens();
         Objects.itemLens.setTextureName(Assets.DOMAIN + "lens");
-        GameRegistry.registerItem(Objects.itemLens, Assets.DOMAIN + "lens");
+        GameRegistry.registerItem(Objects.itemLens, "lens");
 
         Objects.itemWirelessLinker = new ItemWirelessLinker();
         Objects.itemWirelessLinker.setTextureName(Assets.DOMAIN + "wirelessLinker");
-        GameRegistry.registerItem(Objects.itemWirelessLinker, Assets.DOMAIN + "wireless_linker");
+        GameRegistry.registerItem(Objects.itemWirelessLinker, "wireless_linker");
 
         Objects.itemOrienter = new ItemOrienter();
-        GameRegistry.registerItem(Objects.itemOrienter, Assets.DOMAIN + "orienter");
+        GameRegistry.registerItem(Objects.itemOrienter, "orienter");
 
         Objects.itemCrafting = new ItemCrafting();
-        GameRegistry.registerItem(Objects.itemCrafting, Assets.DOMAIN + "crafting");
+        GameRegistry.registerItem(Objects.itemCrafting, "crafting");
     }
 
     @Override
