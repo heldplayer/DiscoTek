@@ -107,19 +107,22 @@ public class LightHologramInstance implements ILightInstance {
             }
 
             String playerName = this.playerName.getValue();
-            if (this.player != null) {
+            if (this.player != null && playerName != null) {
                 if (playerName.isEmpty()) {
                     this.player = null;
                 }
-                if (!playerName.equals(this.player.getCommandSenderName())) {
+                else if (!playerName.equals(this.player.getCommandSenderName())) {
                     this.player = new EntityOtherPlayerMP(this.tile.getWorld(), new GameProfile("", playerName));
                 }
-                this.player.onUpdate();
+                if (this.player != null) {
+                    this.player.onUpdate();
+                }
             }
-            else {
-                if (!playerName.isEmpty()) {
-                    this.player = new EntityOtherPlayerMP(this.tile.getWorld(), new GameProfile("", playerName));
-                }
+            else if (playerName == null) {
+                this.player = null;
+            }
+            else if (!playerName.isEmpty()) {
+                this.player = new EntityOtherPlayerMP(this.tile.getWorld(), new GameProfile("", playerName));
             }
         }
     }
