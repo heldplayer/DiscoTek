@@ -9,6 +9,7 @@ import net.minecraft.block.BlockRedstoneLight;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -165,6 +166,11 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     @Override
     public boolean hasTileEntity(int metadata) {
         return true;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
     }
 
 }
