@@ -21,22 +21,7 @@ tile.decoration2.name=Dark Chiseled Stone Bricks
 tile.decoration3.name=Dark Chiseled Quartz Block
 tile.decoration4.name=Dark Bricks
 
-tile.lamp0.name=White Redstone Lamp
-tile.lamp1.name=Orange Redstone Lamp
-tile.lamp2.name=Magenta Redstone Lamp
-tile.lamp3.name=Light Blue Redstone Lamp
-tile.lamp4.name=Yellow Redstone Lamp
-tile.lamp5.name=Lime Redstone Lamp
-tile.lamp6.name=Pink Redstone Lamp
-tile.lamp7.name=Gray Redstone Lamp
-tile.lamp8.name=Light Gray Redstone Lamp
-tile.lamp9.name=Cyan Redstone Lamp
-tile.lamp10.name=Purple Redstone Lamp
-tile.lamp11.name=Blue Redstone Lamp
-tile.lamp12.name=Brown Redstone Lamp
-tile.lamp13.name=Green Redstone Lamp
-tile.lamp14.name=Red Redstone Lamp
-tile.lamp15.name=Black Redstone Lamp
+tile.lamp.name=Colored Redstone Lamp
 
 item.debug.name=Debug Item
 item.lens.name=Lens

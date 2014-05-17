@@ -10,24 +10,34 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.Objects;
+import net.specialattack.forge.discotek.client.render.BlockRendererColoredLamp;
+import net.specialattack.forge.discotek.tileentity.TileEntityColoredLamp;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockColoredLamp extends BlockRedstoneLight {
 
+    private final int renderId;
     @SideOnly(Side.CLIENT)
-    private IIcon[] icons;
+    private IIcon icon;
+    @SideOnly(Side.CLIENT)
+    private IIcon overlayIcon;
 
-    private final boolean powered;
-
-    public BlockColoredLamp(boolean powered) {
-        super(powered);
-        this.powered = powered;
+    public BlockColoredLamp() {
+        super(false);
+        this.renderId = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererColoredLamp(this.renderId));
     }
 
     @Override
@@ -39,30 +49,45 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
+
+        TileEntityColoredLamp tile = (TileEntityColoredLamp) world.getTileEntity(x, y, z);
+
+        if (tile == null) {
+            return;
+        }
+
+        if (stack.stackTagCompound != null) {
+            if (stack.stackTagCompound.hasKey("color", 3)) {
+                tile.color.setValue(stack.stackTagCompound.getInteger("color"));
+            }
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return this.icons[meta % this.icons.length];
+        if (meta == 0) {
+            return this.overlayIcon;
+        }
+        return this.icon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.icons = new IIcon[16];
-
-        for (int i = 0; i < this.icons.length; i++) {
-            this.icons[i] = register.registerIcon(Assets.DOMAIN + "lamp-" + (this.powered ? "on" : "off") + i);
-        }
+        this.icon = register.registerIcon(Assets.DOMAIN + "lamp");
+        this.overlayIcon = register.registerIcon(Assets.DOMAIN + "lamp-overlay");
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < this.icons.length; i++) {
-            list.add(new ItemStack(item, 1, i));
+        for (int color : ItemDye.field_150922_c) {
+            ItemStack stack = new ItemStack(item);
+            stack.stackTagCompound = new NBTTagCompound();
+            stack.stackTagCompound.setInteger("color", color);
+            list.add(stack);
         }
     }
 
@@ -83,40 +108,63 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     @Override
     public void updateTick(World world, int x, int y, int z, Random rand) {
         if (!world.isRemote) {
-            if (this.powered && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
-                world.setBlock(x, y, z, Objects.blockColoredLampOff, world.getBlockMetadata(x, y, z), 2);
-            }
-            else if (!this.powered && world.isBlockIndirectlyGettingPowered(x, y, z)) {
-                world.setBlock(x, y, z, Objects.blockColoredLampOn, world.getBlockMetadata(x, y, z), 2);
+            TileEntityColoredLamp tile = (TileEntityColoredLamp) world.getTileEntity(x, y, z);
+            if (tile != null) {
+                boolean lit = tile.lit.getValue();
+                boolean changed = false;
+                if (lit && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
+                    tile.lit.setValue(false);
+                    changed = true;
+                }
+                else if (!lit && world.isBlockIndirectlyGettingPowered(x, y, z)) {
+                    tile.lit.setValue(true);
+                    changed = true;
+                }
+                if (changed) {
+                    world.updateLightByType(EnumSkyBlock.Block, x, y, z);
+                }
             }
         }
     }
 
-    //    @Override
-    //    public int idDropped(int meta, Random rand, int fortune) {
-    //        return Objects.blockColoredLampOff.blockID;
-    //    }
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        TileEntityColoredLamp tile = (TileEntityColoredLamp) world.getTileEntity(x, y, z);
+        if (tile != null) {
+            return tile.lit.getValue() ? 15 : 0;
+        }
+        return 0;
+    }
 
     @Override
     public Item getItemDropped(int meta, Random rand, int fortune) {
-        return Item.getItemFromBlock(Objects.blockColoredLampOff);
+        return Item.getItemFromBlock(Objects.blockColoredLamp);
     }
-
-    //    @Override
-    //    @SideOnly(Side.CLIENT)
-    //    public int idPicked(World world, int x, int y, int z) {
-    //        return Objects.blockColoredLampOff.blockID;
-    //    }
 
     @Override
     @SideOnly(Side.CLIENT)
     public Item getItem(World world, int x, int y, int z) {
-        return Item.getItemFromBlock(Objects.blockColoredLampOff);
+        return Item.getItemFromBlock(Objects.blockColoredLamp);
     }
 
     @Override
     protected ItemStack createStackedBlock(int meta) {
-        return new ItemStack(Objects.blockColoredLampOff, meta);
+        return new ItemStack(Objects.blockColoredLamp, meta);
+    }
+
+    @Override
+    public int getRenderType() {
+        return this.renderId;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int metadata) {
+        return new TileEntityColoredLamp();
+    }
+
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return true;
     }
 
 }

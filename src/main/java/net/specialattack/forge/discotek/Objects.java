@@ -33,8 +33,7 @@ public class Objects {
     public static BlockTruss blockTruss;
     public static BlockDecoration blockDecoration;
     public static BlockController blockController;
-    public static BlockColoredLamp blockColoredLampOn;
-    public static BlockColoredLamp blockColoredLampOff;
+    public static BlockColoredLamp blockColoredLamp;
 
     public static ItemDebug itemDebug;
     public static ItemLens itemLens;

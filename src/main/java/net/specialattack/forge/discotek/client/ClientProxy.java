@@ -23,6 +23,7 @@ import net.specialattack.forge.discotek.CommonProxy;
 import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.gui.GuiLight;
 import net.specialattack.forge.discotek.client.render.DistanceComparator;
+import net.specialattack.forge.discotek.client.render.ItemRendererBlockColoredLamp;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.forge.discotek.client.render.ItemRendererLens;
 import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
@@ -78,6 +79,7 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Objects.itemLens, new ItemRendererLens());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockLight), new ItemRendererBlockLight());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockColoredLamp), new ItemRendererBlockColoredLamp());
 
         MinecraftForge.EVENT_BUS.register(this);
     }

@@ -36,6 +36,7 @@ import net.specialattack.forge.discotek.light.LightMap;
 import net.specialattack.forge.discotek.light.LightMapLED;
 import net.specialattack.forge.discotek.light.LightPositionableRadialLaser;
 import net.specialattack.forge.discotek.light.LightRadialLaser;
+import net.specialattack.forge.discotek.tileentity.TileEntityColoredLamp;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -72,11 +73,11 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockController.setController(0, new ControllerPixel());
         Objects.blockController.setController(1, new ControllerGrandSpa());
 
-        Objects.blockColoredLampOff = new BlockColoredLamp(false);
-        GameRegistry.registerBlock(Objects.blockColoredLampOff, ItemBlockMulti.class, "colored_lamp_off");
+        Objects.blockColoredLamp = new BlockColoredLamp();
+        GameRegistry.registerBlock(Objects.blockColoredLamp, "colored_lamp");
 
-        Objects.blockColoredLampOn = new BlockColoredLamp(true);
-        GameRegistry.registerBlock(Objects.blockColoredLampOn, ItemBlockMulti.class, "colored_lamp_on");
+        // Objects.blockColoredLampOn = new BlockColoredLamp(true);
+        // GameRegistry.registerBlock(Objects.blockColoredLampOn, "colored_lamp_on");
 
         Objects.itemDebug = new ItemDebug();
         Objects.itemDebug.setTextureName(Assets.DOMAIN + "debug");
@@ -109,9 +110,9 @@ public class CommonProxy extends SpACoreProxy {
 
         Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("controller");
 
-        Objects.blockColoredLampOff.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
+        Objects.blockColoredLamp.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
 
-        Objects.blockColoredLampOn.setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
+        // Objects.blockColoredLampOn.setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
 
         Objects.itemDebug.setCreativeTab(Objects.creativeTab).setUnlocalizedName("debug");
 
@@ -129,6 +130,7 @@ public class CommonProxy extends SpACoreProxy {
         TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller"); // Compat
         TileEntity.addMapping(TileEntityLight.class, "DiscoTek.Light");
         TileEntity.addMapping(TileEntityController.class, "DiscoTek.Controller");
+        TileEntity.addMapping(TileEntityColoredLamp.class, "DiscoTek.ColoredLamp");
     }
 
     @Override
@@ -214,7 +216,7 @@ public class CommonProxy extends SpACoreProxy {
 
         // Colored lights
         for (int i = 0; i < dyes.length; i++) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockColoredLampOff, 8, i), "LLL", "LdL", "LLL", 'L', redstoneLamp, 'd', dyes[i]));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockColoredLamp, 8, i), "LLL", "LdL", "LLL", 'L', redstoneLamp, 'd', dyes[i]));
         }
     }
 
