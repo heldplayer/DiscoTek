@@ -28,6 +28,7 @@ import net.specialattack.forge.discotek.item.ItemLens;
 import net.specialattack.forge.discotek.item.ItemOrienter;
 import net.specialattack.forge.discotek.item.ItemWirelessLinker;
 import net.specialattack.forge.discotek.item.crafting.LightCraftingHandler;
+import net.specialattack.forge.discotek.item.crafting.RecipesColoredLamp;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
 import net.specialattack.forge.discotek.light.LightDimmer;
 import net.specialattack.forge.discotek.light.LightFresnel;
@@ -155,7 +156,6 @@ public class CommonProxy extends SpACoreProxy {
         ItemStack stoneBricks = new ItemStack(Blocks.stonebrick, 1, 0);
         ItemStack chiseledStoneBricks = new ItemStack(Blocks.stonebrick, 1, 3);
         ItemStack chiseledQuartz = new ItemStack(Blocks.quartz_block, 1, 1);
-        ItemStack redstoneLamp = new ItemStack(Blocks.redstone_lamp, 1, OreDictionary.WILDCARD_VALUE);
 
         // Basic Controller
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 0), "sss", "dqd", "HrH", 's', stick, 'd', "dyeBlue", 'q', quartz, 'H', hull, 'r', redstone));
@@ -211,13 +211,8 @@ public class CommonProxy extends SpACoreProxy {
         // Hologram Emitter
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HlH", "qGq", "HlH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HqH", "lGl", "HqH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
-
-        String[] dyes = { "dyeWhite", "dyeOrange", "dyeMagenta", "dyeLightBlue", "dyeYellow", "dyeLime", "dyePink", "dyeGray", "dyeLightGray", "dyeCyan", "dyePurple", "dyeBlue", "dyeBrown", "dyeGreen", "dyeRed", "dyeBlack", };
-
-        // Colored lights
-        for (int i = 0; i < dyes.length; i++) {
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockColoredLamp, 8, i), "LLL", "LdL", "LLL", 'L', redstoneLamp, 'd', dyes[i]));
-        }
+        // Lamp colouring
+        GameRegistry.addRecipe(new RecipesColoredLamp());
     }
 
     public void openControllerGui(TileEntityController tile) {}

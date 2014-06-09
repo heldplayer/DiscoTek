@@ -1,6 +1,7 @@
 
 package net.specialattack.forge.discotek.block;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -10,18 +11,20 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.render.BlockRendererColoredLamp;
+import net.specialattack.forge.discotek.item.crafting.RecipesColoredLamp;
 import net.specialattack.forge.discotek.tileentity.TileEntityColoredLamp;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -64,6 +67,37 @@ public class BlockColoredLamp extends BlockRedstoneLight {
         }
     }
 
+    private TileEntityColoredLamp tile;
+
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int side, EntityPlayer player) {
+        super.onBlockHarvested(world, x, y, z, side, player);
+
+        TileEntity tile = world.getTileEntity(x, y, z);
+
+        if (tile != null && tile instanceof TileEntityColoredLamp) {
+            this.tile = (TileEntityColoredLamp) tile;
+        }
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        ArrayList<ItemStack> result = new ArrayList<ItemStack>();
+
+        ItemStack stack = new ItemStack(this, 1, metadata);
+
+        NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
+        compound.setInteger("color", 0xFFFFFF);
+
+        if (this.tile != null) {
+            compound.setInteger("color", this.tile.color.getValue());
+        }
+
+        result.add(stack);
+
+        return result;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
@@ -84,10 +118,16 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        for (int color : ItemDye.field_150922_c) {
-            ItemStack stack = new ItemStack(item);
-            stack.stackTagCompound = new NBTTagCompound();
-            stack.stackTagCompound.setInteger("color", color);
+        for (float[] colorArray : RecipesColoredLamp.dyeColors) {
+            int red = (int) (colorArray[0] * 255.0F);
+            int green = (int) (colorArray[1] * 255.0F);
+            int blue = (int) (colorArray[2] * 255.0F);
+            int color = red << 16 | green << 8 | blue;
+
+            ItemStack stack = new ItemStack(item, 1, 0);
+            NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
+            compound.setInteger("color", color);
+
             list.add(stack);
         }
     }
@@ -171,6 +211,20 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     @Override
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
+    }
+
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+        ItemStack stack = new ItemStack(this);
+        NBTTagCompound compound = stack.stackTagCompound = new NBTTagCompound();
+        compound.setInteger("color", 0xFFFFFF);
+
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile != null && tile instanceof TileEntityColoredLamp) {
+            compound.setInteger("color", ((TileEntityColoredLamp) tile).color.getValue());
+        }
+
+        return stack;
     }
 
 }
