@@ -50,7 +50,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                 Minecraft.getMinecraft().mcProfiler.startSection(light.getIdentifier());
                 if (TileEntityLightRenderer.lightOnly) {
                     // Debug code, activate me to see render bounding boxes
-                    boolean debug = true;
+                    boolean debug = false;
                     if (debug) {
                         //GL11.glDisable(GL11.GL_DEPTH_TEST);
                         float red = tileLight.getInteger("red", partialTicks) / 255.0F;
