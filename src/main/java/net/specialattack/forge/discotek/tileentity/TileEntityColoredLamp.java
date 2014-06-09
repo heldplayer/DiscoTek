@@ -133,8 +133,8 @@ public class TileEntityColoredLamp extends TileEntity implements ISyncableObject
     @Override
     public void onDataChanged(ISyncable syncable) {
         if (syncable == this.lit) {
-            worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
-            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            this.worldObj.updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
     }
 

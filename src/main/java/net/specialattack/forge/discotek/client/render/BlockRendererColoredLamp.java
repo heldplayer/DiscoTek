@@ -86,9 +86,9 @@ public class BlockRendererColoredLamp implements ISimpleBlockRenderingHandler {
             int iRed = (color >> 16) & 0xFF;
             int iGreen = (color >> 8) & 0xFF;
             int iBlue = color & 0xFF;
-            red = (float) iRed / 255.0F;
-            green = (float) iGreen / 255.0F;
-            blue = (float) iBlue / 255.0F;
+            red = iRed / 255.0F;
+            green = iGreen / 255.0F;
+            blue = iBlue / 255.0F;
             if (!tile.lit.getValue()) {
                 red *= 0.5F;
                 green *= 0.5F;
@@ -98,11 +98,11 @@ public class BlockRendererColoredLamp implements ISimpleBlockRenderingHandler {
 
         // Inner
         block.setBlockBounds(0.05F, 0.05F, 0.05F, 0.95F, 0.95F, 0.95F);
-        boolean rendered = renderStandardBlockWithColorMultiplier(block, x, y, z, red, green, blue, renderer, RenderHelper.getIconSafe(block.getIcon(0, 1), false));
+        boolean rendered = BlockRendererColoredLamp.renderStandardBlockWithColorMultiplier(block, x, y, z, red, green, blue, renderer, RenderHelper.getIconSafe(block.getIcon(0, 1), false));
 
         // Outer
         block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        rendered |= renderStandardBlockWithColorMultiplier(block, x, y, z, 1.0F, 1.0F, 1.0F, renderer, RenderHelper.getIconSafe(block.getIcon(0, 0), false));
+        rendered |= BlockRendererColoredLamp.renderStandardBlockWithColorMultiplier(block, x, y, z, 1.0F, 1.0F, 1.0F, renderer, RenderHelper.getIconSafe(block.getIcon(0, 0), false));
 
         return rendered;
     }
@@ -127,42 +127,42 @@ public class BlockRendererColoredLamp implements ISimpleBlockRenderingHandler {
         if (renderer.renderAllFaces || block.shouldSideBeRendered(renderer.blockAccess, posX, posY - 1, posZ, 0)) {
             tessellator.setBrightness(renderer.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderer.blockAccess, posX, posY - 1, posZ));
             tessellator.setColorOpaque_F(0.5F * red, 0.5F * green, 0.5F * blue);
-            renderer.renderFaceYNeg(block, (double) posX, (double) posY, (double) posZ, icon);
+            renderer.renderFaceYNeg(block, posX, posY, posZ, icon);
             rendered = true;
         }
 
         if (renderer.renderAllFaces || block.shouldSideBeRendered(renderer.blockAccess, posX, posY + 1, posZ, 1)) {
             tessellator.setBrightness(renderer.renderMaxY < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderer.blockAccess, posX, posY + 1, posZ));
             tessellator.setColorOpaque_F(red, green, blue);
-            renderer.renderFaceYPos(block, (double) posX, (double) posY, (double) posZ, icon);
+            renderer.renderFaceYPos(block, posX, posY, posZ, icon);
             rendered = true;
         }
 
         if (renderer.renderAllFaces || block.shouldSideBeRendered(renderer.blockAccess, posX, posY, posZ - 1, 2)) {
             tessellator.setBrightness(renderer.renderMinZ > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderer.blockAccess, posX, posY, posZ - 1));
             tessellator.setColorOpaque_F(0.8F * red, 0.8F * green, 0.8F * blue);
-            renderer.renderFaceZNeg(block, (double) posX, (double) posY, (double) posZ, icon);
+            renderer.renderFaceZNeg(block, posX, posY, posZ, icon);
             rendered = true;
         }
 
         if (renderer.renderAllFaces || block.shouldSideBeRendered(renderer.blockAccess, posX, posY, posZ + 1, 3)) {
             tessellator.setBrightness(renderer.renderMaxZ < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderer.blockAccess, posX, posY, posZ + 1));
             tessellator.setColorOpaque_F(0.8F * red, 0.8F * green, 0.8F * blue);
-            renderer.renderFaceZPos(block, (double) posX, (double) posY, (double) posZ, icon);
+            renderer.renderFaceZPos(block, posX, posY, posZ, icon);
             rendered = true;
         }
 
         if (renderer.renderAllFaces || block.shouldSideBeRendered(renderer.blockAccess, posX - 1, posY, posZ, 4)) {
             tessellator.setBrightness(renderer.renderMinX > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderer.blockAccess, posX - 1, posY, posZ));
             tessellator.setColorOpaque_F(0.6F * red, 0.6F * green, 0.6F * blue);
-            renderer.renderFaceXNeg(block, (double) posX, (double) posY, (double) posZ, icon);
+            renderer.renderFaceXNeg(block, posX, posY, posZ, icon);
             rendered = true;
         }
 
         if (renderer.renderAllFaces || block.shouldSideBeRendered(renderer.blockAccess, posX + 1, posY, posZ, 5)) {
             tessellator.setBrightness(renderer.renderMaxX < 1.0D ? brightness : block.getMixedBrightnessForBlock(renderer.blockAccess, posX + 1, posY, posZ));
             tessellator.setColorOpaque_F(0.6F * red, 0.6F * green, 0.6F * blue);
-            renderer.renderFaceXPos(block, (double) posX, (double) posY, (double) posZ, icon);
+            renderer.renderFaceXPos(block, posX, posY, posZ, icon);
             rendered = true;
         }
 

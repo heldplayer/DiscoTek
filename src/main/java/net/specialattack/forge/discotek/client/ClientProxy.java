@@ -145,15 +145,15 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public void onRenderGameOverlayText(RenderGameOverlayEvent.Text event) {
         if (MC.getGameSettings().showDebugInfo) {
-            event.left.add("DiscoTek Lights: " + renderedCount + "/" + totalCount);
+            event.left.add("DiscoTek Lights: " + this.renderedCount + "/" + this.totalCount);
         }
     }
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         MC.getMinecraft().mcProfiler.startSection("discotek");
-        totalCount = 0;
-        renderedCount = 0;
+        this.totalCount = 0;
+        this.renderedCount = 0;
         if (ClientProxy.lights.isEmpty()) {
             MC.getMinecraft().mcProfiler.endSection();
             return;
@@ -193,7 +193,7 @@ public class ClientProxy extends CommonProxy {
         iterator = ClientProxy.reusableLights.iterator();
 
         while (iterator.hasNext()) {
-            totalCount++;
+            this.totalCount++;
 
             TileEntityLight light = iterator.next();
 
@@ -212,7 +212,7 @@ public class ClientProxy extends CommonProxy {
                 continue;
             }
 
-            renderedCount++;
+            this.renderedCount++;
         }
 
         MC.getMinecraft().mcProfiler.endStartSection("rendering");
