@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -103,6 +104,8 @@ public class ClientProxy extends CommonProxy {
 
     private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
     private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
+    private int totalCount = 0;
+    private int renderedCount = 0;
 
     public static void addTile(TileEntityLight light) {
         ILightRenderHandler handler = light.getRenderHandler();
@@ -140,8 +143,17 @@ public class ClientProxy extends CommonProxy {
     }
 
     @SubscribeEvent
+    public void onRenderGameOverlayText(RenderGameOverlayEvent.Text event) {
+        if (MC.getGameSettings().showDebugInfo) {
+            event.left.add("DiscoTek Lights: " + renderedCount + "/" + totalCount);
+        }
+    }
+
+    @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         MC.getMinecraft().mcProfiler.startSection("discotek");
+        totalCount = 0;
+        renderedCount = 0;
         if (ClientProxy.lights.isEmpty()) {
             MC.getMinecraft().mcProfiler.endSection();
             return;
@@ -171,30 +183,36 @@ public class ClientProxy extends CommonProxy {
 
         EntityClientPlayerMP player = MC.getMinecraft().thePlayer;
 
-        double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
-        double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
-        double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
+        double playerX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
+        double playerY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
+        double playerZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.partialTicks;
 
         Frustrum frustrum = new Frustrum();
-        frustrum.setPosition(d0, d1, d2);
+        frustrum.setPosition(playerX, playerY, playerZ);
 
         iterator = ClientProxy.reusableLights.iterator();
 
         while (iterator.hasNext()) {
+            totalCount++;
+
             TileEntityLight light = iterator.next();
 
             ILightRenderHandler handler = light.getRenderHandler();
 
             if (handler != null) {
-                AxisAlignedBB aabb = handler.getRenderingAABB(light, event.partialTicks).offset(d0, d1, d2);
+                AxisAlignedBB aabb = handler.getRenderingAABB(light, event.partialTicks).offset(light.xCoord, light.yCoord, light.zCoord);
 
                 if (!frustrum.isBoundingBoxInFrustum(aabb)) {
                     iterator.remove();
+                    continue;
                 }
             }
             else {
                 iterator.remove();
+                continue;
             }
+
+            renderedCount++;
         }
 
         MC.getMinecraft().mcProfiler.endStartSection("rendering");
@@ -216,9 +234,9 @@ public class ClientProxy extends CommonProxy {
         while (iterator.hasNext()) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             TileEntityLight light = iterator.next();
-            double d3 = light.xCoord - d0;
-            double d4 = light.yCoord - d1;
-            double d5 = light.zCoord - d2;
+            double d3 = light.xCoord - playerX;
+            double d4 = light.yCoord - playerY;
+            double d5 = light.zCoord - playerZ;
 
             if (light.isNotValid()) {
                 iterator.remove();
