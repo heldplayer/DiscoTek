@@ -60,6 +60,8 @@ public class ItemRendererBlockColoredLamp implements IItemRenderer {
 
         tessellator.startDrawingQuads();
 
+        tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+
         // Inner
         ItemRendererBlockColoredLamp.renderer.setRenderBounds(0.005D, 0.005D, 0.005D, 0.995D, 0.995D, 0.995D);
 
