@@ -90,14 +90,14 @@ public class BlockRendererColoredLamp implements ISimpleBlockRenderingHandler {
             green = iGreen / 255.0F;
             blue = iBlue / 255.0F;
             if (!tile.lit.getValue()) {
-                red *= 0.5F;
-                green *= 0.5F;
-                blue *= 0.5F;
+                red *= 0.3F;
+                green *= 0.3F;
+                blue *= 0.3F;
             }
         }
 
         // Inner
-        block.setBlockBounds(0.05F, 0.05F, 0.05F, 0.95F, 0.95F, 0.95F);
+        block.setBlockBounds(0.01F, 0.01F, 0.01F, 0.99F, 0.99F, 0.99F);
         boolean rendered = BlockRendererColoredLamp.renderStandardBlockWithColorMultiplier(block, x, y, z, red, green, blue, renderer, RenderHelper.getIconSafe(block.getIcon(0, 1), false));
 
         // Outer
@@ -121,8 +121,11 @@ public class BlockRendererColoredLamp implements ISimpleBlockRenderingHandler {
         renderer.enableAO = false;
         Tessellator tessellator = Tessellator.instance;
         boolean rendered = false;
+        renderer.setRenderBoundsFromBlock(block);
 
-        int brightness = block.getMixedBrightnessForBlock(renderer.blockAccess, posX, posY, posZ);
+        //int brightness = block.getMixedBrightnessForBlock(renderer.blockAccess, posX, posY, posZ);
+        int brightness = 15 << 20 | 15 << 4;
+        tessellator.setBrightness(brightness);
 
         if (renderer.renderAllFaces || block.shouldSideBeRendered(renderer.blockAccess, posX, posY - 1, posZ, 0)) {
             tessellator.setBrightness(renderer.renderMinY > 0.0D ? brightness : block.getMixedBrightnessForBlock(renderer.blockAccess, posX, posY - 1, posZ));

@@ -30,7 +30,7 @@ public class ItemCrafting extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
-        this.icons = new IIcon[4];
+        this.icons = new IIcon[5];
         for (int i = 0; i < this.icons.length; i++) {
             this.icons[i] = register.registerIcon(Assets.DOMAIN + "crafting" + i);
         }
@@ -46,7 +46,7 @@ public class ItemCrafting extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < this.icons.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }

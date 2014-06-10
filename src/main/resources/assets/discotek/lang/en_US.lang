@@ -20,6 +20,9 @@ tile.decoration1.name=Dark Stone Bricks
 tile.decoration2.name=Dark Chiseled Stone Bricks
 tile.decoration3.name=Dark Chiseled Quartz Block
 tile.decoration4.name=Dark Bricks
+tile.decoration5.name=Dark Nether Brick
+tile.decoration6.name=Dark Wood Planks
+tile.decoration7.name=Darkness
 
 tile.lamp.name=Colored Redstone Lamp
 
@@ -35,6 +38,7 @@ item.crafting0.name=Light Bulb
 item.crafting1.name=LED
 item.crafting2.name=Servo
 item.crafting3.name=Dark Brick
+item.crafting4.name=Dark Nether Brick
 
 itemGroup.discotek=DiscoTek
 

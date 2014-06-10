@@ -47,7 +47,7 @@ public class BlockDecoration extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.icons = new IIcon[5];
+        this.icons = new IIcon[8];
 
         for (int i = 0; i < this.icons.length; i++) {
             this.icons[i] = register.registerIcon(Assets.DOMAIN + "decoration" + i);

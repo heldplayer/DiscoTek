@@ -153,9 +153,12 @@ public class CommonProxy extends SpACoreProxy {
         ItemStack brick = new ItemStack(Items.brick, 1, OreDictionary.WILDCARD_VALUE);
         ItemStack netherBrick = new ItemStack(Items.netherbrick, 1, OreDictionary.WILDCARD_VALUE);
         ItemStack darkBrick = new ItemStack(Objects.itemCrafting, 1, 3);
+        ItemStack darkNetherBrick = new ItemStack(Objects.itemCrafting, 1, 4);
         ItemStack stoneBricks = new ItemStack(Blocks.stonebrick, 1, 0);
         ItemStack chiseledStoneBricks = new ItemStack(Blocks.stonebrick, 1, 3);
         ItemStack chiseledQuartz = new ItemStack(Blocks.quartz_block, 1, 1);
+        ItemStack brickBlock = new ItemStack(Blocks.brick_block, 1, 1);
+        ItemStack netherBrickBlock = new ItemStack(Blocks.nether_brick, 1, 1);
 
         // Basic Controller
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 0), "sss", "dqd", "HrH", 's', stick, 'd', "dyeBlue", 'q', quartz, 'H', hull, 'r', redstone));
@@ -182,7 +185,15 @@ public class CommonProxy extends SpACoreProxy {
         // Dark Chiseled Quartz Block
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 3), "QQQ", "QdQ", "QQQ", 'Q', chiseledQuartz, 'd', "dyeBlack"));
         // Dark Bricks
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 4), "BBB", "BdB", "BBB", 'B', brickBlock, 'd', "dyeBlack"));
         GameRegistry.addShapedRecipe(new ItemStack(Objects.blockDecoration, 1, 4), "bb", "bb", 'b', darkBrick);
+        // Dark Nether Bricks
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 5), "BBB", "BdB", "BBB", 'B', netherBrickBlock, 'd', "dyeBlack"));
+        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockDecoration, 1, 5), "bb", "bb", 'b', darkNetherBrick);
+        // Dark Wood Planks
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 6), "PPP", "PdP", "PPP", 'P', "plankWood", 'd', "dyeBlack"));
+        // Darkness
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockDecoration, 8, 7), "dd", "dd", 'd', "dyeBlack"));
         // Lens
         GameRegistry.addShapedRecipe(new ItemStack(Objects.itemLens, 1, 0), " i ", "iPi", " i ", 'i', iron, 'P', glassPane);
         // Light Bulb
@@ -193,7 +204,8 @@ public class CommonProxy extends SpACoreProxy {
         GameRegistry.addShapedRecipe(new ItemStack(Objects.itemCrafting, 1, 2), " HH", "sPr", " HH", 'H', hull, 's', stick, 'P', piston, 'r', redstone);
         // Dark brick
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.itemCrafting, 8, 3), "bbb", "bdb", "bbb", 'b', brick, 'd', "dyeBlack"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.itemCrafting, 8, 3), "bbb", "bdb", "bbb", 'b', netherBrick, 'd', "dyeBlack"));
+        // Dark nether brick
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.itemCrafting, 8, 4), "bbb", "bdb", "bbb", 'b', netherBrick, 'd', "dyeBlack"));
         // Lens colouring
         GameRegistry.addRecipe(new RecipesLens());
         // Light Crafting Handler
