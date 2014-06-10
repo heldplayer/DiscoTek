@@ -72,7 +72,7 @@ public class LightDimmerInstance implements ILightInstance {
     @Override
     public int getInteger(String identifier, float partialTicks) {
         if (identifier.equals("redstone")) {
-            return this.redstone.getValue();
+            return this.redstone.getValue() / 16;
         }
 
         return 0;
