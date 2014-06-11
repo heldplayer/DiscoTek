@@ -22,7 +22,10 @@ import net.specialattack.forge.core.sync.packet.Packet1TrackingStatus;
 
 import com.google.common.io.ByteArrayDataInput;
 
-public class TileEntityColoredLamp extends TileEntity implements ISyncableObjectOwner {
+import cpw.mods.fml.common.Optional.Interface;
+
+@Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
+public class TileEntityColoredLamp extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
 
     public SInteger color;
     public SBoolean lit;
