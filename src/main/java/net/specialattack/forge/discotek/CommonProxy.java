@@ -19,6 +19,7 @@ import net.specialattack.forge.discotek.block.BlockTruss;
 import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
 import net.specialattack.forge.discotek.controller.ControllerPixel;
 import net.specialattack.forge.discotek.creativetabs.CreativeTabIcon;
+import net.specialattack.forge.discotek.item.ItemBlockColoredLamp;
 import net.specialattack.forge.discotek.item.ItemBlockController;
 import net.specialattack.forge.discotek.item.ItemBlockLight;
 import net.specialattack.forge.discotek.item.ItemBlockMulti;
@@ -61,6 +62,7 @@ public class CommonProxy extends SpACoreProxy {
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         // TODO: create emitters
+        // TODO: create item for storing and restoring colours of lamps
 
         Objects.blockTruss = new BlockTruss();
         Objects.blockTruss.setBlockTextureName(Assets.DOMAIN + "truss");
@@ -75,7 +77,7 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockController.setController(1, new ControllerGrandSpa());
 
         Objects.blockColoredLamp = new BlockColoredLamp();
-        GameRegistry.registerBlock(Objects.blockColoredLamp, "colored_lamp");
+        GameRegistry.registerBlock(Objects.blockColoredLamp, ItemBlockColoredLamp.class, "colored_lamp");
 
         // Objects.blockColoredLampOn = new BlockColoredLamp(true);
         // GameRegistry.registerBlock(Objects.blockColoredLampOn, "colored_lamp_on");
