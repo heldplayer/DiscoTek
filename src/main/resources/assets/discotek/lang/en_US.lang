@@ -59,6 +59,7 @@ gui.tooltip.light.lens.false=Doesn't have lens
 gui.tooltip.coloredLamp.color=Color: %s
 
 gui.tooltip.colorConfigurator.color=Color: %s
+gui.tooltip.colorConfigurator.nocolor=Color not set
 
 gui.light.title=Configuring Light
 gui.light.loading=Loading...

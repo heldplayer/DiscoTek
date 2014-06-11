@@ -63,6 +63,8 @@ public class CommonProxy extends SpACoreProxy {
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         // TODO: create emitters
+        // TODO: Display connectors: turns lamps into a display
+        // TODO: Programmable animations on new screens
 
         Objects.blockTruss = new BlockTruss();
         Objects.blockTruss.setBlockTextureName(Assets.DOMAIN + "truss");
