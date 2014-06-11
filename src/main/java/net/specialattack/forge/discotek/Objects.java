@@ -8,6 +8,7 @@ import net.specialattack.forge.discotek.block.BlockDecoration;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.block.BlockTruss;
 import net.specialattack.forge.discotek.creativetabs.CreativeTabIcon;
+import net.specialattack.forge.discotek.item.ItemColorConfigurator;
 import net.specialattack.forge.discotek.item.ItemCrafting;
 import net.specialattack.forge.discotek.item.ItemDebug;
 import net.specialattack.forge.discotek.item.ItemLens;
@@ -40,6 +41,7 @@ public class Objects {
     public static ItemWirelessLinker itemWirelessLinker;
     public static ItemOrienter itemOrienter;
     public static ItemCrafting itemCrafting;
+    public static ItemColorConfigurator itemColorConfigurator;
 
     public static CreativeTabIcon creativeTab;
 

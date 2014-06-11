@@ -39,6 +39,7 @@ item.crafting1.name=LED
 item.crafting2.name=Servo
 item.crafting3.name=Dark Brick
 item.crafting4.name=Dark Nether Brick
+item.colorConfigurator.name=Color Configurator
 
 itemGroup.discotek=DiscoTek
 
@@ -56,6 +57,8 @@ gui.tooltip.light.lens.true=Has lens
 gui.tooltip.light.lens.false=Doesn't have lens
 
 gui.tooltip.coloredLamp.color=Color: %s
+
+gui.tooltip.colorConfigurator.color=Color: %s
 
 gui.light.title=Configuring Light
 gui.light.loading=Loading...

@@ -26,7 +26,7 @@ import net.specialattack.forge.discotek.client.gui.GuiLight;
 import net.specialattack.forge.discotek.client.render.DistanceComparator;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockColoredLamp;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockLight;
-import net.specialattack.forge.discotek.client.render.ItemRendererLens;
+import net.specialattack.forge.discotek.client.render.ItemRendererMultiPass;
 import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererDimmer;
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererFresnel;
@@ -78,7 +78,8 @@ public class ClientProxy extends CommonProxy {
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
 
-        MinecraftForgeClient.registerItemRenderer(Objects.itemLens, new ItemRendererLens());
+        MinecraftForgeClient.registerItemRenderer(Objects.itemLens, new ItemRendererMultiPass());
+        MinecraftForgeClient.registerItemRenderer(Objects.itemColorConfigurator, new ItemRendererMultiPass());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockLight), new ItemRendererBlockLight());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockColoredLamp), new ItemRendererBlockColoredLamp());
 

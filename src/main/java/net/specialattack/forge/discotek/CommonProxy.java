@@ -23,6 +23,7 @@ import net.specialattack.forge.discotek.item.ItemBlockColoredLamp;
 import net.specialattack.forge.discotek.item.ItemBlockController;
 import net.specialattack.forge.discotek.item.ItemBlockLight;
 import net.specialattack.forge.discotek.item.ItemBlockMulti;
+import net.specialattack.forge.discotek.item.ItemColorConfigurator;
 import net.specialattack.forge.discotek.item.ItemCrafting;
 import net.specialattack.forge.discotek.item.ItemDebug;
 import net.specialattack.forge.discotek.item.ItemLens;
@@ -62,7 +63,6 @@ public class CommonProxy extends SpACoreProxy {
         GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         // TODO: create emitters
-        // TODO: create item for storing and restoring colours of lamps
 
         Objects.blockTruss = new BlockTruss();
         Objects.blockTruss.setBlockTextureName(Assets.DOMAIN + "truss");
@@ -99,6 +99,10 @@ public class CommonProxy extends SpACoreProxy {
 
         Objects.itemCrafting = new ItemCrafting();
         GameRegistry.registerItem(Objects.itemCrafting, "crafting");
+
+        Objects.itemColorConfigurator = new ItemColorConfigurator();
+        Objects.itemColorConfigurator.setTextureName(Assets.DOMAIN + "color-configurator");
+        GameRegistry.registerItem(Objects.itemColorConfigurator, "color-configurator");
     }
 
     @Override
@@ -126,6 +130,8 @@ public class CommonProxy extends SpACoreProxy {
         Objects.itemOrienter.setCreativeTab(Objects.creativeTab).setUnlocalizedName("orienter");
 
         Objects.itemCrafting.setCreativeTab(Objects.creativeTab).setUnlocalizedName("crafting");
+
+        Objects.itemColorConfigurator.setCreativeTab(Objects.creativeTab).setUnlocalizedName("colorConfigurator");
 
         Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockLight));
 
