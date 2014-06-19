@@ -65,6 +65,7 @@ public class CommonProxy extends SpACoreProxy {
         // TODO: create emitters
         // TODO: Display connectors: turns lamps into a display
         // TODO: Programmable animations on new screens
+        // TODO: dyed "electric" glass
 
         Objects.blockTruss = new BlockTruss();
         Objects.blockTruss.setBlockTextureName(Assets.DOMAIN + "truss");
