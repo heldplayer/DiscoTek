@@ -75,6 +75,8 @@ gui.light.name=Name
 gui.light.size=Size Channel: %s
 gui.light.length=Length Channel: %s
 gui.light.headRotation=Head Rotation Channel: %s
+gui.light.beat.false=Respond on beat: off
+gui.light.beat.true=Respond on beat: on
 
 gui.controller.title=Configuring Controller
 gui.controller.loading=Loading...

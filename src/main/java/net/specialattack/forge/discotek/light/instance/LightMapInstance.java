@@ -252,6 +252,7 @@ public class LightMapInstance implements ILightInstance {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        this.direction.setValue(compound.getInteger("direction"));
         this.hasLens.setValue(compound.getBoolean("hasLens"));
         this.color.setValue(compound.getInteger("color"));
         this.brightness.setValue(compound.getFloat("brightness"));
@@ -267,6 +268,7 @@ public class LightMapInstance implements ILightInstance {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("direction", this.direction.getValue());
         compound.setBoolean("hasLens", this.hasLens.getValue());
         compound.setInteger("color", this.color.getValue());
         compound.setFloat("brightness", this.brightness.getValueDirect());

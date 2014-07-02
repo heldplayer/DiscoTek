@@ -242,6 +242,7 @@ public class LightMapLEDInstance implements ILightInstance {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        this.direction.setValue(compound.getInteger("direction"));
         this.red.setValue(compound.getInteger("red"));
         this.prevRed = this.red.getValue();
         this.green.setValue(compound.getInteger("green"));
@@ -261,6 +262,7 @@ public class LightMapLEDInstance implements ILightInstance {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("direction", this.direction.getValue());
         compound.setInteger("red", this.red.getValue());
         compound.setInteger("green", this.green.getValue());
         compound.setInteger("blue", this.blue.getValue());

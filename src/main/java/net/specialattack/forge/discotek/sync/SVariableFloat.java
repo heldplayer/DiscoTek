@@ -22,7 +22,7 @@ public class SVariableFloat extends SFloat {
     @Override
     public float getValue() {
         if (owner != null && owner.getBoolean("beat", 1.0F)) {
-            return super.getValue() * (ClientProxy.beat ? 1.0F : 0.5F);
+            return super.getValue() * (ClientProxy.beat ? 1.0F : 0.2F);
         }
         else {
             return super.getValue();

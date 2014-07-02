@@ -300,10 +300,10 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
                 double endX = posX + bandWidth * (i + 1);
                 double endY = height - posY;
                 GL11.glBegin(GL11.GL_QUADS);
-                //GL11.glVertex2d(startX, startY);
-                //GL11.glVertex2d(startX, endY);
-                //GL11.glVertex2d(endX, endY);
-                //GL11.glVertex2d(endX, startY);
+                GL11.glVertex2d(startX, startY);
+                GL11.glVertex2d(startX, endY);
+                GL11.glVertex2d(endX, endY);
+                GL11.glVertex2d(endX, startY);
                 GL11.glEnd();
 
                 GL11.glEnable(GL11.GL_TEXTURE_2D);

@@ -223,6 +223,9 @@ public class LightHologramInstance implements ILightInstance {
 
     @Override
     public void setValue(String identifier, int value) {
+        if (identifier.equals("direction")) {
+            this.direction.setValue(value);
+        }
         if (identifier.equals("red")) {
             this.red.setValue(value);
         }
@@ -296,6 +299,7 @@ public class LightHologramInstance implements ILightInstance {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        this.direction.setValue(compound.getInteger("direction"));
         this.red.setValue(compound.getInteger("red"));
         this.prevRed = this.red.getValue();
         this.green.setValue(compound.getInteger("green"));
@@ -316,6 +320,7 @@ public class LightHologramInstance implements ILightInstance {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("direction", this.direction.getValue());
         compound.setInteger("red", this.red.getValue());
         compound.setInteger("green", this.green.getValue());
         compound.setInteger("blue", this.blue.getValue());
