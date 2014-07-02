@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
+import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
@@ -21,9 +22,10 @@ public class Packet2LightGui extends SpACorePacket {
     public int posY;
     public int posZ;
     public int[] channels;
-    public int[] ports;
-    public boolean[] areString;
-    public String[] values;
+    public int[] iValues;
+    public String[] sValues;
+    public boolean[] bValues;
+    public int[] types;
 
     public Packet2LightGui() {
         super(null);
@@ -37,19 +39,24 @@ public class Packet2LightGui extends SpACorePacket {
         this.posZ = tile.zCoord;
 
         this.channels = new int[tile.channels.length];
-        this.ports = new int[tile.channels.length];
-        this.areString = new boolean[tile.channels.length];
-        this.values = new String[tile.channels.length];
+        this.iValues = new int[tile.channels.length];
+        this.sValues = new String[tile.channels.length];
+        this.bValues = new boolean[tile.channels.length];
+        this.types = new int[tile.channels.length];
 
         for (int i = 0; i < tile.channels.length; i++) {
             this.channels[i] = tile.channels[i].channel.id;
-            if (tile.channels[i].channel.isString) {
-                this.areString[i] = true;
-                this.values[i] = ((SString) tile.channels[i].syncable).getValue();
-            }
-            else {
-                this.areString[i] = false;
-                this.ports[i] = tile.channels[i].port;
+            this.types[i] = tile.channels[i].channel.type;
+            switch (tile.channels[i].channel.type) {
+            case 0:
+                this.iValues[i] = tile.channels[i].port;
+            break;
+            case 1:
+                this.sValues[i] = ((SString) tile.channels[i].syncable).getValue();
+            break;
+            case 2:
+                this.bValues[i] = ((SBoolean) tile.channels[i].syncable).getValue();
+            break;
             }
         }
     }
@@ -67,18 +74,27 @@ public class Packet2LightGui extends SpACorePacket {
 
         int length = in.readInt();
         this.channels = new int[length];
-        this.ports = new int[length];
-        this.areString = new boolean[length];
-        this.values = new String[length];
+        this.iValues = new int[length];
+        this.sValues = new String[length];
+        this.bValues = new boolean[length];
+        this.types = new int[length];
 
         for (int i = 0; i < length; i++) {
             this.channels[i] = in.readInt();
-            this.areString[i] = in.readBoolean();
-            this.ports[i] = in.readInt();
-            if (this.areString[i]) {
-                byte[] data = new byte[this.ports[i]];
+            this.types[i] = in.readInt();
+            switch (this.types[i]) {
+            case 0:
+                this.iValues[i] = in.readInt();
+            break;
+            case 1:
+                this.iValues[i] = in.readInt();
+                byte[] data = new byte[this.iValues[i]];
                 in.readBytes(data);
-                this.values[i] = new String(data);
+                this.sValues[i] = new String(data);
+            break;
+            case 2:
+                this.bValues[i] = in.readBoolean();
+            break;
             }
         }
     }
@@ -92,14 +108,19 @@ public class Packet2LightGui extends SpACorePacket {
         out.writeInt(this.channels.length);
         for (int i = 0; i < this.channels.length; i++) {
             out.writeInt(this.channels[i]);
-            out.writeBoolean(this.areString[i]);
-            if (this.areString[i]) {
-                byte[] data = this.values[i].getBytes();
+            out.writeInt(this.types[i]);
+            switch (this.types[i]) {
+            case 0:
+                out.writeInt(this.iValues[i]);
+            break;
+            case 1:
+                byte[] data = this.sValues[i].getBytes();
                 out.writeInt(data.length);
                 out.writeBytes(data);
-            }
-            else {
-                out.writeInt(this.ports[i]);
+            break;
+            case 2:
+                out.writeBoolean(this.bValues[i]);
+            break;
             }
         }
     }
@@ -118,11 +139,16 @@ public class Packet2LightGui extends SpACorePacket {
             }
 
             for (int i = 0; i < this.channels.length; i++) {
-                if (this.areString[i]) {
-                    light.channels[i].setValue(this.values);
-                }
-                else {
-                    light.setPort(this.channels[i], this.ports[i]);
+                switch (this.types[i]) {
+                case 0:
+                    light.setPort(this.channels[i], this.iValues[i]);
+                break;
+                case 1:
+                    light.channels[i].setValue(this.sValues);
+                break;
+                case 2:
+                    light.channels[i].setValue(this.bValues);
+                break;
                 }
             }
 

@@ -5,13 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.specialattack.forge.core.MathHelper;
 import net.specialattack.forge.core.sync.ISyncable;
 import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SFloat;
 import net.specialattack.forge.core.sync.SInteger;
 import net.specialattack.forge.discotek.block.BlockLight;
+import net.specialattack.forge.discotek.sync.SVariableFloat;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+import net.specialattack.util.MathHelper;
 
 public class LightFresnelInstance implements ILightInstance {
 
@@ -19,10 +20,11 @@ public class LightFresnelInstance implements ILightInstance {
 
     private SBoolean hasLens;
     private SInteger color;
-    private SFloat brightness;
+    private SVariableFloat brightness;
     private SFloat pitch;
     private SFloat rotation;
     private SFloat focus;
+    private SBoolean beat;
     private float prevBrightness = 1.0F;
     private float prevPitch = 0.0F;
     private float prevRotation = 0.0F;
@@ -34,11 +36,12 @@ public class LightFresnelInstance implements ILightInstance {
         this.tile = tile;
         this.hasLens = new SBoolean(tile, true);
         this.color = new SInteger(tile, 0xFFFFFF);
-        this.brightness = new SFloat(tile, 1.0F);
+        this.brightness = new SVariableFloat(tile, 1.0F);
         this.pitch = new SFloat(tile, 0.0F);
         this.rotation = new SFloat(tile, 0.0F);
         this.focus = new SFloat(tile, 1.0F);
-        this.syncables = Arrays.asList((ISyncable) this.hasLens, this.color, this.brightness, this.pitch, this.rotation, this.focus);
+        this.beat = new SBoolean(tile, false);
+        this.syncables = Arrays.asList((ISyncable) this.hasLens, this.color, this.brightness, this.pitch, this.rotation, this.focus, this.beat);
     }
 
     @Override
@@ -104,6 +107,9 @@ public class LightFresnelInstance implements ILightInstance {
         }
         if (identifier.equals("focus")) {
             return this.focus;
+        }
+        if (identifier.equals("beat")) {
+            return this.beat;
         }
 
         return null;
@@ -211,6 +217,9 @@ public class LightFresnelInstance implements ILightInstance {
         if (identifier.equals("hasLens")) {
             return this.hasLens.getValue();
         }
+        if (identifier.equals("beat")) {
+            return this.beat.getValue();
+        }
 
         return false;
     }
@@ -227,16 +236,18 @@ public class LightFresnelInstance implements ILightInstance {
         this.prevRotation = this.rotation.getValue();
         this.focus.setValue(compound.getFloat("focus"));
         this.prevFocus = this.focus.getValue();
+        this.beat.setValue(compound.getBoolean("beat"));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         compound.setBoolean("hasLens", this.hasLens.getValue());
         compound.setInteger("color", this.color.getValue());
-        compound.setFloat("brightness", this.brightness.getValue());
+        compound.setFloat("brightness", this.brightness.getValueDirect());
         compound.setFloat("pitch", this.pitch.getValue());
         compound.setFloat("rotation", this.rotation.getValue());
         compound.setFloat("focus", this.focus.getValue());
+        compound.setBoolean("beat", this.beat.getValue());
     }
 
     @Override
@@ -247,14 +258,16 @@ public class LightFresnelInstance implements ILightInstance {
         this.prevBrightness = this.brightness.getValue();
         this.focus.setValue(compound.getFloat("focus"));
         this.prevFocus = this.focus.getValue();
+        this.beat.setValue(compound.getBoolean("beat"));
     }
 
     @Override
     public void writeLosely(NBTTagCompound compound) {
         compound.setBoolean("hasLens", this.hasLens.getValue());
         compound.setInteger("color", this.color.getValue());
-        compound.setFloat("brightness", this.brightness.getValue());
+        compound.setFloat("brightness", this.brightness.getValueDirect());
         compound.setFloat("focus", this.focus.getValue());
+        compound.setBoolean("beat", this.beat.getValue());
     }
 
 }

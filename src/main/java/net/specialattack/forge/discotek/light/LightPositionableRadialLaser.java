@@ -17,7 +17,7 @@ public class LightPositionableRadialLaser implements ILight {
     private final List<Channels> channels;
 
     public LightPositionableRadialLaser() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.LENGTH, Channels.PITCH, Channels.ROTATION, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE);
+        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.LENGTH, Channels.PITCH, Channels.ROTATION, Channels.FOCUS, Channels.RED, Channels.GREEN, Channels.BLUE, Channels.BEAT);
     }
 
     @Override

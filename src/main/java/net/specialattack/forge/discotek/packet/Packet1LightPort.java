@@ -19,15 +19,17 @@ public class Packet1LightPort extends SpACorePacket {
     public int posY;
     public int posZ;
     public int channelId;
-    public boolean isString;
-    public int port;
-    public String value;
+    public int type;
+
+    public int iValue;
+    public String sValue;
+    public boolean bValue;
 
     public Packet1LightPort() {
         super(null);
     }
 
-    public Packet1LightPort(TileEntityLight tile, int channelId, int port) {
+    public Packet1LightPort(TileEntityLight tile, int channelId, int value) {
         super(tile.getWorldObj());
 
         this.posX = tile.xCoord;
@@ -35,8 +37,8 @@ public class Packet1LightPort extends SpACorePacket {
         this.posZ = tile.zCoord;
 
         this.channelId = channelId;
-        this.isString = false;
-        this.port = port;
+        this.type = 0;
+        this.iValue = value;
     }
 
     public Packet1LightPort(TileEntityLight tile, int channelId, String value) {
@@ -47,8 +49,20 @@ public class Packet1LightPort extends SpACorePacket {
         this.posZ = tile.zCoord;
 
         this.channelId = channelId;
-        this.isString = true;
-        this.value = value;
+        this.type = 1;
+        this.sValue = value;
+    }
+
+    public Packet1LightPort(TileEntityLight tile, int channelId, boolean value) {
+        super(tile.getWorldObj());
+
+        this.posX = tile.xCoord;
+        this.posY = tile.yCoord;
+        this.posZ = tile.zCoord;
+
+        this.channelId = channelId;
+        this.type = 2;
+        this.bValue = value;
     }
 
     @Override
@@ -63,12 +77,20 @@ public class Packet1LightPort extends SpACorePacket {
         this.posZ = in.readInt();
 
         this.channelId = in.readInt();
-        this.isString = in.readBoolean();
-        this.port = in.readInt();
-        if (this.isString) {
-            byte[] data = new byte[this.port];
+        this.type = in.readInt();
+        switch (this.type) {
+        case 0:
+            this.iValue = in.readInt();
+        break;
+        case 1:
+            this.iValue = in.readInt();
+            byte[] data = new byte[this.iValue];
             in.readBytes(data);
-            this.value = new String(data);
+            this.sValue = new String(data);
+        break;
+        case 2:
+            this.bValue = in.readBoolean();
+        break;
         }
     }
 
@@ -79,14 +101,19 @@ public class Packet1LightPort extends SpACorePacket {
         out.writeInt(this.posZ);
 
         out.writeInt(this.channelId);
-        out.writeBoolean(this.isString);
-        if (this.isString) {
-            byte[] data = this.value.getBytes();
+        out.writeInt(this.type);
+        switch (this.type) {
+        case 0:
+            out.writeInt(this.iValue);
+        break;
+        case 1:
+            byte[] data = this.sValue.getBytes();
             out.writeInt(data.length);
             out.writeBytes(data);
-        }
-        else {
-            out.writeInt(this.port);
+        break;
+        case 2:
+            out.writeBoolean(this.bValue);
+        break;
         }
     }
 
@@ -99,11 +126,16 @@ public class Packet1LightPort extends SpACorePacket {
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
 
-            if (this.isString) {
-                light.channels[this.channelId].setValue(this.value);
-            }
-            else {
-                light.channels[this.channelId].port = this.port;
+            switch (this.type) {
+            case 0:
+                light.channels[this.channelId].port = this.iValue;
+            break;
+            case 1:
+                light.channels[this.channelId].setValue(this.sValue);
+            break;
+            case 2:
+                light.channels[this.channelId].setValue(this.bValue);
+            break;
             }
 
             light.markDirty();

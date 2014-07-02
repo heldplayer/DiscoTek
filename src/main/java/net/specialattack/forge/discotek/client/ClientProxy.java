@@ -3,23 +3,29 @@ package net.specialattack.forge.discotek.client;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeSet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.forge.core.client.MC;
+import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.CommonProxy;
 import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.gui.GuiLight;
@@ -37,22 +43,33 @@ import net.specialattack.forge.discotek.client.renderer.light.LightRendererPosit
 import net.specialattack.forge.discotek.client.renderer.light.LightRendererRadialLaser;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
+import net.specialattack.forge.discotek.sound.ChannelDiscoTek;
+import net.specialattack.forge.discotek.sound.LibraryDiscoTek;
+import net.specialattack.forge.discotek.sound.SoundStreaming;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import org.lwjgl.opengl.GL11;
 
+import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.SoundSystemException;
+import paulscode.sound.libraries.LibraryJavaSound;
+import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
+
+    public static boolean beat = false;
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -65,6 +82,10 @@ public class ClientProxy extends CommonProxy {
         Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
         Objects.blockLight.setLightRenderer(5, new LightRendererHologram());
         Objects.blockLight.setLightRenderer(6, new LightRendererPositionableRadialLaser());
+
+        MinecraftForge.EVENT_BUS.register(this);
+
+        FMLCommonHandler.instance().bus().register(this);// FIXME: temp
     }
 
     @Override
@@ -82,8 +103,6 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Objects.itemColorConfigurator, new ItemRendererMultiPass());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockLight), new ItemRendererBlockLight());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockColoredLamp), new ItemRendererBlockColoredLamp());
-
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -100,6 +119,37 @@ public class ClientProxy extends CommonProxy {
     public void openLightGui(TileEntityLight tile) {
         if (tile != null) {
             FMLClientHandler.instance().displayGuiScreen(MC.getPlayer(), new GuiLight(tile));
+        }
+    }
+
+    public static LinkedList<ChannelDiscoTek> channels = new LinkedList<ChannelDiscoTek>();
+
+    @SubscribeEvent
+    public void onRenderTick(TickEvent.RenderTickEvent event) {
+        if (!ClientProxy.channels.isEmpty()) {
+            Minecraft mc = MC.getMinecraft();
+            ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+
+            double width = resolution.getScaledWidth_double();
+            double height = resolution.getScaledHeight_double();
+            double splitHeight = height / ClientProxy.channels.size();
+
+            for (int i = 0; i < ClientProxy.channels.size(); i++) {
+                ChannelDiscoTek channel = ClientProxy.channels.get(i);
+                channel.render(0.0D, splitHeight * i, width, splitHeight);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onSoundSetup(SoundSetupEvent event) {
+        Objects.log.info("Replacing default soundsystem library with custom one");
+        try {
+            SoundSystemConfig.removeLibrary(LibraryLWJGLOpenAL.class);
+            SoundSystemConfig.addLibrary(LibraryDiscoTek.class);
+        }
+        catch (SoundSystemException e) {
+            Objects.log.error("Failed setting up custom soundsystem", e);
         }
     }
 
@@ -204,7 +254,7 @@ public class ClientProxy extends CommonProxy {
                 AxisAlignedBB aabb = handler.getRenderingAABB(light, event.partialTicks).offset(light.xCoord, light.yCoord, light.zCoord);
 
                 if (!frustrum.isBoundingBoxInFrustum(aabb)) {
-                    iterator.remove();
+                    //iterator.remove();
                     continue;
                 }
             }

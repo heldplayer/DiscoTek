@@ -6,13 +6,15 @@ import java.util.List;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.specialattack.forge.core.MathHelper;
 import net.specialattack.forge.core.sync.ISyncable;
+import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SFloat;
 import net.specialattack.forge.core.sync.SInteger;
 import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.discotek.block.BlockLight;
+import net.specialattack.forge.discotek.sync.SVariableFloat;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+import net.specialattack.util.MathHelper;
 
 import com.mojang.authlib.GameProfile;
 
@@ -27,12 +29,13 @@ public class LightHologramInstance implements ILightInstance {
     private SInteger red;
     private SInteger green;
     private SInteger blue;
-    private SFloat brightness;
+    private SVariableFloat brightness;
     private SFloat size;
     private SFloat pitch;
     private SFloat rotation;
     private SFloat headRotation;
     private SString playerName;
+    private SBoolean beat;
     private int prevRed = 0xFF;
     private int prevGreen = 0xFF;
     private int prevBlue = 0xFF;
@@ -53,13 +56,14 @@ public class LightHologramInstance implements ILightInstance {
         this.red = new SInteger(tile, 0xFF);
         this.green = new SInteger(tile, 0xFF);
         this.blue = new SInteger(tile, 0xFF);
-        this.brightness = new SFloat(tile, 1.0F);
+        this.brightness = new SVariableFloat(tile, 1.0F);
         this.size = new SFloat(tile, 1.0F);
         this.pitch = new SFloat(tile, 0.0F);
         this.rotation = new SFloat(tile, 0.0F);
         this.headRotation = new SFloat(tile, 0.0F);
         this.playerName = new SString(tile, "");
-        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.size, this.pitch, this.rotation, this.headRotation, this.playerName);
+        this.beat = new SBoolean(tile, false);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.size, this.pitch, this.rotation, this.headRotation, this.playerName, this.beat);
     }
 
     @Override
@@ -184,6 +188,9 @@ public class LightHologramInstance implements ILightInstance {
         if (identifier.equals("name")) {
             return this.playerName;
         }
+        if (identifier.equals("beat")) {
+            return this.beat;
+        }
 
         return null;
     }
@@ -280,6 +287,10 @@ public class LightHologramInstance implements ILightInstance {
 
     @Override
     public boolean getBoolean(String identifier, float partialTicks) {
+        if (identifier.equals("beat")) {
+            return this.beat.getValue();
+        }
+
         return false;
     }
 
@@ -300,6 +311,7 @@ public class LightHologramInstance implements ILightInstance {
         this.headRotation.setValue(compound.getFloat("headRotation"));
         this.prevHeadRotation = this.headRotation.getValue();
         this.playerName.setValue(compound.getString("playerName"));
+        this.beat.setValue(compound.getBoolean("beat"));
     }
 
     @Override
@@ -307,11 +319,12 @@ public class LightHologramInstance implements ILightInstance {
         compound.setInteger("red", this.red.getValue());
         compound.setInteger("green", this.green.getValue());
         compound.setInteger("blue", this.blue.getValue());
-        compound.setFloat("brightness", this.brightness.getValue());
+        compound.setFloat("brightness", this.brightness.getValueDirect());
         compound.setFloat("size", this.size.getValue());
         compound.setFloat("rotation", this.rotation.getValue());
         compound.setFloat("headRotation", this.headRotation.getValue());
         compound.setString("playerName", this.playerName.getValue());
+        compound.setBoolean("beat", this.beat.getValue());
     }
 
     @Override
@@ -332,6 +345,7 @@ public class LightHologramInstance implements ILightInstance {
         this.size.setValue(compound.getFloat("size"));
         this.prevSize = this.size.getValue();
         this.playerName.setValue(compound.getString("playerName"));
+        this.beat.setValue(compound.getBoolean("beat"));
     }
 
     @Override
@@ -341,9 +355,10 @@ public class LightHologramInstance implements ILightInstance {
         int blue = this.blue.getValue();
         int color = (red << 16) | (green << 8) | blue;
         compound.setInteger("color", color);
-        compound.setFloat("brightness", this.brightness.getValue());
+        compound.setFloat("brightness", this.brightness.getValueDirect());
         compound.setFloat("size", this.size.getValue());
         compound.setString("playerName", this.playerName.getValue());
+        compound.setBoolean("beat", this.beat.getValue());
     }
 
 }

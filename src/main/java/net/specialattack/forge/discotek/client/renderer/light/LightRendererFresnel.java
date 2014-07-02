@@ -3,7 +3,6 @@ package net.specialattack.forge.discotek.client.renderer.light;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.AxisAlignedBB;
-import net.specialattack.forge.core.MathHelper;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLightParCan;
@@ -11,6 +10,7 @@ import net.specialattack.forge.discotek.client.model.ModelLightYoke;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightFresnelInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+import net.specialattack.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 

@@ -3,7 +3,6 @@ package net.specialattack.forge.discotek.client.renderer.light;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.AxisAlignedBB;
-import net.specialattack.forge.core.MathHelper;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLightMover;
@@ -13,6 +12,7 @@ import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLig
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightMapInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+import net.specialattack.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
@@ -213,6 +213,38 @@ public class LightRendererMap implements ILightRenderHandler {
         float x = lightLength * -net.minecraft.util.MathHelper.sin(rotation) * net.minecraft.util.MathHelper.cos(pitch);
         float z = lightLength * -net.minecraft.util.MathHelper.cos(rotation) * net.minecraft.util.MathHelper.cos(pitch);
         float y = lightLength * net.minecraft.util.MathHelper.sin(pitch);
+
+        int side = light.getInteger("direction", partialTicks) % 6;
+
+        float temp;
+        switch (side) {
+        case 0:
+            x = -x;
+            y = -y;
+        break;
+        case 2:
+            x = -x;
+            temp = y;
+            y = -z;
+            z = -temp;
+        break;
+        case 3:
+            x = -x;
+            temp = y;
+            y = z;
+            z = temp;
+        break;
+        case 4:
+            temp = y;
+            y = x;
+            x = -temp;
+        break;
+        case 5:
+            temp = y;
+            y = -x;
+            x = temp;
+        break;
+        }
 
         float x1 = x + distance;
         float z1 = z + distance;

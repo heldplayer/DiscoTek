@@ -3,7 +3,6 @@ package net.specialattack.forge.discotek.client.renderer.light;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.AxisAlignedBB;
-import net.specialattack.forge.core.MathHelper;
 import net.specialattack.forge.core.client.RenderHelper;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.model.ModelLaserRound;
@@ -11,6 +10,7 @@ import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLig
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightRadialLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+import net.specialattack.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
@@ -117,8 +117,25 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
 
         float xz = length * MathHelper.sin(angle);
         float y = length * MathHelper.cos(angle);
+        int side = light.getInteger("direction", partialTicks) % 6;
 
-        return aabb.addCoord(xz, y, xz).addCoord(-xz, 0, -xz);
+        float temp;
+        switch (side) {
+        case 0:
+            return aabb.addCoord(xz, -y, xz).addCoord(-xz, 0, -xz);
+        case 1:
+        default:
+            return aabb.addCoord(xz, y, xz).addCoord(-xz, 0, -xz);
+        case 2:
+            return aabb.addCoord(xz, xz, -y).addCoord(-xz, -xz, 0);
+        case 3:
+            return aabb.addCoord(xz, xz, y).addCoord(-xz, -xz, 0);
+        case 4:
+            return aabb.addCoord(-y, xz, xz).addCoord(0, -xz, -xz);
+        case 5:
+            return aabb.addCoord(y, xz, xz).addCoord(0, -xz, -xz);
+        }
+
     }
 
     @Override

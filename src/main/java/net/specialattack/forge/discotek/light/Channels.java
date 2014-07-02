@@ -18,21 +18,22 @@ public final class Channels {
     public static Channels GREEN = new Channels(5, "green");
     public static Channels BLUE = new Channels(6, "blue");
     public static Channels REDSTONE = new Channels(7, "redstone", 0.0F, 0.15F);
-    public static Channels NAME = new Channels(8, "name", true);
+    public static Channels NAME = new Channels(8, "name", 1);
     public static Channels SIZE = new Channels(9, "size", 0.0F, 20.0F);
     public static Channels LENGTH = new Channels(10, "length", 0.0F, 20.0F);
     public static Channels HEAD_ROTATION = new Channels(11, "headRotation", -72.0F, 72.0F);
+    public static Channels BEAT = new Channels(8, "beat", 2);
 
     public final String identifier;
     public final int id;
-    public final boolean isString;
+    public final int type;
     public final float min;
     public final float max;
 
     private Channels(int id, String identifier) {
         this.id = id;
         this.identifier = identifier;
-        this.isString = false;
+        this.type = 0;
         this.min = 0.0F;
         this.max = 1.0F;
 
@@ -43,7 +44,7 @@ public final class Channels {
     private Channels(int id, String identifier, float min, float max) {
         this.id = id;
         this.identifier = identifier;
-        this.isString = false;
+        this.type = 0;
         this.min = min;
         this.max = max;
 
@@ -51,10 +52,10 @@ public final class Channels {
         Channels.identifierMap.put(identifier, this);
     }
 
-    private Channels(int id, String identifier, boolean isString) {
+    private Channels(int id, String identifier, int type) {
         this.id = id;
         this.identifier = identifier;
-        this.isString = isString;
+        this.type = type;
         this.min = 0.0F;
         this.max = 1.0F;
 

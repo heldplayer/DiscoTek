@@ -5,7 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.StatCollector;
+import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.ModDiscoTek;
@@ -39,14 +41,19 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
         this.sliders = new GuiHorizontalSlider[this.light.channels.length];
         this.textFields = new GuiTextField[this.light.channels.length];
         for (int i = 0; i < this.light.channels.length; i++) {
-            if (this.light.channels[i].channel.isString) {
-                this.textFields[i] = new GuiTextField(this.fontRendererObj, this.width / 2 - 90, y, 180, 20);
-                this.textFields[i].setText(((SString) this.light.channels[i].syncable).getValue());
-            }
-            else {
+            switch (this.light.channels[i].channel.type) {
+            case 0:
                 this.buttonList.add(new GuiButton(100 + i * 2, this.width / 2 - 90, y, 20, 20, "-"));
                 this.buttonList.add(new GuiButton(101 + i * 2, this.width / 2 + 70, y, 20, 20, "+"));
                 this.buttonList.add(this.sliders[i] = new GuiHorizontalSlider(i, this.width / 2 - 70, y, 140, 20, "gui.light." + this.light.channels[i].channel.identifier, this.light.channels[i].port / 255.0F, this));
+            break;
+            case 1:
+                this.textFields[i] = new GuiTextField(this.fontRendererObj, this.width / 2 - 90, y, 180, 20);
+                this.textFields[i].setText(((SString) this.light.channels[i].syncable).getValue());
+            break;
+            case 2:
+                this.buttonList.add(new GuiButton(i, this.width / 2 - 90, y, 180, 20, I18n.format("gui.light." + this.light.channels[i].channel.identifier + "." + ((SBoolean) this.light.channels[i].syncable).getValue())));
+            break;
             }
             y += 24;
         }
@@ -120,10 +127,18 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
 
                 ModDiscoTek.packetHandler.sendPacketToServer(new Packet1LightPort(this.light, id, this.light.channels[id].port));
             }
+
+            return;
         }
 
         if (button.id == -1) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiHelp(this, Assets.HELP_LIGHT));
+            return;
+        }
+
+        if (button.id < this.light.channels.length) {
+            ModDiscoTek.packetHandler.sendPacketToServer(new Packet1LightPort(this.light, button.id, !((SBoolean) this.light.channels[button.id].syncable).getValue()));
+            button.displayString = I18n.format("gui.light." + this.light.channels[button.id].channel.identifier + "." + !((SBoolean) this.light.channels[button.id].syncable).getValue());
         }
     }
 
@@ -174,4 +189,5 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
         this.light.channels[slider.id].port = port;
         ModDiscoTek.packetHandler.sendPacketToServer(new Packet1LightPort(this.light, slider.id, port));
     }
+
 }
