@@ -25,7 +25,7 @@ public class GuiVerticalSlider extends GuiSlider {
      * this button.
      */
     @Override
-    protected int getHoverState(boolean mouseOver) {
+    public int getHoverState(boolean mouseOver) {
         return 0;
     }
 

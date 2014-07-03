@@ -34,7 +34,7 @@ public class ModDiscoTek extends SpACoreMod {
     // public static ConfigValue<Integer> blockLightId;
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         Objects.log = event.getModLog();

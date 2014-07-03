@@ -66,7 +66,7 @@ public class RenderPlayerCustom extends RendererLivingEntity {
     protected void renderEquippedItems(AbstractClientPlayer player, float partialTicks) {
         super.renderEquippedItems(player, partialTicks);
 
-        if (player.getCommandSenderName().equals("deadmau5") && player.getTextureSkin().isTextureUploaded()) {
+        if (player.getCommandSenderName().equals("deadmau5") && player.func_152123_o()) {
             this.bindTexture(player.getLocationSkin());
 
             for (int i = 0; i < 2; ++i) {
@@ -86,7 +86,7 @@ public class RenderPlayerCustom extends RendererLivingEntity {
             }
         }
 
-        boolean hasCape = player.getTextureCape().isTextureUploaded();
+        boolean hasCape = player.func_152122_n();
 
         if (hasCape && !player.isInvisible() && !player.getHideCape()) {
             this.bindTexture(player.getLocationCape());

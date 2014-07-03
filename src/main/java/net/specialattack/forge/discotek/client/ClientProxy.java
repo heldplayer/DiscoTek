@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -25,7 +24,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.forge.core.client.MC;
-import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.CommonProxy;
 import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.gui.GuiLight;
@@ -45,7 +43,6 @@ import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLig
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.sound.ChannelDiscoTek;
 import net.specialattack.forge.discotek.sound.LibraryDiscoTek;
-import net.specialattack.forge.discotek.sound.SoundStreaming;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
@@ -53,7 +50,6 @@ import org.lwjgl.opengl.GL11;
 
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
-import paulscode.sound.libraries.LibraryJavaSound;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -128,7 +124,7 @@ public class ClientProxy extends CommonProxy {
     public void onRenderTick(TickEvent.RenderTickEvent event) {
         if (!ClientProxy.channels.isEmpty()) {
             Minecraft mc = MC.getMinecraft();
-            ScaledResolution resolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+            ScaledResolution resolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 
             double width = resolution.getScaledWidth_double();
             double height = resolution.getScaledHeight_double();
