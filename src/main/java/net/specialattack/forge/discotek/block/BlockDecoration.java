@@ -1,8 +1,7 @@
-
 package net.specialattack.forge.discotek.block;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,8 +14,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Assets;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockDecoration extends Block {
 
@@ -25,6 +24,12 @@ public class BlockDecoration extends Block {
 
     public BlockDecoration() {
         super(Material.iron);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return this.icons[meta % this.icons.length];
     }
 
     @Override
@@ -38,10 +43,13 @@ public class BlockDecoration extends Block {
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return this.icons[meta % this.icons.length];
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        for (int i = 0; i < this.icons.length; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
     }
 
     @Override
@@ -51,15 +59,6 @@ public class BlockDecoration extends Block {
 
         for (int i = 0; i < this.icons.length; i++) {
             this.icons[i] = register.registerIcon(Assets.DOMAIN + "decoration" + i);
-        }
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < this.icons.length; i++) {
-            list.add(new ItemStack(item, 1, i));
         }
     }
 

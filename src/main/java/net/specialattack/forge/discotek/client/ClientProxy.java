@@ -1,12 +1,15 @@
-
 package net.specialattack.forge.discotek.client;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeSet;
-
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
@@ -31,41 +34,40 @@ import net.specialattack.forge.discotek.client.render.DistanceComparator;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockColoredLamp;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.forge.discotek.client.render.ItemRendererMultiPass;
-import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererDimmer;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererFresnel;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererHologram;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererMap;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererMapLED;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererPositionableRadialLaser;
-import net.specialattack.forge.discotek.client.renderer.light.LightRendererRadialLaser;
+import net.specialattack.forge.discotek.client.renderer.light.*;
 import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.sound.ChannelDiscoTek;
 import net.specialattack.forge.discotek.sound.LibraryDiscoTek;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
 import org.lwjgl.opengl.GL11;
-
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.*;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
     public static boolean beat = false;
+    public static LinkedList<ChannelDiscoTek> channels = new LinkedList<ChannelDiscoTek>();
+    private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
+    private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
+    private int totalCount = 0;
+    private int renderedCount = 0;
+
+    public static void addTile(TileEntityLight light) {
+        ILightRenderHandler handler = light.getRenderHandler();
+        if (handler != null && handler.rendersLight()) {
+            ClientProxy.lights.add(light);
+        }
+    }
+
+    public static void removeTile(TileEntityLight light) {
+        ClientProxy.lights.remove(light);
+    }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
@@ -118,8 +120,6 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
-    public static LinkedList<ChannelDiscoTek> channels = new LinkedList<ChannelDiscoTek>();
-
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
         if (!ClientProxy.channels.isEmpty()) {
@@ -143,26 +143,9 @@ public class ClientProxy extends CommonProxy {
         try {
             SoundSystemConfig.removeLibrary(LibraryLWJGLOpenAL.class);
             SoundSystemConfig.addLibrary(LibraryDiscoTek.class);
-        }
-        catch (SoundSystemException e) {
+        } catch (SoundSystemException e) {
             Objects.log.error("Failed setting up custom soundsystem", e);
         }
-    }
-
-    private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
-    private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
-    private int totalCount = 0;
-    private int renderedCount = 0;
-
-    public static void addTile(TileEntityLight light) {
-        ILightRenderHandler handler = light.getRenderHandler();
-        if (handler != null && handler.rendersLight()) {
-            ClientProxy.lights.add(light);
-        }
-    }
-
-    public static void removeTile(TileEntityLight light) {
-        ClientProxy.lights.remove(light);
     }
 
     @SubscribeEvent
@@ -175,8 +158,7 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public void onChunkUnload(ChunkEvent.Unload event) {
         if (event.world.isRemote) {
-            @SuppressWarnings("unchecked")
-            Map<ChunkPosition, TileEntity> tiles = event.getChunk().chunkTileEntityMap;
+            @SuppressWarnings("unchecked") Map<ChunkPosition, TileEntity> tiles = event.getChunk().chunkTileEntityMap;
             Iterator<TileEntity> iterator = tiles.values().iterator();
 
             while (iterator.hasNext()) {
@@ -253,8 +235,7 @@ public class ClientProxy extends CommonProxy {
                     //iterator.remove();
                     continue;
                 }
-            }
-            else {
+            } else {
                 iterator.remove();
                 continue;
             }

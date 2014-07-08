@@ -1,13 +1,10 @@
-
 package net.specialattack.forge.discotek.client.gui;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
-
-import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.StatCollector;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiHorizontalSlider extends GuiSlider {
@@ -60,6 +57,15 @@ public class GuiHorizontalSlider extends GuiSlider {
     }
 
     /**
+     * Fired when the mouse button is released. Equivalent of
+     * MouseListener.mouseReleased(MouseEvent e).
+     */
+    @Override
+    public void mouseReleased(int mouseX, int mouseY) {
+        this.dragging = false;
+    }
+
+    /**
      * Returns true if the mouse has been pressed on this control. Equivalent of
      * MouseListener.mousePressed(MouseEvent
      * e).
@@ -79,19 +85,9 @@ public class GuiHorizontalSlider extends GuiSlider {
 
             this.dragging = true;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
-    }
-
-    /**
-     * Fired when the mouse button is released. Equivalent of
-     * MouseListener.mouseReleased(MouseEvent e).
-     */
-    @Override
-    public void mouseReleased(int mouseX, int mouseY) {
-        this.dragging = false;
     }
 
     public void updateText() {

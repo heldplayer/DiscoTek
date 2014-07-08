@@ -1,14 +1,13 @@
-
 package net.specialattack.forge.discotek.controller.instance;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.client.gui.GuiControllerPixel;
 import net.specialattack.forge.discotek.packet.Packet4PixelGui;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
 
 public class ControllerPixelInstance implements IControllerInstance {
 
@@ -20,7 +19,8 @@ public class ControllerPixelInstance implements IControllerInstance {
     }
 
     @Override
-    public void doTick() {}
+    public void doTick() {
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -41,8 +41,7 @@ public class ControllerPixelInstance implements IControllerInstance {
     public void openGui(EntityPlayer player, Side side) {
         if (side == Side.CLIENT) {
             FMLClientHandler.instance().displayGuiScreen(player, new GuiControllerPixel(this));
-        }
-        else {
+        } else {
             ModDiscoTek.packetHandler.sendPacketToPlayer(new Packet4PixelGui(this), player);
         }
     }
@@ -51,15 +50,9 @@ public class ControllerPixelInstance implements IControllerInstance {
     public void prepareServer() {
         if (this.levels != null && this.levels.length != 24) {
             this.levels = new int[24];
-        }
-        else if (this.levels == null) {
+        } else if (this.levels == null) {
             this.levels = new int[24];
         }
-    }
-
-    public void doSlider(int id, int level) {
-        this.levels[id] = level;
-        this.tile.transmitLevelChange(id, level);
     }
 
     @Override
@@ -72,6 +65,11 @@ public class ControllerPixelInstance implements IControllerInstance {
         for (int i = 0; i < this.levels.length; i++) {
             this.tile.transmitLevelChange(i, this.levels[i]);
         }
+    }
+
+    public void doSlider(int id, int level) {
+        this.levels[id] = level;
+        this.tile.transmitLevelChange(id, level);
     }
 
 }

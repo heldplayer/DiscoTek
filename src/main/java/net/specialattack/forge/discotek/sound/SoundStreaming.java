@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek.sound;
 
 import net.minecraft.client.audio.PositionedSound;

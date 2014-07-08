@@ -1,10 +1,9 @@
-
 package net.specialattack.forge.discotek.tileentity;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.List;
-
+import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -26,11 +25,9 @@ import net.specialattack.forge.discotek.light.Channels;
 import net.specialattack.forge.discotek.light.ILight;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 
-import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.Optional.Interface;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 @Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
 public class TileEntityLight extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
@@ -39,7 +36,8 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     private ILightInstance light;
 
-    public TileEntityLight() {}
+    public TileEntityLight() {
+    }
 
     public TileEntityLight(Block blockType, int meta, boolean setupChannels) {
         this();
@@ -50,37 +48,6 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         }
     }
 
-    public ILight getLight() {
-        Block block = this.getBlockType();
-        if (block != null && block instanceof BlockLight) {
-            return ((BlockLight) block).getLight(this.getBlockMetadata());
-        }
-        return null;
-    }
-
-    public ILightInstance getLightInstance() {
-        if (this.light == null) {
-            ILight light = this.getLight();
-            if (light != null) {
-                this.light = light.createInstance(this);
-                this.markDirty();
-            }
-        }
-        return this.light;
-    }
-
-    public void setLightInstance(ILightInstance instance) {
-        this.light = instance;
-    }
-
-    @Override
-    public Block getBlockType() {
-        if (this.worldObj == null && this.blockType == null) {
-            return null;
-        }
-        return super.getBlockType();
-    }
-
     public void setBlockType(int blockId) {
         this.blockType = (Block) Block.blockRegistry.getObjectById(blockId);
     }
@@ -89,18 +56,13 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         this.blockType = block;
     }
 
-    public void setBlockType(String block) {
-        this.blockType = (Block) Block.blockRegistry.getObject(block);
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
         if (compound.hasKey("blockId")) {
             this.setBlockType(compound.getInteger("blockId"));
-        }
-        else {
+        } else {
             this.setBlockType(compound.getString("block"));
         }
         this.blockMetadata = compound.getInteger("blockMetadata");
@@ -155,6 +117,29 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         }
     }
 
+    public ILightInstance getLightInstance() {
+        if (this.light == null) {
+            ILight light = this.getLight();
+            if (light != null) {
+                this.light = light.createInstance(this);
+                this.markDirty();
+            }
+        }
+        return this.light;
+    }
+
+    public ILight getLight() {
+        Block block = this.getBlockType();
+        if (block != null && block instanceof BlockLight) {
+            return ((BlockLight) block).getLight(this.getBlockMetadata());
+        }
+        return null;
+    }
+
+    public void setLightInstance(ILightInstance instance) {
+        this.light = instance;
+    }
+
     @Override
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
@@ -166,6 +151,58 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         if (this.light != null) {
             this.light.doTick();
         }
+    }
+
+    @Override
+    public Block getBlockType() {
+        if (this.worldObj == null && this.blockType == null) {
+            return null;
+        }
+        return super.getBlockType();
+    }
+
+    public void setBlockType(String block) {
+        this.blockType = (Block) Block.blockRegistry.getObject(block);
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setBoolean("tracking", true);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, compound);
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+
+        if (this.worldObj != null && this.worldObj.isRemote) {
+            ClientProxy.addTile(this);
+        }
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+
+        if (this.worldObj != null && this.worldObj.isRemote) {
+            ClientProxy.addTile(this);
+        }
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager netManager, S35PacketUpdateTileEntity packet) {
+        super.onDataPacket(netManager, packet);
+
+        if (packet.func_148857_g().hasKey("tracking", 1) && packet.func_148857_g().getBoolean("tracking")) {
+            SpACore.packetHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
     }
 
     public void setupChannels() {
@@ -266,24 +303,6 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         return instance.getBoolean(identifier, partialTicks);
     }
 
-    @Override
-    public void validate() {
-        super.validate();
-
-        if (this.worldObj != null && this.worldObj.isRemote) {
-            ClientProxy.addTile(this);
-        }
-    }
-
-    @Override
-    public void invalidate() {
-        super.invalidate();
-
-        if (this.worldObj != null && this.worldObj.isRemote) {
-            ClientProxy.addTile(this);
-        }
-    }
-
     public void setLevelUnsafe(int id, int value) {
         this.setLevelUnsafe(Channels.getChannel(id), value);
     }
@@ -377,28 +396,6 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         }
     }
 
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound compound = new NBTTagCompound();
-        compound.setBoolean("tracking", true);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, compound);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager netManager, S35PacketUpdateTileEntity packet) {
-        super.onDataPacket(netManager, packet);
-
-        if (packet.func_148857_g().hasKey("tracking", 1) && packet.func_148857_g().getBoolean("tracking")) {
-            SpACore.packetHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1);
-    }
-
     public ILightRenderHandler getRenderHandler() {
         Block block = this.getBlockType();
         if (block != null && block instanceof BlockLight) {
@@ -487,21 +484,25 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     }
 
     @Override
-    public void onDataChanged(ISyncable syncable) {}
+    public void onDataChanged(ISyncable syncable) {
+    }
 
     public static class ChannelLevel {
 
         public Channels channel;
         public ISyncable syncable;
-        protected int value;
         public int port;
-
         public float min = 0.0F;
         public float max = 1.0F;
+        protected int value;
 
         public ChannelLevel(Channels channel, ISyncable syncable) {
             this.channel = channel;
             this.syncable = syncable;
+        }
+
+        public int getValue() {
+            return this.value;
         }
 
         public void setValue(Object value) {
@@ -514,10 +515,6 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
                 }
             }
             this.syncable.setValue(value);
-        }
-
-        public int getValue() {
-            return this.value;
         }
 
     }

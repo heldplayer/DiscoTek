@@ -1,9 +1,8 @@
-
 package net.specialattack.forge.discotek.controller.instance;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.relauncher.Side;
 
 public interface IControllerInstance {
 

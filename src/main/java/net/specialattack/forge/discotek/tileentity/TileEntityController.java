@@ -1,8 +1,4 @@
-
 package net.specialattack.forge.discotek.tileentity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,14 +8,15 @@ import net.specialattack.forge.discotek.block.BlockController;
 import net.specialattack.forge.discotek.controller.IController;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TileEntityController extends TileEntity {
 
     private List<TileEntityLight> lightsLinked = new ArrayList<TileEntityLight>();
     private NBTTagList lightsTag;
 
     private IControllerInstance controller;
-
-    public TileEntityController() {}
 
     public TileEntityController(Block blockType, int meta, boolean setupServer) {
         this();
@@ -31,12 +28,7 @@ public class TileEntityController extends TileEntity {
         }
     }
 
-    public IController getController() {
-        Block block = this.getBlockType();
-        if (block != null && block instanceof BlockController) {
-            return ((BlockController) block).getController(this.getBlockMetadata());
-        }
-        return null;
+    public TileEntityController() {
     }
 
     public IControllerInstance getControllerInstance() {
@@ -47,20 +39,12 @@ public class TileEntityController extends TileEntity {
         return this.controller;
     }
 
-    @Override
-    public Block getBlockType() {
-        if (this.worldObj == null && this.blockType == null) {
-            return null;
+    public IController getController() {
+        Block block = this.getBlockType();
+        if (block != null && block instanceof BlockController) {
+            return ((BlockController) block).getController(this.getBlockMetadata());
         }
-        return super.getBlockType();
-    }
-
-    public void setBlockType(int blockId) {
-        this.blockType = (Block) Block.blockRegistry.getObjectById(blockId);
-    }
-
-    public void setBlockType(String block) {
-        this.blockType = (Block) Block.blockRegistry.getObject(block);
+        return null;
     }
 
     @Override
@@ -70,8 +54,7 @@ public class TileEntityController extends TileEntity {
 
         if (compound.hasKey("blockId")) {
             this.setBlockType(compound.getInteger("blockId"));
-        }
-        else {
+        } else {
             this.setBlockType(compound.getString("block"));
         }
         this.blockMetadata = compound.getInteger("blockMetadata");
@@ -85,6 +68,10 @@ public class TileEntityController extends TileEntity {
             this.controller.readFromNBT(controller);
             this.controller.prepareServer();
         }
+    }
+
+    public void setBlockType(int blockId) {
+        this.blockType = (Block) Block.blockRegistry.getObjectById(blockId);
     }
 
     @Override
@@ -139,6 +126,18 @@ public class TileEntityController extends TileEntity {
                 this.controller.doTick();
             }
         }
+    }
+
+    @Override
+    public Block getBlockType() {
+        if (this.worldObj == null && this.blockType == null) {
+            return null;
+        }
+        return super.getBlockType();
+    }
+
+    public void setBlockType(String block) {
+        this.blockType = (Block) Block.blockRegistry.getObject(block);
     }
 
     public boolean link(TileEntityLight light) {

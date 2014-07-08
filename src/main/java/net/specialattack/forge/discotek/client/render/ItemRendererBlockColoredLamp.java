@@ -1,17 +1,14 @@
-
 package net.specialattack.forge.discotek.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.specialattack.forge.core.client.RenderHelper;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ItemRendererBlockColoredLamp implements IItemRenderer {
@@ -26,18 +23,18 @@ public class ItemRendererBlockColoredLamp implements IItemRenderer {
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         switch (helper) {
-        case BLOCK_3D:
-            return true;
-        case ENTITY_BOBBING:
-            return true;
-        case ENTITY_ROTATION:
-            return true;
-        case EQUIPPED_BLOCK:
-            return true;
-        case INVENTORY_BLOCK:
-            return true;
-        default:
-            return false;
+            case BLOCK_3D:
+                return true;
+            case ENTITY_BOBBING:
+                return true;
+            case ENTITY_ROTATION:
+                return true;
+            case EQUIPPED_BLOCK:
+                return true;
+            case INVENTORY_BLOCK:
+                return true;
+            default:
+                return false;
         }
     }
 

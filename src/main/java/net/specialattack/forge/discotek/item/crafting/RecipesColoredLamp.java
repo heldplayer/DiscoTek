@@ -1,7 +1,4 @@
-
 package net.specialattack.forge.discotek.item.crafting;
-
-import java.util.ArrayList;
 
 import net.minecraft.block.BlockColored;
 import net.minecraft.init.Blocks;
@@ -13,6 +10,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Objects;
+
+import java.util.ArrayList;
 
 public class RecipesColoredLamp implements IRecipe {
 
@@ -30,17 +29,14 @@ public class RecipesColoredLamp implements IRecipe {
                 if (stack.getItem() == Item.getItemFromBlock(Blocks.redstone_lamp) || stack.getItem() == Item.getItemFromBlock(Objects.blockColoredLamp)) {
                     if (lights == null) {
                         lights = stack.copy();
-                    }
-                    else {
+                    } else {
                         if (lights.getItem() != stack.getItem() || !ItemStack.areItemStackTagsEqual(lights, stack)) {
                             return false;
                         }
                     }
-                }
-                else if (stack.getItem() == Items.dye) {
+                } else if (stack.getItem() == Items.dye) {
                     dyes.add(stack);
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -64,8 +60,7 @@ public class RecipesColoredLamp implements IRecipe {
                     if (lights == null) {
                         lights = stack.copy();
                         lights.stackSize = 1;
-                    }
-                    else {
+                    } else {
                         if (lights.getItem() != stack.getItem() || !ItemStack.areItemStackTagsEqual(lights, stack)) {
                             return null;
                         }
@@ -85,8 +80,7 @@ public class RecipesColoredLamp implements IRecipe {
                         colors[2] = (int) (colors[2] + blue * 255.0F);
                         dyeCount++;
                     }
-                }
-                else if (stack.getItem() == Items.dye) {
+                } else if (stack.getItem() == Items.dye) {
                     float[] dyeColors = RecipesColoredLamp.dyeColors[BlockColored.func_150032_b(stack.getItemDamage())];
                     int red = (int) (dyeColors[0] * 255.0F);
                     int green = (int) (dyeColors[1] * 255.0F);
@@ -96,8 +90,7 @@ public class RecipesColoredLamp implements IRecipe {
                     colors[1] += green;
                     colors[2] += blue;
                     dyeCount++;
-                }
-                else {
+                } else {
                     return null;
                 }
             }
@@ -105,8 +98,7 @@ public class RecipesColoredLamp implements IRecipe {
 
         if (lights == null) {
             return null;
-        }
-        else {
+        } else {
             int red = colors[0] / dyeCount;
             int green = colors[1] / dyeCount;
             int blue = colors[2] / dyeCount;

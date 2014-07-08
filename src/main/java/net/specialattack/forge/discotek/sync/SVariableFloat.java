@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek.sync;
 
 import net.specialattack.forge.core.sync.SFloat;
@@ -23,19 +22,18 @@ public class SVariableFloat extends SFloat {
     public float getValue() {
         if (owner != null && owner.getBoolean("beat", 1.0F)) {
             return super.getValue() * (ClientProxy.beat ? 1.0F : 0.2F);
-        }
-        else {
+        } else {
             return super.getValue();
         }
-    }
-
-    public float getValueDirect() {
-        return super.getValue();
     }
 
     @Override
     public String toString() {
         return "VariableFloat: " + this.getValueDirect();
+    }
+
+    public float getValueDirect() {
+        return super.getValue();
     }
 
 }

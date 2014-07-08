@@ -1,8 +1,4 @@
-
 package net.specialattack.forge.discotek.light;
-
-import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,6 +7,9 @@ import net.minecraft.util.StatCollector;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightHologramInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LightHologram implements ILight {
 
@@ -51,33 +50,28 @@ public class LightHologram implements ILight {
                     color = "0" + color;
                 }
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.color", "#" + color));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.color", "#FFFFFF"));
             }
             if (compound.hasKey("brightness")) {
                 int brightness = (int) (compound.getFloat("brightness") * 100.0F);
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.brightness", brightness + "%"));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.brightness", "100%"));
             }
             if (compound.hasKey("size")) {
                 int size = (int) (compound.getFloat("size") * 5.0F);
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.size", size + "%"));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.size", "5%"));
             }
             if (compound.hasKey("playerName")) {
                 String playerName = compound.getString("playerName");
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.playerName", playerName));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocal("gui.tooltip.light.playerName.none"));
             }
-        }
-        else {
+        } else {
             list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.color", "#FFFFFF"));
             list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.brightness", "100%"));
             list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.size", "5%"));

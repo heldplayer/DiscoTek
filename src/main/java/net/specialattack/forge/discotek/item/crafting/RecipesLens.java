@@ -1,7 +1,4 @@
-
 package net.specialattack.forge.discotek.item.crafting;
-
-import java.util.ArrayList;
 
 import net.minecraft.block.BlockColored;
 import net.minecraft.init.Items;
@@ -11,6 +8,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.item.ItemLens;
+
+import java.util.ArrayList;
 
 public class RecipesLens implements IRecipe {
 
@@ -30,11 +29,9 @@ public class RecipesLens implements IRecipe {
                         return false;
                     }
                     lens = stack;
-                }
-                else if (stack.getItem() == Items.dye) {
+                } else if (stack.getItem() == Items.dye) {
                     dyes.add(stack);
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -74,8 +71,7 @@ public class RecipesLens implements IRecipe {
                         colors[2] = (int) (colors[2] + blue * 255.0F);
                         dyeCount++;
                     }
-                }
-                else if (stack.getItem() == Items.dye) {
+                } else if (stack.getItem() == Items.dye) {
                     float[] dyeColors = RecipesLens.dyeColors[BlockColored.func_150032_b(stack.getItemDamage())];
                     int red = (int) (dyeColors[0] * 255.0F);
                     int green = (int) (dyeColors[1] * 255.0F);
@@ -85,8 +81,7 @@ public class RecipesLens implements IRecipe {
                     colors[1] += green;
                     colors[2] += blue;
                     dyeCount++;
-                }
-                else {
+                } else {
                     return null;
                 }
             }
@@ -94,8 +89,7 @@ public class RecipesLens implements IRecipe {
 
         if (lens == null) {
             return null;
-        }
-        else {
+        } else {
             int red = colors[0] / dyeCount;
             int green = colors[1] / dyeCount;
             int blue = colors[2] / dyeCount;

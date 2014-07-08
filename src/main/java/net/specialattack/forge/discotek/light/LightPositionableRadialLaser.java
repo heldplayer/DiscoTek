@@ -1,8 +1,4 @@
-
 package net.specialattack.forge.discotek.light;
-
-import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,6 +7,9 @@ import net.minecraft.util.StatCollector;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightPositionableRadialLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LightPositionableRadialLaser implements ILight {
 
@@ -51,33 +50,28 @@ public class LightPositionableRadialLaser implements ILight {
                     color = "0" + color;
                 }
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.color", "#" + color));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.color", "#FFFFFF"));
             }
             if (compound.hasKey("brightness")) {
                 int brightness = (int) (compound.getFloat("brightness") * 100.0F);
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.brightness", brightness + "%"));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.brightness", "100%"));
             }
             if (compound.hasKey("length")) {
                 int length = (int) (compound.getFloat("length") * 5.0F);
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.length", length + "%"));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.length", "0%"));
             }
             if (compound.hasKey("focus")) {
                 int focus = (int) (compound.getFloat("focus") * 5.0F);
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.focus", focus + "%"));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.focus", "5%"));
             }
-        }
-        else {
+        } else {
             list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.color", "#FFFFFF"));
             list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.brightness", "100%"));
             list.add(StatCollector.translateToLocalFormatted("gui.tooltip.light.length", "0%"));

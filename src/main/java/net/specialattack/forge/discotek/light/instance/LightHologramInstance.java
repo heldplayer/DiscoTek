@@ -1,30 +1,25 @@
-
 package net.specialattack.forge.discotek.light.instance;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.mojang.authlib.GameProfile;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.specialattack.forge.core.sync.ISyncable;
-import net.specialattack.forge.core.sync.SBoolean;
-import net.specialattack.forge.core.sync.SFloat;
-import net.specialattack.forge.core.sync.SInteger;
-import net.specialattack.forge.core.sync.SString;
+import net.specialattack.forge.core.sync.*;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.sync.SVariableFloat;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import net.specialattack.util.MathHelper;
 
-import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Arrays;
+import java.util.List;
 
 public class LightHologramInstance implements ILightInstance {
 
+    @SideOnly(Side.CLIENT)
+    public EntityOtherPlayerMP player;
+    public List<ISyncable> syncables;
     private TileEntityLight tile;
-
     private SInteger direction;
     private SInteger red;
     private SInteger green;
@@ -44,11 +39,6 @@ public class LightHologramInstance implements ILightInstance {
     private float prevPitch = 0.0F;
     private float prevRotation = 0.0F;
     private float prevHeadRotation = 0.0F;
-
-    @SideOnly(Side.CLIENT)
-    public EntityOtherPlayerMP player;
-
-    public List<ISyncable> syncables;
 
     public LightHologramInstance(TileEntityLight tile) {
         this.tile = tile;
@@ -86,8 +76,7 @@ public class LightHologramInstance implements ILightInstance {
             if (this.pitch.getValue() > 0.8F) {
                 this.prevPitch = 0.8F;
                 this.pitch.setValue(0.8F);
-            }
-            else if (this.pitch.getValue() < -0.8F) {
+            } else if (this.pitch.getValue() < -0.8F) {
                 this.prevPitch = -0.8F;
                 this.pitch.setValue(-0.8F);
             }
@@ -95,8 +84,7 @@ public class LightHologramInstance implements ILightInstance {
             if (this.brightness.getValue() > 1.0F) {
                 this.prevBrightness = 1.0F;
                 this.brightness.setValue(1.0F);
-            }
-            else if (this.brightness.getValue() < 0.0F) {
+            } else if (this.brightness.getValue() < 0.0F) {
                 this.prevBrightness = 0.0F;
                 this.brightness.setValue(0.0F);
             }
@@ -104,8 +92,7 @@ public class LightHologramInstance implements ILightInstance {
             if (this.size.getValue() > 20.0F) {
                 this.prevSize = 20.0F;
                 this.size.setValue(20.0F);
-            }
-            else if (this.size.getValue() < 0.0F) {
+            } else if (this.size.getValue() < 0.0F) {
                 this.prevSize = 0.0F;
                 this.size.setValue(0.0F);
             }
@@ -114,18 +101,15 @@ public class LightHologramInstance implements ILightInstance {
             if (this.player != null && playerName != null) {
                 if (playerName.isEmpty()) {
                     this.player = null;
-                }
-                else if (!playerName.equals(this.player.getCommandSenderName())) {
+                } else if (!playerName.equals(this.player.getCommandSenderName())) {
                     this.player = new EntityOtherPlayerMP(this.tile.getWorld(), new GameProfile(null, playerName));
                 }
                 if (this.player != null) {
                     this.player.onUpdate();
                 }
-            }
-            else if (playerName == null) {
+            } else if (playerName == null) {
                 this.player = null;
-            }
-            else if (!playerName.isEmpty()) {
+            } else if (!playerName.isEmpty()) {
                 this.player = new EntityOtherPlayerMP(this.tile.getWorld(), new GameProfile(null, playerName));
             }
         }
@@ -134,24 +118,24 @@ public class LightHologramInstance implements ILightInstance {
     @Override
     public void setBlockBounds(BlockLight block) {
         switch (this.direction.getValue()) {
-        case 0:
-        //block.setBlockBounds(0.125F, 0.5625F, 0.125F, 0.875F, 1.0F, 0.875F);
-        break;
-        case 1:
-        //block.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.4375F, 0.875F);
-        break;
-        case 2:
-        //block.setBlockBounds(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1.0F);
-        break;
-        case 3:
-        //block.setBlockBounds(0.125F, 0.125F, 0.0F, 0.875F, 0.875F, 0.4375F);
-        break;
-        case 4:
-        //block.setBlockBounds(0.5625F, 0.125F, 0.125F, 1.0F, 0.875F, 0.875F);
-        break;
-        case 5:
-        //block.setBlockBounds(0.0F, 0.125F, 0.125F, 0.4375F, 0.875F, 0.875F);
-        break;
+            case 0:
+                //block.setBlockBounds(0.125F, 0.5625F, 0.125F, 0.875F, 1.0F, 0.875F);
+                break;
+            case 1:
+                //block.setBlockBounds(0.125F, 0.0F, 0.125F, 0.875F, 0.4375F, 0.875F);
+                break;
+            case 2:
+                //block.setBlockBounds(0.125F, 0.125F, 0.5625F, 0.875F, 0.875F, 1.0F);
+                break;
+            case 3:
+                //block.setBlockBounds(0.125F, 0.125F, 0.0F, 0.875F, 0.875F, 0.4375F);
+                break;
+            case 4:
+                //block.setBlockBounds(0.5625F, 0.125F, 0.125F, 1.0F, 0.875F, 0.875F);
+                break;
+            case 5:
+                //block.setBlockBounds(0.0F, 0.125F, 0.125F, 0.4375F, 0.875F, 0.875F);
+                break;
         }
         block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -238,7 +222,8 @@ public class LightHologramInstance implements ILightInstance {
     }
 
     @Override
-    public void setValue(String identifier, boolean value) {}
+    public void setValue(String identifier, boolean value) {
+    }
 
     @Override
     public String getString(String identifier, float partialTicks) {

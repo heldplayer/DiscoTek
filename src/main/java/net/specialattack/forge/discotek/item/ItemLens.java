@@ -1,9 +1,7 @@
-
 package net.specialattack.forge.discotek.item;
 
-import java.util.List;
-import java.util.Random;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -19,8 +17,9 @@ import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
 import net.specialattack.forge.discotek.light.ILight;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.Random;
 
 public class ItemLens extends Item {
 
@@ -29,54 +28,6 @@ public class ItemLens extends Item {
 
     public ItemLens() {
         super();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int pass) {
-        if (pass == 0) {
-            NBTTagCompound compound = stack.stackTagCompound;
-            if (compound != null) {
-                if (compound.hasKey("color")) {
-                    return compound.getInteger("color");
-                }
-            }
-        }
-        return 0xFFFFFF;
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int pass) {
-        if (pass == 1) {
-            return this.overlay;
-        }
-        return super.getIcon(stack, pass);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean extra) {
-        super.addInformation(stack, player, list, extra);
-
-        // if (extra) {
-        NBTTagCompound compound = stack.stackTagCompound;
-        if (compound != null) {
-            if (compound.hasKey("color")) {
-                String color = Integer.toHexString(compound.getInteger("color")).toUpperCase();
-                while (color.length() < 6) {
-                    color = "0" + color;
-                }
-                list.add(StatCollector.translateToLocalFormatted("gui.tooltip.lens.color", "#" + color));
-            }
-            else {
-                list.add(StatCollector.translateToLocal("gui.tooltip.lens.nocolor"));
-            }
-        }
-        else {
-            list.add(StatCollector.translateToLocal("gui.tooltip.lens.nocolor"));
-        }
-        // }
     }
 
     @Override
@@ -125,15 +76,41 @@ public class ItemLens extends Item {
     }
 
     @Override
-    public int getRenderPasses(int meta) {
-        return 2;
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack stack, int pass) {
+        if (pass == 0) {
+            NBTTagCompound compound = stack.stackTagCompound;
+            if (compound != null) {
+                if (compound.hasKey("color")) {
+                    return compound.getInteger("color");
+                }
+            }
+        }
+        return 0xFFFFFF;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
-        super.registerIcons(register);
-        this.overlay = register.registerIcon(this.iconString + "_overlay");
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean extra) {
+        super.addInformation(stack, player, list, extra);
+
+        // if (extra) {
+        NBTTagCompound compound = stack.stackTagCompound;
+        if (compound != null) {
+            if (compound.hasKey("color")) {
+                String color = Integer.toHexString(compound.getInteger("color")).toUpperCase();
+                while (color.length() < 6) {
+                    color = "0" + color;
+                }
+                list.add(StatCollector.translateToLocalFormatted("gui.tooltip.lens.color", "#" + color));
+            } else {
+                list.add(StatCollector.translateToLocal("gui.tooltip.lens.nocolor"));
+            }
+        } else {
+            list.add(StatCollector.translateToLocal("gui.tooltip.lens.nocolor"));
+        }
+        // }
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -154,6 +131,26 @@ public class ItemLens extends Item {
 
             list.add(stack);
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        super.registerIcons(register);
+        this.overlay = register.registerIcon(this.iconString + "_overlay");
+    }
+
+    @Override
+    public int getRenderPasses(int meta) {
+        return 2;
+    }
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass) {
+        if (pass == 1) {
+            return this.overlay;
+        }
+        return super.getIcon(stack, pass);
     }
 
 }

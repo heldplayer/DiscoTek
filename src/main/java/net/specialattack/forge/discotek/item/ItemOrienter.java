@@ -1,8 +1,7 @@
-
 package net.specialattack.forge.discotek.item;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,8 +13,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemOrienter extends Item {
 
@@ -32,17 +31,13 @@ public class ItemOrienter extends Item {
     }
 
     @Override
-    public String getUnlocalizedNameInefficiently(ItemStack stack) {
-        return super.getUnlocalizedNameInefficiently(stack) + stack.getItemDamage();
-    }
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player.isSneaking()) {
-            stack.setItemDamage((stack.getItemDamage() + 1) % 3);
-            return stack;
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int meta) {
+        if (Minecraft.getMinecraft().thePlayer.isSneaking()) {
+            return this.iconsCont[meta % this.icons.length];
+        } else {
+            return this.icons[meta % this.icons.length];
         }
-        return stack;
     }
 
     @Override
@@ -57,40 +52,60 @@ public class ItemOrienter extends Item {
             TileEntityLight light = (TileEntityLight) tile;
 
             switch (stack.getItemDamage()) {
-            case 0:
-                float rotation = light.getFloat("rotation", 1.0F);
-                if (player.isSneaking()) {
-                    rotation += 0.1F;
-                }
-                else {
-                    rotation -= 0.1F;
-                }
-                light.setValue("rotation", rotation);
-            break;
-            case 1:
-                float pitch = light.getFloat("pitch", 1.0F);
-                if (player.isSneaking()) {
-                    pitch -= 0.01F;
-                }
-                else {
-                    pitch += 0.01F;
-                }
-                light.setValue("pitch", pitch);
-            break;
-            case 2:
-                float focus = light.getFloat("focus", 1.0F);
-                if (player.isSneaking()) {
-                    focus -= 0.2F;
-                }
-                else {
-                    focus += 0.2F;
-                }
-                light.setValue("focus", focus);
-            break;
+                case 0:
+                    float rotation = light.getFloat("rotation", 1.0F);
+                    if (player.isSneaking()) {
+                        rotation += 0.1F;
+                    } else {
+                        rotation -= 0.1F;
+                    }
+                    light.setValue("rotation", rotation);
+                    break;
+                case 1:
+                    float pitch = light.getFloat("pitch", 1.0F);
+                    if (player.isSneaking()) {
+                        pitch -= 0.01F;
+                    } else {
+                        pitch += 0.01F;
+                    }
+                    light.setValue("pitch", pitch);
+                    break;
+                case 2:
+                    float focus = light.getFloat("focus", 1.0F);
+                    if (player.isSneaking()) {
+                        focus -= 0.2F;
+                    } else {
+                        focus += 0.2F;
+                    }
+                    light.setValue("focus", focus);
+                    break;
             }
         }
 
         return false;
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (player.isSneaking()) {
+            stack.setItemDamage((stack.getItemDamage() + 1) % 3);
+            return stack;
+        }
+        return stack;
+    }
+
+    @Override
+    public String getUnlocalizedNameInefficiently(ItemStack stack) {
+        return super.getUnlocalizedNameInefficiently(stack) + stack.getItemDamage();
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
+        for (int i = 0; i < this.icons.length; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
     }
 
     @Override
@@ -111,8 +126,7 @@ public class ItemOrienter extends Item {
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         if (player.isSneaking()) {
             return this.iconsCont[stack.getItemDamage() % this.icons.length];
-        }
-        else {
+        } else {
             return this.icons[stack.getItemDamage() % this.icons.length];
         }
     }
@@ -120,26 +134,6 @@ public class ItemOrienter extends Item {
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
         return this.icons[stack.getItemDamage() % this.icons.length];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int meta) {
-        if (Minecraft.getMinecraft().thePlayer.isSneaking()) {
-            return this.iconsCont[meta % this.icons.length];
-        }
-        else {
-            return this.icons[meta % this.icons.length];
-        }
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < this.icons.length; i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
     }
 
 }

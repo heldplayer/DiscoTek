@@ -1,6 +1,7 @@
-
 package net.specialattack.forge.discotek.client.renderer.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -11,11 +12,7 @@ import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.light.ILight;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
@@ -75,8 +72,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                     }
 
                     renderer.renderLight(tileLight, partialTicks);
-                }
-                else {
+                } else {
                     if (TileEntityLightRenderer.renderLight) {
                         GL11.glDisable(GL11.GL_ALPHA_TEST);
                         GL11.glEnable(GL11.GL_BLEND);

@@ -1,17 +1,15 @@
-
 package net.specialattack.forge.discotek.packet;
 
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.specialattack.forge.core.packet.SpACorePacket;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.relauncher.Side;
+
+import java.io.IOException;
 
 public class Packet1LightPort extends SpACorePacket {
 
@@ -79,18 +77,18 @@ public class Packet1LightPort extends SpACorePacket {
         this.channelId = in.readInt();
         this.type = in.readInt();
         switch (this.type) {
-        case 0:
-            this.iValue = in.readInt();
-        break;
-        case 1:
-            this.iValue = in.readInt();
-            byte[] data = new byte[this.iValue];
-            in.readBytes(data);
-            this.sValue = new String(data);
-        break;
-        case 2:
-            this.bValue = in.readBoolean();
-        break;
+            case 0:
+                this.iValue = in.readInt();
+                break;
+            case 1:
+                this.iValue = in.readInt();
+                byte[] data = new byte[this.iValue];
+                in.readBytes(data);
+                this.sValue = new String(data);
+                break;
+            case 2:
+                this.bValue = in.readBoolean();
+                break;
         }
     }
 
@@ -103,17 +101,17 @@ public class Packet1LightPort extends SpACorePacket {
         out.writeInt(this.channelId);
         out.writeInt(this.type);
         switch (this.type) {
-        case 0:
-            out.writeInt(this.iValue);
-        break;
-        case 1:
-            byte[] data = this.sValue.getBytes();
-            out.writeInt(data.length);
-            out.writeBytes(data);
-        break;
-        case 2:
-            out.writeBoolean(this.bValue);
-        break;
+            case 0:
+                out.writeInt(this.iValue);
+                break;
+            case 1:
+                byte[] data = this.sValue.getBytes();
+                out.writeInt(data.length);
+                out.writeBytes(data);
+                break;
+            case 2:
+                out.writeBoolean(this.bValue);
+                break;
         }
     }
 
@@ -127,15 +125,15 @@ public class Packet1LightPort extends SpACorePacket {
             TileEntityLight light = (TileEntityLight) tile;
 
             switch (this.type) {
-            case 0:
-                light.channels[this.channelId].port = this.iValue;
-            break;
-            case 1:
-                light.channels[this.channelId].setValue(this.sValue);
-            break;
-            case 2:
-                light.channels[this.channelId].setValue(this.bValue);
-            break;
+                case 0:
+                    light.channels[this.channelId].port = this.iValue;
+                    break;
+                case 1:
+                    light.channels[this.channelId].setValue(this.sValue);
+                    break;
+                case 2:
+                    light.channels[this.channelId].setValue(this.bValue);
+                    break;
             }
 
             light.markDirty();

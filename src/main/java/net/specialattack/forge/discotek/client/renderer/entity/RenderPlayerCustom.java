@@ -1,6 +1,7 @@
-
 package net.specialattack.forge.discotek.client.renderer.entity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderBiped;
@@ -13,11 +14,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderPlayerCustom extends RendererLivingEntity {
@@ -33,21 +30,17 @@ public class RenderPlayerCustom extends RendererLivingEntity {
         this.modelArmor = new ModelBiped(0.5F);
     }
 
-    protected int shouldRenderPass(AbstractClientPlayer player, int pass, float partialTicks) {
-        return -1;
+    public void renderFirstPersonArm(EntityPlayer player) {
+        float f = 1.0F;
+        GL11.glColor3f(f, f, f);
+        this.modelBipedMain.onGround = 0.0F;
+        this.modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
+        this.modelBipedMain.bipedRightArm.render(0.0625F);
     }
 
-    protected void func_82408_c(AbstractClientPlayer player, int par2, float partialTicks) {
-        ItemStack itemstack = player.inventory.armorItemInSlot(3 - par2);
-
-        if (itemstack != null) {
-            Item item = itemstack.getItem();
-
-            if (item instanceof ItemArmor) {
-                this.bindTexture(RenderBiped.getArmorResource(player, itemstack, par2, "overlay"));
-                GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            }
-        }
+    @Override
+    public void doRender(EntityLivingBase player, double posX, double posY, double posZ, float par8, float partialTicks) {
+        this.doRender((AbstractClientPlayer) player, posX, posY, posZ, par8, partialTicks);
     }
 
     public void doRender(AbstractClientPlayer player, double posX, double posY, double posZ, float pitch, float partialTicks) {
@@ -59,8 +52,27 @@ public class RenderPlayerCustom extends RendererLivingEntity {
         this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = 0;
     }
 
-    protected ResourceLocation getEntityTexture(AbstractClientPlayer player) {
-        return player.getLocationSkin();
+    @Override
+    protected void renderLivingAt(EntityLivingBase player, double posX, double posY, double posZ) {
+        this.renderLivingAt((AbstractClientPlayer) player, posX, posY, posZ);
+    }
+
+    protected void renderLivingAt(AbstractClientPlayer player, double posX, double posY, double posZ) {
+        super.renderLivingAt(player, posX, posY, posZ);
+    }
+
+    @Override
+    protected void rotateCorpse(EntityLivingBase player, float par2, float par3, float partialTicks) {
+        this.rotateCorpse((AbstractClientPlayer) player, par2, par3, partialTicks);
+    }
+
+    protected void rotateCorpse(AbstractClientPlayer player, float par2, float par3, float par4) {
+        super.rotateCorpse(player, par2, par3, par4);
+    }
+
+    @Override
+    protected void renderEquippedItems(EntityLivingBase player, float partialTicks) {
+        this.renderEquippedItems((AbstractClientPlayer) player, partialTicks);
     }
 
     protected void renderEquippedItems(AbstractClientPlayer player, float partialTicks) {
@@ -127,39 +139,13 @@ public class RenderPlayerCustom extends RendererLivingEntity {
         }
     }
 
-    protected void preRenderCallback(AbstractClientPlayer player, float partialTicks) {
-        float f = 0.9375F;
-        GL11.glScalef(f, f, f);
-    }
-
-    protected void func_96449_a(AbstractClientPlayer player, double posX, double posY, double posZ, String name, float par9, double distance) {
-        //super.func_96449_a(player, posX, posY, posZ, name, par9, distance);
-    }
-
-    public void renderFirstPersonArm(EntityPlayer player) {
-        float f = 1.0F;
-        GL11.glColor3f(f, f, f);
-        this.modelBipedMain.onGround = 0.0F;
-        this.modelBipedMain.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F, player);
-        this.modelBipedMain.bipedRightArm.render(0.0625F);
-    }
-
-    protected void renderLivingAt(AbstractClientPlayer player, double posX, double posY, double posZ) {
-        super.renderLivingAt(player, posX, posY, posZ);
-    }
-
-    protected void rotateCorpse(AbstractClientPlayer player, float par2, float par3, float par4) {
-        super.rotateCorpse(player, par2, par3, par4);
-    }
-
     @Override
-    protected void func_96449_a(EntityLivingBase player, double posX, double posY, double posZ, String name, float par9, double distance) {
-        this.func_96449_a((AbstractClientPlayer) player, posX, posY, posZ, name, par9, distance);
+    protected int shouldRenderPass(EntityLivingBase player, int pass, float partialTicks) {
+        return this.shouldRenderPass((AbstractClientPlayer) player, pass, partialTicks);
     }
 
-    @Override
-    protected void preRenderCallback(EntityLivingBase player, float partialTicks) {
-        this.preRenderCallback((AbstractClientPlayer) player, partialTicks);
+    protected int shouldRenderPass(AbstractClientPlayer player, int pass, float partialTicks) {
+        return -1;
     }
 
     @Override
@@ -167,28 +153,40 @@ public class RenderPlayerCustom extends RendererLivingEntity {
         this.func_82408_c((AbstractClientPlayer) player, par2, partialTicks);
     }
 
-    @Override
-    protected int shouldRenderPass(EntityLivingBase player, int pass, float partialTicks) {
-        return this.shouldRenderPass((AbstractClientPlayer) player, pass, partialTicks);
+    protected void func_82408_c(AbstractClientPlayer player, int par2, float partialTicks) {
+        ItemStack itemstack = player.inventory.armorItemInSlot(3 - par2);
+
+        if (itemstack != null) {
+            Item item = itemstack.getItem();
+
+            if (item instanceof ItemArmor) {
+                this.bindTexture(RenderBiped.getArmorResource(player, itemstack, par2, "overlay"));
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+            }
+        }
     }
 
     @Override
-    protected void renderEquippedItems(EntityLivingBase player, float partialTicks) {
-        this.renderEquippedItems((AbstractClientPlayer) player, partialTicks);
+    protected void preRenderCallback(EntityLivingBase player, float partialTicks) {
+        this.preRenderCallback((AbstractClientPlayer) player, partialTicks);
+    }
+
+    protected void preRenderCallback(AbstractClientPlayer player, float partialTicks) {
+        float f = 0.9375F;
+        GL11.glScalef(f, f, f);
     }
 
     @Override
-    protected void rotateCorpse(EntityLivingBase player, float par2, float par3, float partialTicks) {
-        this.rotateCorpse((AbstractClientPlayer) player, par2, par3, partialTicks);
+    protected void func_96449_a(EntityLivingBase player, double posX, double posY, double posZ, String name, float par9, double distance) {
+        this.func_96449_a((AbstractClientPlayer) player, posX, posY, posZ, name, par9, distance);
+    }
+
+    protected void func_96449_a(AbstractClientPlayer player, double posX, double posY, double posZ, String name, float par9, double distance) {
+        //super.func_96449_a(player, posX, posY, posZ, name, par9, distance);
     }
 
     @Override
-    protected void renderLivingAt(EntityLivingBase player, double posX, double posY, double posZ) {
-        this.renderLivingAt((AbstractClientPlayer) player, posX, posY, posZ);
-    }
-
-    @Override
-    public void doRender(EntityLivingBase player, double posX, double posY, double posZ, float par8, float partialTicks) {
+    public void doRender(Entity player, double posX, double posY, double posZ, float par8, float partialTicks) {
         this.doRender((AbstractClientPlayer) player, posX, posY, posZ, par8, partialTicks);
     }
 
@@ -197,9 +195,8 @@ public class RenderPlayerCustom extends RendererLivingEntity {
         return this.getEntityTexture((AbstractClientPlayer) player);
     }
 
-    @Override
-    public void doRender(Entity player, double posX, double posY, double posZ, float par8, float partialTicks) {
-        this.doRender((AbstractClientPlayer) player, posX, posY, posZ, par8, partialTicks);
+    protected ResourceLocation getEntityTexture(AbstractClientPlayer player) {
+        return player.getLocationSkin();
     }
 
 }

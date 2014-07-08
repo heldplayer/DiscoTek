@@ -1,16 +1,15 @@
-
 package net.specialattack.forge.discotek.item;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemBlockColoredLamp extends ItemBlock {
 
@@ -33,12 +32,10 @@ public class ItemBlockColoredLamp extends ItemBlock {
                     color = "0" + color;
                 }
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.coloredLamp.color", "#" + color));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocal("gui.tooltip.coloredLamp.nocolor"));
             }
-        }
-        else {
+        } else {
             list.add(StatCollector.translateToLocal("gui.tooltip.coloredLamp.nocolor"));
         }
     }

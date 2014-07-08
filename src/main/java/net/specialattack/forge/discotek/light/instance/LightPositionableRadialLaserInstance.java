@@ -1,8 +1,4 @@
-
 package net.specialattack.forge.discotek.light.instance;
-
-import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.specialattack.forge.core.sync.ISyncable;
@@ -13,6 +9,9 @@ import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.sync.SVariableFloat;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import net.specialattack.util.MathHelper;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LightPositionableRadialLaserInstance implements ILightInstance {
 
@@ -73,8 +72,7 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
             if (this.pitch.getValue() > 0.8F) {
                 this.prevPitch = 0.8F;
                 this.pitch.setValue(0.8F);
-            }
-            else if (this.pitch.getValue() < -0.8F) {
+            } else if (this.pitch.getValue() < -0.8F) {
                 this.prevPitch = -0.8F;
                 this.pitch.setValue(-0.8F);
             }
@@ -82,8 +80,7 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
             if (this.brightness.getValue() > 1.0F) {
                 this.prevBrightness = 1.0F;
                 this.brightness.setValue(1.0F);
-            }
-            else if (this.brightness.getValue() < 0.0F) {
+            } else if (this.brightness.getValue() < 0.0F) {
                 this.prevBrightness = 0.0F;
                 this.brightness.setValue(0.0F);
             }
@@ -91,8 +88,7 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
             if (this.focus.getValue() > 20.0F) {
                 this.prevFocus = 20.0F;
                 this.focus.setValue(20.0F);
-            }
-            else if (this.focus.getValue() < 0.0F) {
+            } else if (this.focus.getValue() < 0.0F) {
                 this.prevFocus = 0.0F;
                 this.focus.setValue(0.0F);
             }
@@ -100,8 +96,7 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
             if (this.length.getValue() > 20.0F) {
                 this.prevLength = 20.0F;
                 this.length.setValue(20.0F);
-            }
-            else if (this.length.getValue() < 0.0F) {
+            } else if (this.length.getValue() < 0.0F) {
                 this.prevLength = 0.0F;
                 this.length.setValue(0.0F);
             }
@@ -111,24 +106,24 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
     @Override
     public void setBlockBounds(BlockLight block) {
         switch (this.direction.getValue()) {
-        case 0:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
-        break;
-        case 1:
-            block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
-        break;
-        case 2:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 1.0F);
-        break;
-        case 3:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0F, 0.9375F, 0.9375F, 0.9375F);
-        break;
-        case 4:
-            block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 1.0F, 0.9375F, 0.9375F);
-        break;
-        case 5:
-            block.setBlockBounds(0.0F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
-        break;
+            case 0:
+                block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
+                break;
+            case 1:
+                block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
+                break;
+            case 2:
+                block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 1.0F);
+                break;
+            case 3:
+                block.setBlockBounds(0.0625F, 0.0625F, 0.0F, 0.9375F, 0.9375F, 0.9375F);
+                break;
+            case 4:
+                block.setBlockBounds(0.0625F, 0.0625F, 0.0625F, 1.0F, 0.9375F, 0.9375F);
+                break;
+            case 5:
+                block.setBlockBounds(0.0F, 0.0625F, 0.0625F, 0.9375F, 0.9375F, 0.9375F);
+                break;
         }
     }
 
@@ -169,7 +164,8 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
     }
 
     @Override
-    public void setValue(String identifier, String value) {}
+    public void setValue(String identifier, String value) {
+    }
 
     @Override
     public void setValue(String identifier, float value) {
@@ -207,7 +203,8 @@ public class LightPositionableRadialLaserInstance implements ILightInstance {
     }
 
     @Override
-    public void setValue(String identifier, boolean value) {}
+    public void setValue(String identifier, boolean value) {
+    }
 
     @Override
     public String getString(String identifier, float partialTicks) {

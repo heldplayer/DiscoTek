@@ -1,8 +1,8 @@
-
 package net.specialattack.forge.discotek.block;
 
-import java.util.List;
-
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,21 +16,40 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.client.render.BlockRendererTruss;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockTruss extends Block {
 
+    private final int renderId;
     @SideOnly(Side.CLIENT)
     private IIcon[] icons;
-
-    private final int renderId;
 
     public BlockTruss() {
         super(Material.iron);
         this.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(this.renderId, new BlockRendererTruss(this.renderId));
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return this.renderId;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return this.icons[meta % this.icons.length];
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 
     @Override
@@ -44,22 +63,6 @@ public class BlockTruss extends Block {
         world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 0);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return this.icons[meta % this.icons.length];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        this.icons = new IIcon[3];
-
-        for (int i = 0; i < this.icons.length; i++) {
-            this.icons[i] = register.registerIcon(Assets.DOMAIN + "truss" + i);
-        }
-    }
-
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
@@ -70,18 +73,13 @@ public class BlockTruss extends Block {
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister register) {
+        this.icons = new IIcon[3];
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return this.renderId;
+        for (int i = 0; i < this.icons.length; i++) {
+            this.icons[i] = register.registerIcon(Assets.DOMAIN + "truss" + i);
+        }
     }
 
     @Override

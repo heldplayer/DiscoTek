@@ -1,11 +1,7 @@
-
 package net.specialattack.forge.discotek.tileentity;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.io.ByteArrayDataInput;
+import cpw.mods.fml.common.Optional.Interface;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -20,9 +16,10 @@ import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SInteger;
 import net.specialattack.forge.core.sync.packet.Packet1TrackingStatus;
 
-import com.google.common.io.ByteArrayDataInput;
-
-import cpw.mods.fml.common.Optional.Interface;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
 public class TileEntityColoredLamp extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
@@ -53,7 +50,8 @@ public class TileEntityColoredLamp extends TileEntity implements ISyncableObject
     }
 
     @Override
-    public void updateEntity() {}
+    public void updateEntity() {
+    }
 
     @Override
     public Packet getDescriptionPacket() {

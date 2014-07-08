@@ -1,13 +1,4 @@
-
 package net.specialattack.forge.discotek.sound;
-
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.sound.sampled.AudioFormat;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.specialattack.forge.core.client.MC;
@@ -15,30 +6,32 @@ import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.ClientProxy;
 import net.specialattack.util.MathHelper;
 import net.specialattack.util.RAMBuffer;
-
 import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.GL11;
-
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.libraries.ChannelLWJGLOpenAL;
+
+import javax.sound.sampled.AudioFormat;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
     public double speed = 0.0F;
-    private byte[][] data = new byte[2][0];
-    private int currArray = 0;
-    private boolean playing = false;
+    public RAMBuffer buffer;
+    public EnergySections energy;
+    public long prevTime;
 
     //public PipedInputStream pis;
     //public PipedOutputStream pos;
-
-    public RAMBuffer buffer;
-    public EnergySections energy;
-
-    public long prevTime;
-
     public boolean beat;
     public long timeout;
+    private byte[][] data = new byte[2][0];
+    private int currArray = 0;
+    private boolean playing = false;
 
     // Instantiated when starting the soundsystem
     public ChannelDiscoTek(int type, IntBuffer src) {
@@ -46,36 +39,20 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
         this.libraryType = LibraryDiscoTek.class;
     }
 
+    // Called when stopping the soundsystem
+    @Override
+    public void cleanup() {
+        // System.err.println("cleanup()");
+        super.cleanup();
+
+        this.remove();
+    }
+
     // Normal sounds (buttons, etc...)
     @Override
     public boolean attachBuffer(IntBuffer buf) {
         // System.err.println("attachBuffer(" + buf + ")");
         return super.attachBuffer(buf);
-    }
-
-    @Override
-    public int feedRawAudioData(byte[] buffer) {
-        System.err.println("feedRawAudioData(byte[" + buffer.length + "])");
-        return super.feedRawAudioData(buffer);
-    }
-
-    // Starting a streaming sound (Music)
-    @Override
-    public boolean preLoadBuffers(LinkedList<byte[]> bufferList) {
-        System.err.println("preLoadBuffers(LinkedList<byte[]>)");
-        for (byte[] arr : bufferList) {
-            this.sendBytes(arr);
-            // System.err.println(" -> byte[" + arr.length + "]");
-        }
-        return super.preLoadBuffers(bufferList);
-    }
-
-    // Streaming sound (Music)
-    @Override
-    public boolean queueBuffer(byte[] buffer) {
-        this.sendBytes(buffer);
-        // System.err.println("queueBuffer(byte[" + buffer.length + "])");
-        return super.queueBuffer(buffer);
     }
 
     @Override
@@ -94,17 +71,53 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
         this.sendSpeed();
     }
 
+    // Starting a streaming sound (Music)
     @Override
-    public void stop() {
-        //System.err.println("stop()");
-        super.stop();
-        this.playing = false;
+    public boolean preLoadBuffers(LinkedList<byte[]> bufferList) {
+        System.err.println("preLoadBuffers(LinkedList<byte[]>)");
+        for (byte[] arr : bufferList) {
+            this.sendBytes(arr);
+            // System.err.println(" -> byte[" + arr.length + "]");
+        }
+        return super.preLoadBuffers(bufferList);
+    }
+
+    // Streaming sound (Music)
+    @Override
+    public boolean queueBuffer(byte[] buffer) {
+        //        int k = 512;
+        //        for (int i = 0; i + k - 1 < buffer.length; i += k) {
+        //            int j = i / k;
+        //            for (int l = 0; l < k; l++) {
+        //                if (j % 64 < 32) {
+        //                    buffer[i + l] = (byte) ((j % 2) * 16 - 8);
+        //                }
+        //                else {
+        //                    buffer[i + l] = (byte) 0;
+        //                }
+        //                //buffer[i + l] += (byte) ((j % 3) * 16 - 8);
+        //                //buffer[i + l] += (byte) ((j % 8) * 2 - 1);
+        //                //buffer[i + l] += (byte) (Math.sin((double) l * Math.PI * 2.0D / (double) k) * 8.0D + Math.sin((double) l * Math.PI * 4.0D / (double) k + 1) * 4.0D);
+        //            }
+        //        }
+        this.sendBytes(buffer);
+        // System.err.println("queueBuffer(byte[" + buffer.length + "])");
+        return super.queueBuffer(buffer);
+    }
+
+    @Override
+    public int feedRawAudioData(byte[] buffer) {
+        System.err.println("feedRawAudioData(byte[" + buffer.length + "])");
+        return super.feedRawAudioData(buffer);
+    }
+
+    @Override
+    public void close() {
+        super.close();
 
         if (this.buffer != null) {
-            this.buffer.reset();
+            this.remove();
         }
-
-        this.remove();
     }
 
     @Override
@@ -124,19 +137,22 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
         this.playing = false;
     }
 
-    // Called when stopping the soundsystem
     @Override
-    public void cleanup() {
-        // System.err.println("cleanup()");
-        super.cleanup();
+    public void stop() {
+        //System.err.println("stop()");
+        super.stop();
+        this.playing = false;
+
+        if (this.buffer != null) {
+            this.buffer.reset();
+        }
 
         this.remove();
     }
 
-    public void sendBytes(byte[] data) {
-        if (this.buffer != null) {
-            this.buffer.write(data);
-        }
+    public void remove() {
+        this.playing = false;
+        ClientProxy.channels.remove(this);
     }
 
     public void add() {
@@ -145,44 +161,35 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
                 this.buffer = new RAMBuffer(0x800000);
                 this.buffer.addSection(this.energy = new EnergySections(43));
                 ClientProxy.channels.add(this);
-            }
-            else {
+            } else {
                 this.buffer.reset();
             }
         }
     }
 
-    @Override
-    public void close() {
-        super.close();
-
+    public void sendBytes(byte[] data) {
         if (this.buffer != null) {
-            this.remove();
+            this.buffer.write(data);
         }
-    }
-
-    public void remove() {
-        this.playing = false;
-        ClientProxy.channels.remove(this);
     }
 
     public void sendSpeed() {
         double bytesPerFrame = 1D;
         switch (this.ALformat) {
-        case AL10.AL_FORMAT_MONO8:
-            bytesPerFrame = 1D;
-        break;
-        case AL10.AL_FORMAT_MONO16:
-            bytesPerFrame = 2D;
-        break;
-        case AL10.AL_FORMAT_STEREO8:
-            bytesPerFrame = 2D;
-        break;
-        case AL10.AL_FORMAT_STEREO16:
-            bytesPerFrame = 4D;
-        break;
-        default:
-        break;
+            case AL10.AL_FORMAT_MONO8:
+                bytesPerFrame = 1D;
+                break;
+            case AL10.AL_FORMAT_MONO16:
+                bytesPerFrame = 2D;
+                break;
+            case AL10.AL_FORMAT_STEREO8:
+                bytesPerFrame = 2D;
+                break;
+            case AL10.AL_FORMAT_STEREO16:
+                bytesPerFrame = 4D;
+                break;
+            default:
+                break;
         }
 
         this.speed = (1000.0D / bytesPerFrame) / this.sampleRate;
@@ -210,12 +217,10 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
                 if (bytes > length) {
                     this.buffer.skip(bytes - length);
                     this.buffer.read(this.data[this.currArray], 0, MathHelper.min(length, this.buffer.getAvailable()));
-                }
-                else {
+                } else {
                     try {
                         System.arraycopy(this.data[prevArray], bytes, this.data[this.currArray], 0, length - bytes);
-                    }
-                    catch (ArrayIndexOutOfBoundsException e) {
+                    } catch (ArrayIndexOutOfBoundsException e) {
                         Objects.log.info("srcpos+length: " + (2 * length - 2 * bytes) + "; dstpos+length: " + (length - bytes) + "; length: " + this.data[prevArray].length);
                         this.prevTime = currTime;
                         return;
@@ -224,7 +229,6 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
                 }
             }
 
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
             FontRenderer font = MC.getFontRenderer();
             ArrayList<String> text = new ArrayList<String>();
             text.add("Milis: " + milis);
@@ -241,8 +245,6 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             }
 
             text.add("" + this.energy);
-
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
 
             double intervalX = width / (length - 1);
             double intervalY = height / 255D;
@@ -270,9 +272,12 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
             ClientProxy.beat = this.beat;
             if (this.beat) {
+                String str = "Beat!";
+                int x = (int) ((width - font.getStringWidth(str)) / 2 + posX);
+                int y = (int) ((height - font.FONT_HEIGHT) / 2 + posY + font.FONT_HEIGHT);
+                font.drawString(str, x, y, 0xFF0000, true);
                 GL11.glColor4f(1.0F, 0.2F, 0.0F, 0.5F);
-            }
-            else {
+            } else {
                 GL11.glColor4f(0.5F, 0.0F, 0.0F, 0.4F);
             }
             GL11.glLineWidth(2.0F);
@@ -282,7 +287,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             for (int i = 0; i < length; i++) {
                 double x = intervalX * i;
                 double y = intervalY * this.data[this.currArray][i];
-                //GL11.glVertex2d(posX + x, posY + y + 128.0F * intervalY);
+                // GL11.glVertex2d(posX + x, posY + y + 128.0F * intervalY);
             }
             GL11.glEnd();
 
@@ -291,12 +296,11 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             for (int i = 0; i < this.energy.fourierBuffer.length; i++) {
                 if (this.energy.fourierEnergyBuffers[i].beat) {
                     GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.6F);
-                }
-                else {
+                } else {
                     GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.6F);
                 }
                 double startX = posX + bandWidth * i;
-                double startY = height - posY - intervalY * this.energy.fourierBuffer[i] * 50.0D;
+                double startY = height - posY - intervalY * this.energy.fourierBuffer[i];// * 50.0D;
                 double endX = posX + bandWidth * (i + 1);
                 double endY = height - posY;
                 GL11.glBegin(GL11.GL_QUADS);
@@ -316,8 +320,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
             int offset = 0;
             for (String str : text) {
-                @SuppressWarnings("unchecked")
-                List<String> split = font.listFormattedStringToWidth(str, (int) width - 20);
+                @SuppressWarnings("unchecked") List<String> split = font.listFormattedStringToWidth(str, (int) width - 20);
                 for (String string : split) {
                     //font.drawString(string, (int) posX + 10, (int) posY + offset, 0xFF0000, true);
                     offset += 8;
@@ -339,8 +342,9 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             super(1024, sectionCount);
 
             this.mainBuffer = new EnergyBuffer(sectionCount);
-            this.fourierBuffer = new float[64];
-            this.fourierEnergyBuffers = new EnergyBuffer[64];
+            int bufferSize = 64;
+            this.fourierBuffer = new float[bufferSize];
+            this.fourierEnergyBuffers = new EnergyBuffer[bufferSize];
             for (int i = 0; i < this.fourierEnergyBuffers.length; i++) {
                 this.fourierEnergyBuffers[i] = new EnergyBuffer(sectionCount);
             }
@@ -357,13 +361,13 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
             for (int i = 0; i < section.length; i++) {
                 byte b = section[i];
-                double d = (double) b / 128.0D;
-                fourierR[i] = (float) d;
-                fourierI[i] = (float) d;
+                float f = (float) b / (float) this.fourierBuffer.length;
+                fourierR[i] = (float) f;
+                fourierI[i] = (float) f;
                 //fourierI[fourierI.length - i - 1] = (float) d;
             }
 
-            MathHelper.fastFourierTransform(1, section.length, fourierR, fourierI);
+            MathHelper.fastFourierTransform(-1, section.length, fourierR, fourierI);
             for (int i = 0; i < this.fourierBuffer.length; i++) {
                 this.fourierBuffer[i] = (float) this.fourierBuffer.length / (float) section.length;
                 float sum = 0.0F;
@@ -375,6 +379,11 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             }
         }
 
+        @Override
+        public String toString() {
+            return "Beat: " + this.hasBeat() + ";\nFourierEnergy: " + Arrays.toString(this.fourierEnergyBuffers);
+        }
+
         public boolean hasBeat() {
             int length = this.fourierEnergyBuffers.length;
             if (this.fourierEnergyBuffers[0].beat || this.fourierEnergyBuffers[length - 1].beat) {
@@ -383,23 +392,18 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             if (this.fourierEnergyBuffers[1].beat || this.fourierEnergyBuffers[length - 2].beat) {
                 return true;
             }
-            if (this.fourierEnergyBuffers[length / 2 - 1].beat || this.fourierEnergyBuffers[length / 2].beat) {
-                return true;
-            }
-            if (this.fourierEnergyBuffers[length / 2 + 1].beat || this.fourierEnergyBuffers[length / 2 + 2].beat) {
-                return true;
-            }
+            //            if (this.fourierEnergyBuffers[length / 2 - 1].beat || this.fourierEnergyBuffers[length / 2].beat) {
+            //                return true;
+            //            }
+            //            if (this.fourierEnergyBuffers[length / 2 + 1].beat || this.fourierEnergyBuffers[length / 2 + 2].beat) {
+            //                return true;
+            //            }
             //            for (EnergyBuffer buffer : this.fourierEnergyBuffers) {
             //                if (buffer.beat) {
             //                    return true;
             //                }
             //            }
             return false;
-        }
-
-        @Override
-        public String toString() {
-            return "Beat: " + this.hasBeat() + ";\nFourierEnergy: " + Arrays.toString(this.fourierEnergyBuffers);
         }
 
     }
@@ -453,7 +457,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             }
             if (beat && temp != this.beat) {
                 this.beat = beat;
-                this.timeout = System.currentTimeMillis() + 150L;
+                this.timeout = System.currentTimeMillis() + 100L;
                 // MC.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("note.hat"), 1.0F));
             }
             //this.beat = energy > this.C * this.averageEnergy;
@@ -464,7 +468,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
         @Override
         public String toString() {
-            return "Beat: " + this.beat;
+            return "\nCompare: " + this.averageEnergy * this.C + ";\n  Energy: " + this.energyLevels[0] + ";\n Beat: " + this.beat;
         }
 
     }

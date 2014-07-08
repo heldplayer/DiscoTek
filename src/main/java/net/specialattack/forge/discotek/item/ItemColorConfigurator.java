@@ -1,8 +1,7 @@
-
 package net.specialattack.forge.discotek.item;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +14,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.item.crafting.RecipesColoredLamp;
 import net.specialattack.forge.discotek.tileentity.TileEntityColoredLamp;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemColorConfigurator extends Item {
 
@@ -26,6 +25,35 @@ public class ItemColorConfigurator extends Item {
     public ItemColorConfigurator() {
         super();
         this.setMaxStackSize(1);
+    }
+
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        TileEntity tile = world.getTileEntity(x, y, z);
+        if (tile != null && tile instanceof TileEntityColoredLamp) {
+            TileEntityColoredLamp lamp = (TileEntityColoredLamp) tile;
+
+            if (player.isSneaking()) {
+                NBTTagCompound compound = stack.stackTagCompound;
+                if (compound == null) {
+                    compound = stack.stackTagCompound = new NBTTagCompound();
+                }
+                compound.setInteger("color", lamp.color.getValue());
+
+                return true;
+            } else {
+                NBTTagCompound compound = stack.stackTagCompound;
+                if (compound == null || !compound.hasKey("color")) {
+                    return false;
+                }
+                int color = compound.getInteger("color");
+
+                lamp.color.setValue(color);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -43,14 +71,6 @@ public class ItemColorConfigurator extends Item {
     }
 
     @Override
-    public IIcon getIcon(ItemStack stack, int pass) {
-        if (pass == 1) {
-            return this.overlay;
-        }
-        return super.getIcon(stack, pass);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean extra) {
@@ -64,56 +84,12 @@ public class ItemColorConfigurator extends Item {
                     color = "0" + color;
                 }
                 list.add(StatCollector.translateToLocalFormatted("gui.tooltip.colorConfigurator.color", "#" + color));
-            }
-            else {
+            } else {
                 list.add(StatCollector.translateToLocal("gui.tooltip.colorConfigurator.nocolor"));
             }
-        }
-        else {
+        } else {
             list.add(StatCollector.translateToLocal("gui.tooltip.colorConfigurator.nocolor"));
         }
-    }
-
-    @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile != null && tile instanceof TileEntityColoredLamp) {
-            TileEntityColoredLamp lamp = (TileEntityColoredLamp) tile;
-
-            if (player.isSneaking()) {
-                NBTTagCompound compound = stack.stackTagCompound;
-                if (compound == null) {
-                    compound = stack.stackTagCompound = new NBTTagCompound();
-                }
-                compound.setInteger("color", lamp.color.getValue());
-
-                return true;
-            }
-            else {
-                NBTTagCompound compound = stack.stackTagCompound;
-                if (compound == null || !compound.hasKey("color")) {
-                    return false;
-                }
-                int color = compound.getInteger("color");
-
-                lamp.color.setValue(color);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public int getRenderPasses(int meta) {
-        return 2;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister register) {
-        super.registerIcons(register);
-        this.overlay = register.registerIcon(this.iconString + "-overlay");
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -134,6 +110,26 @@ public class ItemColorConfigurator extends Item {
 
             list.add(stack);
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        super.registerIcons(register);
+        this.overlay = register.registerIcon(this.iconString + "-overlay");
+    }
+
+    @Override
+    public int getRenderPasses(int meta) {
+        return 2;
+    }
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass) {
+        if (pass == 1) {
+            return this.overlay;
+        }
+        return super.getIcon(stack, pass);
     }
 
 }

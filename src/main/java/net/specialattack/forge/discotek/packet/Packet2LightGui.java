@@ -1,11 +1,8 @@
-
 package net.specialattack.forge.discotek.packet;
 
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -14,7 +11,8 @@ import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.relauncher.Side;
+
+import java.io.IOException;
 
 public class Packet2LightGui extends SpACorePacket {
 
@@ -48,15 +46,15 @@ public class Packet2LightGui extends SpACorePacket {
             this.channels[i] = tile.channels[i].channel.id;
             this.types[i] = tile.channels[i].channel.type;
             switch (tile.channels[i].channel.type) {
-            case 0:
-                this.iValues[i] = tile.channels[i].port;
-            break;
-            case 1:
-                this.sValues[i] = ((SString) tile.channels[i].syncable).getValue();
-            break;
-            case 2:
-                this.bValues[i] = ((SBoolean) tile.channels[i].syncable).getValue();
-            break;
+                case 0:
+                    this.iValues[i] = tile.channels[i].port;
+                    break;
+                case 1:
+                    this.sValues[i] = ((SString) tile.channels[i].syncable).getValue();
+                    break;
+                case 2:
+                    this.bValues[i] = ((SBoolean) tile.channels[i].syncable).getValue();
+                    break;
             }
         }
     }
@@ -83,18 +81,18 @@ public class Packet2LightGui extends SpACorePacket {
             this.channels[i] = in.readInt();
             this.types[i] = in.readInt();
             switch (this.types[i]) {
-            case 0:
-                this.iValues[i] = in.readInt();
-            break;
-            case 1:
-                this.iValues[i] = in.readInt();
-                byte[] data = new byte[this.iValues[i]];
-                in.readBytes(data);
-                this.sValues[i] = new String(data);
-            break;
-            case 2:
-                this.bValues[i] = in.readBoolean();
-            break;
+                case 0:
+                    this.iValues[i] = in.readInt();
+                    break;
+                case 1:
+                    this.iValues[i] = in.readInt();
+                    byte[] data = new byte[this.iValues[i]];
+                    in.readBytes(data);
+                    this.sValues[i] = new String(data);
+                    break;
+                case 2:
+                    this.bValues[i] = in.readBoolean();
+                    break;
             }
         }
     }
@@ -110,17 +108,17 @@ public class Packet2LightGui extends SpACorePacket {
             out.writeInt(this.channels[i]);
             out.writeInt(this.types[i]);
             switch (this.types[i]) {
-            case 0:
-                out.writeInt(this.iValues[i]);
-            break;
-            case 1:
-                byte[] data = this.sValues[i].getBytes();
-                out.writeInt(data.length);
-                out.writeBytes(data);
-            break;
-            case 2:
-                out.writeBoolean(this.bValues[i]);
-            break;
+                case 0:
+                    out.writeInt(this.iValues[i]);
+                    break;
+                case 1:
+                    byte[] data = this.sValues[i].getBytes();
+                    out.writeInt(data.length);
+                    out.writeBytes(data);
+                    break;
+                case 2:
+                    out.writeBoolean(this.bValues[i]);
+                    break;
             }
         }
     }
@@ -140,15 +138,15 @@ public class Packet2LightGui extends SpACorePacket {
 
             for (int i = 0; i < this.channels.length; i++) {
                 switch (this.types[i]) {
-                case 0:
-                    light.setPort(this.channels[i], this.iValues[i]);
-                break;
-                case 1:
-                    light.channels[i].setValue(this.sValues);
-                break;
-                case 2:
-                    light.channels[i].setValue(this.bValues);
-                break;
+                    case 0:
+                        light.setPort(this.channels[i], this.iValues[i]);
+                        break;
+                    case 1:
+                        light.channels[i].setValue(this.sValues);
+                        break;
+                    case 2:
+                        light.channels[i].setValue(this.bValues);
+                        break;
                 }
             }
 

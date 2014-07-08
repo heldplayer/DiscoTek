@@ -1,15 +1,12 @@
-
 package net.specialattack.forge.discotek.client.render;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 import net.specialattack.forge.discotek.block.BlockTruss;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
@@ -111,8 +108,7 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
             block.setBlockBounds(0.8125F, off, 0.0F, 1.0F, 1.0F - off, 0.1875F);
             this.doRender(block, x, y, z, renderer);
-        }
-        else {
+        } else {
             float off = connectNorth || connectEast || connectSouth || connectWest ? 0.1875F : 0.0F;
 
             boolean flag = connectNorth && connectSouth && connectWest && connectEast;
@@ -149,8 +145,7 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
             block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
             this.doRender(block, x, y, z, renderer);
-        }
-        else {
+        } else {
             // Bottom bars
             if (connectTop && !connectBottom) {
                 block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 0.1875F);
@@ -158,12 +153,10 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
                 block.setBlockBounds(0.0F, 0.0F, 0.8125F, 1.0F, 0.1875F, 1.0F);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (connectNorth && !connectSouth) {
+            } else if (connectNorth && !connectSouth) {
                 block.setBlockBounds(0.0F, 0.0F, 0.8125F, 1.0F, 0.1875F, 1.0F);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (!connectNorth && connectSouth) {
+            } else if (!connectNorth && connectSouth) {
                 block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 0.1875F);
                 this.doRender(block, x, y, z, renderer);
             }
@@ -175,12 +168,10 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
                 block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (connectNorth && !connectSouth) {
+            } else if (connectNorth && !connectSouth) {
                 block.setBlockBounds(0.0F, 0.8125F, 0.8125F, 1.0F, 1.0F, 1.0F);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (!connectNorth && connectSouth) {
+            } else if (!connectNorth && connectSouth) {
                 block.setBlockBounds(0.0F, 0.8125F, 0.0F, 1.0F, 1.0F, 0.1875F);
                 this.doRender(block, x, y, z, renderer);
             }
@@ -201,8 +192,7 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
             block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
             this.doRender(block, x, y, z, renderer);
-        }
-        else {
+        } else {
             float off = connectWest || connectEast ? 0.1875F : 0.0F;
 
             // Bottom bars
@@ -212,12 +202,10 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
                 block.setBlockBounds(0.8125F, 0.0F, off, 1.0F, 0.1875F, 1.0F - off);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (connectWest && !connectEast) {
+            } else if (connectWest && !connectEast) {
                 block.setBlockBounds(0.8125F, 0.0F, off, 1.0F, 0.1875F, 1.0F - off);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (!connectWest && connectEast) {
+            } else if (!connectWest && connectEast) {
                 block.setBlockBounds(0.0F, 0.0F, off, 0.1875F, 0.1875F, 1.0F - off);
                 this.doRender(block, x, y, z, renderer);
             }
@@ -229,12 +217,10 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
 
                 block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (connectWest && !connectEast) {
+            } else if (connectWest && !connectEast) {
                 block.setBlockBounds(0.8125F, 0.8125F, off, 1.0F, 1.0F, 1.0F - off);
                 this.doRender(block, x, y, z, renderer);
-            }
-            else if (!connectWest && connectEast) {
+            } else if (!connectWest && connectEast) {
                 block.setBlockBounds(0.0F, 0.8125F, off, 0.1875F, 1.0F, 1.0F - off);
                 this.doRender(block, x, y, z, renderer);
             }
@@ -244,6 +230,41 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
         return true;
+    }
+
+    public boolean canConnect(IBlockAccess world, int x, int y, int z, int meta, boolean strict) {
+        Block block = world.getBlock(x, y, z);
+
+        if (block == null || block.isAir(world, x, y, z)) {
+            return false;
+        }
+
+        if (block instanceof BlockTruss && world.getBlockMetadata(x, y, z) == meta) {
+            return true;
+        } else if (strict) {
+            return false;
+        }
+
+        if (!block.renderAsNormalBlock() || !block.isOpaqueCube()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void doRender(Block block, int x, int y, int z, RenderBlocks renderer) {
+        renderer.setRenderBoundsFromBlock(block);
+        renderer.renderStandardBlockWithColorMultiplier(block, x, y, z, 1.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) {
+        return true;
+    }
+
+    @Override
+    public int getRenderId() {
+        return this.renderId;
     }
 
     private void doRender(Block block, RenderBlocks renderer) {
@@ -274,42 +295,6 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         tess.setNormal(1.0F, 0.0F, 0.0F);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, 0));
         tess.draw();
-    }
-
-    private void doRender(Block block, int x, int y, int z, RenderBlocks renderer) {
-        renderer.setRenderBoundsFromBlock(block);
-        renderer.renderStandardBlockWithColorMultiplier(block, x, y, z, 1.0F, 1.0F, 1.0F);
-    }
-
-    public boolean canConnect(IBlockAccess world, int x, int y, int z, int meta, boolean strict) {
-        Block block = world.getBlock(x, y, z);
-
-        if (block == null || block.isAir(world, x, y, z)) {
-            return false;
-        }
-
-        if (block instanceof BlockTruss && world.getBlockMetadata(x, y, z) == meta) {
-            return true;
-        }
-        else if (strict) {
-            return false;
-        }
-
-        if (!block.renderAsNormalBlock() || !block.isOpaqueCube()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean shouldRender3DInInventory(int modelId) {
-        return true;
-    }
-
-    @Override
-    public int getRenderId() {
-        return this.renderId;
     }
 
 }

@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek.client.renderer.light;
 
 import net.minecraft.util.AxisAlignedBB;

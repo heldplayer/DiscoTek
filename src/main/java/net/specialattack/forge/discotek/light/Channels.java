@@ -1,14 +1,10 @@
-
 package net.specialattack.forge.discotek.light;
-
-import java.util.HashMap;
 
 import net.minecraft.util.StatCollector;
 
-public final class Channels {
+import java.util.HashMap;
 
-    private static HashMap<Integer, Channels> idMap = new HashMap<Integer, Channels>();
-    private static HashMap<String, Channels> identifierMap = new HashMap<String, Channels>();
+public final class Channels {
 
     public static Channels BRIGHTNESS = new Channels(0, "brightness");
     public static Channels PITCH = new Channels(1, "pitch", -0.8F, 0.8F);
@@ -23,7 +19,8 @@ public final class Channels {
     public static Channels LENGTH = new Channels(10, "length", 0.0F, 20.0F);
     public static Channels HEAD_ROTATION = new Channels(11, "headRotation", -72.0F, 72.0F);
     public static Channels BEAT = new Channels(8, "beat", 2);
-
+    private static HashMap<Integer, Channels> idMap = new HashMap<Integer, Channels>();
+    private static HashMap<String, Channels> identifierMap = new HashMap<String, Channels>();
     public final String identifier;
     public final int id;
     public final int type;
@@ -63,16 +60,16 @@ public final class Channels {
         Channels.identifierMap.put(identifier, this);
     }
 
-    public String translateValue(int value) {
-        return StatCollector.translateToLocalFormatted(this.identifier, value);
-    }
-
     public static Channels getChannel(int id) {
         return Channels.idMap.get(Integer.valueOf(id));
     }
 
     public static Channels getChannel(String identifier) {
         return Channels.identifierMap.get(identifier);
+    }
+
+    public String translateValue(int value) {
+        return StatCollector.translateToLocalFormatted(this.identifier, value);
     }
 
 }

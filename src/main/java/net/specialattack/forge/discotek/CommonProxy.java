@@ -1,6 +1,9 @@
-
 package net.specialattack.forge.discotek;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,41 +14,18 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.specialattack.forge.core.SpACoreProxy;
 import net.specialattack.forge.core.crafting.ICraftingResultHandler;
 import net.specialattack.forge.core.crafting.ShapedSpACoreRecipe;
-import net.specialattack.forge.discotek.block.BlockColoredLamp;
-import net.specialattack.forge.discotek.block.BlockController;
-import net.specialattack.forge.discotek.block.BlockDecoration;
-import net.specialattack.forge.discotek.block.BlockLight;
-import net.specialattack.forge.discotek.block.BlockTruss;
+import net.specialattack.forge.discotek.block.*;
 import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
 import net.specialattack.forge.discotek.controller.ControllerPixel;
 import net.specialattack.forge.discotek.creativetabs.CreativeTabIcon;
-import net.specialattack.forge.discotek.item.ItemBlockColoredLamp;
-import net.specialattack.forge.discotek.item.ItemBlockController;
-import net.specialattack.forge.discotek.item.ItemBlockLight;
-import net.specialattack.forge.discotek.item.ItemBlockMulti;
-import net.specialattack.forge.discotek.item.ItemColorConfigurator;
-import net.specialattack.forge.discotek.item.ItemCrafting;
-import net.specialattack.forge.discotek.item.ItemDebug;
-import net.specialattack.forge.discotek.item.ItemLens;
-import net.specialattack.forge.discotek.item.ItemOrienter;
-import net.specialattack.forge.discotek.item.ItemWirelessLinker;
+import net.specialattack.forge.discotek.item.*;
 import net.specialattack.forge.discotek.item.crafting.LightCraftingHandler;
 import net.specialattack.forge.discotek.item.crafting.RecipesColoredLamp;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
-import net.specialattack.forge.discotek.light.LightDimmer;
-import net.specialattack.forge.discotek.light.LightFresnel;
-import net.specialattack.forge.discotek.light.LightHologram;
-import net.specialattack.forge.discotek.light.LightMap;
-import net.specialattack.forge.discotek.light.LightMapLED;
-import net.specialattack.forge.discotek.light.LightPositionableRadialLaser;
-import net.specialattack.forge.discotek.light.LightRadialLaser;
+import net.specialattack.forge.discotek.light.*;
 import net.specialattack.forge.discotek.tileentity.TileEntityColoredLamp;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy extends SpACoreProxy {
 
@@ -238,8 +218,10 @@ public class CommonProxy extends SpACoreProxy {
         GameRegistry.addRecipe(new RecipesColoredLamp());
     }
 
-    public void openControllerGui(TileEntityController tile) {}
+    public void openControllerGui(TileEntityController tile) {
+    }
 
-    public void openLightGui(TileEntityLight tile) {}
+    public void openLightGui(TileEntityLight tile) {
+    }
 
 }

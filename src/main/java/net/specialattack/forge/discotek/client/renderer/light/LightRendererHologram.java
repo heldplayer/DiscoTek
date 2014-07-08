@@ -1,6 +1,7 @@
-
 package net.specialattack.forge.discotek.client.renderer.light;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -13,23 +14,17 @@ import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLig
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightHologramInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LightRendererHologram implements ILightRenderHandler {
-
-    private ModelHologramPad modelHologramPad = new ModelHologramPad();
-
-    private ILightInstance instance = new LightHologramInstance(null);
 
     private static RenderPlayerCustom render = new RenderPlayerCustom();
     static {
         LightRendererHologram.render.setRenderManager(RenderManager.instance);
     }
+    private ModelHologramPad modelHologramPad = new ModelHologramPad();
+    private ILightInstance instance = new LightHologramInstance(null);
 
     @Override
     public void renderSolid(TileEntityLight light, float partialTicks, boolean disableLightmap) {

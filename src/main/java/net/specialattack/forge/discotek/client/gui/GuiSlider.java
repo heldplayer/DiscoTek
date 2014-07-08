@@ -1,17 +1,20 @@
-
 package net.specialattack.forge.discotek.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.GuiButton;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiSlider extends GuiButton {
 
-    /** The value of this slider control. */
+    /**
+     * The value of this slider control.
+     */
     public float sliderValue = 1.0F;
 
-    /** Is this slider control being dragged. */
+    /**
+     * Is this slider control being dragged.
+     */
     public boolean dragging;
 
     public ISliderCompat parent;

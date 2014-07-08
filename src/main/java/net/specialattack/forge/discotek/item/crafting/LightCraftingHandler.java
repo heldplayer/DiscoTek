@@ -1,13 +1,12 @@
-
 package net.specialattack.forge.discotek.item.crafting;
-
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.specialattack.forge.core.crafting.ICraftingResultHandler;
 import net.specialattack.forge.core.crafting.ISpACoreRecipe;
 import net.specialattack.forge.discotek.Objects;
+
+import java.util.List;
 
 public class LightCraftingHandler implements ICraftingResultHandler {
 

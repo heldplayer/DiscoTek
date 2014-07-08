@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek.controllerLogic;
 
 import java.util.ArrayList;
@@ -25,8 +24,19 @@ public class Instruction {
         return this.action;
     }
 
+    public Instruction setAction(int action) {
+        this.action = action;
+        return this;
+    }
+
     public String getError() {
         return this.error;
+    }
+
+    public Instruction setError(String error) {
+        this.hasError = true;
+        this.error = error;
+        return this;
     }
 
     public List<Integer> getSelected() {
@@ -41,31 +51,20 @@ public class Instruction {
         return this.isFixture;
     }
 
-    public boolean isHasValidSelection() {
-        return this.hasValidSelection;
-    }
-
-    public boolean isNeedsPreSelected() {
-        return this.needsPreSelected;
-    }
-
-    public Instruction setAction(int action) {
-        this.action = action;
-        return this;
-    }
-
-    public Instruction setError(String error) {
-        this.hasError = true;
-        this.error = error;
-        return this;
-    }
-
     public void setFixture(boolean isFixture) {
         this.isFixture = isFixture;
     }
 
+    public boolean isHasValidSelection() {
+        return this.hasValidSelection;
+    }
+
     public void setHasValidSelection(boolean hasValidSelection) {
         this.hasValidSelection = hasValidSelection;
+    }
+
+    public boolean isNeedsPreSelected() {
+        return this.needsPreSelected;
     }
 
     public void setNeedsPreSelected(boolean needsPreSelected) {
@@ -92,12 +91,12 @@ public class Instruction {
         return this.selected.get(i);
     }
 
-    public void setValue(int val) {
-        this.value = val;
-    }
-
     public int getValue() {
         return this.value;
+    }
+
+    public void setValue(int val) {
+        this.value = val;
     }
 
     public boolean isSettingSelection() {

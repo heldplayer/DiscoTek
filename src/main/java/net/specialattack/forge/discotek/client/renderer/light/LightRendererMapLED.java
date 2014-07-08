@@ -1,6 +1,7 @@
-
 package net.specialattack.forge.discotek.client.renderer.light;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.core.client.RenderHelper;
@@ -13,11 +14,7 @@ import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightMapLEDInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import net.specialattack.util.MathHelper;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LightRendererMapLED implements ILightRenderHandler {
@@ -216,32 +213,32 @@ public class LightRendererMapLED implements ILightRenderHandler {
 
         float temp;
         switch (side) {
-        case 0:
-            x = -x;
-            y = -y;
-        break;
-        case 2:
-            x = -x;
-            temp = y;
-            y = -z;
-            z = -temp;
-        break;
-        case 3:
-            x = -x;
-            temp = y;
-            y = z;
-            z = temp;
-        break;
-        case 4:
-            temp = y;
-            y = x;
-            x = -temp;
-        break;
-        case 5:
-            temp = y;
-            y = -x;
-            x = temp;
-        break;
+            case 0:
+                x = -x;
+                y = -y;
+                break;
+            case 2:
+                x = -x;
+                temp = y;
+                y = -z;
+                z = -temp;
+                break;
+            case 3:
+                x = -x;
+                temp = y;
+                y = z;
+                z = temp;
+                break;
+            case 4:
+                temp = y;
+                y = x;
+                x = -temp;
+                break;
+            case 5:
+                temp = y;
+                y = -x;
+                x = temp;
+                break;
         }
 
         float x1 = x + distance;

@@ -1,14 +1,11 @@
-
 package net.specialattack.forge.discotek.client.gui;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.specialattack.forge.discotek.Assets;
-
-import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.specialattack.forge.discotek.Assets;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiVerticalSlider extends GuiSlider {
@@ -27,6 +24,25 @@ public class GuiVerticalSlider extends GuiSlider {
     @Override
     public int getHoverState(boolean mouseOver) {
         return 0;
+    }
+
+    @Override
+    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
+        if (this.visible) {
+            FontRenderer fontrenderer = minecraft.fontRenderer;
+            minecraft.getTextureManager().bindTexture(Assets.SMALL_GUI);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, 192, 0, this.width, this.height);
+            this.mouseDragged(minecraft, mouseX, mouseY);
+            int color = 0xFFE0E0E0;
+
+            if (!this.enabled) {
+                color = 0xFFA0A0A0;
+            } else if (this.field_146123_n) {
+                color = 0xFFFFFFA0;
+            }
+            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2 + 1, this.yPosition + (this.height - 8) / 2, color);
+        }
     }
 
     /**
@@ -57,6 +73,15 @@ public class GuiVerticalSlider extends GuiSlider {
     }
 
     /**
+     * Fired when the mouse button is released. Equivalent of
+     * MouseListener.mouseReleased(MouseEvent e).
+     */
+    @Override
+    public void mouseReleased(int mouseX, int mouseY) {
+        this.dragging = false;
+    }
+
+    /**
      * Returns true if the mouse has been pressed on this control. Equivalent of
      * MouseListener.mousePressed(MouseEvent
      * e).
@@ -76,38 +101,8 @@ public class GuiVerticalSlider extends GuiSlider {
 
             this.dragging = true;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
-    }
-
-    @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        if (this.visible) {
-            FontRenderer fontrenderer = minecraft.fontRenderer;
-            minecraft.getTextureManager().bindTexture(Assets.SMALL_GUI);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 192, 0, this.width, this.height);
-            this.mouseDragged(minecraft, mouseX, mouseY);
-            int color = 0xFFE0E0E0;
-
-            if (!this.enabled) {
-                color = 0xFFA0A0A0;
-            }
-            else if (this.field_146123_n) {
-                color = 0xFFFFFFA0;
-            }
-            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2 + 1, this.yPosition + (this.height - 8) / 2, color);
-        }
-    }
-
-    /**
-     * Fired when the mouse button is released. Equivalent of
-     * MouseListener.mouseReleased(MouseEvent e).
-     */
-    @Override
-    public void mouseReleased(int mouseX, int mouseY) {
-        this.dragging = false;
     }
 }

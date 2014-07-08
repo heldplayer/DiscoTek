@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek;
 
 public class Instruction {

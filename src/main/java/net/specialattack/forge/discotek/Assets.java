@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek;
 
 import net.minecraft.util.ResourceLocation;

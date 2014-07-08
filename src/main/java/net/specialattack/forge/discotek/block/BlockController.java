@@ -1,9 +1,7 @@
-
 package net.specialattack.forge.discotek.block;
 
-import java.util.List;
-import java.util.TreeMap;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,8 +17,9 @@ import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.controller.IController;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.TreeMap;
 
 public class BlockController extends Block {
 
@@ -41,6 +40,21 @@ public class BlockController extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        if (this.controllers.containsKey(Integer.valueOf(meta))) {
+            return this.controllers.get(Integer.valueOf(meta)).getIcon(side);
+        }
+
+        return this.missingno;
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ) {
         TileEntity tile = world.getTileEntity(x, y, z);
 
@@ -58,11 +72,6 @@ public class BlockController extends Block {
         }
 
         return true;
-    }
-
-    @Override
-    public int damageDropped(int meta) {
-        return meta;
     }
 
     @Override
@@ -95,23 +104,13 @@ public class BlockController extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (this.controllers.containsKey(Integer.valueOf(meta))) {
-            return this.controllers.get(Integer.valueOf(meta)).getIcon(side);
-        }
-
-        return this.missingno;
+    public boolean hasTileEntity(int metadata) {
+        return true;
     }
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
         return new TileEntityController(this, metadata, !world.isRemote);
-    }
-
-    @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
     }
 
 }

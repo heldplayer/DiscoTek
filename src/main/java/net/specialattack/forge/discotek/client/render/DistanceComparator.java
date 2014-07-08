@@ -1,15 +1,14 @@
-
 package net.specialattack.forge.discotek.client.render;
 
-import java.util.Comparator;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.Comparator;
 
 @SideOnly(Side.CLIENT)
 public class DistanceComparator implements Comparator<TileEntityLight> {
@@ -26,15 +25,13 @@ public class DistanceComparator implements Comparator<TileEntityLight> {
 
         if (handler1.rendersLight() && !handler2.rendersLight()) {
             return -1;
-        }
-        else if (!handler1.rendersLight() && handler2.rendersLight()) {
+        } else if (!handler1.rendersLight() && handler2.rendersLight()) {
             return 1;
         }
 
         if (handler1.rendersFirst() && !handler2.rendersFirst()) {
             return -1;
-        }
-        else if (!handler1.rendersFirst() && handler2.rendersFirst()) {
+        } else if (!handler1.rendersFirst() && handler2.rendersFirst()) {
             return 1;
         }
 
@@ -80,11 +77,9 @@ public class DistanceComparator implements Comparator<TileEntityLight> {
 
         if (distOff1 < distOff2) {
             return 1;
-        }
-        else if (distOff1 > distOff2) {
+        } else if (distOff1 > distOff2) {
             return -1;
-        }
-        else {
+        } else {
             return 0;
         }
     }

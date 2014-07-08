@@ -1,6 +1,7 @@
-
 package net.specialattack.forge.discotek.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -8,8 +9,6 @@ import net.specialattack.forge.discotek.Instruction;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
 import net.specialattack.forge.discotek.packet.Packet5GrandSpAInstruction;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiInstructionsGrandSpA extends Gui {
@@ -23,8 +22,8 @@ public class GuiInstructionsGrandSpA extends Gui {
     public int rows;
     public int scroll;
     public int selected = -1;
-    private boolean editing;
     public String editingString;
+    private boolean editing;
     private ControllerGrandSpAInstance controller;
 
     public GuiInstructionsGrandSpA(ControllerGrandSpAInstance controller, FontRenderer font, int posX, int posY, int width, int rows) {
@@ -63,8 +62,7 @@ public class GuiInstructionsGrandSpA extends Gui {
             if (!this.editing || this.selected != i) {
                 if (instruction == null || instruction.identifier.equals("NOOP")) {
                     display += "NULL";
-                }
-                else {
+                } else {
                     display += instruction.identifier + "_" + instruction.argument;
                 }
             }
@@ -72,12 +70,10 @@ public class GuiInstructionsGrandSpA extends Gui {
             if (this.selected == i) {
                 if (this.editing) {
                     this.font.drawString(display + this.editingString, this.posX + 1, this.posY + (i - this.scroll) * 10 + 1, 0x88FF88);
-                }
-                else {
+                } else {
                     this.font.drawString(display, this.posX + 1, this.posY + (i - this.scroll) * 10 + 1, 0xFFFF88);
                 }
-            }
-            else {
+            } else {
                 this.font.drawString(display, this.posX + 1, this.posY + (i - this.scroll) * 10 + 1, 0xFFFFFF);
             }
         }
@@ -90,12 +86,10 @@ public class GuiInstructionsGrandSpA extends Gui {
                 if (this.selected == i) {
                     if (this.editing) {
                         this.stopEditing();
-                    }
-                    else {
+                    } else {
                         this.beginEditing();
                     }
-                }
-                else {
+                } else {
                     if (!this.editing) {
                         this.selected = i;
                     }
@@ -103,12 +97,6 @@ public class GuiInstructionsGrandSpA extends Gui {
                 }
             }
         }
-    }
-
-    public void beginEditing() {
-        this.editing = true;
-        Instruction instruction = this.controller.instructions[this.selected];
-        this.editingString = instruction == null || instruction.identifier.equals("NOOP") ? "" : instruction.identifier + "_" + instruction.argument;
     }
 
     public boolean stopEditing() {
@@ -128,8 +116,7 @@ public class GuiInstructionsGrandSpA extends Gui {
 
         try {
             arg = Integer.parseInt(last);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
 
@@ -153,68 +140,74 @@ public class GuiInstructionsGrandSpA extends Gui {
         return true;
     }
 
+    public void beginEditing() {
+        this.editing = true;
+        Instruction instruction = this.controller.instructions[this.selected];
+        this.editingString = instruction == null || instruction.identifier.equals("NOOP") ? "" : instruction.identifier + "_" + instruction.argument;
+    }
+
     public boolean onKeyPressed(char character, int key) {
         if (this.editing) {
             switch (key) {
-            case 1:
-                this.editing = false;
+                case 1:
+                    this.editing = false;
 
-                return true;
-            case 14:
-                if (this.editingString.length() > 0) {
-                    this.editingString = this.editingString.substring(0, this.editingString.length() - 1);
-                }
-
-                return true;
-            case 28:
-                if (this.stopEditing()) {
-                    if (this.selected < this.controller.instructions.length - 1) {
-                        this.selected++;
-                        this.beginEditing();
-                    }
-                    if (this.selected == this.rows + this.scroll && this.scroll < this.controller.instructions.length - this.rows) {
-                        this.scroll++;
-                    }
-                }
-
-                return true;
-            case 211:
-                if (this.editingString.length() > 0) {
-                    this.editingString = this.editingString.substring(0, this.editingString.length() - 1);
-                }
-
-                return true;
-            default:
-                if (ChatAllowedCharacters.isAllowedCharacter(character)) {
-                    this.editingString = this.editingString + Character.toString(character);
                     return true;
-                }
-                return true;
+                case 14:
+                    if (this.editingString.length() > 0) {
+                        this.editingString = this.editingString.substring(0, this.editingString.length() - 1);
+                    }
+
+                    return true;
+                case 28:
+                    if (this.stopEditing()) {
+                        if (this.selected < this.controller.instructions.length - 1) {
+                            this.selected++;
+                            this.beginEditing();
+                        }
+                        if (this.selected == this.rows + this.scroll && this.scroll < this.controller.instructions.length - this.rows) {
+                            this.scroll++;
+                        }
+                    }
+
+                    return true;
+                case 211:
+                    if (this.editingString.length() > 0) {
+                        this.editingString = this.editingString.substring(0, this.editingString.length() - 1);
+                    }
+
+                    return true;
+                default:
+                    if (ChatAllowedCharacters.isAllowedCharacter(character)) {
+                        this.editingString = this.editingString + Character.toString(character);
+                        return true;
+                    }
+                    return true;
             }
         }
         switch (key) {
-        case 28:
-            this.beginEditing();
+            case 28:
+                this.beginEditing();
 
-            return true;
-        case 200:
-            if (this.selected > 0) {
-                this.selected--;
-            }
-            if (this.selected == this.scroll - 1 && this.scroll > 0) {
-                this.scroll--;
-            }
+                return true;
+            case 200:
+                if (this.selected > 0) {
+                    this.selected--;
+                }
+                if (this.selected == this.scroll - 1 && this.scroll > 0) {
+                    this.scroll--;
+                }
 
-            return true;
-        case 208:
-            if (this.selected < this.controller.instructions.length - 1) {
-                this.selected++;
-            }
-            if (this.selected == this.rows + this.scroll && this.scroll < this.controller.instructions.length - this.rows) {
-                this.scroll++;
-            }
+                return true;
+            case 208:
+                if (this.selected < this.controller.instructions.length - 1) {
+                    this.selected++;
+                }
+                if (this.selected == this.rows + this.scroll && this.scroll < this.controller.instructions.length - this.rows) {
+                    this.scroll++;
+                }
 
-            return true;
+                return true;
         }
 
         return false;

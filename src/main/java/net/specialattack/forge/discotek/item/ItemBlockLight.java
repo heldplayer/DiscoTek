@@ -1,16 +1,15 @@
-
 package net.specialattack.forge.discotek.item;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.light.ILight;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemBlockLight extends ItemBlock {
 
@@ -32,6 +31,12 @@ public class ItemBlockLight extends ItemBlock {
         return super.getUnlocalizedName(stack) + "." + light.getIdentifier();
     }
 
+    // Fix for silly ItemBlock
+    @Override
+    public int getMetadata(int damage) {
+        return damage;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -42,12 +47,6 @@ public class ItemBlockLight extends ItemBlock {
         if (light != null) {
             light.addInformation(stack, player, list, extra);
         }
-    }
-
-    // Fix for silly ItemBlock
-    @Override
-    public int getMetadata(int damage) {
-        return damage;
     }
 
 }

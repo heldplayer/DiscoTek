@@ -1,17 +1,14 @@
-
 package net.specialattack.forge.discotek.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ItemRendererMultiPass implements IItemRenderer {
@@ -24,18 +21,18 @@ public class ItemRendererMultiPass implements IItemRenderer {
     @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         switch (helper) {
-        case BLOCK_3D:
-            return false;
-        case ENTITY_BOBBING:
-            return true;
-        case ENTITY_ROTATION:
-            return true;
-        case EQUIPPED_BLOCK:
-            return false;
-        case INVENTORY_BLOCK:
-            return false;
-        default:
-            return false;
+            case BLOCK_3D:
+                return false;
+            case ENTITY_BOBBING:
+                return true;
+            case ENTITY_ROTATION:
+                return true;
+            case EQUIPPED_BLOCK:
+                return false;
+            case INVENTORY_BLOCK:
+                return false;
+            default:
+                return false;
         }
     }
 
@@ -72,8 +69,7 @@ public class ItemRendererMultiPass implements IItemRenderer {
             tes.addVertexWithUV(16.0D, 0.0D, 0.0D, icon.getMaxU(), icon.getMinV());
             tes.addVertexWithUV(0.0D, 0.0D, 0.0D, icon.getMinU(), icon.getMinV());
             tes.draw();
-        }
-        else {
+        } else {
             GL11.glPushMatrix();
             TextureManager textureManager = Minecraft.getMinecraft().renderEngine;
 

@@ -1,11 +1,8 @@
-
 package net.specialattack.forge.discotek.packet;
 
+import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -15,7 +12,8 @@ import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
-import cpw.mods.fml.relauncher.Side;
+
+import java.io.IOException;
 
 public class Packet6GrandSpAGui extends SpACorePacket {
 
@@ -44,8 +42,7 @@ public class Packet6GrandSpAGui extends SpACorePacket {
             if (instruction != null) {
                 this.instructions[i] = controller.instructions[i].identifier;
                 this.arguments[i] = controller.instructions[i].argument;
-            }
-            else {
+            } else {
                 this.instructions[i] = "NOOP";
                 this.arguments[i] = 0;
             }

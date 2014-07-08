@@ -1,6 +1,7 @@
-
 package net.specialattack.forge.discotek.client.renderer.light;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.core.client.RenderHelper;
@@ -11,11 +12,7 @@ import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightRadialLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import net.specialattack.util.MathHelper;
-
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LightRendererRadialLaser implements ILightRenderHandler {
@@ -121,19 +118,19 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
 
         float temp;
         switch (side) {
-        case 0:
-            return aabb.addCoord(xz, -y, xz).addCoord(-xz, 0, -xz);
-        case 1:
-        default:
-            return aabb.addCoord(xz, y, xz).addCoord(-xz, 0, -xz);
-        case 2:
-            return aabb.addCoord(xz, xz, -y).addCoord(-xz, -xz, 0);
-        case 3:
-            return aabb.addCoord(xz, xz, y).addCoord(-xz, -xz, 0);
-        case 4:
-            return aabb.addCoord(-y, xz, xz).addCoord(0, -xz, -xz);
-        case 5:
-            return aabb.addCoord(y, xz, xz).addCoord(0, -xz, -xz);
+            case 0:
+                return aabb.addCoord(xz, -y, xz).addCoord(-xz, 0, -xz);
+            case 1:
+            default:
+                return aabb.addCoord(xz, y, xz).addCoord(-xz, 0, -xz);
+            case 2:
+                return aabb.addCoord(xz, xz, -y).addCoord(-xz, -xz, 0);
+            case 3:
+                return aabb.addCoord(xz, xz, y).addCoord(-xz, -xz, 0);
+            case 4:
+                return aabb.addCoord(-y, xz, xz).addCoord(0, -xz, -xz);
+            case 5:
+                return aabb.addCoord(y, xz, xz).addCoord(0, -xz, -xz);
         }
 
     }

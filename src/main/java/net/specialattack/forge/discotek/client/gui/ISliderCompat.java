@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek.client.gui;
 
 import cpw.mods.fml.relauncher.Side;

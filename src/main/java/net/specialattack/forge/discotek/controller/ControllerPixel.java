@@ -1,14 +1,13 @@
-
 package net.specialattack.forge.discotek.controller;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.specialattack.forge.discotek.Assets;
 import net.specialattack.forge.discotek.controller.instance.ControllerPixelInstance;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ControllerPixel implements IController {
 
@@ -37,8 +36,7 @@ public class ControllerPixel implements IController {
     public IIcon getIcon(int side) {
         if (side == 0) {
             return this.bottom;
-        }
-        else if (side == 1) {
+        } else if (side == 1) {
             return this.top;
         }
         return this.side;

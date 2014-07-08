@@ -1,4 +1,3 @@
-
 package net.specialattack.forge.discotek.item;
 
 import net.minecraft.block.Block;

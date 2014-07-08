@@ -1,14 +1,13 @@
-
 package net.specialattack.forge.discotek.light.instance;
-
-import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.specialattack.forge.core.sync.ISyncable;
 import net.specialattack.forge.core.sync.SInteger;
 import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LightDimmerInstance implements ILightInstance {
 
@@ -27,7 +26,8 @@ public class LightDimmerInstance implements ILightInstance {
     }
 
     @Override
-    public void doTick() {}
+    public void doTick() {
+    }
 
     @Override
     public void setBlockBounds(BlockLight block) {
@@ -44,10 +44,12 @@ public class LightDimmerInstance implements ILightInstance {
     }
 
     @Override
-    public void setValue(String identifier, String value) {}
+    public void setValue(String identifier, String value) {
+    }
 
     @Override
-    public void setValue(String identifier, float value) {}
+    public void setValue(String identifier, float value) {
+    }
 
     @Override
     public void setValue(String identifier, int value) {
@@ -57,7 +59,8 @@ public class LightDimmerInstance implements ILightInstance {
     }
 
     @Override
-    public void setValue(String identifier, boolean value) {}
+    public void setValue(String identifier, boolean value) {
+    }
 
     @Override
     public String getString(String identifier, float partialTicks) {
@@ -94,9 +97,11 @@ public class LightDimmerInstance implements ILightInstance {
     }
 
     @Override
-    public void readLosely(NBTTagCompound compound) {}
+    public void readLosely(NBTTagCompound compound) {
+    }
 
     @Override
-    public void writeLosely(NBTTagCompound compound) {}
+    public void writeLosely(NBTTagCompound compound) {
+    }
 
 }

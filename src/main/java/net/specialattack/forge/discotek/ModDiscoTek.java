@@ -1,18 +1,5 @@
-
 package net.specialattack.forge.discotek;
 
-import net.specialattack.forge.core.ModInfo;
-import net.specialattack.forge.core.SpACoreMod;
-import net.specialattack.forge.core.SpACoreProxy;
-import net.specialattack.forge.core.config.Config;
-import net.specialattack.forge.core.packet.PacketHandler;
-import net.specialattack.forge.discotek.packet.Packet1LightPort;
-import net.specialattack.forge.discotek.packet.Packet2LightGui;
-import net.specialattack.forge.discotek.packet.Packet3PixelSlider;
-import net.specialattack.forge.discotek.packet.Packet4PixelGui;
-import net.specialattack.forge.discotek.packet.Packet5GrandSpAInstruction;
-import net.specialattack.forge.discotek.packet.Packet6GrandSpAGui;
-import net.specialattack.forge.discotek.packet.Packet7PixelButton;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -20,6 +7,12 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.specialattack.forge.core.ModInfo;
+import net.specialattack.forge.core.SpACoreMod;
+import net.specialattack.forge.core.SpACoreProxy;
+import net.specialattack.forge.core.config.Config;
+import net.specialattack.forge.core.packet.PacketHandler;
+import net.specialattack.forge.discotek.packet.*;
 
 @Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME, dependencies = Objects.MOD_DEPENCIES)
 public class ModDiscoTek extends SpACoreMod {
@@ -52,6 +45,16 @@ public class ModDiscoTek extends SpACoreMod {
     }
 
     @Override
+    public ModInfo getModInfo() {
+        return Objects.MOD_INFO;
+    }
+
+    @Override
+    public SpACoreProxy getProxy() {
+        return ModDiscoTek.proxy;
+    }
+
+    @Override
     @EventHandler
     public void init(FMLInitializationEvent event) {
         super.init(event);
@@ -61,16 +64,6 @@ public class ModDiscoTek extends SpACoreMod {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-    }
-
-    @Override
-    public ModInfo getModInfo() {
-        return Objects.MOD_INFO;
-    }
-
-    @Override
-    public SpACoreProxy getProxy() {
-        return ModDiscoTek.proxy;
     }
 
 }
