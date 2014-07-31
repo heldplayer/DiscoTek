@@ -1,13 +1,21 @@
-[
-    {
-        "modid" : "discotek",
-        "name" : "DiscoTek",
-        "description" : "A mod created by Team Bleigh for ModJam 2013",
-        "version" : "${version}",
-        "authors" : [
-            "heldplayer",
-            "mbl111"
-        ],
-        "url" : "http://dsiwars.specialattack.net/forums/viewtopic.php?t=7"
-    }
-]
+{
+    "modListVersion" : 2,
+    "modList" : [
+        {
+            "modid" : "discotek",
+            "name" : "DiscoTek",
+            "description" : "A mod created by Team Bleigh for ModJam 2013",
+            "version" : "${version}",
+            "mcversion" : "${minecraft_version}",
+            "authorList" : [
+                "heldplayer",
+                "mbl111"
+            ],
+            "url" : "http://dsiwars.specialattack.net/forums/viewtopic.php?t=7",
+            "useDependencyInformation" : true,
+            "requiredMods" : [ "spacoreforge", "spacore" ],
+            "dependencies" : [ "spacore" ],
+            "dependants" : []
+        }
+    ]
+}
