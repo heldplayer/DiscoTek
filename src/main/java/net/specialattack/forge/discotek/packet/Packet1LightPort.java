@@ -6,12 +6,11 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.specialattack.forge.core.packet.SpACorePacket;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 import java.io.IOException;
 
-public class Packet1LightPort extends SpACorePacket {
+public class Packet1LightPort extends DiscoTekPacket {
 
     public int posX;
     public int posY;

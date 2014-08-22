@@ -6,7 +6,6 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.specialattack.forge.core.packet.SpACorePacket;
 import net.specialattack.forge.discotek.Instruction;
 import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
@@ -15,7 +14,7 @@ import net.specialattack.forge.discotek.tileentity.TileEntityController;
 
 import java.io.IOException;
 
-public class Packet6GrandSpAGui extends SpACorePacket {
+public class Packet6GrandSpAGui extends DiscoTekPacket {
 
     public int posX;
     public int posY;

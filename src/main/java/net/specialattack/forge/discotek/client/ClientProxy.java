@@ -46,13 +46,16 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeSet;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
     public static boolean beat = false;
-    public static LinkedList<ChannelDiscoTek> channels = new LinkedList<ChannelDiscoTek>();
+    public static HashSet<ChannelDiscoTek> channels = new HashSet<ChannelDiscoTek>();
     private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
     private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
     private int totalCount = 0;
@@ -108,7 +111,7 @@ public class ClientProxy extends CommonProxy {
         if (tile != null) {
             IControllerInstance controller = tile.getControllerInstance();
             if (controller != null) {
-                controller.openGui(MC.getPlayer(), Side.CLIENT);
+                controller.openGuiClient(MC.getPlayer());
             }
         }
     }
@@ -130,9 +133,10 @@ public class ClientProxy extends CommonProxy {
             double height = resolution.getScaledHeight_double();
             double splitHeight = height / ClientProxy.channels.size();
 
-            for (int i = 0; i < ClientProxy.channels.size(); i++) {
-                ChannelDiscoTek channel = ClientProxy.channels.get(i);
+            int i = 0;
+            for (ChannelDiscoTek channel : ClientProxy.channels) {
                 channel.render(0.0D, splitHeight * i, width, splitHeight);
+                i++;
             }
         }
     }

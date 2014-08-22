@@ -6,6 +6,9 @@ import java.util.HashMap;
 
 public final class Channels {
 
+    private static HashMap<Integer, Channels> idMap = new HashMap<Integer, Channels>();
+    private static HashMap<String, Channels> identifierMap = new HashMap<String, Channels>();
+
     public static Channels BRIGHTNESS = new Channels(0, "brightness");
     public static Channels PITCH = new Channels(1, "pitch", -0.8F, 0.8F);
     public static Channels ROTATION = new Channels(2, "rotation", 0.0F, (float) Math.PI * 4.0F);
@@ -19,8 +22,6 @@ public final class Channels {
     public static Channels LENGTH = new Channels(10, "length", 0.0F, 20.0F);
     public static Channels HEAD_ROTATION = new Channels(11, "headRotation", -72.0F, 72.0F);
     public static Channels BEAT = new Channels(8, "beat", 2);
-    private static HashMap<Integer, Channels> idMap = new HashMap<Integer, Channels>();
-    private static HashMap<String, Channels> identifierMap = new HashMap<String, Channels>();
     public final String identifier;
     public final int id;
     public final int type;

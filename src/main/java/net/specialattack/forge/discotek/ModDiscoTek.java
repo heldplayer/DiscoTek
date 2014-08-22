@@ -4,8 +4,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.specialattack.forge.core.ModInfo;
 import net.specialattack.forge.core.SpACoreMod;
@@ -21,7 +19,7 @@ public class ModDiscoTek extends SpACoreMod {
     public static ModDiscoTek instance;
     @SidedProxy(serverSide = Objects.COMMON_PROXY, clientSide = Objects.CLIENT_PROXY)
     public static CommonProxy proxy;
-    public static PacketHandler packetHandler;
+    public static PacketHandler<DiscoTekPacket> packetHandler;
 
     // SpACore Objects
     // public static ConfigValue<Integer> blockLightId;
@@ -32,7 +30,7 @@ public class ModDiscoTek extends SpACoreMod {
     public void preInit(FMLPreInitializationEvent event) {
         Objects.log = event.getModLog();
 
-        ModDiscoTek.packetHandler = new PacketHandler("DiscoTek", Packet1LightPort.class, Packet2LightGui.class, Packet3PixelSlider.class, Packet4PixelGui.class, Packet5GrandSpAInstruction.class, Packet6GrandSpAGui.class, Packet7PixelButton.class);
+        ModDiscoTek.packetHandler = new PacketHandler<DiscoTekPacket>("DiscoTek", Packet1LightPort.class, Packet2LightGui.class, Packet3PixelSlider.class, Packet4PixelGui.class, Packet5GrandSpAInstruction.class, Packet6GrandSpAGui.class, Packet7PixelButton.class);
 
         // Config
         // blockLightId = new ConfigValue<Integer>("blockLightId", Configuration.CATEGORY_BLOCK, null, 2080, "");
@@ -52,18 +50,6 @@ public class ModDiscoTek extends SpACoreMod {
     @Override
     public SpACoreProxy getProxy() {
         return ModDiscoTek.proxy;
-    }
-
-    @Override
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
-        super.init(event);
-    }
-
-    @Override
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        super.postInit(event);
     }
 
 }

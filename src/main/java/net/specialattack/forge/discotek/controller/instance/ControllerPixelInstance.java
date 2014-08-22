@@ -2,6 +2,7 @@ package net.specialattack.forge.discotek.controller.instance;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.specialattack.forge.discotek.ModDiscoTek;
@@ -38,12 +39,14 @@ public class ControllerPixelInstance implements IControllerInstance {
     }
 
     @Override
-    public void openGui(EntityPlayer player, Side side) {
-        if (side == Side.CLIENT) {
-            FMLClientHandler.instance().displayGuiScreen(player, new GuiControllerPixel(this));
-        } else {
-            ModDiscoTek.packetHandler.sendPacketToPlayer(new Packet4PixelGui(this), player);
-        }
+    public void openGuiServer(EntityPlayer player) {
+        ModDiscoTek.packetHandler.sendPacketToPlayer(new Packet4PixelGui(this), player);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void openGuiClient(EntityPlayer player) {
+        FMLClientHandler.instance().displayGuiScreen(player, new GuiControllerPixel(this));
     }
 
     @Override

@@ -23,7 +23,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     public double speed = 0.0F;
     public RAMBuffer buffer;
     public EnergySections energy;
-    public long prevTime;
+    private long prevTime;
 
     //public PipedInputStream pis;
     //public PipedOutputStream pos;
@@ -75,9 +75,12 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     @Override
     public boolean preLoadBuffers(LinkedList<byte[]> bufferList) {
         System.err.println("preLoadBuffers(LinkedList<byte[]>)");
+        if (bufferList.isEmpty()) {
+            System.err.println(" -> NO DATA D:");
+        }
         for (byte[] arr : bufferList) {
             this.sendBytes(arr);
-            // System.err.println(" -> byte[" + arr.length + "]");
+            System.err.println(" -> byte[" + arr.length + "]");
         }
         return super.preLoadBuffers(bufferList);
     }
@@ -115,9 +118,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     public void close() {
         super.close();
 
-        if (this.buffer != null) {
-            this.remove();
-        }
+        this.remove();
     }
 
     @Override
@@ -132,14 +133,14 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
     @Override
     public void pause() {
-        System.err.println("pause()");
+        // System.err.println("pause()");
         super.pause();
         this.playing = false;
     }
 
     @Override
     public void stop() {
-        //System.err.println("stop()");
+        // System.err.println("stop()");
         super.stop();
         this.playing = false;
 
@@ -151,19 +152,25 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     }
 
     public void remove() {
-        this.playing = false;
-        ClientProxy.channels.remove(this);
+        if (ClientProxy.channels.contains(this)) {
+            // System.err.println("Removing from watch list");
+            ClientProxy.channels.remove(this);
+        }
     }
 
     public void add() {
+        if (true) {
+            return;
+        }
         if (this.channelType == SoundSystemConfig.TYPE_STREAMING) {
             if (this.buffer == null) {
                 this.buffer = new RAMBuffer(0x800000);
                 this.buffer.addSection(this.energy = new EnergySections(43));
-                ClientProxy.channels.add(this);
             } else {
                 this.buffer.reset();
             }
+            // System.err.println("Adding to watch list");
+            ClientProxy.channels.add(this);
         }
     }
 
@@ -174,6 +181,9 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     }
 
     public void sendSpeed() {
+        if (true) {
+            return;
+        }
         double bytesPerFrame = 1D;
         switch (this.ALformat) {
             case AL10.AL_FORMAT_MONO8:
@@ -196,6 +206,9 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     }
 
     public void render(double posX, double posY, double width, double height) {
+        if (true) {
+            return;
+        }
         if (this.playing) {
             long currTime = System.nanoTime();
 
@@ -244,7 +257,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
                 text.add("Average[" + i + "] = " + ((float) total / (float) this.data[i].length));
             }
 
-            text.add("" + this.energy);
+            //text.add("" + this.energy);
 
             double intervalX = width / (length - 1);
             double intervalY = height / 255D;
@@ -322,7 +335,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             for (String str : text) {
                 @SuppressWarnings("unchecked") List<String> split = font.listFormattedStringToWidth(str, (int) width - 20);
                 for (String string : split) {
-                    //font.drawString(string, (int) posX + 10, (int) posY + offset, 0xFF0000, true);
+                    font.drawString(string, (int) posX + 10, (int) posY + offset, 0xFF0000, true);
                     offset += 8;
                 }
                 offset++;

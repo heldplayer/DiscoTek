@@ -65,7 +65,7 @@ public class BlockController extends Block {
                 IControllerInstance instance = controller.getControllerInstance();
                 if (instance != null) {
                     if (!instance.onRightClick(player, player.isSneaking())) {
-                        instance.openGui(player, Side.SERVER);
+                        instance.openGuiServer(player);
                     }
                 }
             }
