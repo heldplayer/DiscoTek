@@ -1,13 +1,12 @@
 package net.specialattack.forge.discotek.sound;
 
+import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 import paulscode.sound.Channel;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.libraries.ChannelLWJGLOpenAL;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
-
-import java.nio.IntBuffer;
 
 public class LibraryDiscoTek extends LibraryLWJGLOpenAL {
 

@@ -2,6 +2,10 @@ package net.specialattack.forge.discotek.tileentity;
 
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.Optional.Interface;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -15,11 +19,6 @@ import net.specialattack.forge.core.sync.ISyncableObjectOwner;
 import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SInteger;
 import net.specialattack.forge.core.sync.packet.Packet1TrackingStatus;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
 public class TileEntityColoredLamp extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
@@ -84,8 +83,7 @@ public class TileEntityColoredLamp extends TileEntity implements ISyncableObject
     @Override
     public void readSetup(ByteArrayDataInput in) throws IOException {
         List<ISyncable> syncables = this.getSyncables();
-        for (int i = 0; i < syncables.size(); i++) {
-            ISyncable syncable = syncables.get(i);
+        for (ISyncable syncable : syncables) {
             syncable.setId(in.readInt());
             syncable.read(in);
         }
@@ -94,8 +92,7 @@ public class TileEntityColoredLamp extends TileEntity implements ISyncableObject
     @Override
     public void writeSetup(DataOutputStream out) throws IOException {
         List<ISyncable> syncables = this.getSyncables();
-        for (int i = 0; i < syncables.size(); i++) {
-            ISyncable syncable = syncables.get(i);
+        for (ISyncable syncable : syncables) {
             out.writeInt(syncable.getId());
             syncable.write(out);
         }

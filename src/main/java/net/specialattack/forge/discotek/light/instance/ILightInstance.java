@@ -1,10 +1,9 @@
 package net.specialattack.forge.discotek.light.instance;
 
+import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.specialattack.forge.core.sync.ISyncable;
 import net.specialattack.forge.discotek.block.BlockLight;
-
-import java.util.List;
 
 public interface ILightInstance {
 

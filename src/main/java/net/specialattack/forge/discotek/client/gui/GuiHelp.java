@@ -2,6 +2,11 @@ package net.specialattack.forge.discotek.client.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
@@ -9,12 +14,6 @@ import net.minecraft.util.StatCollector;
 import net.specialattack.forge.core.client.MC;
 import net.specialattack.forge.discotek.Assets;
 import org.apache.commons.io.Charsets;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiHelp extends GuiScreen {
@@ -34,7 +33,7 @@ public class GuiHelp extends GuiScreen {
         try {
             BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(MC.getResourceManager().getResource(helpFile).getInputStream(), Charsets.UTF_8));
 
-            String line = null;
+            String line;
             while ((line = bufferedreader.readLine()) != null) {
                 line = line.replaceAll("%", "\u00a7");
                 this.lines.addAll(MC.getFontRenderer().listFormattedStringToWidth(line, 180));

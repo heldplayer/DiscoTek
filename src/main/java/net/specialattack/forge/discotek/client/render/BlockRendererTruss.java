@@ -74,6 +74,7 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         int meta = world.getBlockMetadata(x, y, z);
@@ -81,7 +82,7 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         boolean connectBottom = this.canConnect(world, x, y - 1, z, meta, true);
         boolean connectNorth = this.canConnect(world, x, y, z - 1, meta, false);
         boolean connectSouth = this.canConnect(world, x, y, z + 1, meta, false);
-        boolean connectWest = this.canConnect(world, x - 1, y, z, meta, false);
+        boolean connectWest = this.canConnect(world, x - 1, y, z, meta, false); // NOTE: According to IntelliJ, connectWest is always true AND false. Need testing on quantum computer.
         boolean connectEast = this.canConnect(world, x + 1, y, z, meta, false);
 
         if (((connectNorth || connectSouth) && (connectWest || connectEast)) || (!connectNorth && !connectSouth && !connectWest && !connectEast && !connectBottom && !connectTop)) {
@@ -245,11 +246,8 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
             return false;
         }
 
-        if (!block.renderAsNormalBlock() || !block.isOpaqueCube()) {
-            return false;
-        }
+        return !(!block.renderAsNormalBlock() || !block.isOpaqueCube());
 
-        return true;
     }
 
     private void doRender(Block block, int x, int y, int z, RenderBlocks renderer) {

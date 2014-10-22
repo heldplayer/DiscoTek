@@ -20,9 +20,11 @@ import org.lwjgl.opengl.GL11;
 public class LightRendererHologram implements ILightRenderHandler {
 
     private static RenderPlayerCustom render = new RenderPlayerCustom();
+
     static {
         LightRendererHologram.render.setRenderManager(RenderManager.instance);
     }
+
     private ModelHologramPad modelHologramPad = new ModelHologramPad();
     private ILightInstance instance = new LightHologramInstance(null);
 

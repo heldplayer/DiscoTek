@@ -10,6 +10,10 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
@@ -45,11 +49,6 @@ import org.lwjgl.opengl.GL11;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeSet;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -163,11 +162,8 @@ public class ClientProxy extends CommonProxy {
     public void onChunkUnload(ChunkEvent.Unload event) {
         if (event.world.isRemote) {
             @SuppressWarnings("unchecked") Map<ChunkPosition, TileEntity> tiles = event.getChunk().chunkTileEntityMap;
-            Iterator<TileEntity> iterator = tiles.values().iterator();
 
-            while (iterator.hasNext()) {
-                TileEntity light = iterator.next();
-
+            for (TileEntity light : tiles.values()) {
                 if (light instanceof TileEntityLight) {
                     ClientProxy.lights.remove(light);
                 }

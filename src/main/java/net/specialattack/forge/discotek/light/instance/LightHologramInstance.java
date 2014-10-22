@@ -3,6 +3,8 @@ package net.specialattack.forge.discotek.light.instance;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.specialattack.forge.core.sync.*;
@@ -10,9 +12,6 @@ import net.specialattack.forge.discotek.block.BlockLight;
 import net.specialattack.forge.discotek.sync.SVariableFloat;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import net.specialattack.util.MathHelper;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class LightHologramInstance implements ILightInstance {
 
@@ -275,11 +274,7 @@ public class LightHologramInstance implements ILightInstance {
 
     @Override
     public boolean getBoolean(String identifier, float partialTicks) {
-        if (identifier.equals("beat")) {
-            return this.beat.getValue();
-        }
-
-        return false;
+        return identifier.equals("beat") && this.beat.getValue();
     }
 
     @Override

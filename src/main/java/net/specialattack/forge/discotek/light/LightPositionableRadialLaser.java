@@ -1,5 +1,7 @@
 package net.specialattack.forge.discotek.light;
 
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,9 +9,6 @@ import net.minecraft.util.StatCollector;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightPositionableRadialLaserInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class LightPositionableRadialLaser implements ILight {
 

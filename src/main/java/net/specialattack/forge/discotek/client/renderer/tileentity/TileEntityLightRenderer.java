@@ -48,6 +48,7 @@ public class TileEntityLightRenderer extends TileEntitySpecialRenderer {
                 if (TileEntityLightRenderer.lightOnly) {
                     // Debug code, activate me to see render bounding boxes
                     boolean debug = false;
+                    //noinspection ConstantConditions
                     if (debug) {
                         //GL11.glDisable(GL11.GL_DEPTH_TEST);
                         float red = tileLight.getInteger("red", partialTicks) / 255.0F;

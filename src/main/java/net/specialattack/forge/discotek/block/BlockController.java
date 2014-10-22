@@ -2,6 +2,8 @@ package net.specialattack.forge.discotek.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+import java.util.TreeMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,9 +20,6 @@ import net.specialattack.forge.discotek.controller.IController;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 
-import java.util.List;
-import java.util.TreeMap;
-
 public class BlockController extends Block {
 
     private TreeMap<Integer, IController> controllers;
@@ -32,7 +31,7 @@ public class BlockController extends Block {
     }
 
     public void setController(int id, IController controller) {
-        this.controllers.put(Integer.valueOf(id), controller);
+        this.controllers.put(id, controller);
     }
 
     public IController getController(int id) {

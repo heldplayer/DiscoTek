@@ -3,6 +3,7 @@ package net.specialattack.forge.discotek.packet;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import java.io.IOException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -10,8 +11,6 @@ import net.specialattack.forge.discotek.Instruction;
 import net.specialattack.forge.discotek.controller.instance.ControllerGrandSpAInstance;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
-
-import java.io.IOException;
 
 public class Packet5GrandSpAInstruction extends DiscoTekPacket {
 

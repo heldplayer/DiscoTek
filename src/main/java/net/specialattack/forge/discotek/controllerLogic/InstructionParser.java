@@ -25,7 +25,7 @@ public class InstructionParser {
 
     public static void main(String[] args) throws IOException {
         InstructionParser.in = new BufferedReader(new InputStreamReader(System.in));
-        String line = "";
+        String line;
         while (!(line = InstructionParser.in.readLine()).equalsIgnoreCase("stop")) {
             Instruction inst = InstructionParser.parser.validateCommand(line);
             if (inst.getAction() == 0) {
@@ -74,13 +74,13 @@ public class InstructionParser {
                 return instruction;
             } else {
                 instruction = this.validateSelectionStatement(commandParts[0], action);
-                instruction.setNeedsPreSelected(!instruction.isHasValidSelection());
+                instruction.setNeedsPreSelected(!instruction.isValidSelection());
                 instruction.setAction(action);
                 instruction.setValue(this.validateValuesStatement(commandParts[1]));
             }
         } else if (commandParts.length == 1) {
             instruction = this.validateSelectionStatement(commandParts[0], action);
-            instruction.setNeedsPreSelected(!instruction.isHasValidSelection());
+            instruction.setNeedsPreSelected(!instruction.isValidSelection());
             instruction.setAction(action);
             instruction.settingSelection(true);
         } else {
@@ -91,18 +91,17 @@ public class InstructionParser {
     }
 
     private String[] splitAtKeyWord(String command) {
-        for (int i = 0; i < this.actionKeys.length; i++) {
-            if (command.indexOf(this.actionKeys[i]) > -1) {
-                return command.split(this.actionKeys[i]);
+        for (String actionKey : this.actionKeys) {
+            if (command.contains(actionKey)) {
+                return command.split(actionKey);
             }
         }
-        String[] ret = { command };
-        return ret;
+        return new String[] { command };
     }
 
     private int getKeyWordActionId(String command) {
         for (int i = 0; i < this.actionKeys.length; i++) {
-            if (command.indexOf(this.actionKeys[i]) > -1) {
+            if (command.contains(this.actionKeys[i])) {
                 return i;//this.actionIds[i];
             }
         }
@@ -144,7 +143,7 @@ public class InstructionParser {
         }
 
         String startS = this.getNextNum(string);
-        int start = 0;
+        int start;
         if (startS.length() == 0) {
             return inst.setError("Failed to parse selection values. No Start");
         } else {
@@ -228,7 +227,7 @@ public class InstructionParser {
             }
         }
         //Got this far... We must be good :D
-        inst.setHasValidSelection(true);
+        inst.setValidSelection(true);
         return inst;
     }
 

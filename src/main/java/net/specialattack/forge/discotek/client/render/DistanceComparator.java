@@ -2,13 +2,12 @@ package net.specialattack.forge.discotek.client.render;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Comparator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
-import java.util.Comparator;
 
 @SideOnly(Side.CLIENT)
 public class DistanceComparator implements Comparator<TileEntityLight> {

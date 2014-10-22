@@ -1,8 +1,7 @@
 package net.specialattack.forge.discotek.light;
 
-import net.minecraft.util.StatCollector;
-
 import java.util.HashMap;
+import net.minecraft.util.StatCollector;
 
 public final class Channels {
 
@@ -35,7 +34,7 @@ public final class Channels {
         this.min = 0.0F;
         this.max = 1.0F;
 
-        Channels.idMap.put(Integer.valueOf(id), this);
+        Channels.idMap.put(id, this);
         Channels.identifierMap.put(identifier, this);
     }
 
@@ -46,7 +45,7 @@ public final class Channels {
         this.min = min;
         this.max = max;
 
-        Channels.idMap.put(Integer.valueOf(id), this);
+        Channels.idMap.put(id, this);
         Channels.identifierMap.put(identifier, this);
     }
 
@@ -57,7 +56,7 @@ public final class Channels {
         this.min = 0.0F;
         this.max = 1.0F;
 
-        Channels.idMap.put(Integer.valueOf(id), this);
+        Channels.idMap.put(id, this);
         Channels.identifierMap.put(identifier, this);
     }
 

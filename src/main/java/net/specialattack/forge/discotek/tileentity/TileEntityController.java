@@ -1,5 +1,7 @@
 package net.specialattack.forge.discotek.tileentity;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -7,9 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.specialattack.forge.discotek.block.BlockController;
 import net.specialattack.forge.discotek.controller.IController;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileEntityController extends TileEntity {
 

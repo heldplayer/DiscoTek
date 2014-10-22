@@ -3,6 +3,9 @@ package net.specialattack.forge.discotek.block;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,10 +34,6 @@ import net.specialattack.forge.discotek.packet.Packet2LightGui;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import net.specialattack.util.Table;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class BlockLight extends Block {
 
     private final int renderId;
@@ -50,15 +49,15 @@ public class BlockLight extends Block {
     }
 
     public void setLight(int id, ILight light) {
-        this.lights.insert(Integer.valueOf(id), light, null);
+        this.lights.insert(id, light, null);
     }
 
     public void setLightRenderer(int id, ILightRenderHandler handler) {
-        this.lights.getValue(Integer.valueOf(id)).setValue2(handler);
+        this.lights.getValue(id).setValue2(handler);
     }
 
     public ILightRenderHandler getLightRenderer(int id) {
-        return this.lights.getValue2(Integer.valueOf(id));
+        return this.lights.getValue2(id);
     }
 
     @Override
@@ -170,7 +169,7 @@ public class BlockLight extends Block {
     }
 
     public ILight getLight(int id) {
-        return this.lights.getValue1(Integer.valueOf(id));
+        return this.lights.getValue1(id);
     }
 
     @Override
@@ -212,7 +211,7 @@ public class BlockLight extends Block {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
         for (int i = 0; i < 16; i++) {
-            if (this.lights.containsKey(Integer.valueOf(i))) {
+            if (this.lights.containsKey(i)) {
                 list.add(new ItemStack(item, 1, i));
             }
         }

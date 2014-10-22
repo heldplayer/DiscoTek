@@ -1,5 +1,11 @@
 package net.specialattack.forge.discotek.sound;
 
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import javax.sound.sampled.AudioFormat;
 import net.minecraft.client.gui.FontRenderer;
 import net.specialattack.forge.core.client.MC;
 import net.specialattack.forge.discotek.Objects;
@@ -11,13 +17,7 @@ import org.lwjgl.opengl.GL11;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.libraries.ChannelLWJGLOpenAL;
 
-import javax.sound.sampled.AudioFormat;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
+@SuppressWarnings("ALL")
 public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
     public double speed = 0.0F;
@@ -375,8 +375,8 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             for (int i = 0; i < section.length; i++) {
                 byte b = section[i];
                 float f = (float) b / (float) this.fourierBuffer.length;
-                fourierR[i] = (float) f;
-                fourierI[i] = (float) f;
+                fourierR[i] = f;
+                fourierI[i] = f;
                 //fourierI[fourierI.length - i - 1] = (float) d;
             }
 
@@ -436,8 +436,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
         public void pushData(byte[] section) {
             double energy = 0.0D;
-            for (int i = 0; i < section.length; i++) {
-                byte b = section[i];
+            for (byte b : section) {
                 double d = (double) b / 128.0D;
                 energy += d * d;
             }

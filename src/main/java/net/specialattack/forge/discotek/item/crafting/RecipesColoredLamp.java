@@ -1,5 +1,6 @@
 package net.specialattack.forge.discotek.item.crafting;
 
+import java.util.ArrayList;
 import net.minecraft.block.BlockColored;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -10,8 +11,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Objects;
-
-import java.util.ArrayList;
 
 public class RecipesColoredLamp implements IRecipe {
 

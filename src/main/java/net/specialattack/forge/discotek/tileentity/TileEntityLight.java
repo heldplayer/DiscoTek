@@ -4,6 +4,9 @@ import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,10 +27,6 @@ import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandle
 import net.specialattack.forge.discotek.light.Channels;
 import net.specialattack.forge.discotek.light.ILight;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 @Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
 public class TileEntityLight extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
@@ -99,12 +98,11 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         compound.setInteger("blockMetadata", this.getBlockMetadata());
 
         NBTTagList levels = new NBTTagList();
-        for (int i = 0; i < this.channels.length; i++) {
+        for (ChannelLevel channel1 : this.channels) {
             NBTTagCompound level = new NBTTagCompound();
-            ChannelLevel channel = this.channels[i];
-            level.setInteger("id", channel.channel.id);
-            level.setInteger("value", channel.getValue());
-            level.setInteger("port", channel.port);
+            level.setInteger("id", channel1.channel.id);
+            level.setInteger("value", channel1.getValue());
+            level.setInteger("port", channel1.port);
             levels.appendTag(level);
         }
         compound.setTag("levels", levels);
@@ -296,11 +294,8 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
 
     public boolean getBoolean(String identifier, float partialTicks) {
         ILightInstance instance = this.getLightInstance();
-        if (instance == null) {
-            return false;
-        }
+        return instance != null && instance.getBoolean(identifier, partialTicks);
 
-        return instance.getBoolean(identifier, partialTicks);
     }
 
     public void setLevelUnsafe(int id, int value) {
@@ -308,7 +303,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     }
 
     public void setLevelUnsafe(Channels channel, int value) {
-        if (channel == null && this.channels != null) {
+        if (channel == null || this.channels == null) {
             return;
         }
         for (ChannelLevel level : this.channels) {
@@ -324,7 +319,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     }
 
     public void setLevel(Channels channel, int value) {
-        if (channel == null && this.channels != null) {
+        if (channel == null || this.channels == null) {
             return;
         }
         for (ChannelLevel level : this.channels) {
@@ -355,7 +350,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     }
 
     public void setPort(Channels channel, int port) {
-        if (channel == null && this.channels != null) {
+        if (channel == null || this.channels == null) {
             return;
         }
         for (ChannelLevel level : this.channels) {
@@ -432,8 +427,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             return;
         }
         List<ISyncable> syncables = instance.getSyncables();
-        for (int i = 0; i < syncables.size(); i++) {
-            ISyncable syncable = syncables.get(i);
+        for (ISyncable syncable : syncables) {
             syncable.setId(in.readInt());
             syncable.read(in);
         }
@@ -446,8 +440,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
             return;
         }
         List<ISyncable> syncables = instance.getSyncables();
-        for (int i = 0; i < syncables.size(); i++) {
-            ISyncable syncable = syncables.get(i);
+        for (ISyncable syncable : syncables) {
             out.writeInt(syncable.getId());
             syncable.write(out);
         }

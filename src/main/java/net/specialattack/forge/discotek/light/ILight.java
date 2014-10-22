@@ -1,11 +1,10 @@
 package net.specialattack.forge.discotek.light;
 
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
-import java.util.List;
 
 public interface ILight {
 

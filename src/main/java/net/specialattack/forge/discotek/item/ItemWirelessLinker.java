@@ -2,6 +2,7 @@ package net.specialattack.forge.discotek.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,8 +14,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
-import java.util.List;
 
 public class ItemWirelessLinker extends Item {
 
@@ -38,7 +37,7 @@ public class ItemWirelessLinker extends Item {
                 compound = stack.stackTagCompound = new NBTTagCompound();
             }
 
-            NBTTagList lights = null;
+            NBTTagList lights;
             if (compound.hasKey("lights", 9)) {
                 lights = compound.getTagList("lights", 10);
             } else {

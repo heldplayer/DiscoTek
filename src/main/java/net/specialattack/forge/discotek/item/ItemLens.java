@@ -2,6 +2,8 @@ package net.specialattack.forge.discotek.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+import java.util.Random;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
@@ -17,9 +19,6 @@ import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
 import net.specialattack.forge.discotek.light.ILight;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
-import java.util.List;
-import java.util.Random;
 
 public class ItemLens extends Item {
 

@@ -1,5 +1,6 @@
 package net.specialattack.forge.discotek.item.crafting;
 
+import java.util.ArrayList;
 import net.minecraft.block.BlockColored;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -8,8 +9,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.item.ItemLens;
-
-import java.util.ArrayList;
 
 public class RecipesLens implements IRecipe {
 

@@ -3,6 +3,9 @@ package net.specialattack.forge.discotek.block;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneLight;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,10 +27,6 @@ import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.client.render.BlockRendererColoredLamp;
 import net.specialattack.forge.discotek.item.crafting.RecipesColoredLamp;
 import net.specialattack.forge.discotek.tileentity.TileEntityColoredLamp;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class BlockColoredLamp extends BlockRedstoneLight {
 

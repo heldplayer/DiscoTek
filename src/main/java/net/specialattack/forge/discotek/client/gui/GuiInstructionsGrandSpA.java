@@ -112,7 +112,7 @@ public class GuiInstructionsGrandSpA extends Gui {
         String first = this.editingString.substring(0, this.editingString.indexOf('_')).toUpperCase();
         String last = this.editingString.substring(this.editingString.indexOf('_') + 1);
 
-        int arg = 0;
+        int arg;
 
         try {
             arg = Integer.parseInt(last);

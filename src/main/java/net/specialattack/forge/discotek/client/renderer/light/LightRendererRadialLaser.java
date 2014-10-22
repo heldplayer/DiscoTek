@@ -116,7 +116,6 @@ public class LightRendererRadialLaser implements ILightRenderHandler {
         float y = length * MathHelper.cos(angle);
         int side = light.getInteger("direction", partialTicks) % 6;
 
-        float temp;
         switch (side) {
             case 0:
                 return aabb.addCoord(xz, -y, xz).addCoord(-xz, 0, -xz);

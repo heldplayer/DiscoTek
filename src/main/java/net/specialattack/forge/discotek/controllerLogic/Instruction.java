@@ -12,7 +12,7 @@ public class Instruction {
     private String error = "";
     private int action = 0;
     private boolean needsPreSelected = false;
-    private boolean hasValidSelection = false;
+    private boolean isValidSelection = false;
     private boolean settingSelection = false;
     private String rawTyped = "";
 
@@ -55,12 +55,12 @@ public class Instruction {
         this.isFixture = isFixture;
     }
 
-    public boolean isHasValidSelection() {
-        return this.hasValidSelection;
+    public boolean isValidSelection() {
+        return this.isValidSelection;
     }
 
-    public void setHasValidSelection(boolean hasValidSelection) {
-        this.hasValidSelection = hasValidSelection;
+    public void setValidSelection(boolean validSelection) {
+        this.isValidSelection = validSelection;
     }
 
     public boolean isNeedsPreSelected() {

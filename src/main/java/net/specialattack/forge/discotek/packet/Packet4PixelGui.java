@@ -3,6 +3,7 @@ package net.specialattack.forge.discotek.packet;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import java.io.IOException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -10,8 +11,6 @@ import net.specialattack.forge.discotek.ModDiscoTek;
 import net.specialattack.forge.discotek.controller.instance.ControllerPixelInstance;
 import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityController;
-
-import java.io.IOException;
 
 public class Packet4PixelGui extends DiscoTekPacket {
 
@@ -60,8 +59,8 @@ public class Packet4PixelGui extends DiscoTekPacket {
         out.writeInt(this.posZ);
 
         out.writeInt(this.levels.length);
-        for (int i = 0; i < this.levels.length; i++) {
-            out.writeInt(this.levels[i]);
+        for (int level : this.levels) {
+            out.writeInt(level);
         }
     }
 

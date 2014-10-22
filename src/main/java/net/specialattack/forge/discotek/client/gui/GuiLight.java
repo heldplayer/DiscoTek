@@ -89,7 +89,7 @@ public class GuiLight extends GuiScreen implements ISliderCompat {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id >= 100) {
-            int added = 0;
+            int added;
             int id = button.id - 100;
             if (button.id % 2 == 0) {
                 added = -1;

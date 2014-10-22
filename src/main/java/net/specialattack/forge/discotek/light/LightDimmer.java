@@ -1,13 +1,12 @@
 package net.specialattack.forge.discotek.light;
 
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.specialattack.forge.discotek.light.instance.ILightInstance;
 import net.specialattack.forge.discotek.light.instance.LightDimmerInstance;
 import net.specialattack.forge.discotek.tileentity.TileEntityLight;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class LightDimmer implements ILight {
 
