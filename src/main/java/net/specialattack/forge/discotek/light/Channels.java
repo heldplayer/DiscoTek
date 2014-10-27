@@ -20,7 +20,7 @@ public final class Channels {
     public static Channels SIZE = new Channels(9, "size", 0.0F, 20.0F);
     public static Channels LENGTH = new Channels(10, "length", 0.0F, 20.0F);
     public static Channels HEAD_ROTATION = new Channels(11, "headRotation", -72.0F, 72.0F);
-    public static Channels BEAT = new Channels(8, "beat", 2);
+    //public static Channels BEAT = new Channels(8, "beat", 2);
     public final String identifier;
     public final int id;
     public final int type;

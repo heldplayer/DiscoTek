@@ -4,9 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import java.io.IOException;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.specialattack.forge.core.packet.Attributes;
 import net.specialattack.forge.core.sync.SBoolean;
 import net.specialattack.forge.core.sync.SString;
 import net.specialattack.forge.discotek.ModDiscoTek;
@@ -122,8 +122,11 @@ public class Packet2LightGui extends DiscoTekPacket {
     }
 
     @Override
-    public void onData(ChannelHandlerContext context, EntityPlayer player) {
-        World world = player.worldObj;
+    public void onData(ChannelHandlerContext context) {
+        if (context.attr(Attributes.SENDING_PLAYER).get() == null) {
+            return;
+        }
+        World world = context.attr(Attributes.SENDING_PLAYER).get().worldObj;
 
         TileEntity tile = world.getTileEntity(this.posX, this.posY, this.posZ);
 

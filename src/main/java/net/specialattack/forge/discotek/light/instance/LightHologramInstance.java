@@ -52,7 +52,7 @@ public class LightHologramInstance implements ILightInstance {
         this.headRotation = new SFloat(tile, 0.0F);
         this.playerName = new SString(tile, "");
         this.beat = new SBoolean(tile, false);
-        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.size, this.pitch, this.rotation, this.headRotation, this.playerName, this.beat);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.red, this.green, this.blue, this.brightness, this.size, this.pitch, this.rotation, this.headRotation, this.playerName); //, this.beat);
     }
 
     @Override

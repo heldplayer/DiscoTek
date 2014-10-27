@@ -41,7 +41,7 @@ public class LightMapInstance implements ILightInstance {
         this.rotation = new SFloat(tile, 0.0F);
         this.focus = new SFloat(tile, 1.0F);
         this.beat = new SBoolean(tile, false);
-        this.syncables = Arrays.asList((ISyncable) this.direction, this.hasLens, this.color, this.brightness, this.pitch, this.rotation, this.focus, this.beat);
+        this.syncables = Arrays.asList((ISyncable) this.direction, this.hasLens, this.color, this.brightness, this.pitch, this.rotation, this.focus); //, this.beat);
     }
 
     @Override

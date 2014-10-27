@@ -15,7 +15,7 @@ public class LightFresnel implements ILight {
     private final List<Channels> channels;
 
     public LightFresnel() {
-        this.channels = Arrays.asList(Channels.BRIGHTNESS, Channels.BEAT);
+        this.channels = Arrays.asList(Channels.BRIGHTNESS); //, Channels.BEAT);
     }
 
     @Override

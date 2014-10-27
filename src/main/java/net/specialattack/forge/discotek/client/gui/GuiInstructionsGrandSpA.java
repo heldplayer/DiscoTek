@@ -40,7 +40,7 @@ public class GuiInstructionsGrandSpA extends Gui {
         Gui.drawRect(this.posX - 1, this.posY - 1, this.posX + this.width + 1, this.posY + this.height + 1, 0xFFA0A0A0);
         Gui.drawRect(this.posX, this.posY, this.posX + this.width, this.posY + this.height, 0xFF000000);
 
-        if (this.rows > this.rows) {
+        if (this.controller.instructions.length * 10 > this.height) {
             Gui.drawRect(this.posX + this.width - 9, this.posY, this.posX + this.width, this.posY + this.height, 0xFFA0A0A0);
 
             float percent = (float) this.rows / (float) this.controller.instructions.length;
@@ -48,7 +48,7 @@ public class GuiInstructionsGrandSpA extends Gui {
 
             int offset = (int) (((float) this.height / (float) this.controller.instructions.length) * this.scroll);
 
-            Gui.drawRect(this.posX + this.width - 8, this.posY + offset, this.posX + this.width, this.posY + height + offset, 0xFFE0E0E0);
+            Gui.drawRect(this.posX + this.width - 8, this.posY + offset, this.posX + this.width, this.posY + height + offset + 1, 0xFFE0E0E0);
         }
 
         for (int i = this.scroll; i < this.controller.instructions.length && i < this.rows + this.scroll; i++) {

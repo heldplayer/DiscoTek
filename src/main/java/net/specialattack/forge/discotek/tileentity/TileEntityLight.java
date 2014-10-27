@@ -193,7 +193,7 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
         super.onDataPacket(netManager, packet);
 
         if (packet.func_148857_g().hasKey("tracking", 1) && packet.func_148857_g().getBoolean("tracking")) {
-            SpACore.packetHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
+            SpACore.syncPacketHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
         }
     }
 
@@ -409,6 +409,11 @@ public class TileEntityLight extends TileEntity implements ISyncableObjectOwner 
     @Override
     public boolean isNotValid() {
         return this.isInvalid();
+    }
+
+    @Override
+    public void setNotValid() {
+        // Not supported
     }
 
     @Override

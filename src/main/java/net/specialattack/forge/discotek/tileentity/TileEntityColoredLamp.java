@@ -64,7 +64,7 @@ public class TileEntityColoredLamp extends TileEntity implements ISyncableObject
         super.onDataPacket(netManager, packet);
 
         if (packet.func_148857_g().hasKey("tracking", 1) && packet.func_148857_g().getBoolean("tracking")) {
-            SpACore.packetHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
+            SpACore.syncPacketHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
         }
     }
 
@@ -73,6 +73,11 @@ public class TileEntityColoredLamp extends TileEntity implements ISyncableObject
     @Override
     public boolean isNotValid() {
         return this.isInvalid();
+    }
+
+    @Override
+    public void setNotValid() {
+        // Not supported
     }
 
     @Override

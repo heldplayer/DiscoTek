@@ -102,7 +102,7 @@ public class GuiControllerGrandSpA extends GuiScreen {
             this.instructions = new GuiInstructionsGrandSpA(this.controller, this.fontRendererObj, this.width / 2 - 80, (this.height - this.guiHeight) / 2 + 28, 160, 11);
         } else {
             this.instructions.posX = this.width / 2 - 80;
-            this.instructions.posY = (this.height - this.guiHeight) / 2 + 24;
+            this.instructions.posY = (this.height - this.guiHeight) / 2 + 28;
         }
 
         this.buttonList.add(new GuiButton(1, this.width / 2 + 30, (this.height + this.guiHeight) / 2 - 20, 50, 20, StatCollector.translateToLocal("gui.controller.done")));
