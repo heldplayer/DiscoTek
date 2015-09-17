@@ -13,34 +13,30 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.specialattack.forge.core.SpACoreProxy;
 import net.specialattack.forge.core.crafting.ICraftingResultHandler;
-import net.specialattack.forge.core.crafting.ShapedSpACoreRecipe;
-import net.specialattack.forge.discotek.block.*;
-import net.specialattack.forge.discotek.controller.ControllerGrandSpa;
-import net.specialattack.forge.discotek.controller.ControllerPixel;
+import net.specialattack.forge.discotek.block.BlockColoredLamp;
+import net.specialattack.forge.discotek.block.BlockDecoration;
+import net.specialattack.forge.discotek.block.BlockTruss;
 import net.specialattack.forge.discotek.creativetabs.CreativeTabIcon;
 import net.specialattack.forge.discotek.item.*;
 import net.specialattack.forge.discotek.item.crafting.LightCraftingHandler;
 import net.specialattack.forge.discotek.item.crafting.RecipesColoredLamp;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
-import net.specialattack.forge.discotek.light.*;
 import net.specialattack.forge.discotek.tileentity.TileEntityColoredLamp;
-import net.specialattack.forge.discotek.tileentity.TileEntityController;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class CommonProxy extends SpACoreProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        Objects.blockLight = new BlockLight();
-        Objects.blockLight.setBlockTextureName(Assets.DOMAIN + "truss2");
-        Objects.blockLight.setLight(0, new LightFresnel());
-        Objects.blockLight.setLight(1, new LightMap());
-        Objects.blockLight.setLight(2, new LightMapLED());
-        Objects.blockLight.setLight(3, new LightDimmer());
-        Objects.blockLight.setLight(4, new LightRadialLaser());
-        Objects.blockLight.setLight(5, new LightHologram());
-        Objects.blockLight.setLight(6, new LightPositionableRadialLaser());
-        GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
+        //Objects.blockLight = new BlockLight();
+        //Objects.blockLight.setBlockTextureName(Assets.DOMAIN + "truss2");
+        //Objects.blockLight.setLight(0, new LightFresnel());
+        //Objects.blockLight.setLight(1, new LightMap());
+        //Objects.blockLight.setLight(2, new LightMapLED());
+        //Objects.blockLight.setLight(3, new LightDimmer());
+        //Objects.blockLight.setLight(4, new LightRadialLaser());
+        //Objects.blockLight.setLight(5, new LightHologram());
+        //Objects.blockLight.setLight(6, new LightPositionableRadialLaser());
+        //GameRegistry.registerBlock(Objects.blockLight, ItemBlockLight.class, "light");
 
         // TODO: create emitters
         // TODO: Display connectors: turns lamps into a display
@@ -54,10 +50,10 @@ public class CommonProxy extends SpACoreProxy {
         Objects.blockDecoration = new BlockDecoration();
         GameRegistry.registerBlock(Objects.blockDecoration, ItemBlockMulti.class, "decoration");
 
-        Objects.blockController = new BlockController();
-        GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "controller");
-        Objects.blockController.setController(0, new ControllerPixel());
-        Objects.blockController.setController(1, new ControllerGrandSpa());
+        //Objects.blockController = new BlockController();
+        //GameRegistry.registerBlock(Objects.blockController, ItemBlockController.class, "controller");
+        //Objects.blockController.setController(0, new ControllerPixel());
+        //Objects.blockController.setController(1, new ControllerGrandSpa());
 
         Objects.blockColoredLamp = new BlockColoredLamp();
         GameRegistry.registerBlock(Objects.blockColoredLamp, ItemBlockColoredLamp.class, "colored_lamp");
@@ -92,13 +88,13 @@ public class CommonProxy extends SpACoreProxy {
     public void init(FMLInitializationEvent event) {
         Objects.creativeTab = new CreativeTabIcon("discotek");
 
-        Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("light");
+        //Objects.blockLight.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("light");
 
         Objects.blockTruss.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("truss");
 
         Objects.blockDecoration.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("decoration");
 
-        Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("controller");
+        //Objects.blockController.setCreativeTab(Objects.creativeTab).setHardness(2.0F).setResistance(10.0F).setBlockName("controller");
 
         Objects.blockColoredLamp.setCreativeTab(Objects.creativeTab).setHardness(0.3F).setStepSound(Block.soundTypeGlass).setBlockName("lamp");
 
@@ -116,12 +112,12 @@ public class CommonProxy extends SpACoreProxy {
 
         Objects.itemColorConfigurator.setCreativeTab(Objects.creativeTab).setUnlocalizedName("colorConfigurator");
 
-        Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockLight));
+        Objects.creativeTab.setIconItemStack(new ItemStack(Objects.blockTruss));
 
-        TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light"); // Compat
-        TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller"); // Compat
-        TileEntity.addMapping(TileEntityLight.class, "DiscoTek.Light");
-        TileEntity.addMapping(TileEntityController.class, "DiscoTek.Controller");
+        //TileEntity.addMapping(TileEntityLight.class, "ModJam2013.Light"); // Compat
+        //TileEntity.addMapping(TileEntityController.class, "ModJam2013.Controller"); // Compat
+        //TileEntity.addMapping(TileEntityLight.class, "DiscoTek.Light");
+        //TileEntity.addMapping(TileEntityController.class, "DiscoTek.Controller");
         TileEntity.addMapping(TileEntityColoredLamp.class, "DiscoTek.ColoredLamp");
     }
 
@@ -152,9 +148,9 @@ public class CommonProxy extends SpACoreProxy {
         ItemStack netherBrickBlock = new ItemStack(Blocks.nether_brick, 1, 1);
 
         // Basic Controller
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 0), "sss", "dqd", "HrH", 's', stick, 'd', "dyeBlue", 'q', quartz, 'H', hull, 'r', redstone));
+        //GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 0), "sss", "dqd", "HrH", 's', stick, 'd', "dyeBlue", 'q', quartz, 'H', hull, 'r', redstone));
         // Advanced Controller
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 1), "lll", "dqd", "HrH", 'l', led, 'd', "dyeRed", 'q', quartz, 'H', hull, 'r', redstone));
+        //GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Objects.blockController, 1, 1), "lll", "dqd", "HrH", 'l', led, 'd', "dyeRed", 'q', quartz, 'H', hull, 'r', redstone));
         // Console
         // XXX: Not craftable yet, WIP
         // Wireless Linker
@@ -202,26 +198,20 @@ public class CommonProxy extends SpACoreProxy {
         // Light Crafting Handler
         ICraftingResultHandler handler = new LightCraftingHandler();
         // Fresnel
-        GameRegistry.addRecipe(new ShapedSpACoreRecipe(handler, new ItemStack(Objects.blockLight, 1, 0), "HHH", "HbH", " l ", 'H', hull, 'b', bulb, 'l', lens));
+        //GameRegistry.addRecipe(new ShapedSpACoreRecipe(handler, new ItemStack(Objects.blockLight, 1, 0), "HHH", "HbH", " l ", 'H', hull, 'b', bulb, 'l', lens));
         // SpA 250
-        GameRegistry.addRecipe(new ShapedSpACoreRecipe(handler, new ItemStack(Objects.blockLight, 1, 1), " l ", "sbs", "HsH", 'l', lens, 's', servo, 'b', bulb, 'H', hull));
+        //GameRegistry.addRecipe(new ShapedSpACoreRecipe(handler, new ItemStack(Objects.blockLight, 1, 1), " l ", "sbs", "HsH", 'l', lens, 's', servo, 'b', bulb, 'H', hull));
         // SpA 250 LED
-        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 2), " G ", "sls", "HsH", 'G', glass, 's', servo, 'l', led, 'H', hull);
+        //GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 2), " G ", "sls", "HsH", 'G', glass, 's', servo, 'l', led, 'H', hull);
         // DMX To Redstone Converter
-        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 3), "HrH", "rqr", "HrH", 'H', hull, 'r', redstone, 'q', quartz);
+        //GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 3), "HrH", "rqr", "HrH", 'H', hull, 'r', redstone, 'q', quartz);
         // Radial Laser Emitter
-        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 4), "HlH", "lsl", "HlH", 'H', hull, 'l', led, 's', servo);
+        //GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 4), "HlH", "lsl", "HlH", 'H', hull, 'l', led, 's', servo);
         // Hologram Emitter
-        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HlH", "qGq", "HlH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
-        GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HqH", "lGl", "HqH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
+        //GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HlH", "qGq", "HlH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
+        //GameRegistry.addShapedRecipe(new ItemStack(Objects.blockLight, 1, 5), "HqH", "lGl", "HqH", 'H', hull, 'l', led, 'q', quartz, 'G', glass);
         // Lamp colouring
         GameRegistry.addRecipe(new RecipesColoredLamp());
-    }
-
-    public void openControllerGui(TileEntityController tile) {
-    }
-
-    public void openLightGui(TileEntityLight tile) {
     }
 
 }

@@ -20,5 +20,4 @@ public class ModelHologramPad extends ModelBase {
     public void renderAll() {
         this.base.render(0.0625F);
     }
-
 }

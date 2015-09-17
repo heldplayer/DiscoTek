@@ -80,14 +80,14 @@ public class BlockRendererColoredLamp implements ISimpleBlockRenderingHandler {
         float blue = 1.0F;
         int brightness = 0xF000F0;
         if (tile != null) {
-            int color = tile.color.getValue();
+            int color = tile.color.value;
             int iRed = (color >> 16) & 0xFF;
             int iGreen = (color >> 8) & 0xFF;
             int iBlue = color & 0xFF;
             red = iRed / 255.0F;
             green = iGreen / 255.0F;
             blue = iBlue / 255.0F;
-            if (!tile.lit.getValue()) {
+            if (!tile.lit.value) {
                 //red *= 0.3F;
                 //green *= 0.3F;
                 //blue *= 0.3F;
@@ -171,5 +171,4 @@ public class BlockRendererColoredLamp implements ISimpleBlockRenderingHandler {
 
         return rendered;
     }
-
 }

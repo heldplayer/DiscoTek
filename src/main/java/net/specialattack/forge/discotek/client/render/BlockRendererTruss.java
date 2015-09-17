@@ -77,6 +77,7 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
     @SuppressWarnings("ConstantConditions")
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+        // TODO: fix Z-fighting
         int meta = world.getBlockMetadata(x, y, z);
         boolean connectTop = this.canConnect(world, x, y + 1, z, meta, true);
         boolean connectBottom = this.canConnect(world, x, y - 1, z, meta, true);
@@ -294,5 +295,4 @@ public class BlockRendererTruss implements ISimpleBlockRenderingHandler {
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, 0));
         tess.draw();
     }
-
 }

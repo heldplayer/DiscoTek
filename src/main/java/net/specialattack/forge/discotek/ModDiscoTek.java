@@ -8,9 +8,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.specialattack.forge.core.ModInfo;
 import net.specialattack.forge.core.SpACoreMod;
 import net.specialattack.forge.core.SpACoreProxy;
-import net.specialattack.forge.core.config.Config;
-import net.specialattack.forge.core.packet.PacketHandler;
-import net.specialattack.forge.discotek.packet.*;
+import net.specialattack.forge.core.packet.SpAPacketHandler;
+import net.specialattack.forge.discotek.packet.DiscoTekPacket;
 
 @Mod(modid = Objects.MOD_ID, name = Objects.MOD_NAME, dependencies = Objects.MOD_DEPENCIES)
 public class ModDiscoTek extends SpACoreMod {
@@ -19,10 +18,7 @@ public class ModDiscoTek extends SpACoreMod {
     public static ModDiscoTek instance;
     @SidedProxy(serverSide = Objects.COMMON_PROXY, clientSide = Objects.CLIENT_PROXY)
     public static CommonProxy proxy;
-    public static PacketHandler<DiscoTekPacket> packetHandler;
-
-    // SpACore Objects
-    // public static ConfigValue<Integer> blockLightId;
+    public static SpAPacketHandler<DiscoTekPacket> packetHandler;
 
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -30,14 +26,7 @@ public class ModDiscoTek extends SpACoreMod {
     public void preInit(FMLPreInitializationEvent event) {
         Objects.log = event.getModLog();
 
-        ModDiscoTek.packetHandler = new PacketHandler<DiscoTekPacket>("DiscoTek", Packet1LightPort.class, Packet2LightGui.class, Packet3PixelSlider.class, Packet4PixelGui.class, Packet5GrandSpAInstruction.class, Packet6GrandSpAGui.class, Packet7PixelButton.class);
-
-        // Config
-        // blockLightId = new ConfigValue<Integer>("blockLightId", Configuration.CATEGORY_BLOCK, null, 2080, "");
-
-        this.config = new Config(event.getSuggestedConfigurationFile());
-
-        // this.config.addConfigKey(blockLightId);
+        ModDiscoTek.packetHandler = new SpAPacketHandler<DiscoTekPacket>("DiscoTek");
 
         super.preInit(event);
     }

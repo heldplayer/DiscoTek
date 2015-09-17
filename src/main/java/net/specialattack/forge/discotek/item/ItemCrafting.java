@@ -48,5 +48,4 @@ public class ItemCrafting extends Item {
             this.icons[i] = register.registerIcon(Assets.DOMAIN + "crafting" + i);
         }
     }
-
 }

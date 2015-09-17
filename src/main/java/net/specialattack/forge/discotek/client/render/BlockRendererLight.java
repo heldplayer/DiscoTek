@@ -31,5 +31,4 @@ public class BlockRendererLight implements ISimpleBlockRenderingHandler {
     public int getRenderId() {
         return this.renderId;
     }
-
 }

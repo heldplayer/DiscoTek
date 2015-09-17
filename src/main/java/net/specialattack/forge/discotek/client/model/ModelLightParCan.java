@@ -53,5 +53,4 @@ public class ModelLightParCan extends ModelBase {
         this.lens.rotateAngleY = yaw;
         this.lens.rotateAngleX = pitch;
     }
-
 }

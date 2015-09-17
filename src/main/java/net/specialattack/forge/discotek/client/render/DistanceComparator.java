@@ -3,17 +3,13 @@ package net.specialattack.forge.discotek.client.render;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Comparator;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.util.AxisAlignedBB;
-import net.specialattack.forge.discotek.client.renderer.light.ILightRenderHandler;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 @SideOnly(Side.CLIENT)
-public class DistanceComparator implements Comparator<TileEntityLight> {
+public class DistanceComparator implements Comparator<Object> {
 
     @Override
-    public int compare(TileEntityLight arg1, TileEntityLight arg2) {
+    public int compare(Object arg1, Object arg2) {
+        /*
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) {
             return 0;
@@ -81,6 +77,7 @@ public class DistanceComparator implements Comparator<TileEntityLight> {
         } else {
             return 0;
         }
+        */
+        return 0;
     }
-
 }

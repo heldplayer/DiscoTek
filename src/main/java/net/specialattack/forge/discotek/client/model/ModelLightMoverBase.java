@@ -25,5 +25,4 @@ public class ModelLightMoverBase extends ModelBase {
     public void setRotations(float pitch, float yaw) {
         this.base.rotateAngleY = yaw;
     }
-
 }

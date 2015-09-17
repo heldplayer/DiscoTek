@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.specialattack.forge.discotek.Assets;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class ItemOrienter extends Item {
 
@@ -43,6 +42,7 @@ public class ItemOrienter extends Item {
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float posX, float posY, float posZ) {
         TileEntity tile = world.getTileEntity(x, y, z);
 
+        /*
         if (tile instanceof TileEntityLight) {
             if (world.isRemote) {
                 return true;
@@ -80,6 +80,7 @@ public class ItemOrienter extends Item {
                     break;
             }
         }
+        */
 
         return false;
     }

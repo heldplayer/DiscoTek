@@ -165,5 +165,4 @@ public class ItemRendererMultiPass implements IItemRenderer {
 
         tess.draw();
     }
-
 }

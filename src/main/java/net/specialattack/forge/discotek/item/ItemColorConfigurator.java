@@ -28,6 +28,7 @@ public class ItemColorConfigurator extends Item {
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null && tile instanceof TileEntityColoredLamp) {
             TileEntityColoredLamp lamp = (TileEntityColoredLamp) tile;
@@ -37,7 +38,7 @@ public class ItemColorConfigurator extends Item {
                 if (compound == null) {
                     compound = stack.stackTagCompound = new NBTTagCompound();
                 }
-                compound.setInteger("color", lamp.color.getValue());
+                compound.setInteger("color", lamp.color.value);
 
                 return true;
             } else {
@@ -45,9 +46,8 @@ public class ItemColorConfigurator extends Item {
                 if (compound == null || !compound.hasKey("color")) {
                     return false;
                 }
-                int color = compound.getInteger("color");
 
-                lamp.color.setValue(color);
+                lamp.color.value = compound.getInteger("color");
                 return true;
             }
         }
@@ -130,5 +130,4 @@ public class ItemColorConfigurator extends Item {
         }
         return super.getIcon(stack, pass);
     }
-
 }

@@ -62,13 +62,13 @@ public class BlockColoredLamp extends BlockRedstoneLight {
         if (!world.isRemote) {
             TileEntityColoredLamp tile = (TileEntityColoredLamp) world.getTileEntity(x, y, z);
             if (tile != null) {
-                boolean lit = tile.lit.getValue();
+                boolean lit = tile.lit.value;
                 boolean changed = false;
                 if (lit && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
-                    tile.lit.setValue(false);
+                    tile.lit.value = false;
                     changed = true;
                 } else if (!lit && world.isBlockIndirectlyGettingPowered(x, y, z)) {
-                    tile.lit.setValue(true);
+                    tile.lit.value = true;
                     changed = true;
                 }
                 if (changed) {
@@ -126,7 +126,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
 
         if (stack.stackTagCompound != null) {
             if (stack.stackTagCompound.hasKey("color", 3)) {
-                tile.color.setValue(stack.stackTagCompound.getInteger("color"));
+                tile.color.value = stack.stackTagCompound.getInteger("color");
             }
         }
     }
@@ -171,7 +171,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         TileEntityColoredLamp tile = (TileEntityColoredLamp) world.getTileEntity(x, y, z);
         if (tile != null) {
-            return tile.lit.getValue() ? 15 : 0;
+            return tile.lit.value ? 15 : 0;
         }
         return 0;
     }
@@ -196,7 +196,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
         compound.setInteger("color", 0xFFFFFF);
 
         if (this.tile != null) {
-            compound.setInteger("color", this.tile.color.getValue());
+            compound.setInteger("color", this.tile.color.value);
         }
 
         result.add(stack);
@@ -209,6 +209,7 @@ public class BlockColoredLamp extends BlockRedstoneLight {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         ItemStack stack = new ItemStack(this);
@@ -217,10 +218,9 @@ public class BlockColoredLamp extends BlockRedstoneLight {
 
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null && tile instanceof TileEntityColoredLamp) {
-            compound.setInteger("color", ((TileEntityColoredLamp) tile).color.getValue());
+            compound.setInteger("color", ((TileEntityColoredLamp) tile).color.value);
         }
 
         return stack;
     }
-
 }

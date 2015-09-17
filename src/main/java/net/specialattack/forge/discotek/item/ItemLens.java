@@ -3,22 +3,16 @@ package net.specialattack.forge.discotek.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
-import java.util.Random;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.specialattack.forge.discotek.Objects;
 import net.specialattack.forge.discotek.item.crafting.RecipesLens;
-import net.specialattack.forge.discotek.light.ILight;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class ItemLens extends Item {
 
@@ -32,6 +26,7 @@ public class ItemLens extends Item {
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         //Dont need that... Silly me :p
+        /*
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile != null && tile instanceof TileEntityLight) {
             TileEntityLight light = (TileEntityLight) tile;
@@ -70,6 +65,7 @@ public class ItemLens extends Item {
                 return true;
             }
         }
+        */
 
         return false;
     }

@@ -22,5 +22,4 @@ public abstract class GuiSlider extends GuiButton {
     public GuiSlider(int id, int posX, int posY, int width, int height, String displayString) {
         super(id, posX, posY, width, height, displayString);
     }
-
 }

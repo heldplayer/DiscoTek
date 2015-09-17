@@ -153,15 +153,12 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
 
     public void remove() {
         if (ClientProxy.channels.contains(this)) {
-            // System.err.println("Removing from watch list");
+            System.err.println("Removing from watch list");
             ClientProxy.channels.remove(this);
         }
     }
 
     public void add() {
-        if (true) {
-            return;
-        }
         if (this.channelType == SoundSystemConfig.TYPE_STREAMING) {
             if (this.buffer == null) {
                 this.buffer = new RAMBuffer(0x800000);
@@ -169,7 +166,7 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             } else {
                 this.buffer.reset();
             }
-            // System.err.println("Adding to watch list");
+            System.err.println("Adding to watch list");
             ClientProxy.channels.add(this);
         }
     }
@@ -181,9 +178,6 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     }
 
     public void sendSpeed() {
-        if (true) {
-            return;
-        }
         double bytesPerFrame = 1D;
         switch (this.ALformat) {
             case AL10.AL_FORMAT_MONO8:
@@ -206,9 +200,6 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
     }
 
     public void render(double posX, double posY, double width, double height) {
-        if (true) {
-            return;
-        }
         if (this.playing) {
             long currTime = System.nanoTime();
 
@@ -418,7 +409,6 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
             //            }
             return false;
         }
-
     }
 
     private static class EnergyBuffer {
@@ -482,7 +472,5 @@ public class ChannelDiscoTek extends ChannelLWJGLOpenAL {
         public String toString() {
             return "\nCompare: " + this.averageEnergy * this.C + ";\n  Energy: " + this.energyLevels[0] + ";\n Beat: " + this.beat;
         }
-
     }
-
 }

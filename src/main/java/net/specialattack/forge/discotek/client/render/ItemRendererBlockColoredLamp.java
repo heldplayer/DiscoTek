@@ -113,5 +113,4 @@ public class ItemRendererBlockColoredLamp implements IItemRenderer {
 
         GL11.glPopMatrix();
     }
-
 }

@@ -65,5 +65,4 @@ public class BlockDecoration extends Block {
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
     }
-
 }

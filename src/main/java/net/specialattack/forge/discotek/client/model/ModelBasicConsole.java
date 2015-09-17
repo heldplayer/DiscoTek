@@ -18,5 +18,4 @@ public class ModelBasicConsole extends ModelBase {
     public void renderAll() {
         this.base.render(0.0625F);
     }
-
 }

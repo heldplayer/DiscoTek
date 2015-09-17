@@ -39,5 +39,4 @@ public class LibraryDiscoTek extends LibraryLWJGLOpenAL {
     public String getClassName() {
         return "LibraryDiscoTek";
     }
-
 }

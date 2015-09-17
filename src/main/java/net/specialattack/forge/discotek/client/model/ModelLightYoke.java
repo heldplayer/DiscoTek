@@ -30,5 +30,4 @@ public class ModelLightYoke extends ModelBase {
     public void setRotations(float pitch, float yaw) {
         this.base.rotateAngleY = yaw;
     }
-
 }

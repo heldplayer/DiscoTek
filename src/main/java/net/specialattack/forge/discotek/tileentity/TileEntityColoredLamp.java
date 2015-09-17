@@ -1,144 +1,52 @@
 package net.specialattack.forge.discotek.tileentity;
 
-import com.google.common.io.ByteArrayDataInput;
-import cpw.mods.fml.common.Optional.Interface;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-import net.specialattack.forge.core.SpACore;
 import net.specialattack.forge.core.sync.ISyncable;
-import net.specialattack.forge.core.sync.ISyncableObjectOwner;
-import net.specialattack.forge.core.sync.SBoolean;
-import net.specialattack.forge.core.sync.SInteger;
-import net.specialattack.forge.core.sync.packet.Packet1TrackingStatus;
+import net.specialattack.forge.core.sync.SyncTileEntity;
+import net.specialattack.forge.core.sync.object.SyncBool;
+import net.specialattack.forge.core.sync.object.SyncInt;
 
-@Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
-public class TileEntityColoredLamp extends TileEntity implements ISyncableObjectOwner { //, IPeripheral {
+public class TileEntityColoredLamp extends SyncTileEntity {
 
-    public SInteger color;
-    public SBoolean lit;
-
-    private List<ISyncable> syncables;
+    public SyncInt color;
+    public SyncBool lit;
 
     public TileEntityColoredLamp() {
-        this.color = new SInteger(this, 0xFFFFFF);
-        this.lit = new SBoolean(this, false);
-        this.syncables = Arrays.asList((ISyncable) this.color, this.lit);
+        this.syncables.put("color", this.color = new SyncInt(0xFFFFFF, this, "color"));
+        this.syncables.put("lit", this.lit = new SyncBool(false, this, "lit"));
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.color.setValue(compound.getInteger("color"));
-        this.lit.setValue(compound.getBoolean("lit"));
+        this.color.value = compound.getInteger("color");
+        this.lit.value = compound.getBoolean("lit");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("color", this.color.getValue());
-        compound.setBoolean("lit", this.lit.getValue());
+        compound.setInteger("color", this.color.value);
+        compound.setBoolean("lit", this.lit.value);
     }
 
     @Override
-    public void updateEntity() {
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound compound = new NBTTagCompound();
-        compound.setBoolean("tracking", true);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, compound);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager netManager, S35PacketUpdateTileEntity packet) {
-        super.onDataPacket(netManager, packet);
-
-        if (packet.func_148857_g().hasKey("tracking", 1) && packet.func_148857_g().getBoolean("tracking")) {
-            SpACore.syncPacketHandler.sendPacketToServer(new Packet1TrackingStatus(this, true));
-        }
-    }
-
-    // ISyncableObjectOwner
-
-    @Override
-    public boolean isNotValid() {
-        return this.isInvalid();
-    }
-
-    @Override
-    public void setNotValid() {
-        // Not supported
-    }
-
-    @Override
-    public List<ISyncable> getSyncables() {
-        return this.syncables;
-    }
-
-    @Override
-    public void readSetup(ByteArrayDataInput in) throws IOException {
-        List<ISyncable> syncables = this.getSyncables();
-        for (ISyncable syncable : syncables) {
-            syncable.setId(in.readInt());
-            syncable.read(in);
-        }
-    }
-
-    @Override
-    public void writeSetup(DataOutputStream out) throws IOException {
-        List<ISyncable> syncables = this.getSyncables();
-        for (ISyncable syncable : syncables) {
-            out.writeInt(syncable.getId());
-            syncable.write(out);
-        }
-    }
-
-    @Override
-    public String getIdentifier() {
-        return "TileEntityColoredLamp_" + this.xCoord + ";" + this.yCoord + ";" + this.zCoord;
-    }
-
-    @Override
-    public boolean isWorldBound() {
+    public boolean canPlayerTrack(EntityPlayerMP entityPlayerMP) {
         return true;
     }
 
     @Override
-    public World getWorld() {
-        return this.getWorldObj();
+    public String getDebugDisplay() {
+        return String.format("Colored Lamp: %8h", this.color.value);
     }
 
     @Override
-    public int getPosX() {
-        return this.xCoord;
-    }
-
-    @Override
-    public int getPosY() {
-        return this.yCoord;
-    }
-
-    @Override
-    public int getPosZ() {
-        return this.zCoord;
-    }
-
-    @Override
-    public void onDataChanged(ISyncable syncable) {
+    public void syncableChanged(ISyncable syncable) {
         if (syncable == this.lit) {
             this.worldObj.updateLightByType(EnumSkyBlock.Block, this.xCoord, this.yCoord, this.zCoord);
         }
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
-
 }

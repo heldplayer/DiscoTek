@@ -7,5 +7,4 @@ import cpw.mods.fml.relauncher.SideOnly;
 public interface ISliderCompat {
 
     void slideActionPerformed(GuiSlider slider);
-
 }

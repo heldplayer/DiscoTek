@@ -1,7 +1,5 @@
 package net.specialattack.forge.discotek.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -18,7 +16,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.culling.Frustrum;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -33,18 +30,12 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.specialattack.forge.core.client.MC;
 import net.specialattack.forge.discotek.CommonProxy;
 import net.specialattack.forge.discotek.Objects;
-import net.specialattack.forge.discotek.client.gui.GuiLight;
 import net.specialattack.forge.discotek.client.render.DistanceComparator;
+import net.specialattack.forge.discotek.client.render.IPostRenderer;
 import net.specialattack.forge.discotek.client.render.ItemRendererBlockColoredLamp;
-import net.specialattack.forge.discotek.client.render.ItemRendererBlockLight;
 import net.specialattack.forge.discotek.client.render.ItemRendererMultiPass;
-import net.specialattack.forge.discotek.client.renderer.light.*;
-import net.specialattack.forge.discotek.client.renderer.tileentity.TileEntityLightRenderer;
-import net.specialattack.forge.discotek.controller.instance.IControllerInstance;
 import net.specialattack.forge.discotek.sound.ChannelDiscoTek;
 import net.specialattack.forge.discotek.sound.LibraryDiscoTek;
-import net.specialattack.forge.discotek.tileentity.TileEntityController;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 import org.lwjgl.opengl.GL11;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
@@ -55,19 +46,18 @@ public class ClientProxy extends CommonProxy {
 
     public static boolean beat = false;
     public static HashSet<ChannelDiscoTek> channels = new HashSet<ChannelDiscoTek>();
-    private static HashSet<TileEntityLight> lights = new HashSet<TileEntityLight>();
-    private static TreeSet<TileEntityLight> reusableLights = new TreeSet<TileEntityLight>(new DistanceComparator());
+    private static HashSet<IPostRenderer> lights = new HashSet<IPostRenderer>();
+    private static TreeSet<IPostRenderer> reusableLights = new TreeSet<IPostRenderer>(new DistanceComparator());
     private int totalCount = 0;
     private int renderedCount = 0;
 
-    public static void addTile(TileEntityLight light) {
-        ILightRenderHandler handler = light.getRenderHandler();
-        if (handler != null && handler.rendersLight()) {
+    public static void addTile(IPostRenderer light) {
+        if (light != null && light.rendersLight()) {
             ClientProxy.lights.add(light);
         }
     }
 
-    public static void removeTile(TileEntityLight light) {
+    public static void removeTile(IPostRenderer light) {
         ClientProxy.lights.remove(light);
     }
 
@@ -75,13 +65,13 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
 
-        Objects.blockLight.setLightRenderer(0, new LightRendererFresnel());
-        Objects.blockLight.setLightRenderer(1, new LightRendererMap());
-        Objects.blockLight.setLightRenderer(2, new LightRendererMapLED());
-        Objects.blockLight.setLightRenderer(3, new LightRendererDimmer());
-        Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
-        Objects.blockLight.setLightRenderer(5, new LightRendererHologram());
-        Objects.blockLight.setLightRenderer(6, new LightRendererPositionableRadialLaser());
+        //Objects.blockLight.setLightRenderer(0, new LightRendererFresnel());
+        //Objects.blockLight.setLightRenderer(1, new LightRendererMap());
+        //Objects.blockLight.setLightRenderer(2, new LightRendererMapLED());
+        //Objects.blockLight.setLightRenderer(3, new LightRendererDimmer());
+        //Objects.blockLight.setLightRenderer(4, new LightRendererRadialLaser());
+        //Objects.blockLight.setLightRenderer(5, new LightRendererHologram());
+        //Objects.blockLight.setLightRenderer(6, new LightRendererPositionableRadialLaser());
 
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -92,7 +82,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLight.class, new TileEntityLightRenderer());
+        //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLight.class, new TileEntityLightRenderer());
     }
 
     @Override
@@ -101,31 +91,14 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Objects.itemLens, new ItemRendererMultiPass());
         MinecraftForgeClient.registerItemRenderer(Objects.itemColorConfigurator, new ItemRendererMultiPass());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockLight), new ItemRendererBlockLight());
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockLight), new ItemRendererBlockLight());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(Objects.blockColoredLamp), new ItemRendererBlockColoredLamp());
-    }
-
-    @Override
-    public void openControllerGui(TileEntityController tile) {
-        if (tile != null) {
-            IControllerInstance controller = tile.getControllerInstance();
-            if (controller != null) {
-                controller.openGuiClient(MC.getPlayer());
-            }
-        }
-    }
-
-    @Override
-    public void openLightGui(TileEntityLight tile) {
-        if (tile != null) {
-            FMLClientHandler.instance().displayGuiScreen(MC.getPlayer(), new GuiLight(tile));
-        }
     }
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event) {
         if (!ClientProxy.channels.isEmpty()) {
-            Minecraft mc = MC.getMinecraft();
+            Minecraft mc = MC.getMc();
             ScaledResolution resolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 
             double width = resolution.getScaledWidth_double();
@@ -164,7 +137,7 @@ public class ClientProxy extends CommonProxy {
             @SuppressWarnings("unchecked") Map<ChunkPosition, TileEntity> tiles = event.getChunk().chunkTileEntityMap;
 
             for (TileEntity light : tiles.values()) {
-                if (light instanceof TileEntityLight) {
+                if (light instanceof IPostRenderer) {
                     ClientProxy.lights.remove(light);
                 }
             }
@@ -180,37 +153,38 @@ public class ClientProxy extends CommonProxy {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        MC.getMinecraft().mcProfiler.startSection("discotek");
+        Minecraft mc = MC.getMc();
+        mc.mcProfiler.startSection("discotek");
         this.totalCount = 0;
         this.renderedCount = 0;
         if (ClientProxy.lights.isEmpty()) {
-            MC.getMinecraft().mcProfiler.endSection();
+            MC.getMc().mcProfiler.endSection();
             return;
         }
-        MC.getMinecraft().mcProfiler.startSection("invalidation");
-        Iterator<TileEntityLight> iterator = ClientProxy.lights.iterator();
+        mc.mcProfiler.startSection("invalidation");
+        Iterator<IPostRenderer> iterator = ClientProxy.lights.iterator();
 
         while (iterator.hasNext()) {
-            TileEntityLight light = iterator.next();
+            IPostRenderer light = iterator.next();
 
-            if (light.isNotValid()) {
+            if (light.shouldRemoveRenderer()) {
                 iterator.remove();
             }
         }
 
         if (ClientProxy.lights.isEmpty()) {
-            MC.getMinecraft().mcProfiler.endSection();
-            MC.getMinecraft().mcProfiler.endSection();
+            mc.mcProfiler.endSection();
+            mc.mcProfiler.endSection();
             return;
         }
 
-        MC.getMinecraft().mcProfiler.endStartSection("sorting");
+        mc.mcProfiler.endStartSection("sorting");
 
         ClientProxy.reusableLights.addAll(ClientProxy.lights);
 
-        MC.getMinecraft().mcProfiler.endStartSection("culling");
+        mc.mcProfiler.endStartSection("culling");
 
-        EntityClientPlayerMP player = MC.getMinecraft().thePlayer;
+        EntityClientPlayerMP player = mc.thePlayer;
 
         double playerX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.partialTicks;
         double playerY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.partialTicks;
@@ -224,12 +198,10 @@ public class ClientProxy extends CommonProxy {
         while (iterator.hasNext()) {
             this.totalCount++;
 
-            TileEntityLight light = iterator.next();
+            IPostRenderer light = iterator.next();
 
-            ILightRenderHandler handler = light.getRenderHandler();
-
-            if (handler != null) {
-                AxisAlignedBB aabb = handler.getRenderingAABB(light, event.partialTicks).offset(light.xCoord, light.yCoord, light.zCoord);
+            if (light != null) {
+                AxisAlignedBB aabb = light.getRenderingAABB(light, event.partialTicks).offset(light.getPosX(), light.getPosY(), light.getPosZ());
 
                 if (!frustrum.isBoundingBoxInFrustum(aabb)) {
                     //iterator.remove();
@@ -243,9 +215,7 @@ public class ClientProxy extends CommonProxy {
             this.renderedCount++;
         }
 
-        MC.getMinecraft().mcProfiler.endStartSection("rendering");
-
-        TileEntityLightRenderer.lightOnly = true;
+        mc.mcProfiler.endStartSection("rendering");
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -261,17 +231,17 @@ public class ClientProxy extends CommonProxy {
 
         while (iterator.hasNext()) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            TileEntityLight light = iterator.next();
-            double d3 = light.xCoord - playerX;
-            double d4 = light.yCoord - playerY;
-            double d5 = light.zCoord - playerZ;
+            IPostRenderer light = iterator.next();
+            double d3 = light.getPosX() - playerX;
+            double d4 = light.getPosY() - playerY;
+            double d5 = light.getPosZ() - playerZ;
 
-            if (light.isNotValid()) {
+            if (light.shouldRemoveRenderer()) {
                 iterator.remove();
             }
 
             if (d3 * d3 + d4 * d4 + d5 * d5 < 65536.0D) {
-                TileEntityRendererDispatcher.instance.renderTileEntityAt(light, d3, d4, d5, event.partialTicks);
+                light.renderPost(d3, d4, d5, event.partialTicks);
             }
         }
 
@@ -284,11 +254,9 @@ public class ClientProxy extends CommonProxy {
         GL11.glDepthMask(true);
         GL11.glPopMatrix();
 
-        TileEntityLightRenderer.lightOnly = false;
         ClientProxy.reusableLights.clear();
 
-        MC.getMinecraft().mcProfiler.endSection();
-        MC.getMinecraft().mcProfiler.endSection();
+        mc.mcProfiler.endSection();
+        mc.mcProfiler.endSection();
     }
-
 }

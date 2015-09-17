@@ -49,5 +49,4 @@ public class LightCraftingHandler implements ICraftingResultHandler {
     public String getNEIOverlayText() {
         return null;
     }
-
 }

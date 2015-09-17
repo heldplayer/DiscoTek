@@ -54,5 +54,4 @@ public class ModelLightMover extends ModelBase {
         this.lens.rotateAngleY = yaw;
         this.lens.rotateAngleX = pitch;
     }
-
 }

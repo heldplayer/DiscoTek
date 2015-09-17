@@ -119,5 +119,4 @@ public class RecipesLens implements IRecipe {
     public ItemStack getRecipeOutput() {
         return null;
     }
-
 }

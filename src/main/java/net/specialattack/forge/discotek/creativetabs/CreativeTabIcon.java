@@ -29,5 +29,4 @@ public class CreativeTabIcon extends CreativeTabs {
     public Item getTabIconItem() {
         return this.iconItemStack.getItem();
     }
-
 }

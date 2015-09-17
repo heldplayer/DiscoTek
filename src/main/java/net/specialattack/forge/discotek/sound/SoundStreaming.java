@@ -8,5 +8,4 @@ public class SoundStreaming extends PositionedSound {
     public SoundStreaming(ResourceLocation sound) {
         super(sound);
     }
-
 }

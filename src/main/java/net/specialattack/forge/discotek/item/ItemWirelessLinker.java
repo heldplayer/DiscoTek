@@ -9,11 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.specialattack.forge.discotek.tileentity.TileEntityController;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class ItemWirelessLinker extends Item {
 
@@ -26,6 +23,8 @@ public class ItemWirelessLinker extends Item {
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float posX, float posY, float posZ) {
         TileEntity tile = world.getTileEntity(x, y, z);
+
+        /*
 
         if (tile != null && tile instanceof TileEntityLight) {
             if (world.isRemote) {
@@ -112,6 +111,8 @@ public class ItemWirelessLinker extends Item {
 
             return true;
         }
+
+        */
 
         return false;
     }

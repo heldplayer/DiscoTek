@@ -132,5 +132,4 @@ public class RecipesColoredLamp implements IRecipe {
     public ItemStack getRecipeOutput() {
         return null;
     }
-
 }

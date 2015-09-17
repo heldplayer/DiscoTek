@@ -38,5 +38,4 @@ public class ItemBlockColoredLamp extends ItemBlock {
             list.add(StatCollector.translateToLocal("gui.tooltip.coloredLamp.nocolor"));
         }
     }
-
 }

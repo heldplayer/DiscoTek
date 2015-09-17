@@ -40,7 +40,7 @@ public class GuiHelp extends GuiScreen {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            MC.getMinecraft().displayGuiScreen(this.parent);
+            MC.getMc().displayGuiScreen(this.parent);
         }
     }
 
@@ -116,5 +116,4 @@ public class GuiHelp extends GuiScreen {
     public boolean doesGuiPauseGame() {
         return false;
     }
-
 }

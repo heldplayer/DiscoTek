@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.specialattack.forge.discotek.tileentity.TileEntityLight;
 
 public class ItemDebug extends Item {
 
@@ -25,7 +24,7 @@ public class ItemDebug extends Item {
         }
 
         Block block = world.getBlock(x, y, z);
-        ItemStack itemStack = block.getPickBlock(Minecraft.getMinecraft().objectMouseOver, world, x, y, z);
+        ItemStack itemStack = block.getPickBlock(Minecraft.getMinecraft().objectMouseOver, world, x, y, z, player);
 
         player.addChatMessage(new ChatComponentText("Block clicked: ").appendSibling(itemStack.func_151000_E()));
 
@@ -34,11 +33,6 @@ public class ItemDebug extends Item {
             player.addChatMessage(new ChatComponentText(tile.toString()));
         }
 
-        if (tile instanceof TileEntityLight) {
-            ((TileEntityLight) tile).setValue("direction", (((TileEntityLight) tile).getInteger("direction", 1.0F) + 1) % 6);
-        }
-
         return true;
     }
-
 }

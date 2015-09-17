@@ -93,5 +93,4 @@ public class GuiHorizontalSlider extends GuiSlider {
     public void updateText() {
         this.displayString = StatCollector.translateToLocalFormatted(this.baseDisplayString, (int) (this.sliderValue * 255.0F));
     }
-
 }

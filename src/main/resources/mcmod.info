@@ -11,11 +11,7 @@
                 "heldplayer",
                 "mbl111"
             ],
-            "url" : "http://dsiwars.specialattack.net/forums/viewtopic.php?t=7",
-            "useDependencyInformation" : true,
-            "requiredMods" : [ "spacoreforge", "spacore" ],
-            "dependencies" : [ "spacore" ],
-            "dependants" : []
+            "url": "http://dsiwars.specialattack.net/forums/viewtopic.php?t=7"
         }
     ]
 }

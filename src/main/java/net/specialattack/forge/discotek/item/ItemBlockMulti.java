@@ -15,5 +15,4 @@ public class ItemBlockMulti extends ItemBlock {
     public String getUnlocalizedNameInefficiently(ItemStack stack) {
         return super.getUnlocalizedNameInefficiently(stack) + stack.getItemDamage();
     }
-
 }

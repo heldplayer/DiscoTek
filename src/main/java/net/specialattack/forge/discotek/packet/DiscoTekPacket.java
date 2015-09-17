@@ -1,12 +1,7 @@
 package net.specialattack.forge.discotek.packet;
 
-import net.minecraft.world.World;
-import net.specialattack.forge.core.packet.SpACorePacket;
+import net.specialattack.forge.core.packet.SpAPacket;
 
-public abstract class DiscoTekPacket extends SpACorePacket {
-
-    public DiscoTekPacket(World world) {
-        super(world);
-    }
+public abstract class DiscoTekPacket extends SpAPacket<DiscoTekPacket> {
 
 }
